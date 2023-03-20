@@ -1,0 +1,4 @@
+# Deny access to alwaysInclude.php file
+<Files alwaysInclude.php>
+    Require all denied
+</Files>
