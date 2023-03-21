@@ -1,0 +1,260 @@
+/*--- INFORMATIONS ---*/
+/*
+Approche : mobile last (pas le temps de procéder à du mobile first)
+*/
+
+
+@charset "utf-8";
+
+/* IMPORTS */
+
+/* CSS Document */
+
+/*--- RESET ---*/
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+    background: transparent;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+    display: block;
+}
+
+/*--- FIN RESET ---*/
+
+/*--- CLASSES GENERIQUES ---*/
+
+.flex_rox {
+    display: flex;
+    flex-direction: row;
+}
+
+/*--- FIN CLASSES GENERIQUES ---*/
+
+/*--- HEADER ---*/
+
+.header_client {
+    background-color: #FFF2CC;
+}
+
+.header_client_sticky, .header_client:hover {
+    background-color: #d8d8d8;
+}
+
+.nav_client {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 2%;
+}
+
+.nav_client ul:first-child {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.nav_client ul:last-child {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+header ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header li {
+    list-style-type: none;
+    display: inline-block;
+    margin: 0 5px;
+}
+
+header li a {
+    padding: 10px 10px;
+    text-decoration: none;
+    display: flex;
+    background-color: #FF6666;
+}
+
+.header_icone {
+    color: black;
+}
+
+#header_logo {
+    width: 75px;
+    height: auto;
+    position: relative;
+    transform: translateY(20%);
+    /* Pour l'effet de logo qui déborde du header */
+}
+
+/* DEBUT - pour l'effet de soulignement et désactivé les soulignement des liens */
+.header_nav_underline {
+    text-decoration: none;
+    color: #FF6666;
+    position: relative;
+    background-color: aqua;
+    flex: 1;
+}
+
+.header_nav_underline:hover::before {
+    width: 100%;
+}
+
+.header_nav_underline::before {
+    content: "";
+    position: absolute;
+    bottom: -3px;
+    width: 0;
+    height: 3px;
+    background-color: #f1dc67;
+    transition: width 0.3s ease-in-out;
+}
+/* FIN - pour l'effet de soulignement et désactivé les soulignement des liens */
+
+/*--- FIN HEADER ---*/
+
+/*--- FOOTER ---*/
+
+footer {
+    padding: 30px 10px 15px 10px;
+    background-color: #363636;
+    color: #FF6666;
+    display: flex;
+    flex-direction: column;
+}
+
+#footer_top {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: stretch;
+    width: 90%;
+    margin: auto;
+}
+
+#footer_top img {
+    width: 100px;
+    height: auto;
+}
+
+.footer_information {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+#footer_mid {
+    margin: 10px auto 0 auto;
+}
+
+#footer_bot {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: auto;
+    width: 98%;
+}
+
+/*--- FIN FOOTER ---*/
