@@ -11,8 +11,11 @@ ENV MYSQL_DATABASE=burger
 # Enable mod rewrite (optional)
 RUN a2enmod rewrite
 
+# Create application directory
+RUN mkdir /app
+
 # Set working directory
-WORKDIR /config
+WORKDIR /app/data
 
 # Set Apache document root
 ENV APACHE_DOCUMENT_ROOT=/app/public
@@ -25,14 +28,11 @@ EXPOSE 80
 # Container start command
 CMD ["apache2-foreground"]
 
-# Create application directory
-RUN mkdir /app
+# Add public files to application directory
+COPY public /app/public
 
 # Add source code files to application directory
 COPY src /app/src
-
-# Add public files to application directory
-COPY public /app/public
 
 # Ensure file ownership for application files
 RUN chown -R www-data:www-data /app
