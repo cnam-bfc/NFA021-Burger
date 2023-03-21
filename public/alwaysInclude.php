@@ -9,14 +9,7 @@ $src_folder = __DIR__ . '/../src/';
 set_include_path($old_include_path . PATH_SEPARATOR . $src_folder);
 
 // Définition du dossier de travail
-// Si nous nous trouvons dans un conteneur Docker
-if (file_exists('/proc/self/cgroup') && strpos(file_get_contents('/proc/self/cgroup'), 'docker') !== false) {
-    // On définit le dossier de travail à celui défini dans le conteneur (WORKDIR)
-    $workdir = getenv('PWD');
-} else {
-    // Sinon on définit le dossier de travail à celui du projet
-    $workdir = __DIR__ . '/../data/';
-}
+$workdir = __DIR__ . '/../data/';
 
 // On définit le dossier de travail où se trouverons les fichiers de données
 if ($workdir !== false) {
