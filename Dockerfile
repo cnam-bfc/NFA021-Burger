@@ -25,6 +25,9 @@ CMD ["apache2-foreground"]
 # Create application directory
 RUN mkdir /app
 
+# Add data application directory
+RUN mkdir /app/data
+
 # Add public files to application directory
 COPY public /app/public
 
