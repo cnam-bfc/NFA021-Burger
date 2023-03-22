@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Docker Image CI CD
 
 on:
   push:
@@ -49,3 +49,9 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+      -
+        name: Deploy
+        if: github.event_name != 'pull_request'
+        uses: joelwmale/webhook-action@master
+        with:
+          url: ${{ secrets.DEPLOY_WEBHOOK_URL }}
