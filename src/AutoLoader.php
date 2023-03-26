@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Class AutoLoader
  * 
@@ -15,6 +16,11 @@ class AutoLoader
     {
         // Cette fonction sera appelée chaque fois qu'une classe sera instanciée et que PHP ne la trouvera pas dans le code actuel.
         spl_autoload_register(array(__CLASS__, 'autoload'));
+
+        // Chargement des fichiers de base
+        require_once SRC_FOLDER . 'Configuration.php'; // Gestion de la configuration
+        require_once SRC_FOLDER . 'Router.php'; // Gestion des routes
+        require_once SRC_FOLDER . 'Database.php'; // Gestion de la base de données
     }
 
     /**

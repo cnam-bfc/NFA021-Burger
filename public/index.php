@@ -36,9 +36,7 @@ define("JS", ASSETS . "js/"); // Dossier des scripts JavaScript
 require_once 'AutoLoader.php';
 AutoLoader::start();
 
-// On initialise le routeur (permet de faire le lien entre les routes et les contrôleurs)
-require_once 'Router.php';
-
+// Gestion router
 if (!isset($_GET["root"])) {
     $route = "accueil";
 } else {
