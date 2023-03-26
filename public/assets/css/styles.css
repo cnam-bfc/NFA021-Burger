@@ -118,23 +118,34 @@ section {
 
 /*--- FIN RESET ---*/
 
-/*--- CLASSES GENERIQUES ---*/
+/*--- WRAPPER GENERIQUES ---*/
 
-.flex_rox {
+.wrapper_colonne {
+    display: flex;
+    flex-direction: column;
+}
+
+.wrapper_ligne {
     display: flex;
     flex-direction: row;
 }
 
 /*--- FIN CLASSES GENERIQUES ---*/
 
-/*--- HEADER ---*/
+/*--- HEADER - NAVIGATION ---*/
+
+header {
+    font-family: 'Roboto', sans-serif;
+}
 
 .header_client {
-    background-color: #FFF2CC;
+    background-color: none;
+    transition: background-color 0.3s ease-out;
 }
 
 .header_client_sticky, .header_client:hover {
-    background-color: #d8d8d8;
+    background-color: #FFF2CC;
+    transition: background-color 0.3s ease-out;
 }
 
 .nav_client {
@@ -171,10 +182,16 @@ header li {
 }
 
 header li a {
+    color: #FF6666;
     padding: 10px 10px;
     text-decoration: none;
     display: flex;
-    background-color: #FF6666;
+    transition: background-color 0.5s ease-out;
+    border-radius: 10px;
+}
+
+.header_nav_background_anim:hover { /* Pour l'effet de changement de couleur */
+    background-color: #ccc;
 }
 
 .header_icone {
@@ -189,31 +206,7 @@ header li a {
     /* Pour l'effet de logo qui déborde du header */
 }
 
-/* DEBUT - pour l'effet de soulignement et désactivé les soulignement des liens */
-.header_nav_underline {
-    text-decoration: none;
-    color: #FF6666;
-    position: relative;
-    background-color: aqua;
-    flex: 1;
-}
-
-.header_nav_underline:hover::before {
-    width: 100%;
-}
-
-.header_nav_underline::before {
-    content: "";
-    position: absolute;
-    bottom: -3px;
-    width: 0;
-    height: 3px;
-    background-color: #f1dc67;
-    transition: width 0.3s ease-in-out;
-}
-/* FIN - pour l'effet de soulignement et désactivé les soulignement des liens */
-
-/*--- FIN HEADER ---*/
+/*--- FIN HEADER - NAVIGATION ---*/
 
 /*--- FOOTER ---*/
 
@@ -258,3 +251,21 @@ footer {
 }
 
 /*--- FIN FOOTER ---*/
+
+/*--- DEBUT ACCUEIL ---*/
+
+#top_recette {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 80%;
+    margin: auto;
+}
+
+#top_recette img {
+    width: 150px;
+    height: auto;
+}
+
+/*--- FIN ACCUEIL ---*/
