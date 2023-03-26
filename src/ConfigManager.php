@@ -6,6 +6,9 @@ class ConfigManager
 
     private function __construct()
     {
+        if (!file_exists(DATA_FOLDER . 'config.json')) {
+            throw new Exception('Le fichier de configuration n\'existe pas, veuillez copier le fichier config.exemple.json et le renommer en config.json dans le dossier data');
+        }
         $this->config = json_decode(file_get_contents(DATA_FOLDER . 'config.json'), true);
     }
 
@@ -52,9 +55,4 @@ class ConfigManager
     /*****************************
      *** FIN - BASE DE DONNEES ***
      ****************************/
-
-    public function getVersion()
-    {
-        return $this->config['version'];
-    }
 }
