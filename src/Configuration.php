@@ -1,5 +1,5 @@
 <?php
-class ConfigManager
+class Configuration
 {
     private static $instance = null;
     private $config = null;
@@ -15,7 +15,7 @@ class ConfigManager
     public static function getInstance()
     {
         if (is_null(self::$instance)) {
-            self::$instance = new ConfigManager();
+            self::$instance = new Configuration();
         }
         return self::$instance;
     }
