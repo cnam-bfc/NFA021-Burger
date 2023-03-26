@@ -1,15 +1,12 @@
-<?php require_once 'alwaysInclude.php'; ?>
-<!DOCTYPE html>
-<html>
+<?php
+require_once '_config.php';
+AutoLoader::start();
 
-<head>
-    <title>My Website</title>
-    <meta charset="utf-8">
-</head>
+if (!isset($_GET["root"])) {
+    $request = "accueil";
+} else {
+    $request = $_GET["root"];
+}
 
-<body>
-    <h1>My Website</h1>
-    <p>Welcome to my website!</p>
-</body>
-
-</html>
+$routeur = new RooterController($request);
+$routeur->renderController();
