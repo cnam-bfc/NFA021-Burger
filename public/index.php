@@ -1,6 +1,5 @@
 <?php
 require_once '_config.php';
-AutoLoader::start();
 
 if (!isset($_GET["root"])) {
     $request = "accueil";
