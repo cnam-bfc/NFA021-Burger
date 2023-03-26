@@ -42,6 +42,11 @@ class AutoLoader
             case file_exists(VIEW . $class . '.php'):
                 require_once VIEW . $class . '.php';
                 break;
+            default:
+                // Si une erreur est survenue, on affiche une page d'erreur
+                header("HTTP/1.0 500 Internal Server Error");
+                echo "Erreur 500 : Classe $class introuvable.";
+                exit;
         }
     }
 }
