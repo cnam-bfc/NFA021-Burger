@@ -18,9 +18,9 @@ class AutoLoader
         spl_autoload_register(array(__CLASS__, 'autoload'));
 
         // Chargement des fichiers de base
-        require_once SRC_FOLDER . 'Configuration.php'; // Gestion de la configuration
-        require_once SRC_FOLDER . 'Router.php'; // Gestion des routes
-        require_once SRC_FOLDER . 'Database.php'; // Gestion de la base de données
+        require_once 'Configuration.php'; // Gestion de la configuration
+        require_once 'Router.php'; // Gestion des routes
+        require_once 'Database.php'; // Gestion de la base de données
     }
 
     /**
