@@ -4,15 +4,8 @@ FROM php:8.2-apache
 # Install PDO MySQL driver (optional)
 RUN docker-php-ext-install pdo_mysql
 
-# Application environment variables
-ENV MYSQL_HOST=localhost
-ENV MYSQL_DATABASE=burger
-
 # Enable mod rewrite (optional)
 RUN a2enmod rewrite
-
-# Set working directory
-WORKDIR /config
 
 # Set Apache document root
 ENV APACHE_DOCUMENT_ROOT=/app/public
@@ -28,11 +21,14 @@ CMD ["apache2-foreground"]
 # Create application directory
 RUN mkdir /app
 
-# Add source code files to application directory
-COPY src /app/src
+# Add data application directory
+RUN mkdir /app/data
 
 # Add public files to application directory
 COPY public /app/public
+
+# Add source code files to application directory
+COPY src /app/src
 
 # Ensure file ownership for application files
 RUN chown -R www-data:www-data /app
