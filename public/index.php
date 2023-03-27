@@ -1,42 +1,46 @@
-<?php require_once 'alwaysInclude.php'; ?>
-<!DOCTYPE html>
-<html>
+<?php
+// Récupération du dossier du code source PHP (../src/)
+define("SRC_FOLDER", __DIR__ . '/../src/');
 
-<head>
-    <title>My Website</title>
-    <meta charset="utf-8">
-</head>
+// Récupération du dossier de données (../data/)
+define("DATA_FOLDER", __DIR__ . '/../data/');
 
-<body>
-    <h1>My Website</h1>
-    <p>Welcome to my website!</p>
-    <p>
-        <?php
-        require_once 'app/personne.php';
+// Ajout du dossier de code source PHP à include_path
+set_include_path(get_include_path() . PATH_SEPARATOR . SRC_FOLDER);
 
-        // Si le fichier 'personne.txt' existe, on a 1 chance sur 2 de le lire sinon on en créer un au hasard
-        if (file_exists('personne.txt')) {
-            $random = rand(0, 1);
-            if ($random === 0) {
-                $personne = unserialize(file_get_contents('personne.txt'));
-            } else {
-                $randomFirstNames = array('John', 'Jane', 'Jack', 'Jill', 'Joe');
-                $randomLastNames = array('Doe', 'Smith', 'Doe', 'Smith', 'Doe');
-                $personne = new Personne($randomLastNames[array_rand($randomLastNames)], $randomFirstNames[array_rand($randomFirstNames)]);
-            }
-        } else {
-            $personne = new Personne('Doe', 'John');
-        }
+// On définit le dossier de travail où se trouverons les fichiers de données
+if (!file_exists(DATA_FOLDER)) {
+    mkdir(DATA_FOLDER, 0777, true);
+}
+chdir(DATA_FOLDER);
 
-        echo $personne->getNom() . ' ' . $personne->getPrenom();
+// On récupère le chemin absolu du navigateur du client vers index.php (exemple si URL = http://localhost/Projet/PHP/Burger/index.php, alors $browserPathToIndex = /Projet/PHP/Burger/index.php)
+$browserPathToIndex = $_SERVER['PHP_SELF'];
 
-        // On sérialise l'objet
-        $serialized = serialize($personne);
+// On récupère le chemin absolu du navigateur du client vers la racine du projet (exemple si URL = http://localhost/Projet/PHP/Burger/index.php, alors $browserUri = /Projet/PHP/Burger/)
+$browserPath = strstr($browserPathToIndex, 'index.php', true);
 
-        // On sauvegarde la sérialisation dans un fichier
-        file_put_contents('personne.txt', $serialized);
-        ?>
-    </p>
-</body>
+// Définition des dossiers importants
+// Accessible côté serveur
+define("CONTROLLER", SRC_FOLDER . "controller/"); // Dossier des contrôleurs
+define("MODEL", SRC_FOLDER . "model/"); // Dossier des modèles
+define("VIEW", SRC_FOLDER . "view/"); // Dossier des vues
 
-</html>
+// Accessible côté client
+define("ASSETS", $browserPath . "assets/"); // Dossier des ressources
+define("CSS", ASSETS . "css/"); // Dossier des feuilles de style
+define("IMG", ASSETS . "img/"); // Dossier des images
+define("JS", ASSETS . "js/"); // Dossier des scripts JavaScript
+
+// On initialise l'autoloader (êvite d'avoir à faire des require_once)
+require_once 'AutoLoader.php';
+AutoLoader::start();
+
+// Gestion router
+if (!isset($_GET["root"])) {
+    $route = "accueil";
+} else {
+    $route = $_GET["root"];
+}
+
+Router::route($route);
