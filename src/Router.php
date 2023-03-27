@@ -9,8 +9,10 @@ class Router
 {
     // Définition des routes (page demandée => contrôleur à charger)
     const ROUTES = [
-        'accueil' => ["controller" => "AccueilController", "method" => "renderView"],
-        'gerant/livraison' => ["controller" => "TestController", "method" => "renderView"]
+        'accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilClient"],
+        'gerant' => ["controller" => "AccueilController", "method" => "renderViewAccueilEmploye"],
+        'gerant/' => ["controller" => "AccueilController", "method" => "renderViewAccueilEmploye"],
+        'gerant/accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilEmploye"]
     ];
 
     /**
