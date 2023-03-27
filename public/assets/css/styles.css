@@ -130,6 +130,10 @@ section {
     flex-direction: row;
 }
 
+p {
+    font-family: 'Roboto', sans-serif;
+}
+
 /*--- FIN CLASSES GENERIQUES ---*/
 
 /*--- HEADER - NAVIGATION ---*/
@@ -261,11 +265,59 @@ footer {
     align-items: center;
     width: 80%;
     margin: auto;
+    font-style: bold;
+    font-size: 1.5em;
 }
 
 #top_recette img {
     width: 150px;
     height: auto;
+}
+
+.top_recette_accueil_div {
+    height: 150px;
+    width: 275px;
+    border-radius: 20px;
+}
+
+#top_recette > div:nth-child(1) {
+    background-color: #FFF2CC;
+    color : #FF6666;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#top_recette > div:nth-child(1) img {
+    position: relative;
+    transform: translateX(-25%);
+}
+
+#top_recette > div:nth-child(2) {
+    background-color: #FF6666;
+    color : #FFF2CC;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#top_recette > div:nth-child(2) img {
+    position: relative;
+    transform: translateY(-25%);
+    align-items: center;
+}
+
+#top_recette > div:nth-child(3) {
+    background-color: #FFD966;
+    color : #FF6666;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#top_recette > div:nth-child(3) img {
+    position: relative;
+    transform: translateX(25%);
 }
 
 /*--- FIN ACCUEIL ---*/
