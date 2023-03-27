@@ -1,0 +1,418 @@
+/*--- INFORMATIONS ---*/
+/*
+Approche : mobile last (pas le temps de procéder à du mobile first)
+*/
+
+
+@charset "utf-8";
+
+/* IMPORTS */
+
+/* CSS Document */
+
+/*--- RESET ---*/
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+    background: transparent;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+    display: block;
+}
+
+/*--- FIN RESET ---*/
+
+/* --- VARIABLES --- */
+:root {
+    --primaire: #FFF2CC;
+    --secondaire: #FF6666;
+    --tertiaire: #363636;
+    --quaternaire: #FFD966;
+}
+
+/* --- FIN VARIABLES --- */
+
+/*--- CLASSES GENERIQUES ---*/
+
+.wrapper_colonne {
+    display: flex;
+    flex-direction: column;
+}
+
+.wrapper_colonne_center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.wrapper_ligne {
+    display: flex;
+    flex-direction: row;
+}
+
+.background_primaire {
+    background-color: var(--primaire);
+}
+
+.background_secondaire {
+    background-color: var(--secondaire);
+}
+
+.background_tertiaire {
+    background-color: var(--tertiaire);
+}
+
+.background_quaternaire {
+    background-color: var(--quaternaire);
+}
+
+.color_primaire {
+    color: var(--primaire);
+}
+
+.color_secondaire {
+    color: var(--secondaire);
+}
+
+.color_tertiaire {
+    color: var(--tertiaire);
+}
+
+.color_quaternaire {
+    color: var(--quaternaire);
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.text-justify {
+    text-align: justify;
+}
+
+/*--- FIN CLASSES GENERIQUES ---*/
+
+/*--- CSS GLOBAL ---*/
+
+html {
+    font-family: 'Roboto', sans-serif;
+}
+
+/*--- FIN CSS GLOBAL ---*/
+
+/*--- HEADER - NAVIGATION ---*/
+
+header {
+    font-family: 'Roboto', sans-serif;
+}
+
+.header_client {
+    background-color: none;
+    transition: background-color 0.3s ease-out;
+}
+
+.header_client_sticky,
+.header_client:hover {
+    background-color: #FFF2CC;
+    transition: background-color 0.3s ease-out;
+}
+
+.nav_client {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 2%;
+}
+
+.nav_client ul:first-child {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.nav_client ul:last-child {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+header ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header li {
+    list-style-type: none;
+    display: inline-block;
+    margin: 0 5px;
+}
+
+header li a {
+    color: #FF6666;
+    padding: 10px 10px;
+    text-decoration: none;
+    display: flex;
+    transition: background-color 0.20s ease-out;
+    border-radius: 10px;
+}
+
+.header_nav_background_anim:hover {
+    /* Pour l'effet de changement de couleur */
+    background-color: #ccc;
+}
+
+.header_icone {
+    color: black;
+}
+
+#header_logo {
+    width: 75px;
+    height: auto;
+    position: relative;
+    transform: translateY(20%);
+    /* Pour l'effet de logo qui déborde du header */
+}
+
+/*--- FIN HEADER - NAVIGATION ---*/
+
+/*--- FOOTER ---*/
+
+footer {
+    padding: 30px 10px 15px 10px;
+    background-color: #363636;
+    color: #FF6666;
+    display: flex;
+    flex-direction: column;
+}
+
+#footer_top {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: stretch;
+    width: 90%;
+    margin: auto;
+}
+
+#footer_top img {
+    width: 100px;
+    height: auto;
+}
+
+.footer_information {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+#footer_mid {
+    margin: 10px auto 0 auto;
+}
+
+#footer_bot {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: auto;
+    width: 98%;
+}
+
+/*--- FIN FOOTER ---*/
+
+/*--- DEBUT ACCUEIL ---*/
+
+#top_recette {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    font-style: bold;
+    font-size: 1.5em;
+}
+
+#wrapper_accueil h2 {
+    font-size: 2em;
+    margin: 20px 0;
+}
+
+#top_recette img {
+    width: 150px;
+    height: auto;
+}
+
+.top_recette_accueil_div {
+    height: 150px;
+    width: 275px;
+    border-radius: 20px;
+}
+
+#top_recette>div:nth-child(1) {
+    background-color: #FFF2CC;
+    color: #FF6666;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#top_recette>div:nth-child(1) img {
+    margin-right: -13%;
+    position: relative;
+    transform: translateX(-25%);
+}
+
+#top_recette>div:nth-child(2) {
+    background-color: #FF6666;
+    color: #FFF2CC;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#top_recette>div:nth-child(2) img {
+    position: relative;
+    transform: translateY(-25%);
+    align-items: center;
+}
+
+#top_recette>div:nth-child(3) {
+    background-color: #FFD966;
+    color: #FF6666;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#top_recette>div:nth-child(3) img {
+    margin-left: -13%;
+    position: relative;
+    transform: translateX(25%);
+
+}
+
+#top_recette p {
+    text-align: center;
+    padding: 0 5px;
+    overflow: hidden;
+    overflow-wrap: break-word;
+}
+
+#accueil_map {
+    width: 250px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+#wrapper_accueil article {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.accueil_margin {
+    margin-bottom: 60px;
+}
+
+/*--- FIN ACCUEIL ---*/

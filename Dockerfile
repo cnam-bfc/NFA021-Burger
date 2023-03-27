@@ -4,10 +4,6 @@ FROM php:8.2-apache
 # Install PDO MySQL driver (optional)
 RUN docker-php-ext-install pdo_mysql
 
-# Application environment variables
-ENV MYSQL_HOST=localhost
-ENV MYSQL_DATABASE=burger
-
 # Enable mod rewrite (optional)
 RUN a2enmod rewrite
 
