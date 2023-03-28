@@ -203,15 +203,29 @@ header {
     font-family: 'Roboto', sans-serif;
 }
 
-.header_client {
+.header_client_transparent {
     background-color: none;
     transition: background-color 0.3s ease-out;
 }
 
-.header_client_sticky,
-.header_client:hover {
+.header_client,
+.header_client_transparent:hover {
     background-color: #FFF2CC;
     transition: background-color 0.3s ease-out;
+}
+
+.header_sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+.header_float {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 1;
 }
 
 .nav_client {
@@ -278,8 +292,8 @@ header li a {
 /*--- FOOTER ---*/
 
 footer {
-    padding: 30px 10px 15px 10px;
     background-color: #363636;
+    padding: 15px 10px 15px 10px;
     color: #FF6666;
     display: flex;
     flex-direction: column;
@@ -290,8 +304,10 @@ footer {
     flex-direction: row;
     justify-content: space-around;
     align-items: stretch;
+    margin-top : 15px;
     width: 90%;
-    margin: auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #footer_top img {
