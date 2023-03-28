@@ -25,5 +25,4 @@
 </div>
 
 <!-- On ajoute la feuille de js associé à la page -->
-<!-- trouver sa place dans le code??? -->
 <script src="<?php echo JS?>AccueilClient.js"></script>
