@@ -2,7 +2,7 @@
 <html lang="fr">
 
 <!-- Head -->
-<?php require_once 'Head.php' ?>
+<?php require_once VIEW .'element' . DIRECTORY_SEPARATOR . 'Head.php' ?>
 
 <body>
     <!-- Header -->
