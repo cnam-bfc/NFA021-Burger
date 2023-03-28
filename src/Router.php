@@ -10,9 +10,7 @@ class Router
     // Définition des routes (page demandée => contrôleur à charger)
     const ROUTES = [
         'accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilClient"],
-        'gerant' => ["controller" => "AccueilController", "method" => "renderViewAccueilEmploye"],
-        'gerant/' => ["controller" => "AccueilController", "method" => "renderViewAccueilEmploye"],
-        'gerant/accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilEmploye"]
+        'employe/accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilEmploye"]
     ];
 
     /**
@@ -24,6 +22,42 @@ class Router
      */
     public static function route($route)
     {
+        // On enlève le dernier slash de la route si il existe
+        if (substr($route, -1) == "/") {
+            $route = substr($route, 0, -1);
+
+            // On redirige vers la route sans le slash
+            Router::redirect($route);
+            return;
+        }
+
+        // Si la route demandée est vide, on charge la page d'accueil appropriée
+        if ($route == "" || $route == "employe") {
+            // Si l'utilisateur est connecté, on le redirige vers la page d'accueil de son profil
+            if (UserSession::isLogged()) {
+                $userSession = UserSession::getUserSession();
+
+                // Si l'utilisateur est un cuisinier, on le redirige vers la page de cuisine
+                if ($userSession->isCuisinier()) {
+                    Router::redirect('cuisinier');
+                    return;
+                }
+                // Si l'utilisateur est un livreur, on le redirige vers la page de livraison
+                elseif ($userSession->isLivreur()) {
+                    Router::redirect('livreur');
+                    return;
+                }
+                // Si l'utilisateur est un employé, on le redirige vers la page d'accueil de l'employé
+                elseif ($userSession->isEmploye()) {
+                    Router::redirect('employe/accueil');
+                    return;
+                }
+            }
+
+            Router::redirect('accueil');
+            return;
+        }
+
         // Si la route n'existe pas, on retourne une erreur 404 au navigateur
         if (!array_key_exists($route, Router::ROUTES)) {
             header("HTTP/1.0 404 Not Found");
@@ -39,5 +73,17 @@ class Router
         $currentController = new $controller();
         // On appelle la méthode du contrôleur
         $currentController->$method();
+    }
+
+    /**
+     * Méthode permettant de rediriger le navigateur vers une autre page
+     * 
+     * @param string $route (route vers laquelle on veut rediriger)
+     * @return void
+     */
+    public static function redirect($route)
+    {
+        header("Location: " . PUBLIC_FOLDER . $route);
+        exit;
     }
 }
