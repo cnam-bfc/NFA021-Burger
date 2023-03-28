@@ -203,15 +203,29 @@ header {
     font-family: 'Roboto', sans-serif;
 }
 
-.header_client {
+.header_client_transparent {
     background-color: none;
     transition: background-color 0.3s ease-out;
 }
 
-.header_client_sticky,
-.header_client:hover {
+.header_client,
+.header_client_transparent:hover {
     background-color: #FFF2CC;
     transition: background-color 0.3s ease-out;
+}
+
+.header_sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+.header_float {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 1;
 }
 
 .nav_client {
