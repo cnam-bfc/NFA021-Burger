@@ -19,8 +19,10 @@ class AutoLoader
 
         // Chargement des fichiers de base
         require_once 'Configuration.php'; // Gestion de la configuration
+        require_once 'Session.php'; // Gestion de la session
         require_once 'Router.php'; // Gestion des routes
         require_once 'Database.php'; // Gestion de la base de données
+        require_once 'UserSession.php'; // Gestion de la session utilisateur
 
         // MVC
         require_once 'controller' . DIRECTORY_SEPARATOR . 'Controller.php'; // Classe mère des contrôleurs

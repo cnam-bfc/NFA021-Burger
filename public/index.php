@@ -27,7 +27,8 @@ define("MODEL", SRC_FOLDER . "model/"); // Dossier des modèles
 define("VIEW", SRC_FOLDER . "view/"); // Dossier des vues
 
 // Accessible côté client
-define("ASSETS", $browserPath . "assets/"); // Dossier des ressources
+define("PUBLIC_FOLDER", $browserPath); // Dossier public
+define("ASSETS", PUBLIC_FOLDER . "assets/"); // Dossier des ressources
 define("CSS", ASSETS . "css/"); // Dossier des feuilles de style
 define("IMG", ASSETS . "img/"); // Dossier des images
 define("JS", ASSETS . "js/"); // Dossier des scripts JavaScript
@@ -36,11 +37,13 @@ define("JS", ASSETS . "js/"); // Dossier des scripts JavaScript
 require_once 'AutoLoader.php';
 AutoLoader::start();
 
-// Gestion router
+// On initialise la session
+Session::start();
+
+// On initialise le routeur
 if (!isset($_GET["root"])) {
-    $route = "accueil";
+    $route = "";
 } else {
     $route = $_GET["root"];
 }
-
 Router::route($route);
