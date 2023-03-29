@@ -191,17 +191,13 @@ section {
 
 /*--- CSS GLOBAL ---*/
 
-html {
+body {
     font-family: 'Roboto', sans-serif;
 }
 
 /*--- FIN CSS GLOBAL ---*/
 
 /*--- HEADER - NAVIGATION ---*/
-
-header {
-    font-family: 'Roboto', sans-serif;
-}
 
 .header_client_transparent {
     background-color: none;
@@ -334,101 +330,3 @@ footer {
 }
 
 /*--- FIN FOOTER ---*/
-
-/*--- DEBUT ACCUEIL ---*/
-
-#top_recette {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-    font-style: bold;
-    font-size: 1.5em;
-}
-
-#wrapper_accueil h2 {
-    font-size: 2em;
-    margin: 20px 0;
-}
-
-#top_recette img {
-    width: 150px;
-    height: auto;
-}
-
-.top_recette_accueil_div {
-    height: 150px;
-    width: 275px;
-    border-radius: 20px;
-}
-
-#top_recette>div:nth-child(1) {
-    background-color: #FFF2CC;
-    color: #FF6666;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-#top_recette>div:nth-child(1) img {
-    margin-right: -13%;
-    position: relative;
-    transform: translateX(-25%);
-}
-
-#top_recette>div:nth-child(2) {
-    background-color: #FF6666;
-    color: #FFF2CC;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-#top_recette>div:nth-child(2) img {
-    position: relative;
-    transform: translateY(-25%);
-    align-items: center;
-}
-
-#top_recette>div:nth-child(3) {
-    background-color: #FFD966;
-    color: #FF6666;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-#top_recette>div:nth-child(3) img {
-    margin-left: -13%;
-    position: relative;
-    transform: translateX(25%);
-
-}
-
-#top_recette p {
-    text-align: center;
-    padding: 0 5px;
-    overflow: hidden;
-    overflow-wrap: break-word;
-}
-
-#accueil_map {
-    width: 250px;
-    height: auto;
-    margin-bottom: 20px;
-}
-
-#wrapper_accueil article {
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.accueil_margin {
-    margin-bottom: 60px;
-}
-
-/*--- FIN ACCUEIL ---*/
