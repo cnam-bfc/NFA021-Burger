@@ -18,6 +18,7 @@ class AutoLoader
         spl_autoload_register(array(__CLASS__, 'autoload'));
 
         // Chargement des fichiers de base
+        require_once 'App.php'; // Classe principale du projet
         require_once 'Configuration.php'; // Gestion de la configuration
         require_once 'Session.php'; // Gestion de la session
         require_once 'Router.php'; // Gestion des routes
