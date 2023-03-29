@@ -1,3 +1,9 @@
+<!-- On ajoute la feuille de style associé à la page -->
+<link rel="stylesheet" href="<?php echo CSS ?>AccueilClient.css">
+
+<!-- On ajoute la feuille de js associé à la page -->
+<script src="<?php echo JS?>AccueilClient.js"></script>
+
 <div class="wrapper_colonne" id="wrapper_accueil">
     <img src=<?php echo $backgroundImage ?> class="accueil_margin">
     <div class="accueil_margin" id="top_recette">
@@ -23,6 +29,3 @@
         <p class="text-justify"><?php echo $news["message"]; ?></p>
     </article>
 </div>
-
-<!-- On ajoute la feuille de js associé à la page -->
-<script src="<?php echo JS?>AccueilClient.js"></script>
