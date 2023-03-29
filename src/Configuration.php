@@ -20,6 +20,11 @@ class Configuration
         return self::$instance;
     }
 
+    public static function isInstalled()
+    {
+        return file_exists(DATA_FOLDER . 'config.json');
+    }
+
     /*******************************
      *** DEBUT - BASE DE DONNEES ***
      ******************************/
