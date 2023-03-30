@@ -10,7 +10,8 @@ class Router
     // Définition des routes (page demandée => contrôleur à charger)
     const ROUTES = [
         'accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilClient"],
-        'employe/accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilEmploye"]
+        'employe/accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilEmploye"],
+        'gerant/statistiques' => ["controller" => "StatistiquesController", "method" => "renderViewStatistiques"]
     ];
 
     /**
