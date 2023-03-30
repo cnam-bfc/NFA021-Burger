@@ -1,0 +1,10 @@
+#boxs {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+}
+
+#boxs>* {
+    flex: 1;
+    margin: 10px;
+}
