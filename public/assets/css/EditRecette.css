@@ -1,10 +1,7 @@
 #boxs {
-    display: flex;
-    width: 100%;
-    align-items: stretch;
+    gap: 25px;
 }
 
 #boxs>* {
     flex: 1;
-    margin: 10px;
 }

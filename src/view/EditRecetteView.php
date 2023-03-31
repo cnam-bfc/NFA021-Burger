@@ -1,11 +1,14 @@
-<!-- Ajout du css associé à la page -->
-<link rel="stylesheet" href="<?= CSS ?>EditRecette.css">
+<!-- On ajoute la feuille de style associé à la page -->
+<link rel="stylesheet" href="<?php echo CSS ?>EditRecette.css">
 
-<div class="wrapper">
-    <h1 class="titre"><?= $titre ?></h1>
+<!-- Wrapper (contenu de la page) -->
+<div class="padding_default">
+    <div class="wrapper main_axe_space_around">
+        <h1 class="titre"><?= $titre ?></h1>
+    </div>
 
     <!-- Ligne contenant les informations générales et la composition de la recette -->
-    <div id="boxs">
+    <div id="boxs" class="wrapper axe_ligne wrap padding_bottom_top_large">
         <!-- Box informations générales -->
         <div class="box" id="informations_generales">
             <h2 class="box_titre">Informations générales</h2>
@@ -18,7 +21,7 @@
                 <!-- Champ pour la description de la recette -->
                 <div class="form-input">
                     <label for="description_recette">Description</label>
-                    <textarea id="description_recette" name="description_recette" placeholder="Description de la recette" required rows=5 cols=50 minlength=1 maxlength=250></textarea>
+                    <textarea id="description_recette" name="description_recette" placeholder="Description de la recette" required rows=5 minlength=1 maxlength=250></textarea>
                 </div>
                 <!-- Champ pour le prix de la recette -->
                 <div class="form-input">
@@ -42,7 +45,7 @@
         </div>
     </div>
 
-    <div class="center_items_horizontal">
+    <div class="wrapper main_axe_space_around">
         <button id="enregistrer" class="bouton bouton_primaire">Enregistrer</button>
     </div>
 </div>

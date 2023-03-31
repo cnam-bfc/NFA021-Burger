@@ -40,7 +40,6 @@
 /*************************************************************************************
 ********************************* STYLE PAR DÉFAUT ***********************************
 **************************************************************************************/
-
 body {
     font-family: 'Roboto', sans-serif;
 }
@@ -50,7 +49,7 @@ body {
 **************************************************************************************/
 
 /************************************ WRAPPERS ***************************************/
-.wrapper{
+.wrapper {
     display: flex;
 }
 
@@ -98,8 +97,11 @@ body {
     align-items: flex-end;
 }
 
-/******************************** MARGIN - PADDING ***********************************/
+.wrap {
+    flex-wrap: wrap;
+}
 
+/******************************** MARGIN - PADDING ***********************************/
 .margin_extreme_large {
     margin: var(--espacement_extreme_large);
 }
@@ -186,8 +188,24 @@ body {
 
 .padding_default {
     padding: 0 var(--espacement_extreme_large);
-    padding-top : var(--espacement_petit);
-    padding-bottom : var(--espacement_moyen);
+    padding-top: var(--espacement_large);
+    padding-bottom: var(--espacement_large);
+}
+
+@media screen and (max-width: 740px) {
+    .padding_default {
+        padding: 0 var(--espacement_large);
+        padding-top: var(--espacement_large);
+        padding-bottom: var(--espacement_large);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .padding_default {
+        padding: 0 var(--espacement_moyen);
+        padding-top: var(--espacement_moyen);
+        padding-bottom: var(--espacement_moyen);
+    }
 }
 
 /******************************** FONTS / COULEURS ***********************************/
@@ -269,15 +287,15 @@ body {
     background-color: var(--senaire);
     border-radius: 10px;
     padding: 30px 20px;
-    margin: 0 auto 20px auto;
     width: 500px;
 }
 
-@media screen and (max-width: 600px) {
-    .titre {
-        width: auto;
-        margin: 30px 30px;
-    }
+.titre_margin_top {
+    margin-top: var(--espacement_large);
+}
+
+.titre_margin_bottom {
+    margin-bottom: var(--espacement_large);
 }
 
 /********************************* TITRE "BARRE" *************************************/
@@ -286,7 +304,6 @@ body {
 /*************************************************************************************
 ************************************ FORMULAIRE **************************************
 **************************************************************************************/
-
 .form-input {
     display: flex;
     flex-direction: column;
@@ -341,9 +358,8 @@ body {
 **************************************************************************************/
 
 /******************************* BOUTON VALIDATION ***********************************/
-
 button.bouton {
-    background-color: #E6E6E6;
+    background-color: #e6e6e6;
     color: black;
     border: none;
     border-radius: 10px;
@@ -397,7 +413,6 @@ button.bouton:hover {
     background-color: #ccc;
 }
 
-
 /*************************************************************************************
 **************************************** BOX *****************************************
 **************************************************************************************/
@@ -405,14 +420,13 @@ button.bouton:hover {
     /* background-color: var(--primaire); */
     background-color: #f5f5f5;
     border-radius: 5px;
-    margin: 10px;
 }
 
 .box_titre {
     font-weight: bold;
     font-size: 1.25em;
     text-align: center;
-    /* 
+    /*
     color: var(--primaire);
     background-color: var(--tertiaire);
     */
@@ -424,4 +438,27 @@ button.bouton:hover {
 .box_contenu {
     text-align: center;
     padding: 20px;
+}
+
+/*************************************************************************************
+************************************** TABLEAU ***************************************
+**************************************************************************************/
+table.tableau {
+    width: 100%;
+}
+
+table.tableau tr {
+    background-color: #f5f5f5;
+    color: black;
+    border-radius: 5px;
+}
+
+table.tableau>thead {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+table.tableau>tfoot {
+    font-weight: bold;
+    margin-top: 10px;
 }
