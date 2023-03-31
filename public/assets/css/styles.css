@@ -562,6 +562,10 @@ table.tableau>thead {
     margin-bottom: 10px;
 }
 
+.box_contenu {
+    text-align: center;
+    padding: 20px;
+}
 table.tableau>tfoot {
     font-weight: bold;
     margin-top: 10px;
