@@ -1,4 +1,4 @@
-<header class="header_client">
+<header class="header_client header_sticky">
     <nav class="nav_client">
         <ul>
             <li><a href=""><i class="fa-solid fa-bars fa-2x header_icone"></i></a></li>

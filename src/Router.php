@@ -12,10 +12,11 @@ class Router
         'install' => ["controller" => "InstallController", "method" => "renderView"],
         'accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilClient"],
         'employe/accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilEmploye"],
+        'gerant/statistiques' => ["controller" => "StatistiquesController", "method" => "renderViewStatistiques"],
         'gerant/recettes' => ["controller" => "RecetteController", "method" => "renderViewRecettes"],
         'gerant/recettes/ajouter' => ["controller" => "EditRecetteController", "method" => "renderViewAjouterRecette"],
         'gerant/recettes/modifier' => ["controller" => "EditRecetteController", "method" => "renderViewModifierRecette"],
-        'gerant/recettes/supprimer' => ["controller" => "EditRecetteController", "method" => "renderViewSupprimerRecette"], 
+        'gerant/recettes/supprimer' => ["controller" => "EditRecetteController", "method" => "renderViewSupprimerRecette"],
     ];
 
     /**
