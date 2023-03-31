@@ -49,7 +49,7 @@ body {
 **************************************************************************************/
 
 /************************************ WRAPPERS ***************************************/
-.wrapper{
+.wrapper {
     display: flex;
 }
 
@@ -188,8 +188,8 @@ body {
 
 .padding_default {
     padding: 0 var(--espacement_extreme_large);
-    padding-top : var(--espacement_petit);
-    padding-bottom : var(--espacement_moyen);
+    padding-top: var(--espacement_petit);
+    padding-bottom: var(--espacement_moyen);
 }
 
 /******************************** FONTS / COULEURS ***********************************/
@@ -430,12 +430,12 @@ table.tableau tr {
     border-radius: 5px;
 }
 
-table.tableau > thead {
+table.tableau>thead {
     font-weight: bold;
     margin-bottom: 10px;
 }
 
-table.tableau > tfoot {
+table.tableau>tfoot {
     font-weight: bold;
     margin-top: 10px;
 }
