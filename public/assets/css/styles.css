@@ -188,8 +188,8 @@ body {
 
 .padding_default {
     padding: 0 var(--espacement_extreme_large);
-    padding-top: var(--espacement_petit);
-    padding-bottom: var(--espacement_moyen);
+    padding-top: var(--espacement_large);
+    padding-bottom: var(--espacement_large);
 }
 
 /******************************** FONTS / COULEURS ***********************************/
@@ -271,8 +271,15 @@ body {
     background-color: var(--senaire);
     border-radius: 10px;
     padding: 30px 20px;
-    margin-bottom: 20px;
     width: 500px;
+}
+
+.titre_margin_top {
+    margin-top: var(--espacement_large);
+}
+
+.titre_margin_bottom {
+    margin-bottom: var(--espacement_large);
 }
 
 /********************************* TITRE "BARRE" *************************************/
