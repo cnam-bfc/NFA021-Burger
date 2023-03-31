@@ -1,11 +1,8 @@
-<!-- Ajout du css associé à la page -->
-<link rel="stylesheet" href="<?= CSS ?>EditRecette.css">
-
-<div class="wrapper">
+<div class="wrapper_colonne padding_employe">
     <h1 class="titre"><?= $titre ?></h1>
 
     <!-- Ligne contenant les informations générales et la composition de la recette -->
-    <div id="boxs">
+    <div class="wrapper_ligne">
         <!-- Box informations générales -->
         <div class="box" id="informations_generales">
             <h2 class="box_titre">Informations générales</h2>
