@@ -192,6 +192,22 @@ body {
     padding-bottom: var(--espacement_large);
 }
 
+@media screen and (max-width: 740px) {
+    .padding_default {
+        padding: 0 var(--espacement_large);
+        padding-top: var(--espacement_large);
+        padding-bottom: var(--espacement_large);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .padding_default {
+        padding: 0 var(--espacement_moyen);
+        padding-top: var(--espacement_moyen);
+        padding-bottom: var(--espacement_moyen);
+    }
+}
+
 /******************************** FONTS / COULEURS ***********************************/
 .roboto {
     font-family: 'Roboto', sans-serif;
