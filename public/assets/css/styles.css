@@ -136,10 +136,6 @@ section {
 
 /*--- CLASSES GENERIQUES ---*/
 
-.wrapper {
-    padding: 30px 100px;
-}
-
 .wrapper_colonne {
     display: flex;
     flex-direction: column;
@@ -184,6 +180,10 @@ section {
     justify-content: space-around;
     align-items: center;
     margin: 10px;
+}
+
+.wrap {
+    flex-wrap: wrap;
 }
 
 .background_primaire {
@@ -382,15 +382,8 @@ footer {
     background-color: #e6e6e6;
     border-radius: 10px;
     padding: 30px 20px;
-    margin: 0 auto 20px auto;
+    margin-bottom: 20px;
     width: 500px;
-}
-
-@media screen and (max-width: 600px) {
-    .titre {
-        width: auto;
-        margin: 30px 30px;
-    }
 }
 
 /*--- FIN CONTENU AVEC TITRE ---*/
@@ -400,7 +393,6 @@ footer {
     /* background-color: var(--primaire); */
     background-color: #f5f5f5;
     border-radius: 5px;
-    margin: 10px;
 }
 
 .box_titre {
