@@ -1,0 +1,7 @@
+#boxs {
+    gap: 25px;
+}
+
+#boxs>* {
+    flex: 1;
+}
