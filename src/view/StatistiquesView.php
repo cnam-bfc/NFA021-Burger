@@ -16,7 +16,7 @@
         </div>
         <div id="selection_graphe">
             <div class="box_graphe">
-                <p class="graphe_categorie bold">Ventes</p>
+                <p class="graphe_categorie bold"><i class="fa-solid fa-arrow-turn-down-right"></i>Ventes</p>
                 <p class="graphe_choix"><a href="#">Burger</a><p>
                 <p class="graphe_choix"><a href="#">Ingedient</a></p>
             </div>
@@ -48,16 +48,15 @@
             <a>Supprimer</a> -->
         </div>
     </section>
-    <section class="wrapper axe_colonne second_axe_center width_100" id="contenu">
+    <section class="wrapper axe_colonne second_axe_center width_100 main_axe_space_between" id="contenu">
         <div class="titre margin_bottom_top_large">
             <h1>Statistiques</h1>
-            <i class="fa-solid fa-arrow-turn-down-right"></i>
         </div>
 
         <div>Le graphe</div>
 
         <div class="center_items_horizontal">
-            <button class="bouton bouton_primaire">Exporter</button>
+            <button class="bouton bouton_primaire margin_bottom_top_large">Exporter</button>
         </div>
     </section>
 </div>

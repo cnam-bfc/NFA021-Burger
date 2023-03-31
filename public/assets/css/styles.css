@@ -216,18 +216,6 @@ body {
     }
 }
 
-.margin_auto {
-    margin: auto;
-}
-
-.margin_left_right_auto {
-    margin: 0 auto;
-}
-
-.margin_bottom_top_auto {
-    margin: auto 0;
-}
-
 /******************************** WIDTH - HEIGHT ***********************************/
 
 .width_100 {
@@ -547,10 +535,6 @@ table.tableau>thead {
     margin-bottom: 10px;
 }
 
-.box_contenu {
-    text-align: center;
-    padding: 20px;
-}
 table.tableau>tfoot {
     font-weight: bold;
     margin-top: 10px;
