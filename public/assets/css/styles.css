@@ -316,12 +316,21 @@ body {
     text-align: left;
 }
 
+/* Champs de saisie */
 .form-input>input,
-.form-input>textarea {
+.form-input>textarea,
+input.input,
+textarea.textarea {
     display: block;
     padding: 10px;
     border: 2px solid #ccc;
     border-radius: 5px;
+}
+
+.form-input>textarea,
+textarea.textarea {
+    resize: vertical;
+    min-height: 100px;
 }
 
 .form-input>input:invalid,
@@ -337,8 +346,27 @@ body {
 */
 
 .form-input>input:focus,
-.form-input>textarea:focus {
+.form-input>textarea:focus,
+input.input:focus,
+textarea.textarea:focus {
     outline: none;
+}
+
+/* Bouton radio */
+.form-input>input[type="radio"],
+.form-input>input[type="checkbox"],
+input[type="radio"].input,
+input[type="checkbox"].input {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.form-input>input[type="radio"]:disabled,
+.form-input>input[type="checkbox"]:disabled,
+input[type="radio"].input:disabled,
+input[type="checkbox"].input:disabled {
+    cursor: not-allowed;
 }
 
 .form-input+.form-input {
@@ -377,7 +405,7 @@ button.bouton.bouton_primaire {
 */
 
 button.bouton:hover {
-    background-color: #999999;
+    background-color: #ccc;
 }
 
 /*************************************************************************************
@@ -445,20 +473,37 @@ button.bouton:hover {
 **************************************************************************************/
 table.tableau {
     width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
 }
 
 table.tableau tr {
-    background-color: #f5f5f5;
+    background-color: #e6e6e6;
     color: black;
-    border-radius: 5px;
+    border-radius: 20px;
+}
+
+table.tableau td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+table.tableau td+td {
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 table.tableau>thead {
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 50px;
 }
 
 table.tableau>tfoot {
     font-weight: bold;
-    margin-top: 10px;
+    margin-top: 50px;
+    padding-top: 20px;
+}
+
+table.tableau button.bouton {
+    padding: 10px;
 }
