@@ -20,6 +20,7 @@ class AutoLoader
         // Chargement des fichiers de base
         require_once 'App.php'; // Classe principale du projet
         require_once 'Configuration.php'; // Gestion de la configuration
+        require_once 'Form.php'; // Gestion des formulaires
         require_once 'Session.php'; // Gestion de la session
         require_once 'Router.php'; // Gestion des routes
         require_once 'Database.php'; // Gestion de la base de données
