@@ -204,7 +204,7 @@ body {
     .padding_default {
         padding: 0 var(--espacement_moyen);
         padding-top: var(--espacement_moyen);
-        padding-bottom: var(--espacement_moyen);
+        padding-bottom: var(--espacement_large);
     }
 }
 
