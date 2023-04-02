@@ -404,8 +404,14 @@ button.bouton.bouton_primaire {
 }
 */
 
+button.bouton:disabled {
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+}
+
 button.bouton:hover {
-    background-color: #ccc;
+    /* Rendre la couleur plus foncée */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
 }
 
 /*************************************************************************************
