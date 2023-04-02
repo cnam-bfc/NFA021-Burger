@@ -57,13 +57,14 @@ if (!isset($_GET["root"])) {
 
 // Si l'application n'est pas installée, on redirige vers l'installation
 if (!Configuration::isInstalled()) {
-    if ($route != "install") {
+    // Si la route ne commence pas par 'install', on redirige vers la page d'installation
+    if (stripos($route, "install") !== 0) {
         Router::redirect("install");
         return;
     }
 }
 // Si l'application est déjà installé et qu'un utilisateur tente d'accéder à la page d'installation, on le redirige vers la page d'accueil
-elseif ($route == "install") {
+elseif (Configuration::isInstalled() && stripos($route, "install") === 0) {
     Router::redirect("");
     return;
 }

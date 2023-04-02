@@ -1,3 +1,6 @@
+<!-- On ajoute la feuille de js associé à la page -->
+<script type="text/javascript" src="<?php echo JS?>Install.js"></script>
+
 <!-- Wrapper (contenu de la page) -->
 <div class="padding_default">
     <div class="wrapper main_axe_space_around">
@@ -42,6 +45,6 @@
     </div>
 
     <div class="wrapper main_axe_space_around">
-        <button id="install" class="bouton bouton_primaire">Installer</button>
+        <button id="install" class="bouton bouton_primaire" disabled>Installer</button>
     </div>
 </div>
