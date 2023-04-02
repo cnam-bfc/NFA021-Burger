@@ -1,2 +1,2 @@
 <?php
-echo $templateContent;
+echo json_encode($json);

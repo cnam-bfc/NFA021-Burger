@@ -1,4 +1,10 @@
-/*--- DEBUT ACCUEIL ---*/
+/*Spécialement pour le header dans accueil pour faire un effet jolie*/
+.header_sticky_accueil {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+}
 
 #top_recette {
     display: flex;
@@ -93,5 +99,3 @@
 .accueil_margin {
     margin-bottom: 60px;
 }
-
-/*--- FIN ACCUEIL ---*/

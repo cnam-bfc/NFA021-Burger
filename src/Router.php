@@ -9,8 +9,28 @@ class Router
 {
     // Définition des routes (page demandée => contrôleur à charger)
     const ROUTES = [
+        // Installation
+        'install' => ["controller" => "InstallController", "method" => "renderView"],
+        'install/test_bdd' => ["controller" => "InstallController", "method" => "testConnectionBdd"],
+        'install/install' => ["controller" => "InstallController", "method" => "install"],
+
+        // PARTIE CLIENT
+        // Accueil client
         'accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilClient"],
-        'employe/accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilEmploye"]
+
+        // PARTIE EMPLOYÉ
+        // Accueil employé
+        'employe/accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilEmploye"],
+
+        // PARTIE GÉRANT
+        // Statistiques
+        'gerant/statistiques' => ["controller" => "StatistiquesController", "method" => "renderViewStatistiques"],
+
+        // Recettes
+        'gerant/recettes' => ["controller" => "RecetteController", "method" => "renderViewRecettes"],
+        'gerant/recettes/ajouter' => ["controller" => "EditRecetteController", "method" => "renderViewAjouterRecette"],
+        'gerant/recettes/modifier' => ["controller" => "EditRecetteController", "method" => "renderViewModifierRecette"],
+        'gerant/recettes/supprimer' => ["controller" => "EditRecetteController", "method" => "renderViewSupprimerRecette"],
     ];
 
     /**
@@ -22,15 +42,6 @@ class Router
      */
     public static function route($route)
     {
-        // On enlève le dernier slash de la route si il existe
-        if (substr($route, -1) == "/") {
-            $route = substr($route, 0, -1);
-
-            // On redirige vers la route sans le slash
-            Router::redirect($route);
-            return;
-        }
-
         // Si la route demandée est vide, on charge la page d'accueil appropriée
         if ($route == "" || $route == "employe") {
             // Si l'utilisateur est connecté, on le redirige vers la page d'accueil de son profil
@@ -60,8 +71,7 @@ class Router
 
         // Si la route n'existe pas, on retourne une erreur 404 au navigateur
         if (!array_key_exists($route, Router::ROUTES)) {
-            header("HTTP/1.0 404 Not Found");
-            echo "Erreur 404 : la page demandée n'existe pas.";
+            ErrorController::error(404, "Page introuvable");
             exit;
         }
 
