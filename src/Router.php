@@ -9,10 +9,23 @@ class Router
 {
     // Définition des routes (page demandée => contrôleur à charger)
     const ROUTES = [
+        // Installation
         'install' => ["controller" => "InstallController", "method" => "renderView"],
+        'install/test_bdd' => ["controller" => "InstallController", "method" => "testConnectionBdd"],
+
+        // PARTIE CLIENT
+        // Accueil client
         'accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilClient"],
+
+        // PARTIE EMPLOYÉ
+        // Accueil employé
         'employe/accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilEmploye"],
+
+        // PARTIE GÉRANT
+        // Statistiques
         'gerant/statistiques' => ["controller" => "StatistiquesController", "method" => "renderViewStatistiques"],
+
+        // Recettes
         'gerant/recettes' => ["controller" => "RecetteController", "method" => "renderViewRecettes"],
         'gerant/recettes/ajouter' => ["controller" => "EditRecetteController", "method" => "renderViewAjouterRecette"],
         'gerant/recettes/modifier' => ["controller" => "EditRecetteController", "method" => "renderViewModifierRecette"],
