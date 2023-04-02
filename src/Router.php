@@ -12,6 +12,7 @@ class Router
         // Installation
         'install' => ["controller" => "InstallController", "method" => "renderView"],
         'install/test_bdd' => ["controller" => "InstallController", "method" => "testConnectionBdd"],
+        'install/install' => ["controller" => "InstallController", "method" => "install"],
 
         // PARTIE CLIENT
         // Accueil client

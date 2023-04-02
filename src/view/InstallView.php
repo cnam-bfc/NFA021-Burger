@@ -13,8 +13,8 @@
             <div class="box_contenu">
                 <!-- Champ pour l'ip de la base de données -->
                 <div class="form-input">
-                    <label for="ip_bdd">Adresse IP</label>
-                    <input type="text" id="ip_bdd" name="ip_bdd" placeholder="Adresse IP de la base de données" required>
+                    <label for="host_bdd">Adresse IP</label>
+                    <input type="text" id="host_bdd" name="host_bdd" placeholder="Adresse IP de la base de données" required>
                 </div>
                 <!-- Champ pour le port de la base de données -->
                 <div class="form-input">
@@ -23,8 +23,8 @@
                 </div>
                 <!-- Champ pour le nom de la base de données -->
                 <div class="form-input">
-                    <label for="nom_bdd">Nom de la base de données</label>
-                    <input type="text" id="nom_bdd" name="nom_bdd" placeholder="Nom de la base de données" required>
+                    <label for="database_bdd">Nom de la base de données</label>
+                    <input type="text" id="database_bdd" name="database_bdd" placeholder="Nom de la base de données" required>
                 </div>
                 <!-- Champ pour le nom d'utilisateur de la base de données -->
                 <div class="form-input">
@@ -33,8 +33,8 @@
                 </div>
                 <!-- Champ pour le mot de passe de la base de données -->
                 <div class="form-input">
-                    <label for="mdp_bdd">Mot de passe</label>
-                    <input type="password" id="mdp_bdd" name="mdp_bdd" placeholder="Mot de passe de la base de données" required>
+                    <label for="password_bdd">Mot de passe</label>
+                    <input type="password" id="password_bdd" name="password_bdd" placeholder="Mot de passe de la base de données" required>
                 </div>
                 <!-- Bouton pour tester la connexion à la base de données -->
                 <div class="form-action">
