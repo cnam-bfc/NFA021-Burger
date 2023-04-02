@@ -40,9 +40,17 @@
 /*************************************************************************************
 ********************************* STYLE PAR DÉFAUT ***********************************
 **************************************************************************************/
+
+html, body {
+    min-height: 100%;
+}
+
 body {
     font-family: 'Roboto', sans-serif;
+    display: flex;
+    flex-direction: column;
 }
+
 
 /*************************************************************************************
 ******************************** CLASSES GÉNÉRIQUES **********************************
@@ -208,6 +216,54 @@ body {
     }
 }
 
+/******************************** WIDTH - HEIGHT ***********************************/
+
+.width_100 {
+    width: 100%;
+}
+
+.width_50 {
+    width: 50%;
+}
+
+.width_25 {
+    width: 25%;
+}
+
+.height_100 {
+    height: 100%;
+}
+
+.height_50 {
+    height: 50%;
+}
+
+.height_25 {
+    height: 25%;
+}
+
+.width_auto {
+    width: auto;
+}
+
+.height_auto {
+    height: auto;
+}
+
+.margin_auto {
+    margin: auto;
+}
+
+.margin_left_right_auto {
+    margin: 0 auto;
+}
+
+.margin_bottom_top_auto {
+    margin: auto 0;
+}
+
+
+
 /******************************** FONTS / COULEURS ***********************************/
 .roboto {
     font-family: 'Roboto', sans-serif;
@@ -254,7 +310,28 @@ body {
     background-color: var(--quinnaire);
 }
 
+.background_senaire {
+    background-color: var(--senaire);
+}
+
 /*-- Tailles et formes --*/
+
+.font_size_very_large {
+    font-size: var(--taille_titre);
+}
+
+.font_size_large {
+    font-size: var(--taille_sous_titre);
+}
+
+.font_size_moyen {
+    font-size: var(--taille_texte);
+}
+
+.font_size_petit {
+    font-size: var(--taille_texte_petit);
+}
+
 .bold {
     font-weight: bold;
 }
