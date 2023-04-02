@@ -49,8 +49,10 @@ class Database
     public static function testConnectionBdd($ip, $port, $name, $user, $password)
     {
         try {
-            $pdo = new PDO('mysql:host=' . $ip . ';port=' . $port . ';dbname=' . $name . ';charset=utf8', $user, $password);
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            new PDO('mysql:host=' . $ip . ';port=' . $port . ';dbname=' . $name . ';charset=utf8', $user, $password, array(
+                PDO::ATTR_TIMEOUT => 5,
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+            ));
             return true;
         } catch (PDOException $e) {
             return false;
@@ -62,7 +64,9 @@ class Database
     public function connect()
     {
         $config = Configuration::getInstance();
-        $this->pdo = new PDO('mysql:host=' . $config->getBddHost() . ';port=' . $config->getBddPort() . ';dbname=' . $config->getBddName() . ';charset=utf8', $config->getBddUser(), $config->getBddPassword());
-        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->pdo = new PDO('mysql:host=' . $config->getBddHost() . ';port=' . $config->getBddPort() . ';dbname=' . $config->getBddName() . ';charset=utf8', $config->getBddUser(), $config->getBddPassword(), array(
+            PDO::ATTR_TIMEOUT => 5,
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+        ));
     }
 }
