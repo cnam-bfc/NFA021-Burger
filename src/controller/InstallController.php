@@ -72,11 +72,6 @@ class InstallController extends Controller
 
         /*
         if ($success) {
-            // Création de la base de données
-            $success = Database::createDatabase($bdd_host, $bdd_port, $bdd_database, $bdd_user, $bdd_password);
-        }
-
-        if ($success) {
             // Création des tables
             $success = Database::createTables($bdd_host, $bdd_port, $bdd_database, $bdd_user, $bdd_password);
         }
