@@ -1,0 +1,83 @@
+.header_client_transparent {
+    background-color: none;
+    transition: background-color 0.3s ease-out;
+}
+
+.header_client,
+.header_client_transparent:hover {
+    background-color: var(--primaire);
+    transition: background-color 0.3s ease-out;
+}
+
+.header_sticky {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+.header_float {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 1;
+}
+
+.nav_client {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 2%;
+}
+
+.nav_client ul:first-child {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.nav_client ul:last-child {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+header ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header li {
+    list-style-type: none;
+    display: inline-block;
+    margin: 0 5px;
+}
+
+header li a {
+    color: var(--tertiaire);
+    padding: 10px 10px;
+    text-decoration: none;
+    display: flex;
+    transition: background-color 0.20s ease-out;
+    border-radius: 10px;
+}
+
+.header_nav_background_anim:hover {
+    /* Pour l'effet de changement de couleur */
+    background-color: #ccc;
+}
+
+.header_icone {
+    color: black;
+}
+
+#header_logo {
+    width: 75px;
+    height: auto;
+    position: relative;
+    transform: translateY(20%);
+    /* Pour l'effet de logo qui déborde du header */
+}
