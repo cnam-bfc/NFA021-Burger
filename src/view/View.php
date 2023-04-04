@@ -99,9 +99,11 @@ class View
         extract($this->data);
 
         // On génère le contenu de la vue à partir du template
-        ob_start();
-        require_once VIEW . $this->template . '.php';
-        $templateContent = ob_get_clean();
+        if ($this->template !== null) {
+            ob_start();
+            require_once VIEW . $this->template . '.php';
+            $templateContent = ob_get_clean();
+        }
 
         // On génère le template de base avec le contenu de la vue
         require_once VIEW . 'template' . DIRECTORY_SEPARATOR . $this->baseTemplate . 'BaseTemplate.php';

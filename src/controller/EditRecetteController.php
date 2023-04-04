@@ -25,6 +25,12 @@ class EditRecetteController extends Controller
         // Définition des variables utilisées dans la vue
         $view->titre = "Modification d'une recette";
 
+        $view->recetteId = $_GET['id'];
+        $view->recetteNom = "Cheddar Lover";
+        $view->recetteDescription = "Burger au cheddar, bacon, oignons rouges, tomates, salade, sauce cheddar et sauce BBQ";
+        $view->recettePrix = 10.99;
+        $view->recetteImage = IMG . "recette/burger/cheddar_lover.webp";
+
         $view->renderView();
     }
 

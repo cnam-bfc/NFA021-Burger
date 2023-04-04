@@ -1,0 +1,51 @@
+.titre_page {
+    font-size: 30px;
+    text-align: center;
+    border-bottom: 2px solid black;
+    margin-bottom: 30px;
+    width: 30%;
+    display: block;
+    margin: auto;
+    padding-top: 20px
+}
+
+.conteneur {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.titre_fenetre {
+    text-align: center;
+    background-color: #999999;
+    color: #fff;
+    padding: 7px;
+}
+
+.centrer {
+    display: block;
+    margin: auto;
+}
+
+.valider {
+    background-color: #dd5858;
+    color: white;
+    width: 25%;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.valider:hover {
+    background-color: white;
+    color: black;
+}
+
+.courbe {
+    border-radius: 5px;
+}
+
+.bold {
+    font-weight: bold;
+}
