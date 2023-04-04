@@ -41,14 +41,16 @@
 ********************************* STYLE PAR DÉFAUT ***********************************
 **************************************************************************************/
 
-html, body {
-    min-height: 100%;
+html,
+body {
+    height: 100%;
 }
 
 body {
     font-family: 'Roboto', sans-serif;
-    display: flex;
-    flex-direction: column;
+    display : flex;
+    flex-direction : column;
+    justify-content: space-between;
 }
 
 
@@ -57,6 +59,9 @@ body {
 **************************************************************************************/
 
 /************************************ WRAPPERS ***************************************/
+
+/* Lien openclassroom : https://openclassrooms.com/fr/courses/1603881-creez-votre-site-web-avec-html5-et-css3/8061384-faites-votre-mise-en-page-avec-flexbox */
+
 .wrapper {
     display: flex;
 }
@@ -194,6 +199,18 @@ body {
     padding: 0 var(--espacement_petit);
 }
 
+.margin_auto {
+    margin: auto;
+}
+
+.margin_left_right_auto {
+    margin: 0 auto;
+}
+
+.margin_bottom_top_auto {
+    margin: auto 0;
+}
+
 .padding_default {
     padding: 0 var(--espacement_extreme_large);
     padding-top: var(--espacement_large);
@@ -249,20 +266,6 @@ body {
 .height_auto {
     height: auto;
 }
-
-.margin_auto {
-    margin: auto;
-}
-
-.margin_left_right_auto {
-    margin: 0 auto;
-}
-
-.margin_bottom_top_auto {
-    margin: auto 0;
-}
-
-
 
 /******************************** FONTS / COULEURS ***********************************/
 .roboto {
