@@ -2,14 +2,10 @@
 class Configuration
 {
     private static $instance = null;
-    private $config = null;
 
-    private function __construct()
+    public static function isInstalled()
     {
-        if (!file_exists(DATA_FOLDER . 'config.json')) {
-            throw new Exception('Le fichier de configuration n\'existe pas, veuillez copier le fichier config.exemple.json et le renommer en config.json dans le dossier data');
-        }
-        $this->config = json_decode(file_get_contents(DATA_FOLDER . 'config.json'), true);
+        return file_exists(DATA_FOLDER . 'config.json');
     }
 
     public static function getInstance()
@@ -18,6 +14,21 @@ class Configuration
             self::$instance = new Configuration();
         }
         return self::$instance;
+    }
+
+    public static function createInstance()
+    {
+        self::$instance = new Configuration();
+    }
+
+    private $config = null;
+
+    private function __construct()
+    {
+        if (!file_exists(DATA_FOLDER . 'config.json')) {
+            throw new Exception('Le fichier de configuration n\'existe pas, veuillez copier le fichier config.exemple.json et le renommer en config.json dans le dossier data');
+        }
+        $this->config = json_decode(file_get_contents(DATA_FOLDER . 'config.json'), true);
     }
 
     /*******************************

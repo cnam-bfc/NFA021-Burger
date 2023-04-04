@@ -1,0 +1,16 @@
+.box_graphe {
+    margin : 20px 0 20px 10px;
+}
+
+.graphe_choix {
+    margin : 12px 0 12px 30px;
+}
+
+.graphe_choix a {
+    padding: 5px;
+}
+
+.selected {
+    background-color: #df9319;
+    color: #fff;
+}

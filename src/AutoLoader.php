@@ -18,9 +18,13 @@ class AutoLoader
         spl_autoload_register(array(__CLASS__, 'autoload'));
 
         // Chargement des fichiers de base
+        require_once 'App.php'; // Classe principale du projet
         require_once 'Configuration.php'; // Gestion de la configuration
+        require_once 'Form.php'; // Gestion des formulaires
+        require_once 'Session.php'; // Gestion de la session
         require_once 'Router.php'; // Gestion des routes
         require_once 'Database.php'; // Gestion de la base de données
+        require_once 'UserSession.php'; // Gestion de la session utilisateur
 
         // MVC
         require_once 'controller' . DIRECTORY_SEPARATOR . 'Controller.php'; // Classe mère des contrôleurs
@@ -52,8 +56,7 @@ class AutoLoader
                 break;
             default:
                 // Si une erreur est survenue, on affiche une page d'erreur
-                header("HTTP/1.0 500 Internal Server Error");
-                echo "Erreur 500 : Classe $class introuvable.";
+                ErrorController::error(500, "Classe $class introuvable.");
                 exit;
         }
     }

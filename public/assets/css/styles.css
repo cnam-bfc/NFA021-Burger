@@ -1,150 +1,294 @@
-/*--- INFORMATIONS ---*/
-/*
-Approche : mobile last (pas le temps de procéder à du mobile first)
-*/
-
-
 @charset "utf-8";
 
-/* IMPORTS */
+/*************************************************************************************
+************************************ INFORMATIONS ************************************
+**************************************************************************************/
+/* 
+- Approche : mobile last (pas le temps de procéder à du mobile first) 
+- Feuille de style principale pour ce qui va concerner les classes génériques
+- Utilisation de variables pour faciliter la maintenabilité et les modifications du code
+- Utilisation de beaucoup de classes pour la maintenabilité et la lisibilité du code
+*/
 
-/* CSS Document */
-
-/*--- RESET ---*/
-html,
-body,
-div,
-span,
-applet,
-object,
-iframe,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-pre,
-a,
-abbr,
-acronym,
-address,
-big,
-cite,
-code,
-del,
-dfn,
-em,
-img,
-ins,
-kbd,
-q,
-s,
-samp,
-small,
-strike,
-strong,
-sub,
-sup,
-tt,
-var,
-b,
-u,
-i,
-center,
-dl,
-dt,
-dd,
-ol,
-ul,
-li,
-fieldset,
-form,
-label,
-legend,
-table,
-caption,
-tbody,
-tfoot,
-thead,
-tr,
-th,
-td,
-article,
-aside,
-canvas,
-details,
-embed,
-figure,
-figcaption,
-footer,
-header,
-hgroup,
-menu,
-nav,
-output,
-ruby,
-section,
-summary,
-time,
-mark,
-audio,
-video {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    outline: 0;
-    font-size: 100%;
-    font: inherit;
-    vertical-align: baseline;
-    background: transparent;
-}
-
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
-section {
-    display: block;
-}
-
-/*--- FIN RESET ---*/
-
-/* --- VARIABLES --- */
+/*************************************************************************************
+************************************* VARIABLES **************************************
+**************************************************************************************/
 :root {
-    --primaire: #FFF2CC;
-    --secondaire: #FF6666;
-    --tertiaire: #363636;
-    --quaternaire: #FFD966;
+    /* Couleurs */
+    --primaire: #fff2cc;
+    --secondaire: #EB9900;
+    --tertiaire: #EB3B00;
+    --quaternaire: #EB59B3;
+    --quinnaire: #6100F0;
+    --senaire: #e6e6e6;
+
+    /* Tailles */
+    --taille_titre: 1.75em;
+    --taille_sous_titre: 1.5em;
+    --taille_texte: 1em;
+    --taille_texte_petit: 0.75em;
+    --taille_texte_tres_petit: 0.5em;
+
+    /* Espacements */
+    --espacement_extreme_large: 100px;
+    --espacement_very_large: 50px;
+    --espacement_large: 30px;
+    --espacement_moyen: 10px;
+    --espacement_petit: 5px;
 }
 
-/* --- FIN VARIABLES --- */
+/*************************************************************************************
+********************************* STYLE PAR DÉFAUT ***********************************
+**************************************************************************************/
 
-/*--- CLASSES GENERIQUES ---*/
+html,
+body {
+    min-height: 100%;
+}
 
-.wrapper_colonne {
+body {
+    font-family: 'Roboto', sans-serif;
     display: flex;
     flex-direction: column;
 }
 
-.wrapper_colonne_center {
+
+/*************************************************************************************
+******************************** CLASSES GÉNÉRIQUES **********************************
+**************************************************************************************/
+
+/************************************ WRAPPERS ***************************************/
+.wrapper {
     display: flex;
+}
+
+.axe_ligne {
+    flex-direction: row;
+}
+
+.axe_colonne {
     flex-direction: column;
+}
+
+.main_axe_center {
     justify-content: center;
+}
+
+.main_axe_space_between {
+    justify-content: space-between;
+}
+
+.main_axe_space_around {
+    justify-content: space-around;
+}
+
+.main_axe_space_evenly {
+    justify-content: space-evenly;
+}
+
+.main_axe_flex_start {
+    justify-content: flex-start;
+}
+
+.main_axe_flex_end {
+    justify-content: flex-end;
+}
+
+.second_axe_center {
     align-items: center;
 }
 
-.wrapper_ligne {
-    display: flex;
-    flex-direction: row;
+.second_axe_flex_start {
+    align-items: flex-start;
+}
+
+.second_axe_flex_end {
+    align-items: flex-end;
+}
+
+.wrap {
+    flex-wrap: wrap;
+}
+
+/******************************** MARGIN - PADDING ***********************************/
+.margin_extreme_large {
+    margin: var(--espacement_extreme_large);
+}
+
+.margin_very_large {
+    margin: var(--espacement_very_large);
+}
+
+.margin_large {
+    margin: var(--espacement_large);
+}
+
+.margin_moyen {
+    margin: var(--espacement_moyen);
+}
+
+.margin_petit {
+    margin: var(--espacement_petit);
+}
+
+.margin_bottom_top_large {
+    margin: var(--espacement_large) 0;
+}
+
+.margin_bottom_top_moyen {
+    margin: var(--espacement_moyen) 0;
+}
+
+.margin_bottom_top_petit {
+    margin: var(--espacement_petit) 0;
+}
+
+.margin_left_right_extreme_large {
+    margin: 0 var(--espacement_extreme_large);
+}
+
+.margin_left_right_large {
+    margin: 0 var(--espacement_large);
+}
+
+.margin_left_right_moyen {
+    margin: 0 var(--espacement_moyen);
+}
+
+.margin_left_right_petit {
+    margin: 0 var(--espacement_petit);
+}
+
+.padding_large {
+    padding: var(--espacement_large);
+}
+
+.padding_moyen {
+    padding: var(--espacement_moyen);
+}
+
+.padding_petit {
+    padding: var(--espacement_petit);
+}
+
+.padding_bottom_top_large {
+    padding: var(--espacement_large) 0;
+}
+
+.padding_bottom_top_moyen {
+    padding: var(--espacement_moyen) 0;
+}
+
+.padding_bottom_top_petit {
+    padding: var(--espacement_petit) 0;
+}
+
+.padding_left_right_large {
+    padding: 0 var(--espacement_large);
+}
+
+.padding_left_right_moyen {
+    padding: 0 var(--espacement_moyen);
+}
+
+.padding_left_right_petit {
+    padding: 0 var(--espacement_petit);
+}
+
+.padding_default {
+    padding: 0 var(--espacement_extreme_large);
+    padding-top: var(--espacement_large);
+    padding-bottom: var(--espacement_large);
+}
+
+@media screen and (max-width: 740px) {
+    .padding_default {
+        padding: 0 var(--espacement_large);
+        padding-top: var(--espacement_large);
+        padding-bottom: var(--espacement_large);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .padding_default {
+        padding: 0 var(--espacement_moyen);
+        padding-top: var(--espacement_moyen);
+        padding-bottom: var(--espacement_large);
+    }
+}
+
+/******************************** WIDTH - HEIGHT ***********************************/
+
+.width_100 {
+    width: 100%;
+}
+
+.width_50 {
+    width: 50%;
+}
+
+.width_25 {
+    width: 25%;
+}
+
+.height_100 {
+    height: 100%;
+}
+
+.height_50 {
+    height: 50%;
+}
+
+.height_25 {
+    height: 25%;
+}
+
+.width_auto {
+    width: auto;
+}
+
+.height_auto {
+    height: auto;
+}
+
+.margin_auto {
+    margin: auto;
+}
+
+.margin_left_right_auto {
+    margin: 0 auto;
+}
+
+.margin_bottom_top_auto {
+    margin: auto 0;
+}
+
+
+
+/******************************** FONTS / COULEURS ***********************************/
+.roboto {
+    font-family: 'Roboto', sans-serif;
+}
+
+/*-- Couleurs --*/
+.color_primaire {
+    color: var(--primaire);
+}
+
+.color_secondaire {
+    color: var(--secondaire);
+}
+
+.color_tertiaire {
+    color: var(--tertiaire);
+}
+
+.color_quaternaire {
+    color: var(--quaternaire);
+}
+
+.color_quinnaire {
+    color: var(--quinnaire);
 }
 
 .background_primaire {
@@ -163,256 +307,287 @@ section {
     background-color: var(--quaternaire);
 }
 
-.color_primaire {
-    color: var(--primaire);
+.background_quinnaire {
+    background-color: var(--quinnaire);
 }
 
-.color_secondaire {
-    color: var(--secondaire);
+.background_senaire {
+    background-color: var(--senaire);
 }
 
-.color_tertiaire {
-    color: var(--tertiaire);
+/*-- Tailles et formes --*/
+
+.font_size_very_large {
+    font-size: var(--taille_titre);
 }
 
-.color_quaternaire {
-    color: var(--quaternaire);
+.font_size_large {
+    font-size: var(--taille_sous_titre);
+}
+
+.font_size_moyen {
+    font-size: var(--taille_texte);
+}
+
+.font_size_petit {
+    font-size: var(--taille_texte_petit);
 }
 
 .bold {
     font-weight: bold;
 }
 
+.italic {
+    font-style: italic;
+}
+
+.text-center {
+    text-align: center;
+}
+
 .text-justify {
     text-align: justify;
 }
 
-/*--- FIN CLASSES GENERIQUES ---*/
+/*************************************************************************************
+************************************** TITRES ****************************************
+**************************************************************************************/
 
-/*--- CSS GLOBAL ---*/
-
-html {
-    font-family: 'Roboto', sans-serif;
-}
-
-/*--- FIN CSS GLOBAL ---*/
-
-/*--- HEADER - NAVIGATION ---*/
-
-header {
-    font-family: 'Roboto', sans-serif;
-}
-
-.header_client {
-    background-color: none;
-    transition: background-color 0.3s ease-out;
-}
-
-.header_client_sticky,
-.header_client:hover {
-    background-color: #FFF2CC;
-    transition: background-color 0.3s ease-out;
-}
-
-.nav_client {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px 2%;
-}
-
-.nav_client ul:first-child {
-    flex: 1;
-    display: flex;
-    justify-content: flex-start;
-}
-
-.nav_client ul:last-child {
-    flex: 1;
-    display: flex;
-    justify-content: flex-end;
-}
-
-header ul {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-}
-
-header li {
-    list-style-type: none;
-    display: inline-block;
-    margin: 0 5px;
-}
-
-header li a {
-    color: #FF6666;
-    padding: 10px 10px;
-    text-decoration: none;
-    display: flex;
-    transition: background-color 0.20s ease-out;
+/********************************* TITRE "BULLE" *************************************/
+.titre {
+    font-weight: bold;
+    font-size: var(--taille_titre);
+    text-align: center;
+    /*
+    color: var(--quinnaire);
+    background-color: var(--primaire);
+    */
+    background-color: var(--senaire);
     border-radius: 10px;
+    padding: 30px 20px;
+    width: 500px;
 }
 
-.header_nav_background_anim:hover {
-    /* Pour l'effet de changement de couleur */
+.titre_margin_top {
+    margin-top: var(--espacement_large);
+}
+
+.titre_margin_bottom {
+    margin-bottom: var(--espacement_large);
+}
+
+/********************************* TITRE "BARRE" *************************************/
+
+
+/*************************************************************************************
+************************************ FORMULAIRE **************************************
+**************************************************************************************/
+.form-input {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-input>label {
+    display: block;
+    margin-left: 10px;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+/* Champs de saisie */
+.form-input>input,
+.form-input>textarea,
+input.input,
+textarea.textarea {
+    display: block;
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+}
+
+.form-input>textarea,
+textarea.textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-input>input:invalid,
+.form-input>textarea:invalid {
+    border: 2px solid red;
+}
+
+/*
+.form-input>input:valid,
+.form-input>textarea:valid {
+    border: 2px solid green;
+}
+*/
+
+.form-input>input:focus,
+.form-input>textarea:focus,
+input.input:focus,
+textarea.textarea:focus {
+    outline: none;
+}
+
+/* Bouton radio */
+.form-input>input[type="radio"],
+.form-input>input[type="checkbox"],
+input[type="radio"].input,
+input[type="checkbox"].input {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.form-input>input[type="radio"]:disabled,
+.form-input>input[type="checkbox"]:disabled,
+input[type="radio"].input:disabled,
+input[type="checkbox"].input:disabled {
+    cursor: not-allowed;
+}
+
+.form-input+.form-input {
+    margin-top: 15px;
+}
+
+.form-action {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 15px;
+}
+
+/*************************************************************************************
+************************************** BOUTON ****************************************
+**************************************************************************************/
+
+/******************************* BOUTON VALIDATION ***********************************/
+button.bouton {
+    background-color: #e6e6e6;
+    color: black;
+    border: none;
+    border-radius: 10px;
+    padding: 20px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/*
+button.bouton.bouton_primaire {
+    background-color: var(--primaire);
+    color: var(--quinnaire);
+}
+*/
+
+button.bouton:disabled {
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+}
+
+button.bouton:hover {
+    /* Rendre la couleur plus foncée */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
+}
+
+/*************************************************************************************
+************************************** ONGLETS ***************************************
+**************************************************************************************/
+.onglets {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 10px;
+    background-color: #f5f5f5;
+    border-radius: 5px;
+}
+
+.onglet {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 5px;
+    cursor: pointer;
+    transition: background-color 0.20s ease-out;
+}
+
+.onglet:hover {
     background-color: #ccc;
 }
 
-.header_icone {
+.onglet_actif {
+    background-color: #ccc;
+}
+
+/*************************************************************************************
+**************************************** BOX *****************************************
+**************************************************************************************/
+.box {
+    /* background-color: var(--primaire); */
+    background-color: #f5f5f5;
+    border-radius: 5px;
+}
+
+.box_titre {
+    font-weight: bold;
+    font-size: 1.25em;
+    text-align: center;
+    /*
+    color: var(--primaire);
+    background-color: var(--tertiaire);
+    */
+    background-color: #999999;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+.box_contenu {
+    text-align: center;
+    padding: 20px;
+}
+
+/*************************************************************************************
+************************************** TABLEAU ***************************************
+**************************************************************************************/
+table.tableau {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+table.tableau tr {
+    background-color: #e6e6e6;
     color: black;
-}
-
-#header_logo {
-    width: 75px;
-    height: auto;
-    position: relative;
-    transform: translateY(20%);
-    /* Pour l'effet de logo qui déborde du header */
-}
-
-/*--- FIN HEADER - NAVIGATION ---*/
-
-/*--- FOOTER ---*/
-
-footer {
-    padding: 30px 10px 15px 10px;
-    background-color: #363636;
-    color: #FF6666;
-    display: flex;
-    flex-direction: column;
-}
-
-#footer_top {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: stretch;
-    width: 90%;
-    margin: auto;
-}
-
-#footer_top img {
-    width: 100px;
-    height: auto;
-}
-
-.footer_information {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-}
-
-#footer_mid {
-    margin: 10px auto 0 auto;
-}
-
-#footer_bot {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin: auto;
-    width: 98%;
-}
-
-/*--- FIN FOOTER ---*/
-
-/*--- DEBUT ACCUEIL ---*/
-
-#top_recette {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-    font-style: bold;
-    font-size: 1.5em;
-}
-
-#wrapper_accueil h2 {
-    font-size: 2em;
-    margin: 20px 0;
-}
-
-#top_recette img {
-    width: 150px;
-    height: auto;
-}
-
-.top_recette_accueil_div {
-    height: 150px;
-    width: 275px;
     border-radius: 20px;
 }
 
-#top_recette>div:nth-child(1) {
-    background-color: #FFF2CC;
-    color: #FF6666;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-#top_recette>div:nth-child(1) img {
-    margin-right: -13%;
-    position: relative;
-    transform: translateX(-25%);
-}
-
-#top_recette>div:nth-child(2) {
-    background-color: #FF6666;
-    color: #FFF2CC;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-#top_recette>div:nth-child(2) img {
-    position: relative;
-    transform: translateY(-25%);
-    align-items: center;
-}
-
-#top_recette>div:nth-child(3) {
-    background-color: #FFD966;
-    color: #FF6666;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
-
-#top_recette>div:nth-child(3) img {
-    margin-left: -13%;
-    position: relative;
-    transform: translateX(25%);
-
-}
-
-#top_recette p {
+table.tableau td {
     text-align: center;
-    padding: 0 5px;
-    overflow: hidden;
-    overflow-wrap: break-word;
+    vertical-align: middle;
 }
 
-#accueil_map {
-    width: 250px;
-    height: auto;
-    margin-bottom: 20px;
+table.tableau td+td {
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
-#wrapper_accueil article {
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
+table.tableau>thead {
+    font-weight: bold;
+    margin-bottom: 50px;
 }
 
-.accueil_margin {
-    margin-bottom: 60px;
+table.tableau>tfoot {
+    font-weight: bold;
+    margin-top: 50px;
+    padding-top: 20px;
 }
 
-/*--- FIN ACCUEIL ---*/
+table.tableau button.bouton {
+    padding: 10px;
+}

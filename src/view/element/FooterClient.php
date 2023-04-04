@@ -13,6 +13,6 @@
     <p id="footer_mid">Adresse</p>
     <div id="footer_bot">
         <p>Mentions légales</p>
-        <p>Version 0.0.0</p>
+        <p>Version <?php echo App::VERSION; ?></p>
     </div>
 </footer>
