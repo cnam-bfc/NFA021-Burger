@@ -43,7 +43,7 @@
 
 html,
 body {
-    height: 100%;
+    min-height: 100vh;
 }
 
 body {
@@ -112,6 +112,10 @@ body {
 
 .wrap {
     flex-wrap: wrap;
+}
+
+.grow {
+    flex-grow: 1;
 }
 
 /******************************** MARGIN - PADDING ***********************************/
