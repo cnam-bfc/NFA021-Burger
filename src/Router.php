@@ -12,7 +12,8 @@ class Router
         'accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilClient"],
         'gerant' => ["controller" => "AccueilController", "method" => "renderViewAccueilEmploye"],
         'gerant/' => ["controller" => "AccueilController", "method" => "renderViewAccueilEmploye"],
-        'gerant/accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilEmploye"]
+        'gerant/accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilEmploye"],
+        'visuModifsBurgers' => ["controller" => "ModifsBurgersController" , "method" => "renderViewPimpBurgers"]
     ];
 
     /**
