@@ -10,7 +10,11 @@ class Router
     // Définition des routes (page demandée => contrôleur à charger)
     const ROUTES = [
         'accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilClient"],
-        'employe/accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilEmploye"]
+        'employe/accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilEmploye"],
+        'gerant/nouveauproduit' => ["controller" => "NouveauProduitController", "method" => "renderView"],
+        'gerant/listebdc' => ["controller" => "ListeBDCController", "method" => "renderView"],
+        'gerant/nouveaubdc' => ["controller" => "NouveauBDCController", "method" => "renderView"],
+        'gerant/listeproduits' => ["controller" => "ListeProduitsController", "method" => "renderView"],
     ];
 
     /**

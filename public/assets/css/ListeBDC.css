@@ -1,0 +1,110 @@
+
+/*--- DEBUT LISTE BDC ---*/
+
+#wrapper {
+    margin: auto;
+    max-width: 900px;
+}
+
+.navigation{
+    height: 50px;
+    width: 95%;
+    background-color: #f2f2f2;
+    padding-top: 12px;
+    padding-left: 7px;
+    border-radius: 5px;
+    margin : 0 10px 0 20px;
+}
+
+.btn_navigation {
+    padding: 10px 20px;
+    background-color: #ddd;
+    border: none;
+    border-radius: 5px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.btn_navigation:hover {
+    background-color: white;
+}
+
+.conteneur_BDC {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: 40px 0;
+    width: 95%;
+}
+
+.box_liste {
+    box-sizing: border-box;
+    width: 200px;
+    height: 200px;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.box_liste p {
+    font-size: 14px;
+}
+
+.box_liste button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.box_liste button:hover {
+    background-color: aliceblue;
+    color: black;
+}
+
+.ouvert {
+    background-color: #ddd;
+}
+
+.cloture {
+    background-color: #ccff99;
+}
+
+.annule{
+    background-color: #ff9999;
+}
+
+.btn_valider {
+    background-color: green;
+    color: #fff;
+}
+
+.btn_details {
+    background-color: blue;
+    color: #fff;
+}
+
+
+/* Classe qui permet de gérer la dissimulation des objets*/
+.invisible {
+    display: none;
+}
+
+/* Classe qui permet de gérer l'apparition des objets*/
+.visible {
+    font-weight: bold;
+}
+
+h1 {
+    text-align: center;
+    margin-top: 20px;
+}
+
