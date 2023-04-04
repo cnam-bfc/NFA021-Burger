@@ -20,6 +20,7 @@ class AutoLoader
         // Chargement des fichiers de base
         require_once 'App.php'; // Classe principale du projet
         require_once 'Configuration.php'; // Gestion de la configuration
+        require_once 'Form.php'; // Gestion des formulaires
         require_once 'Session.php'; // Gestion de la session
         require_once 'Router.php'; // Gestion des routes
         require_once 'Database.php'; // Gestion de la base de données
@@ -55,8 +56,7 @@ class AutoLoader
                 break;
             default:
                 // Si une erreur est survenue, on affiche une page d'erreur
-                header("HTTP/1.0 500 Internal Server Error");
-                echo "Erreur 500 : Classe $class introuvable.";
+                ErrorController::error(500, "Classe $class introuvable.");
                 exit;
         }
     }

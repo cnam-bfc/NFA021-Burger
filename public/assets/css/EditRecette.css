@@ -1,0 +1,27 @@
+#boxs {
+    gap: 25px;
+}
+
+#boxs>* {
+    flex: 1;
+}
+
+/*
+#boxs>#informations_generales {
+    flex: 2;
+}
+
+#boxs>#composition {
+    flex: 3;
+}
+*/
+
+#informations_generales .box_contenu .form-input img {
+    max-width: 300px;
+    max-height: 300px;
+}
+
+#tableau_ingredients tbody tr td img {
+    max-width: 50px;
+    max-height: 50px;
+}

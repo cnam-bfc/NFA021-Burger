@@ -1,0 +1,16 @@
+#error_top {
+    margin-bot : 5px;
+}
+
+#error_message {
+    color : #804000;
+}
+
+#error_bottom {
+    margin-top : 5px;
+}
+
+img {
+    width: 350px;
+    height: auto;
+}
