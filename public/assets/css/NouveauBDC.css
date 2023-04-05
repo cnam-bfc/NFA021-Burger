@@ -1,0 +1,48 @@
+#wrapper {
+    margin: auto;
+    max-width: 800px;
+}
+
+.conteneur2 {
+    display: flex;
+}
+
+.boxBDC {
+    width: 650px;
+    height: auto;
+    background-color: #f2f2f2;
+    margin: 25px;
+    margin-top: 50px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border: none;
+}
+
+h2 {
+    font-weight: bold;
+}
+
+table {
+    border: none;
+    width: 100%;
+    border: 5px solid #fff;
+    border-radius: 15px;
+}
+
+td {
+    text-align: center;
+    padding: 10px;
+}
+
+th {
+    background-color: #f2f2f2;
+    text-align: center;
+    padding: 10px;
+    margin: 50px;
+}
+
+input {
+    display: flex;
+    width: 100%;
+}
