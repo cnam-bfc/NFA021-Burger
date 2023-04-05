@@ -1,0 +1,116 @@
+h2 {
+  padding: 4px;
+  text-decoration: underline;
+  font-size: 30px;
+}
+
+/*-----------ID------------*/
+#Wrapper {
+  height: 100%;
+  text-align: center;
+  margin: auto;
+}
+
+#titlePage {
+  text-align: center;
+  background-color: aliceblue;
+  padding: 70px;
+}
+
+/*--------------*/
+#affichage {
+  /*background-color: #FF6666;*/
+  width: 700px;
+  margin: auto;
+  /*padding: 50px;*/
+}
+
+/*
+#affichage div {
+  height: 60px;
+  width: 60px;
+  flex-grow: 1;
+}
+*/
+/*--------------*/
+#modifier {
+  margin-top: 60px;
+}
+
+#allergenes {
+  width: max-content;
+  margin: auto;
+  margin-top: 100px;
+  margin-bottom: 50px;
+}
+
+#allergenes h2 {
+  width: 150px;
+}
+
+#lesAllergenes {
+  /*background-color: pink;*/
+  margin: auto;
+}
+
+#lesAllergenes p {
+  margin-right: 3%;
+  margin-left: 3%;
+  display: inline-block;
+  padding: 10px 0px;
+  width: 150px;
+
+}
+
+#Paiement button {
+  color: #FFD966;
+  background-color: #FF6666;
+  border: 0px;
+  border-radius: 5px;
+  width: 150px;
+  height: 30px;
+  font-weight: bold;
+  font-size: 10px;
+}
+
+
+/*---------Class------------*/
+
+
+.zoneTxtGris {
+  background-color: #F5F5F5;
+  text-align: center;
+  border-radius: 10px;
+  border-width: 1px;
+  border-color: black;
+  border-style: hidden;
+}
+
+.UnIngredient {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  /*background-color: blue;*/
+}
+
+.UnIngredient div {
+  width: 90px;
+  flex-grow: 1;
+  display: flex;
+  height: fit-content;
+  justify-content: center;
+  align-items: center;
+}
+
+.UnIngredient .div1 {}
+
+.UnIngredient .div2 {}
+
+.UnIngredient .div3 {}
+
+.UnIngredient img {
+  width: 500px;
+  height: auto;
+  justify-content: center;
+
+}
