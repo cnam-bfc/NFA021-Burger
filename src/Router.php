@@ -22,6 +22,9 @@ class Router
         // Accueil employé
         'employe/accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilEmploye"],
 
+        // Visu burger
+        'visuModifsBurgers' => ["controller" => "ModifsBurgersController" , "method" => "renderViewPimpBurgers"],
+
         // PARTIE GÉRANT
         // Statistiques
         'gerant/statistiques' => ["controller" => "StatistiquesController", "method" => "renderViewStatistiques"],
@@ -32,7 +35,7 @@ class Router
         'gerant/recettes/modifier' => ["controller" => "EditRecetteController", "method" => "renderViewModifierRecette"],
         'gerant/recettes/supprimer' => ["controller" => "EditRecetteController", "method" => "renderViewSupprimerRecette"],
         
-        //BDC
+        // BDC
         'gerant/listebdc' => ["controller" => "ListeBDCController", "method" => "renderView"],
         'gerant/nouveaubdc' => ["controller" => "NouveauBDCController", "method" => "renderView"],
 

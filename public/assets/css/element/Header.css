@@ -7,6 +7,7 @@
 .header_client_transparent:hover {
     background-color: var(--primaire);
     transition: background-color 0.3s ease-out;
+    border-bottom: 1px solid var(--senaire);
 }
 
 .header_sticky {
@@ -80,4 +81,40 @@ header li a {
     position: relative;
     transform: translateY(20%);
     /* Pour l'effet de logo qui déborde du header */
+}
+
+
+
+
+.navbar {
+  position: absolute;
+  padding: 50px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
+  align-items: center;
+}
+
+.navbar a {
+    color :aliceblue;
+}
+
+.navbar .nav-links ul {
+  display: flex;
+}
+
+.navbar .nav-links ul li {
+    margin: 0 25px
+}
+
+.navbar .nav-links ul li.active a {
+    color: red;
+    font-weight: 600;
+}
+
+@media screen and (max-width: 900px) {
+    .nav-links {
+        display:none;
+    }
 }

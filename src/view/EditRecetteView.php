@@ -2,7 +2,7 @@
 <link rel="stylesheet" href="<?php echo CSS ?>EditRecette.css">
 
 <!-- Wrapper (contenu de la page) -->
-<div class="padding_default">
+<div class="padding_default grow">
     <div class="wrapper main_axe_space_around">
         <h1 class="titre"><?= $titre ?></h1>
     </div>

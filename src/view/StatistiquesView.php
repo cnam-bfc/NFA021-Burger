@@ -7,7 +7,7 @@
 <script src="<?php echo JS; ?>statistiques.js"></script>
 
 <!-- content -->
-<div class="wrapper axe_ligne">
+<div class="wrapper axe_ligne grow">
     <section id="menu_gauche" class="wrapper axe_colonne width_25 background_senaire"> <!-- peut se plier -->
         <div class="onglets"> <!-- permet de choisir la div à afficher -->
             <a class="onglet">Selection</a>
