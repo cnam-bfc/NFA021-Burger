@@ -3,12 +3,10 @@
 
 <!-- Wrapper (contenu de la page) -->
 <div class="padding_default grow">
-    <div class="wrapper main_axe_space_around">
-        <h1 class="titre"><?= $titre ?></h1>
-    </div>
+    <h1 class="titre margin_left_right_auto"><?= $titre ?></h1>
 
     <!-- Ligne contenant les informations générales et la composition de la recette -->
-    <div id="boxs" class="wrapper axe_ligne wrap padding_bottom_top_large">
+    <div id="boxs" class="wrapper axe_ligne wrap margin_bottom_top_large">
         <!-- Box informations générales -->
         <div class="box" id="informations_generales">
             <h2 class="box_titre">Informations générales</h2>

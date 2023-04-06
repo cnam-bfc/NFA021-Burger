@@ -6,7 +6,7 @@
     <h1 class="titre margin_left_right_auto">Recettes</h1>
 
     <!-- Tableau des recettes -->
-    <table class="tableau padding_bottom_top_large" id="tableau_recettes">
+    <table class="tableau margin_bottom_top_large" id="tableau_recettes">
         <thead>
             <tr>
                 <th><!-- Image --></th>
