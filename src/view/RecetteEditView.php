@@ -1,5 +1,5 @@
 <!-- On ajoute la feuille de style associé à la page -->
-<link rel="stylesheet" href="<?php echo CSS ?>EditRecette.css">
+<link rel="stylesheet" href="<?php echo CSS ?>RecetteEdit.css">
 
 <!-- Wrapper (contenu de la page) -->
 <div class="padding_default grow">

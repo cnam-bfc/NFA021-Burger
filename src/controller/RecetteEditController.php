@@ -1,9 +1,9 @@
 <?php
-class EditRecetteController extends Controller
+class RecetteEditController extends Controller
 {
     public function renderViewAjouterRecette()
     {
-        $view = new View(BaseTemplate::EMPLOYE, 'EditRecetteView');
+        $view = new View(BaseTemplate::EMPLOYE, 'RecetteEditView');
 
         // Définition des variables utilisées dans la vue
         $view->titre = "Ajout d'une recette";
@@ -20,7 +20,7 @@ class EditRecetteController extends Controller
             return;
         }
 
-        $view = new View(BaseTemplate::EMPLOYE, 'EditRecetteView');
+        $view = new View(BaseTemplate::EMPLOYE, 'RecetteEditView');
 
         // Définition des variables utilisées dans la vue
         $view->titre = "Modification d'une recette";
@@ -37,7 +37,7 @@ class EditRecetteController extends Controller
     public function renderViewSupprimerRecette()
     {
         /* TODO à faire
-        $view = new View(BaseTemplate::EMPLOYE, 'EditRecetteView');
+        $view = new View(BaseTemplate::EMPLOYE, 'RecetteEditView');
 
         // Définition des variables utilisées dans la vue
 
