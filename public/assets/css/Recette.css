@@ -1,0 +1,13 @@
+#tableau_recettes tbody tr td img {
+    max-width: 50px;
+    max-height: 50px;
+}
+
+#tableau_recettes tbody tr td li {
+    text-align: start;
+    white-space: nowrap;
+}
+
+#tableau_recettes tbody .description {
+    text-align: justify;
+}
