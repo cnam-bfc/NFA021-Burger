@@ -28,7 +28,7 @@
 
     <hr class="delimitation_trait">
 
-    <section> <!-- début tableau -->
+    <section class ="width_75"> <!-- début tableau -->
         <table class="tableau" id="tableau_ingredients">
             <thead>
                 <tr>
@@ -56,8 +56,6 @@
                     </td>
                     <td>
                         <div class="wrapper main_axe_center second_axe_center">
-                            <button class="bouton"><i class="fa-solid fa-arrow-up"></i></button>
-                            <button class="bouton"><i class="fa-solid fa-arrow-down"></i></button>
                             <button class="bouton"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </td>
@@ -77,8 +75,6 @@
                     </td>
                     <td>
                         <div class="wrapper main_axe_center second_axe_center">
-                            <button class="bouton"><i class="fa-solid fa-arrow-up"></i></button>
-                            <button class="bouton"><i class="fa-solid fa-arrow-down"></i></button>
                             <button class="bouton"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </td>
