@@ -3,7 +3,7 @@
 
 <!-- Wrapper (contenu de la page) -->
 <div class="padding_default grow">
-    <h1 class="titre margin_left_right_auto">Recettes</h1>
+    <h1 class="titre_bulle margin_left_right_auto">Recettes</h1>
 
     <!-- Tableau des recettes -->
     <div class="margin_bottom_top_large">

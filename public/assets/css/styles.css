@@ -48,8 +48,8 @@ body {
 
 body {
     font-family: 'Roboto', sans-serif;
-    display : flex;
-    flex-direction : column;
+    display: flex;
+    flex-direction: column;
     justify-content: space-between;
 }
 
@@ -364,29 +364,27 @@ body {
 **************************************************************************************/
 
 /********************************* TITRE "BULLE" *************************************/
-.titre {
+.titre_bulle {
     font-weight: bold;
     font-size: var(--taille_titre);
     text-align: center;
-    /*
-    color: var(--quinnaire);
-    background-color: var(--primaire);
-    */
+    margin: var(--espacement_large) 0;
     background-color: var(--senaire);
     border-radius: 10px;
     padding: 30px 20px;
     width: 500px;
 }
 
-.titre_margin_top {
-    margin-top: var(--espacement_large);
-}
-
-.titre_margin_bottom {
-    margin-bottom: var(--espacement_large);
-}
-
 /********************************* TITRE "BARRE" *************************************/
+
+.titre_souligne {
+    font-weight: bold;
+    font-size: var(--taille_titre);
+    text-align: center;
+    border-bottom: 1px solid black;
+    margin: var(--espacement_large) 0;
+    padding: 0 var(--espacement_large) var(--espacement_moyen);
+}
 
 
 /*************************************************************************************

@@ -3,7 +3,7 @@
 
 <!-- Wrapper (contenu de la page) -->
 <div class="padding_default grow">
-    <h1 class="titre margin_left_right_auto"><?= $titre ?></h1>
+    <h1 class="titre_bulle margin_left_right_auto"><?= $titre ?></h1>
 
     <!-- Ligne contenant les informations générales et la composition de la recette -->
     <div id="boxs" class="wrapper axe_ligne wrap margin_bottom_top_large">
