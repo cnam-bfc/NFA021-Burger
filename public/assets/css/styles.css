@@ -247,6 +247,10 @@ body {
     width: 100%;
 }
 
+.width_75 {
+    width: 75%;
+}
+
 .width_50 {
     width: 50%;
 }
