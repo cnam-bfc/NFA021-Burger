@@ -35,7 +35,7 @@ class AccueilController extends Controller
         $view = new View(BaseTemplate::EMPLOYE, 'AccueilEmployeView');
 
         // Définition des variables utilisées dans la vue
-        $view->backgroundImage = IMG . "accueilemploye_background.webp";
+        $view->backgroundImage = IMG . "";
 
         $view->renderView();
     }

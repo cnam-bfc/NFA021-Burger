@@ -40,6 +40,11 @@ class Router
         'gerant/listebdc' => ["controller" => "ListeBDCController", "method" => "renderView"],
         'gerant/nouveaubdc' => ["controller" => "NouveauBDCController", "method" => "renderView"],
         'gerant/listeproduits' => ["controller" => "ListeProduitsController", "method" => "renderView"],
+
+        // PARTIE CUISINIER
+        //Ecran de cuisine
+        'cuisinier' => ["controller" => "EcranCuisineController", "method" => "renderView"],
+        'cuisinier/recette' => ["controller" => "RecetteCuisineController", "method" => "renderView"],
     ];
 
     /**
