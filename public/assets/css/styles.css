@@ -118,6 +118,10 @@ body {
     flex-grow: 1;
 }
 
+.hidding {
+    display: none;
+}
+
 /******************************** MARGIN - PADDING ***********************************/
 .margin_extreme_large {
     margin: var(--espacement_extreme_large);
@@ -613,6 +617,12 @@ input[type="checkbox"].input:disabled {
 }
 
 .tableau img {
-    max-width: 75px;
-    max-height: 75px;
+    max-width: 60px;
+    max-height: 60px;
+}
+
+.delimitation_trait {
+    border: 1px solid #ccc;
+    width: 90%;
+    margin: 15px 0;
 }
