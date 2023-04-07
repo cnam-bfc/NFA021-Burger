@@ -1,7 +1,7 @@
 <header class="header_client header_sticky">
     <nav class="nav_client">
         <ul>
-            <li><a href=""><i class="fa-solid fa-bars fa-2x header_icone"></i></a></li>
+            <li><a href=""><i class="fa-solid fa-bars fa-2x header_icone fa"></i></a></li>
             <li><a href="" class="header_nav_background_anim">Notre carte</a></li>
             <li><a href="" class="header_nav_background_anim">Nous trouver</a></li>
         </ul>

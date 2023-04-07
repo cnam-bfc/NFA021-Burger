@@ -113,8 +113,27 @@ header li a {
     font-weight: 600;
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 800px) {
     .nav-links {
         display:none;
+    }
+
+    .header_nav_background_anim {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    #header_logo {
+        width: 45px;
+        height: auto;
+    }
+
+    .header_icone {
+        font-size: 1em;
+    }
+
+    header li a {
+        padding: 5px;
     }
 }
