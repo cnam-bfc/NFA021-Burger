@@ -119,6 +119,16 @@
                     <label for="image_recette">Image</label>
                     <input type="file" id="image_recette" name="image_recette" accept="image/*" required>
                 </div>
+                <!-- Champ select -->
+                <div class="form-input">
+                    <label for="type_recette">Type de recette</label>
+                    <select id="type_recette" required>
+                        <option value="" selected>Choisissez un type de recette</option>
+                        <option value="1">Option 1</option>
+                        <option value="2">Option 2</option>
+                        <option value="3">Option 3</option>
+                    </select>
+                </div>
             </div>
         </div>
     </div>
@@ -145,6 +155,17 @@
         <!-- Checkbox lambda -->
         <input class="input" type="checkbox">
 
+        <!-- Champ select -->
+        <div class="form-input">
+            <label for="type_recette">Type de recette</label>
+            <select id="type_recette" required>
+                <option value="" selected>Choisissez un type de recette</option>
+                <option value="1">Option 1</option>
+                <option value="2">Option 2</option>
+                <option value="3">Option 3</option>
+            </select>
+        </div>
+
         <!-- Champ pour le nom de la recette -->
         <div class="form-input">
             <label for="nom_recette">Nom</label>
@@ -154,7 +175,7 @@
         <!-- Champ pour la description de la recette -->
         <div class="form-input">
             <label for="description_recette">Description</label>
-            <textarea id="description_recette" name="description_recette" placeholder="Description de la recette" required minlength=1 maxlength=250><?php if (isset($recetteDescription)) echo $recetteDescription; ?></textarea>
+            <textarea id="description_recette" name="description_recette" placeholder="Description de la recette" disabled minlength=1 maxlength=250><?php if (isset($recetteDescription)) echo $recetteDescription; ?></textarea>
         </div>
 
         <!-- Champ pour le prix de la recette -->
