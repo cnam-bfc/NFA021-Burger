@@ -48,8 +48,8 @@ body {
 
 body {
     font-family: 'Roboto', sans-serif;
-    display : flex;
-    flex-direction : column;
+    display: flex;
+    flex-direction: column;
     justify-content: space-between;
 }
 
@@ -407,8 +407,10 @@ body {
 /* Champs de saisie */
 .form-input>input,
 .form-input>textarea,
+.form-input>select,
 .input,
-.textarea {
+.textarea,
+.select {
     display: block;
     padding: 10px;
     border: 2px solid #ccc;
@@ -422,22 +424,30 @@ body {
 }
 
 .form-input>input:invalid,
-.form-input>textarea:invalid {
+.form-input>textarea:invalid,
+.form-input>select:invalid,
+input:invalid,
+textarea:invalid,
+select:invalid {
     border: 2px solid red;
 }
 
-/*
-.form-input>input:valid,
-.form-input>textarea:valid {
-    border: 2px solid green;
-}
-*/
-
 .form-input>input:focus,
 .form-input>textarea:focus,
+.form-input>select:focus,
 .input:focus,
-.textarea:focus {
+.textarea:focus,
+.select:focus {
     outline: none;
+}
+
+.form-input>input:disabled,
+.form-input>textarea:disabled,
+.form-input>select:disabled,
+.input:disabled,
+.textarea:disabled,
+.select:disabled {
+    cursor: not-allowed;
 }
 
 /* Bouton radio */
@@ -448,13 +458,6 @@ input[type="checkbox"].input {
     width: 25px;
     height: 25px;
     cursor: pointer;
-}
-
-.form-input>input[type="radio"]:disabled,
-.form-input>input[type="checkbox"]:disabled,
-input[type="radio"].input:disabled,
-input[type="checkbox"].input:disabled {
-    cursor: not-allowed;
 }
 
 .form-input+.form-input {
@@ -493,7 +496,7 @@ input[type="checkbox"].input:disabled {
 */
 
 .bouton:disabled {
-    background-color: #f0f0f0;
+    opacity: 0.5;
     cursor: not-allowed;
 }
 
