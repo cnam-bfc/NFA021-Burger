@@ -28,6 +28,8 @@ class Router
         // PARTIE GÉRANT
         // Statistiques
         'gerant/statistiques' => ["controller" => "StatistiquesController", "method" => "renderViewStatistiques"],
+        'gerant/inventaire' => ["controller" => "InventaireController", "method" => "renderViewInventaire"],
+        'gerant/stock' => ["controller" => "StockController", "method" => "renderViewStock"],
 
         // Recettes
         'gerant/recettes' => ["controller" => "RecetteController", "method" => "renderViewRecettes"],
@@ -45,6 +47,9 @@ class Router
         // Livraison
         'livreur/livraisons' => ["controller" => "LivraisonController", "method" => "renderViewLivraison"],
         'livreur/itineraire' => ["controller" => "LivraisonController", "method" => "renderViewItineraire"],
+
+        // exemples
+        'exemple' => ["controller" => "ExempleController", "method" => "renderView"],
     ];
 
     /**
