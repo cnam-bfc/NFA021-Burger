@@ -1,6 +1,6 @@
 <!-- Wrapper (contenu de la page) -->
 <div class="padding_default grow">
-    <h1 class="titre_bulle margin_left_right_auto">Livraisons</h1>
+    <h1 class="titre_bulle">Livraisons</h1>
 
     <!-- Tableau des livraisons -->
     <div class="margin_bottom_top_large">

@@ -1,6 +1,6 @@
 <div class="wrapper axe_colonne second_axe_center main_axe_space_between grow">
 
-    <div class="titre_bulle margin_bottom_top_large">
+    <div class="titre_bulle">
         <h1>Inventaire</h1>
     </div>
 

@@ -49,7 +49,7 @@
         </div>
     </section>
     <section class="wrapper axe_colonne second_axe_center width_100 main_axe_space_between" id="contenu">
-        <div class="titre_bulle margin_bottom_top_large">
+        <div class="titre_bulle">
             <h1>Statistiques</h1>
         </div>
 
