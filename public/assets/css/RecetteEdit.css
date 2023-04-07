@@ -20,8 +20,3 @@
     max-width: 300px;
     max-height: 300px;
 }
-
-#tableau_ingredients tbody tr td img {
-    max-width: 50px;
-    max-height: 50px;
-}

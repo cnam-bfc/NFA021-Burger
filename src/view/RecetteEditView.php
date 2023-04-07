@@ -50,6 +50,7 @@
                             <th>Prix</th>
                             <th><!-- Bouton actions rapide --></th>
                         </tr>
+                        <tr></tr>
                     </thead>
                     <tbody>
                         <tr>
@@ -158,6 +159,7 @@
                         </tr>
                     </tbody>
                     <tfoot>
+                        <tr></tr>
                         <tr>
                             <td colspan="6">
                                 <button class="bouton" id="ajouter_ingredient"><i class="fa-solid fa-plus"></i> Ajouter un ingrédient</button>
