@@ -10,4 +10,7 @@
     <link href="<?php echo ASSETS ?>fontawesome/css/fontawesome.css" rel="stylesheet">
     <link href="<?php echo ASSETS ?>fontawesome/css/brands.css" rel="stylesheet">
     <link href="<?php echo ASSETS ?>fontawesome/css/solid.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+    <meta name="viewport" content="width=500, initial-scale=1">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
 </head>
