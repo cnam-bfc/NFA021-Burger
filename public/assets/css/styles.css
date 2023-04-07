@@ -403,8 +403,8 @@ body {
 /* Champs de saisie */
 .form-input>input,
 .form-input>textarea,
-input.input,
-textarea.textarea {
+.input,
+.textarea {
     display: block;
     padding: 10px;
     border: 2px solid #ccc;
@@ -412,7 +412,7 @@ textarea.textarea {
 }
 
 .form-input>textarea,
-textarea.textarea {
+.textarea {
     resize: vertical;
     min-height: 100px;
 }
@@ -431,8 +431,8 @@ textarea.textarea {
 
 .form-input>input:focus,
 .form-input>textarea:focus,
-input.input:focus,
-textarea.textarea:focus {
+.input:focus,
+.textarea:focus {
     outline: none;
 }
 
@@ -470,7 +470,7 @@ input[type="checkbox"].input:disabled {
 **************************************************************************************/
 
 /******************************* BOUTON VALIDATION ***********************************/
-button.bouton {
+.bouton {
     background-color: #e6e6e6;
     color: black;
     border: none;
@@ -482,18 +482,18 @@ button.bouton {
 }
 
 /*
-button.bouton.bouton_primaire {
+.bouton.bouton_primaire {
     background-color: var(--primaire);
     color: var(--quinnaire);
 }
 */
 
-button.bouton:disabled {
+.bouton:disabled {
     background-color: #f0f0f0;
     cursor: not-allowed;
 }
 
-button.bouton:hover {
+.bouton:hover {
     /* Rendre la couleur plus foncée */
     background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
 }
@@ -561,39 +561,58 @@ button.bouton:hover {
 /*************************************************************************************
 ************************************** TABLEAU ***************************************
 **************************************************************************************/
-table.tableau {
+.tableau {
     width: 100%;
     border-collapse: separate;
-    border-spacing: 0;
+    border-spacing: 0 10px;
+    margin: -10px 0;
 }
 
-table.tableau tr {
+.tableau tr {
     background-color: #e6e6e6;
     color: black;
-    border-radius: 20px;
 }
 
-table.tableau td {
+.tableau td,
+.tableau th {
     text-align: center;
     vertical-align: middle;
 }
 
-table.tableau td+td {
-    padding-left: 10px;
-    padding-right: 10px;
+.tableau td {
+    padding: 5px;
 }
 
-table.tableau>thead {
+.tableau th {
+    padding: 20px 0;
+}
+
+/* Bordure arrondie pour chaque ligne */
+.tableau td:first-child,
+.tableau th:first-child {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.tableau td:last-child,
+.tableau th:last-child {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.tableau>thead {
     font-weight: bold;
-    margin-bottom: 50px;
 }
 
-table.tableau>tfoot {
+.tableau>tfoot {
     font-weight: bold;
-    margin-top: 50px;
-    padding-top: 20px;
 }
 
-table.tableau button.bouton {
+.tableau .bouton {
     padding: 10px;
+}
+
+.tableau img {
+    max-width: 75px;
+    max-height: 75px;
 }
