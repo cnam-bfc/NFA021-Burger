@@ -4,7 +4,7 @@
 
 <div id="wrapper">
 
-    <h1 class='titre_page'>Liste des bon de commandes</h1><br>
+    <h1 class='titre_page'>Liste des bons de commande</h1><br>
 
     <div class="navigation">
         <button class="btn_navigation visible" data-page="1">BDC ouverts</button>

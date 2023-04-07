@@ -40,9 +40,11 @@ class Router
         'gerant/recettes/supprimer' => ["controller" => "RecetteController", "method" => "renderViewSupprimerRecette"],
         
         // BDC
-        'gerant/nouveauproduit' => ["controller" => "NouveauProduitController", "method" => "renderView"],
         'gerant/listebdc' => ["controller" => "ListeBDCController", "method" => "renderView"],
         'gerant/nouveaubdc' => ["controller" => "NouveauBDCController", "method" => "renderView"],
+
+        //Produits
+        'gerant/nouveauproduit' => ["controller" => "NouveauProduitController", "method" => "renderView"],
         'gerant/listeproduits' => ["controller" => "ListeProduitsController", "method" => "renderView"],
 
         // PARTIE LIVREUR
