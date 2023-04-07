@@ -620,7 +620,7 @@ input[type="checkbox"].input:disabled {
 }
 
 .delimitation_trait {
-    border: 1px solid #ccc;
-    width: 90%;
+    border: 0.1pt solid #e5e3e3;
+    width: 80%;
     margin: 15px 0;
 }
