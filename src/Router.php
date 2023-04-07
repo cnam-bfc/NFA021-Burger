@@ -42,6 +42,9 @@ class Router
         'gerant/listebdc' => ["controller" => "ListeBDCController", "method" => "renderView"],
         'gerant/nouveaubdc' => ["controller" => "NouveauBDCController", "method" => "renderView"],
         'gerant/listeproduits' => ["controller" => "ListeProduitsController", "method" => "renderView"],
+
+        // exemples
+        'exemple' => ["controller" => "ExempleController", "method" => "renderView"],
     ];
 
     /**
