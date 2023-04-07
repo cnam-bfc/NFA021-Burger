@@ -4,12 +4,15 @@
 
 <div id="wrapper">
 
-    <body>
         <div class='titre_page'>Liste des produits</div>
         <br><br>
 
-        <input type="text" id="recherche" class='courbe' onkeyup="rechercher()" placeholder="Recherchez...">
-        <table>
+        <div style="display:flex; flex-direction: row">
+            <label for="recherche"><i class="loupe fa-solid fa-magnifying-glass fa-lg" style="color: #000;"></i></i></label>
+            <input type="text" id="recherche" class='courbe' onkeyup="rechercher()" placeholder="Recherchez..."/>
+        </div>
+
+        <table id = 'table'>
             <thead>
                 <tr>
                     <th scope="col">Icone</th>
@@ -24,7 +27,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td data-label="Account"><img src=<?php echo $icone[1]["img"] ?> class='img'></td>
+                    <td data-label="Icone"><img src=<?php echo $icone[1]["img"] ?> class='img'></td>
                     <td data-label="Due Date">Pain</td>
                     <td data-label="Due Date">Sesame</td>
                     <td data-label="Due Date">La Boulangerie Bleue</td>
@@ -56,7 +59,7 @@
                 <tr>
                     <td data-label="Account"><img src=<?php echo $icone[4]["img"] ?> class='img'></td>
                     <td data-label="Due Date">Salade</td>
-                    <td data-label="Due Date">Sesame</td>
+                    <td data-label="Due Date"></td>
                     <td data-label="Due Date">Bio Maraicher</td>
                     <td data-label="Amount">350</td>
                     <td data-label="Amount">150</td>
@@ -66,5 +69,6 @@
             </tbody>
         </table>
         <br><br>
-    </body>
 </div>
+
+<script src="<?php echo JS ?>ListeProduits.js"></script>

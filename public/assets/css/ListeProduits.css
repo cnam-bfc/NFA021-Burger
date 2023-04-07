@@ -5,6 +5,7 @@ table {
     padding: 0;
     width: 100%;
     table-layout: fixed;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 
@@ -27,6 +28,7 @@ table th {
     font-size: 1em;
     letter-spacing: .01em;
     font-weight: bold;
+    background-color: #ECE9E9;
 }
 
 @media screen and (max-width: 780px) {
@@ -48,12 +50,6 @@ table th {
 @media screen and (max-width: 600px) {
     table {
         border: 0;
-    }
-
-    table caption {
-        font-size: 1.3em;
-
-
     }
 
     table thead {
@@ -96,18 +92,28 @@ table th {
     }
 }
 
+.loupe {
+    padding : 12px 5px 0 0;
+}
 
 #recherche {
     display: flex;
     height: 25px;
     width: 20%;
-    border : 1px solid black;
-    margin : 0 0 5px 5px;
+    border : none;
+    margin : 0 0 10px 0;
+    border-radius: 10;
+    background-color: #fff5e3;
+}
+
+#recherche:hover {
+    color: #000;
+    background-color: white;
 }
 
 
 #wrapper {
-    margin: auto;
+    margin: 5px;
     max-width: 950px;
 }
 
@@ -134,11 +140,4 @@ table th {
     height: auto;
     padding: 0px;
     background-position: 100px;
-}
-
-table {
-
-    width: 100%;
-    border: 5px solid white;
-    border-radius: 15px;
 }
