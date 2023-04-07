@@ -1,13 +1,11 @@
 <!-- On ajoute la feuille de js associé à la page -->
-<script type="text/javascript" src="<?php echo JS?>Install.js"></script>
+<script type="text/javascript" src="<?php echo JS ?>Install.js"></script>
 
 <!-- Wrapper (contenu de la page) -->
 <div class="padding_default">
-    <div class="wrapper main_axe_space_around">
-        <h1 class="titre">Installation</h1>
-    </div>
+    <h1 class="titre margin_left_right_auto">Installation</h1>
 
-    <div id="boxs" class="wrapper axe_ligne main_axe_center wrap padding_bottom_top_large">
+    <div id="boxs" class="wrapper axe_ligne main_axe_center wrap margin_bottom_top_large">
         <div class="box" id="box_install_bdd">
             <h2 class="box_titre">Configuration de la base de données</h2>
             <div class="box_contenu">

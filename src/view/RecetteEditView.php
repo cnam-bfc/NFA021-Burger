@@ -1,14 +1,12 @@
 <!-- On ajoute la feuille de style associé à la page -->
-<link rel="stylesheet" href="<?php echo CSS ?>EditRecette.css">
+<link rel="stylesheet" href="<?php echo CSS ?>RecetteEdit.css">
 
 <!-- Wrapper (contenu de la page) -->
 <div class="padding_default grow">
-    <div class="wrapper main_axe_space_around">
-        <h1 class="titre"><?= $titre ?></h1>
-    </div>
+    <h1 class="titre margin_left_right_auto"><?= $titre ?></h1>
 
     <!-- Ligne contenant les informations générales et la composition de la recette -->
-    <div id="boxs" class="wrapper axe_ligne wrap padding_bottom_top_large">
+    <div id="boxs" class="wrapper axe_ligne wrap margin_bottom_top_large">
         <!-- Box informations générales -->
         <div class="box" id="informations_generales">
             <h2 class="box_titre">Informations générales</h2>
@@ -52,6 +50,7 @@
                             <th>Prix</th>
                             <th><!-- Bouton actions rapide --></th>
                         </tr>
+                        <tr></tr>
                     </thead>
                     <tbody>
                         <tr>
@@ -160,6 +159,7 @@
                         </tr>
                     </tbody>
                     <tfoot>
+                        <tr></tr>
                         <tr>
                             <td colspan="6">
                                 <button class="bouton" id="ajouter_ingredient"><i class="fa-solid fa-plus"></i> Ajouter un ingrédient</button>

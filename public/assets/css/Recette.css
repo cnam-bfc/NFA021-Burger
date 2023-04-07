@@ -1,0 +1,8 @@
+#tableau_recettes tbody tr td li {
+    text-align: start;
+    white-space: nowrap;
+}
+
+#tableau_recettes tbody .description {
+    text-align: justify;
+}

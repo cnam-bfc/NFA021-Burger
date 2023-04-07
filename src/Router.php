@@ -33,15 +33,20 @@ class Router
 
         // Recettes
         'gerant/recettes' => ["controller" => "RecetteController", "method" => "renderViewRecettes"],
-        'gerant/recettes/ajouter' => ["controller" => "EditRecetteController", "method" => "renderViewAjouterRecette"],
-        'gerant/recettes/modifier' => ["controller" => "EditRecetteController", "method" => "renderViewModifierRecette"],
-        'gerant/recettes/supprimer' => ["controller" => "EditRecetteController", "method" => "renderViewSupprimerRecette"],
+        'gerant/recettes/ajouter' => ["controller" => "RecetteEditController", "method" => "renderViewAjouterRecette"],
+        'gerant/recettes/modifier' => ["controller" => "RecetteEditController", "method" => "renderViewModifierRecette"],
+        'gerant/recettes/supprimer' => ["controller" => "RecetteController", "method" => "renderViewSupprimerRecette"],
         
         // BDC
         'gerant/nouveauproduit' => ["controller" => "NouveauProduitController", "method" => "renderView"],
         'gerant/listebdc' => ["controller" => "ListeBDCController", "method" => "renderView"],
         'gerant/nouveaubdc' => ["controller" => "NouveauBDCController", "method" => "renderView"],
         'gerant/listeproduits' => ["controller" => "ListeProduitsController", "method" => "renderView"],
+
+        // PARTIE LIVREUR
+        // Livraison
+        'livreur/livraisons' => ["controller" => "LivraisonController", "method" => "renderViewLivraison"],
+        'livreur/itineraire' => ["controller" => "LivraisonController", "method" => "renderViewItineraire"],
 
         // exemples
         'exemple' => ["controller" => "ExempleController", "method" => "renderView"],
