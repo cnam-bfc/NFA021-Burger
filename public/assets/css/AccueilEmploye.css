@@ -1,0 +1,28 @@
+.gerant_box {
+    width: 450px;
+    height: 450px;
+    border-radius: 20px;
+    border: 2px solid black;
+}
+
+.cuisinier_box {
+    width: 300px;
+    height: 300px;
+    border-radius: 20px;
+    border: 2px solid black;
+}
+
+.livreur_box {
+    width: 450px;
+    height: 450px;
+    border-radius: 20px;
+    border: 2px solid black;
+}
+
+#wrapper_accueil {
+    margin-left: 400px;
+    margin-right: 400px;
+}
+.espace_titre {
+    width: 100%;
+}
