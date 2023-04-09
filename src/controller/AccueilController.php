@@ -35,7 +35,19 @@ class AccueilController extends Controller
         $view = new View(BaseTemplate::EMPLOYE, 'AccueilEmployeView');
 
         // Définition des variables utilisées dans la vue
-        $view->backgroundImage = IMG . "";
+        $view->icones = array(
+            ["nom" => "statistiques", "img" => IMG . "icone/accueil_employe/statistiques.png"],
+            ["nom" => "stocks", "img" => IMG . "icone/accueil_employe/stocks.png"],
+            ["nom" => "recettes", "img" => IMG . "icone/accueil_employe/recettes.png"],
+            ["nom" => "produits", "img" => IMG . "icone/accueil_employe/produits.png"],
+            ["nom" => "inventaire", "img" => IMG . "icone/accueil_employe/inventaire.png"],
+            ["nom" => "historique", "img" => IMG . "icone/accueil_employe/historique.png"],
+            ["nom" => "bons_commandes", "img" => IMG . "icone/accueil_employe/bons_commandes.png"],
+            ["nom" => "prep_commandes", "img" => IMG . "icone/accueil_employe/prep_commandes.png"],
+            ["nom" => "livraison", "img" => IMG . "icone/accueil_employe/livraison.png"],
+            ["nom" => "trajet", "img" => IMG . "icone/accueil_employe/trajet.png"],
+
+        );
 
         $view->renderView();
     }
