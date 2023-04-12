@@ -22,7 +22,7 @@ class View
      * @param string $baseTemplate (nom du gabarit de base)
      * @param string $template (nom du gabarit à afficher)
      */
-    public function __construct($baseTemplate, $template)
+    public function __construct($baseTemplate, $template = null)
     {
         $this->setBaseTemplate($baseTemplate);
         $this->setTemplate($template);

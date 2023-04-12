@@ -28,7 +28,7 @@ class InstallController extends Controller
             'success' => $success
         );
 
-        $view = new View(BaseTemplate::JSON, null);
+        $view = new View(BaseTemplate::JSON);
 
         // Définission des variables utilisées dans la vue
         $view->json = $json;
@@ -70,18 +70,16 @@ class InstallController extends Controller
             $success = Database::createInstance();
         }
 
-        /*
         if ($success) {
-            // Création des tables
-            $success = Database::createTables($bdd_host, $bdd_port, $bdd_database, $bdd_user, $bdd_password);
+            // Mise à jour de la base de données
+            $success = Database::getInstance()->update();
         }
-        */
 
         $json = array(
             'success' => $success
         );
 
-        $view = new View(BaseTemplate::JSON, null);
+        $view = new View(BaseTemplate::JSON);
 
         // Définission des variables utilisées dans la vue
         $view->json = $json;
