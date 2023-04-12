@@ -28,6 +28,8 @@ class Router
         // PARTIE GÉRANT
         // Statistiques
         'gerant/statistiques' => ["controller" => "StatistiquesController", "method" => "renderViewStatistiques"],
+
+        // Stock et inventaire
         'gerant/inventaire' => ["controller" => "InventaireController", "method" => "renderViewInventaire"],
         'gerant/stock' => ["controller" => "StockController", "method" => "renderViewStock"],
 

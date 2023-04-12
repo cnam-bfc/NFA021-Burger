@@ -6,6 +6,10 @@ footer {
     flex-direction: column;
 }
 
+footer p {
+    text-align: center;
+}
+
 #footer_top {
     display: flex;
     flex-direction: row;
@@ -26,6 +30,7 @@ footer {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    margin: 0 10px;
 }
 
 #footer_mid {
@@ -38,4 +43,27 @@ footer {
     justify-content: space-between;
     margin: auto;
     width: 98%;
+}
+
+@media screen and (max-width: 800px) {
+    #footer_top img {
+        height: 75px;
+        width: auto;
+    }
+
+    footer p {
+        font-size: 0.8em;
+    }
+    
+}
+
+@media screen and (max-width: 600px) {
+    #footer_top img {
+        height: 50px;
+        width: auto;
+    }
+
+    footer p {
+        font-size: 0.6em;
+    }
 }

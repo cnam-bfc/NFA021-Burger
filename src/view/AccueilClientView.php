@@ -2,23 +2,17 @@
 <link rel="stylesheet" href="<?php echo CSS ?>AccueilClient.css">
 
 <!-- On ajoute la feuille de js associé à la page -->
-<script src="<?php echo JS?>AccueilClient.js"></script>
+<script src="<?php echo JS ?>AccueilClient.js"></script>
 
 <div class="wrapper axe_colonne" id="wrapper_accueil">
     <img src=<?php echo $backgroundImage ?> class="accueil_margin">
     <div class="accueil_margin" id="top_recette">
-        <div class="top_recette_accueil_div">
-            <img src=<?php echo $topRecette[0]["img"] ?>>
-            <p><?php echo $topRecette[0]["nom"] ?></p>
-        </div>
-        <div class="top_recette_accueil_div">
-            <img src=<?php echo $topRecette[1]["img"] ?>>
-            <p><?php echo $topRecette[1]["nom"] ?></p>
-        </div>
-        <div class="top_recette_accueil_div">
-            <p><?php echo $topRecette[2]["nom"] ?></p>
-            <img src=<?php echo $topRecette[2]["img"] ?>>
-        </div>
+        <?php foreach ($topRecette as $recette) { ?>
+            <div class="top_recette_accueil_div">
+                <img src=<?php echo $recette["img"] ?>>
+                <p><?php echo $recette["nom"] ?></p>
+            </div>
+        <?php } ?>
     </div>
     <div class="wrapper axe_colonne second_axe_center background_primaire accueil_margin">
         <h2 class="color_secondaire bold">Nos restaurants</h2>
