@@ -14,12 +14,27 @@ class AccueilController extends Controller
 
         // Définition des variables utilisées dans la vue
         $view->backgroundImage = IMG . "accueil_background.webp";
+
+        // DEBUT - A DEPLACER DANS AJAX
         // ici il faudra appeler le modèle pour récupérer le top 3 des recettes du moment mais c'est une démonstration
-        $view->topRecette = array(
-            ["nom" => "cheddar lover", "img" => IMG . "recette/burger/cheddar_lover.webp"],
-            ["nom" => "steakhouse", "img" => IMG . "recette/burger/steakhouse.webp"],
-            ["nom" => "triple cheese", "img" => IMG . "recette/burger/triple_cheese.webp"]
-        );
+        $recetteDAO = new RecetteDAO(Database::getInstance());
+        $topRecettes = $recetteDAO->selectTop3Recette();
+        $topRecette = array();
+        if ($topRecettes != null) {
+            foreach ($topRecettes as $recette) {
+                $topRecette[] = array(
+                    "nom" => $recette->getNom(),
+                    "img" => IMG . $recette->getPhotoRecette()
+                );
+            }
+        } else {
+            $view->topRecette = array(
+                ["nom" => "cheddar lover", "img" => IMG . "recette/burger/cheddar_lover.webp"],
+                ["nom" => "steakhouse", "img" => IMG . "recette/burger/steakhouse.webp"],
+                ["nom" => "triple cheese", "img" => IMG . "recette/burger/triple_cheese.webp"]
+            );
+        }
+        // FIN - A DEPLACER DANS AJAX
 
         // voir si on fait défiler différentes news 
         $view->news = array (
