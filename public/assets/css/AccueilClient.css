@@ -16,6 +16,7 @@
     margin-right: auto;
     font-style: bold;
     font-size: 1.5em;
+    gap : 0 10px;
 }
 
 #wrapper_accueil h2 {
@@ -98,4 +99,16 @@
 
 .accueil_margin {
     margin-bottom: 60px;
+}
+
+/* MEDIA QUERIES */
+@media screen and (max-width: 1100px) {
+    #top_recette {
+        flex-direction: column;
+        gap: 30px 0;
+    }
+
+    #top_recette {
+        width: 100%;
+    }
 }
