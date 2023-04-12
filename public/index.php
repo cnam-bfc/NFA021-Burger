@@ -69,4 +69,7 @@ elseif (Configuration::isInstalled() && stripos($route, "install") === 0) {
     return;
 }
 
+// Mise à jour de la base de données si nécessaire
+Database::getInstance()->update();
+
 Router::route($route);
