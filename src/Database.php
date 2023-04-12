@@ -27,6 +27,11 @@ class Database
         }
     }
 
+    /**
+     * Méthode permettant de récupérer l'instance de la classe Database
+     *
+     * @return Database (instance de la classe Database)
+     */
     public static function getInstance()
     {
         if (is_null(self::$instance)) {
