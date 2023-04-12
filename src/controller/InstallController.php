@@ -28,7 +28,7 @@ class InstallController extends Controller
             'success' => $success
         );
 
-        $view = new View(BaseTemplate::JSON, null);
+        $view = new View(BaseTemplate::JSON);
 
         // Définission des variables utilisées dans la vue
         $view->json = $json;
@@ -79,7 +79,7 @@ class InstallController extends Controller
             'success' => $success
         );
 
-        $view = new View(BaseTemplate::JSON, null);
+        $view = new View(BaseTemplate::JSON);
 
         // Définission des variables utilisées dans la vue
         $view->json = $json;

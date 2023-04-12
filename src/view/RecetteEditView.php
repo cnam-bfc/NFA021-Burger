@@ -1,6 +1,9 @@
 <!-- On ajoute la feuille de style associé à la page -->
 <link rel="stylesheet" href="<?php echo CSS ?>RecetteEdit.css">
 
+<!-- On ajoute le script associé à la page -->
+<script src="<?php echo JS ?>RecetteEdit.js"></script>
+
 <!-- Wrapper (contenu de la page) -->
 <div class="padding_default grow">
     <h1 class="titre margin_left_right_auto"><?= $titre ?></h1>
@@ -73,7 +76,7 @@
                             </td>
                             <td>
                                 <div class="wrapper main_axe_center second_axe_center">
-                                    <button class="bouton"><i class="fa-solid fa-arrow-up"></i></button>
+                                    <button class="bouton" disabled><i class="fa-solid fa-arrow-up"></i></button>
                                     <button class="bouton"><i class="fa-solid fa-arrow-down"></i></button>
                                     <button class="bouton"><i class="fa-solid fa-trash"></i></button>
                                 </div>
@@ -152,7 +155,7 @@
                             <td>
                                 <div class="wrapper main_axe_center second_axe_center">
                                     <button class="bouton"><i class="fa-solid fa-arrow-up"></i></button>
-                                    <button class="bouton"><i class="fa-solid fa-arrow-down"></i></button>
+                                    <button class="bouton" disabled><i class="fa-solid fa-arrow-down"></i></button>
                                     <button class="bouton"><i class="fa-solid fa-trash"></i></button>
                                 </div>
                             </td>
