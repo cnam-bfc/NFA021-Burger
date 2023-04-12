@@ -1,20 +1,24 @@
 <?php
+
 /**
- * Description of DAO
+ * DAO
+ * 
  * Classe abstraite qui contient les méthodes de base pour les DAO
  */
-abstract class DAO {
-    protected $db;
-
+abstract class DAO
+{
     /**
-     * Constructeur de la classe DAO
+     * PDO
      *
-     * @param PDO $db
+     * @var PDO
      */
-    public function __construct($db) {
-        $this->db = $db;
+    protected $pdo;
+
+    public function __construct()
+    {
+        $this->pdo = Database::getInstance()->getPdo();
     }
-    
+
     /**
      * Méthode abstraite qui permet de créer un objet
      * 
