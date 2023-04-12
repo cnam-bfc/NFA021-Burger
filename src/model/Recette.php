@@ -1,53 +1,62 @@
-<?php 
+<?php
 
-class Recette {
-    
+class Recette
+{
     private $idRecette;
     private $nomRecette;
     private $photoRecette;
     private $dateArchiveRecette;
     private $prixRecette;
-    
+
     // Getters
-    function getIdRecette() {
+    function getIdRecette()
+    {
         return $this->idRecette;
     }
 
-    function getNomRecette() {
+    function getNomRecette()
+    {
         return $this->nomRecette;
     }
 
-    function getPhotoRecette() {
+    function getPhotoRecette()
+    {
         return $this->photoRecette;
     }
 
-    function getDateArchiveRecette() {
+    function getDateArchiveRecette()
+    {
         return $this->dateArchiveRecette;
     }
 
-    function getPrixRecette() {
+    function getPrixRecette()
+    {
         return $this->prixRecette;
     }
 
     // Setters
-    function setIdRecette($idRecette) {
+    function setIdRecette($idRecette)
+    {
         $this->idRecette = $idRecette;
     }
 
-    function setNomRecette($nomRecette) {
+    function setNomRecette($nomRecette)
+    {
         $this->nomRecette = $nomRecette;
     }
 
-    function setPhotoRecette($photoRecette) {
+    function setPhotoRecette($photoRecette)
+    {
         $this->photoRecette = $photoRecette;
     }
 
-    function setDateArchiveRecette($dateArchiveRecette) {
+    function setDateArchiveRecette($dateArchiveRecette)
+    {
         $this->dateArchiveRecette = $dateArchiveRecette;
     }
 
-    function setPrixRecette($prixRecette) {
+    function setPrixRecette($prixRecette)
+    {
         $this->prixRecette = $prixRecette;
     }
-    
 }

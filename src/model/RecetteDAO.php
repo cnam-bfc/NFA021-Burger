@@ -1,24 +1,22 @@
-<?php 
+<?php
 
-class RecetteDAO extends DAO {
-    
+class RecetteDAO extends DAO
+{
     /**
-     * Constructeur de la classe DAO
-     *
-     * @param PDO $db
-     */
-    public function __construct($db) {
-        $this->db = $db;
-    }
-    
-    /**
-     * Méthode abstraite qui permet de créer un objet
+     * Méthode permettant de créer un objet
      * 
-     * @param Recette $recette
+     * @param Recette $recette (objet à créer qui ne possède pas d'id, celui-ci sera affecté par la méthode)
+     * @throws Exception (si l'objet possède déjà un id)
      */
-    public function create(&$recette) {
-        // requête
-        $query = "INSERT INTO burger_recette (
+    public function create(&$recette)
+    {
+        // Vérification que l'objet n'a pas d'id
+        if ($recette->getIdRecette() !== null) {
+            throw new Exception("L'objet à créer ne doit pas avoir d'id");
+        }
+
+        // Requête
+        $sqlQuery = "INSERT INTO burger_recette (
                                                 nom_recette, 
                                                 photo_recette, 
                                                 date_archive_recette, 
@@ -28,137 +26,168 @@ class RecetteDAO extends DAO {
                                                 :photo_recette, 
                                                 :date_archive_recette, 
                                                 :prix_recette)";
-        $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':nom_recette', $recette->getNomRecette(), PDO::PARAM_STR);
-        $stmt->bindValue(':photo_recette', $recette->getPhotoRecette(), PDO::PARAM_STR);
-        $stmt->bindValue(':date_archive_recette', $recette->getDateArchiveRecette(), PDO::PARAM_STR);
-        $stmt->bindValue(':prix_recette', $recette->getPrixRecette(), PDO::PARAM_STR);
-        $stmt->execute();
-        $id = $this->db->lastInsertId();
-        $recette -> setIdRecette($id);
+        $statement = $this->pdo->prepare($sqlQuery);
+        $statement->bindValue(':nom_recette', $recette->getNomRecette(), PDO::PARAM_STR);
+        $statement->bindValue(':photo_recette', $recette->getPhotoRecette(), PDO::PARAM_STR);
+        $statement->bindValue(':date_archive_recette', $recette->getDateArchiveRecette(), PDO::PARAM_STR);
+        $statement->bindValue(':prix_recette', $recette->getPrixRecette(), PDO::PARAM_STR);
+        $statement->execute();
+
+        // Récupération de l'id généré par l'autoincrement de la base de données
+        $id = $this->pdo->lastInsertId();
+
+        // Affectation de l'id à l'objet
+        $recette->setIdRecette($id);
     }
 
     /**
-     * Méthode abstraite qui permet de supprimer un objet
+     * Méthode permettant de supprimer un objet
      * 
-     * @param Recette $recette
+     * @param Recette $recette (objet à supprimer)
+     * @throws Exception (si l'objet n'a pas d'id)
      */
-    public function delete($recette) {
-        $query = "DELETE FROM burger_recette WHERE id_recette = :id_recette";
-        $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':id_recette', $recette->getIdRecette(), PDO::PARAM_INT);
-        $stmt->execute();
+    public function delete($recette)
+    {
+        // Vérification que l'objet a un id
+        if ($recette->getIdRecette() === null) {
+            throw new Exception("L'objet à supprimer doit avoir un id");
+        }
+
+        // Requête
+        $sqlQuery = "DELETE FROM burger_recette WHERE id_recette = :id_recette";
+        $statement = $this->pdo->prepare($sqlQuery);
+        $statement->bindValue(':id_recette', $recette->getIdRecette(), PDO::PARAM_INT);
+        $statement->execute();
     }
 
     /**
-     * Méthode abstraite qui permet de mettre à jour un objet
+     * Méthode permettant de mettre à jour un objet
      * 
-     * @param Recette $recette
+     * @param Recette $recette (objet à mettre à jour)
+     * @throws Exception (si l'objet n'a pas d'id)
      */
-    public function update($recette){
-        // requête
-        $query = "UPDATE burger_recette SET nom_recette = :nom_recette, 
+    public function update($recette)
+    {
+        // Vérification que l'objet a un id
+        if ($recette->getIdRecette() === null) {
+            throw new Exception("L'objet à mettre à jour doit avoir un id");
+        }
+
+        // Requête
+        $sqlQuery = "UPDATE burger_recette SET nom_recette = :nom_recette, 
                                             photo_recette = :photo_recette, 
                                             date_archive_recette = :date_archive_recette, 
                                             prix_recette = :prix_recette
                                             WHERE id_recette = :id_recette";
-        $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':nom_recette', $recette->getNomRecette(), PDO::PARAM_STR);
-        $stmt->bindValue(':photo_recette', $recette->getPhotoRecette(), PDO::PARAM_STR);
-        $stmt->bindValue(':date_archive_recette', $recette->getDateArchiveRecette(), PDO::PARAM_STR);
-        $stmt->bindValue(':prix_recette', $recette->getPrixRecette(), PDO::PARAM_STR);
-        $stmt->bindValue(':id_recette', $recette->getIdRecette(), PDO::PARAM_INT);
-        $stmt->execute();
+        $statement = $this->pdo->prepare($sqlQuery);
+        $statement->bindValue(':nom_recette', $recette->getNomRecette(), PDO::PARAM_STR);
+        $statement->bindValue(':photo_recette', $recette->getPhotoRecette(), PDO::PARAM_STR);
+        $statement->bindValue(':date_archive_recette', $recette->getDateArchiveRecette(), PDO::PARAM_STR);
+        $statement->bindValue(':prix_recette', $recette->getPrixRecette(), PDO::PARAM_STR);
+        $statement->bindValue(':id_recette', $recette->getIdRecette(), PDO::PARAM_INT);
+        $statement->execute();
     }
 
     /**
-     * Méthode abstraite qui permet de récupérer tous les objets
+     * Méthode permettant de récupérer tous les objets
      * 
-     * @return array
+     * @return array (tableau d'objets)
      */
-    public function selectAll(){
-        // requête
-        $query = "SELECT * FROM burger_recette";
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
+    public function selectAll()
+    {
+        // Requête
+        $sqlQuery = "SELECT * FROM burger_recette";
+        $statement = $this->pdo->prepare($sqlQuery);
+        $statement->execute();
 
-        // vérifie si on a des résultats 
-        if ($stmt->rowCount() === 0) {
-            return null;
-        }
-
-        // traitement des résultats
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // Traitement des résultats
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         $recettes = array();
         foreach ($result as $row) {
+            // Création d'un nouvel objet
             $recette = new Recette();
             $recette->setIdRecette($row['id_recette']);
             $recette->setNomRecette($row['nom_recette']);
             $recette->setPhotoRecette($row['photo_recette']);
             $recette->setDateArchiveRecette($row['date_archive_recette']);
             $recette->setPrixRecette($row['prix_recette']);
+
+            // Ajout de l'objet dans le tableau
+            $recettes[] = $recette;
         }
+
         return $recettes;
     }
 
     /**
-     * Méthode abstraite qui permet de récupérer un objet par son id
+     * Méthode permettant de récupérer un objet par son id
      * 
-     * @param int $id
-     * @return Recette
+     * @param int $id (id de l'objet à récupérer)
+     * @return Recette|null (objet ou null si aucun objet trouvé)
      */
-    public function selectById($id){
-        // requête
-        $query = "SELECT * FROM burger_recette WHERE id_recette = :id_recette";
-        $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':id_recette', $id, PDO::PARAM_INT);
-        $stmt->execute();
+    public function selectById($id)
+    {
+        // Requête
+        $sqlQuery = "SELECT * FROM burger_recette WHERE id_recette = :id_recette";
+        $statement = $this->pdo->prepare($sqlQuery);
+        $statement->bindValue(':id_recette', $id, PDO::PARAM_INT);
+        $statement->execute();
 
-        // vérifie si on a des résultats 
-        if ($stmt->rowCount() === 0) {
+        // Vérification que l'on a bien un résultat
+        if ($statement->rowCount() === 0) {
             return null;
         }
 
-        // traitement du résultat
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        // Traitement du résultat
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        // Création d'un nouvel objet
         $recette = new Recette();
         $recette->setIdRecette($result['id_recette']);
         $recette->setNomRecette($result['nom_recette']);
         $recette->setPhotoRecette($result['photo_recette']);
         $recette->setDateArchiveRecette($result['date_archive_recette']);
         $recette->setPrixRecette($result['prix_recette']);
+
         return $recette;
     }
 
     /**
-     * Les 3 recettes les plus vendus de la au cours de la dernière semaine
+     * Méthode permettant de récupérer les 3 recettes les plus vendus au cours de la dernière semaine
+     * 
+     * @return array (tableau d'objets)
      */
-    public function selectTop3Recette(){
+    public function selectTop3Recette()
+    {
+        // Requête
         /*
-        // requête
-        $query = "SELECT * FROM burger_recette ORDER BY id_recette IN(SELECT id_recette FROM burger_recette_finale WHERE id_commande IN (SELECT id_commande FROM burger_commande_client WHERE date_commande BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW())GROUP BY id_recette ORDER BY COUNT(id_recette) DESC LIMIT 3)";
-        $stmt = $this->db->prepare($query);
-        $stmt->execute();
+        $sqlQuery = "SELECT * FROM burger_recette ORDER BY id_recette IN (
+            SELECT id_recette FROM burger_recette_finale WHERE id_commande IN (
+                SELECT id_commande FROM burger_commande_client WHERE date_commande BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW()
+            ) GROUP BY id_recette ORDER BY COUNT(id_recette) DESC LIMIT 3
+        )";
+        $statement = $this->pdo->prepare($sqlQuery);
+        $statement->execute();
 
-        // vérifie si on a des résultats 
-        if ($stmt->rowCount() === 0) {
-            return null;
-        }
-
-        // traitement des résultats
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // Traitement des résultats
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         $recettes = array();
         foreach ($result as $row) {
+            // Création d'un nouvel objet
             $recette = new Recette();
             $recette->setIdRecette($row['id_recette']);
             $recette->setNomRecette($row['nom_recette']);
             $recette->setPhotoRecette($row['photo_recette']);
+            $recette->setDateArchiveRecette($row['date_archive_recette']);
             $recette->setPrixRecette($row['prix_recette']);
+
+            // Ajout de l'objet dans le tableau
             $recettes[] = $recette;
         }
+
         return $recettes;
         */
+
         return null;
     }
-        
 }
