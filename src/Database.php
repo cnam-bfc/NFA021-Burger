@@ -158,7 +158,10 @@ class Database
             try {
                 $this->pdo->exec($sqlQueries);
             } catch (PDOException $e) {
-                $this->pdo->rollBack();
+                try {
+                    $this->pdo->rollBack();
+                } catch (PDOException $e) {
+                }
                 throw new Exception('Impossible de mettre à jour la base de données (version ' . $databaseVersion . ' vers ' . self::LAST_VERSION . '), erreur de syntaxe dans le fichier de mise à jour');
                 break;
             }
@@ -170,16 +173,26 @@ class Database
                 $sqlStatement->bindValue(':version', $databaseVersion, PDO::PARAM_INT);
                 $sqlStatement->execute();
             } catch (PDOException $e) {
-                $this->pdo->rollBack();
+                try {
+                    $this->pdo->rollBack();
+                } catch (PDOException $e) {
+                }
                 throw new Exception('Impossible de mettre à jour la base de données (version ' . $databaseVersion . ' vers ' . self::LAST_VERSION . '), erreur lors de la mise à jour de la version');
                 break;
             }
 
             // Commit
             try {
-                $this->pdo->commit();
+                $commitResult = $this->pdo->commit();
+                if (!$commitResult) {
+                    throw new Exception('Impossible de mettre à jour la base de données (version ' . $databaseVersion . ' vers ' . self::LAST_VERSION . ')');
+                    break;
+                }
             } catch (PDOException $e) {
-                $this->pdo->rollBack();
+                try {
+                    $this->pdo->rollBack();
+                } catch (PDOException $e) {
+                }
                 throw new Exception('Impossible de mettre à jour la base de données (version ' . $databaseVersion . ' vers ' . self::LAST_VERSION . '), erreur lors de la mise à jour');
                 break;
             }
