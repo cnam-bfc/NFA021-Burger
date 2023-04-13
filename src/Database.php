@@ -130,34 +130,58 @@ class Database
         // Convert to int
         $databaseVersion = (int) $databaseVersion;
 
+        // Mise à jour de la base de données jusqu'à la dernière version
         while ($databaseVersion < self::VERSION) {
             $databaseVersion++;
 
+            // Chemin du fichier de mise à jour
             $sqlUpdateFile = SRC_FOLDER . 'database' . DIRECTORY_SEPARATOR . $databaseVersion . '.sql';
 
+            // Vérification de l'existence du fichier de mise à jour
             if (!file_exists($sqlUpdateFile)) {
                 throw new Exception('Impossible de mettre à jour la base de données (version ' . $databaseVersion . ' vers ' . self::VERSION . '), fichier de mise à jour manquant');
+                break;
             }
 
+            // Lecture du fichier de mise à jour
             $sqlQueries = file_get_contents($sqlUpdateFile);
+
+            // Vérification du contenu du fichier de mise à jour
             if ($sqlQueries === false) {
                 throw new Exception('Impossible de mettre à jour la base de données (version ' . $databaseVersion . ' vers ' . self::VERSION . '), fichier de mise à jour illisible');
+                break;
             }
 
             $this->pdo->beginTransaction();
 
+            // Mise à jour de la base de données
             try {
                 $this->pdo->exec($sqlQueries);
             } catch (PDOException $e) {
                 $this->pdo->rollBack();
                 throw new Exception('Impossible de mettre à jour la base de données (version ' . $databaseVersion . ' vers ' . self::VERSION . '), erreur de syntaxe dans le fichier de mise à jour');
+                break;
             }
 
+            // Mise à jour de la version de la base de données
+            try {
+                $sqlQuery = 'UPDATE _metadata SET version = :version';
+                $sqlStatement = $this->pdo->prepare($sqlQuery);
+                $sqlStatement->bindValue(':version', $databaseVersion, PDO::PARAM_INT);
+                $sqlStatement->execute();
+            } catch (PDOException $e) {
+                $this->pdo->rollBack();
+                throw new Exception('Impossible de mettre à jour la base de données (version ' . $databaseVersion . ' vers ' . self::VERSION . '), erreur lors de la mise à jour de la version');
+                break;
+            }
+
+            // Commit
             try {
                 $this->pdo->commit();
             } catch (PDOException $e) {
                 $this->pdo->rollBack();
                 throw new Exception('Impossible de mettre à jour la base de données (version ' . $databaseVersion . ' vers ' . self::VERSION . '), erreur lors de la mise à jour');
+                break;
             }
         }
     }

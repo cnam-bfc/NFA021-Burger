@@ -1,5 +1,3 @@
-UPDATE _metadata SET version = 1;
-
 CREATE TABLE burger_recette(
    id_recette INT AUTO_INCREMENT,
    nom_recette VARCHAR(50),
