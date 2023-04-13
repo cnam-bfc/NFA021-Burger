@@ -7,7 +7,7 @@ class Database
      * 
      * @var int
      */
-    const VERSION = 2;
+    const LAST_VERSION = 4;
 
     private static $instance = null;
 
@@ -131,7 +131,7 @@ class Database
         $databaseVersion = (int) $databaseVersion;
 
         // Mise à jour de la base de données jusqu'à la dernière version
-        while ($databaseVersion < self::VERSION) {
+        while ($databaseVersion < self::LAST_VERSION) {
             $databaseVersion++;
 
             // Chemin du fichier de mise à jour
@@ -139,7 +139,7 @@ class Database
 
             // Vérification de l'existence du fichier de mise à jour
             if (!file_exists($sqlUpdateFile)) {
-                throw new Exception('Impossible de mettre à jour la base de données (version ' . $databaseVersion . ' vers ' . self::VERSION . '), fichier de mise à jour manquant');
+                throw new Exception('Impossible de mettre à jour la base de données (version ' . $databaseVersion . ' vers ' . self::LAST_VERSION . '), fichier de mise à jour manquant');
                 break;
             }
 
@@ -148,7 +148,7 @@ class Database
 
             // Vérification du contenu du fichier de mise à jour
             if ($sqlQueries === false) {
-                throw new Exception('Impossible de mettre à jour la base de données (version ' . $databaseVersion . ' vers ' . self::VERSION . '), fichier de mise à jour illisible');
+                throw new Exception('Impossible de mettre à jour la base de données (version ' . $databaseVersion . ' vers ' . self::LAST_VERSION . '), fichier de mise à jour illisible');
                 break;
             }
 
@@ -159,7 +159,7 @@ class Database
                 $this->pdo->exec($sqlQueries);
             } catch (PDOException $e) {
                 $this->pdo->rollBack();
-                throw new Exception('Impossible de mettre à jour la base de données (version ' . $databaseVersion . ' vers ' . self::VERSION . '), erreur de syntaxe dans le fichier de mise à jour');
+                throw new Exception('Impossible de mettre à jour la base de données (version ' . $databaseVersion . ' vers ' . self::LAST_VERSION . '), erreur de syntaxe dans le fichier de mise à jour');
                 break;
             }
 
@@ -171,7 +171,7 @@ class Database
                 $sqlStatement->execute();
             } catch (PDOException $e) {
                 $this->pdo->rollBack();
-                throw new Exception('Impossible de mettre à jour la base de données (version ' . $databaseVersion . ' vers ' . self::VERSION . '), erreur lors de la mise à jour de la version');
+                throw new Exception('Impossible de mettre à jour la base de données (version ' . $databaseVersion . ' vers ' . self::LAST_VERSION . '), erreur lors de la mise à jour de la version');
                 break;
             }
 
@@ -180,7 +180,7 @@ class Database
                 $this->pdo->commit();
             } catch (PDOException $e) {
                 $this->pdo->rollBack();
-                throw new Exception('Impossible de mettre à jour la base de données (version ' . $databaseVersion . ' vers ' . self::VERSION . '), erreur lors de la mise à jour');
+                throw new Exception('Impossible de mettre à jour la base de données (version ' . $databaseVersion . ' vers ' . self::LAST_VERSION . '), erreur lors de la mise à jour');
                 break;
             }
         }
