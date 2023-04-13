@@ -221,14 +221,12 @@ body {
 
 .padding_default {
     padding: 0 var(--espacement_extreme_large);
-    padding-top: var(--espacement_large);
     padding-bottom: var(--espacement_large);
 }
 
 @media screen and (max-width: 740px) {
     .padding_default {
         padding: 0 var(--espacement_large);
-        padding-top: var(--espacement_large);
         padding-bottom: var(--espacement_large);
     }
 }
@@ -236,7 +234,6 @@ body {
 @media screen and (max-width: 480px) {
     .padding_default {
         padding: 0 var(--espacement_moyen);
-        padding-top: var(--espacement_moyen);
         padding-bottom: var(--espacement_large);
     }
 }
@@ -372,7 +369,7 @@ body {
     font-weight: bold;
     font-size: var(--taille_titre);
     text-align: center;
-    margin: var(--espacement_large) 0;
+    margin: var(--espacement_large) auto;
     background-color: var(--senaire);
     border-radius: 10px;
     padding: 30px 20px;
