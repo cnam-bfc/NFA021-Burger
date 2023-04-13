@@ -172,7 +172,7 @@ class RecetteDAO extends DAO
         $statement->execute();
 
         // Vérification que l'on a bien un résultat
-        if ($statement->rowCount() === 0) {
+        if ($statement->rowCount() < 3) {
             return null;
         }
 
