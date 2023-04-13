@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * DAO Recette
+ */
 class RecetteDAO extends DAO
 {
     /**
@@ -17,15 +20,16 @@ class RecetteDAO extends DAO
 
         // Requête
         $sqlQuery = "INSERT INTO burger_recette (
-                                                nom_recette, 
-                                                photo_recette, 
-                                                date_archive_recette, 
-                                                prix_recette )
-                                                VALUES (
-                                                :nom_recette, 
-                                                :photo_recette, 
-                                                :date_archive_recette, 
-                                                :prix_recette)";
+                                                nom_recette,
+                                                photo_recette,
+                                                date_archive_recette,
+                                                prix_recette
+                                                ) VALUES (
+                                                :nom_recette,
+                                                :photo_recette,
+                                                :date_archive_recette,
+                                                :prix_recette
+                                                )";
         $statement = $this->pdo->prepare($sqlQuery);
         $statement->bindValue(':nom_recette', $recette->getNomRecette(), PDO::PARAM_STR);
         $statement->bindValue(':photo_recette', $recette->getPhotoRecette(), PDO::PARAM_STR);
@@ -74,9 +78,9 @@ class RecetteDAO extends DAO
         }
 
         // Requête
-        $sqlQuery = "UPDATE burger_recette SET nom_recette = :nom_recette, 
-                                            photo_recette = :photo_recette, 
-                                            date_archive_recette = :date_archive_recette, 
+        $sqlQuery = "UPDATE burger_recette SET nom_recette = :nom_recette,
+                                            photo_recette = :photo_recette,
+                                            date_archive_recette = :date_archive_recette,
                                             prix_recette = :prix_recette
                                             WHERE id_recette = :id_recette";
         $statement = $this->pdo->prepare($sqlQuery);
