@@ -45,15 +45,22 @@ class AutoLoader
     public static function autoload($class)
     {
         switch ($class) {
-            case file_exists(MODEL . $class . '.php'):
-                require_once MODEL . $class . '.php';
+                // Si la classe est un modèle (DAO ou Objet)
+            case file_exists(MODEL . (substr($class, -3) == 'DAO' ? strtolower(substr($class, 0, -3)) : strtolower($class)) . DIRECTORY_SEPARATOR . $class . '.php'):
+                require_once MODEL . (substr($class, -3) == 'DAO' ? strtolower(substr($class, 0, -3)) : strtolower($class)) . DIRECTORY_SEPARATOR . $class . '.php';
                 break;
+
+                // Si la classe est un contrôleur
             case file_exists(CONTROLLER . $class . '.php'):
                 require_once CONTROLLER . $class . '.php';
                 break;
+
+                // Si la classe est une vue
             case file_exists(VIEW . $class . '.php'):
                 require_once VIEW . $class . '.php';
                 break;
+
+                // Sinon on affiche une erreur
             default:
                 // Si une erreur est survenue, on affiche une page d'erreur
                 ErrorController::error(500, "Classe $class introuvable.");
