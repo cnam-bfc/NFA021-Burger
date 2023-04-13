@@ -118,6 +118,30 @@ body {
     flex-grow: 1;
 }
 
+.gap_moyen {
+    gap: var(--espacement_moyen);
+}
+
+.gap_petit {
+    gap: var(--espacement_petit);
+}
+
+.gap_top_bottom_moyen {
+    gap: var(--espacement_moyen) 0;
+}
+
+.gap_top_bottom_petit {
+    gap: var(--espacement_petit) 0;
+}
+
+.gap_left_right_moyen {
+    gap: 0 var(--espacement_moyen);
+}
+
+.gap_left_right_petit {
+    gap: 0 var(--espacement_petit);
+}
+
 .hidding {
     display: none;
 }
@@ -242,6 +266,10 @@ body {
 
 .width_100 {
     width: 100%;
+}
+
+.width_80 {
+    width: 80%;
 }
 
 .width_75 {
