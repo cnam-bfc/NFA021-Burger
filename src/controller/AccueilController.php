@@ -15,6 +15,8 @@ class AccueilController extends Controller
         // Définition des variables utilisées dans la vue
         $view->backgroundImage = IMG . "accueil_background.webp";
 
+        $view->carte = IMG . "carte_with_ping_name.png";
+
         // DEBUT - A DEPLACER DANS AJAX
         // ici il faudra appeler le modèle pour récupérer le top 3 des recettes du moment mais c'est une démonstration
         $recetteDAO = new RecetteDAO();
