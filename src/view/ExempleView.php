@@ -1,10 +1,19 @@
 <div class="padding_default grow">
-    <!-- ************************* DEBUT - EXEMPLE TITRE ************************* -->
+    <!-- ************************* DEBUT - EXEMPLE TITRE BULLE ************************* -->
     <div class="wrapper axe_colonne second_axe_center">
-        <h2 class="bold color_secondaire font_size_large margin_bottom_top_moyen text-center">Exemple de titre générique</h2>
-        <h2 class="titre">Exemple</h2>
+        <h2 class="bold color_secondaire font_size_large margin_bottom_top_moyen text-center">Exemple de titre générique (Titre bulle)</h2>
+        <h2 class="titre_bulle">Exemple</h2>
     </div>
-    <!-- ************************* FIN - EXEMPLE TITRE ************************* -->
+    <!-- ************************* FIN - EXEMPLE TITRE BULLE ************************* -->
+
+    <hr>
+
+    <!-- ************************* DEBUT - EXEMPLE TITRE SOULIGNÉ ************************* -->
+    <div class="wrapper axe_colonne second_axe_center">
+        <h2 class="bold color_secondaire font_size_large margin_bottom_top_moyen text-center">Exemple de titre générique (Titre souligné)</h2>
+        <h2 class="titre_souligne">Exemple</h2>
+    </div>
+    <!-- ************************* FIN - EXEMPLE TITRE SOULIGNÉ ************************* -->
 
     <hr>
 
