@@ -160,14 +160,22 @@ class RecetteDAO extends DAO
     public function selectTop3Recette()
     {
         // Requête
-        /*
-        $sqlQuery = "SELECT * FROM burger_recette ORDER BY id_recette IN (
-            SELECT id_recette FROM burger_recette_finale WHERE id_commande IN (
-                SELECT id_commande FROM burger_commande_client WHERE date_commande BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW()
-            ) GROUP BY id_recette ORDER BY COUNT(id_recette) DESC LIMIT 3
-        )";
+
+        $sqlQuery = "SELECT * 
+                    FROM burger_recette AS br
+                    LEFT JOIN burger_recette_finale AS brf ON br.id_recette = brf.id_recette_fk
+                    LEFT JOIN burger_commande_client AS bcc ON brf.id_commande_fk = bcc.id_commande
+                    WHERE date_commande BETWEEN DATE_SUB(NOW(), INTERVAL 1 MONTH) AND NOW()
+                    GROUP BY id_recette 
+                    ORDER BY COUNT(id_recette) 
+                    DESC LIMIT 3";
         $statement = $this->pdo->prepare($sqlQuery);
         $statement->execute();
+
+        // Vérification que l'on a bien un résultat
+        if ($statement->rowCount() === 0) {
+            return null;
+        }
 
         // Traitement des résultats
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -186,8 +194,5 @@ class RecetteDAO extends DAO
         }
 
         return $recettes;
-        */
-
-        return null;
     }
 }
