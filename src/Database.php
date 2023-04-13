@@ -7,7 +7,7 @@ class Database
      * 
      * @var int
      */
-    const VERSION = 1;
+    const VERSION = 2;
 
     private static $instance = null;
 

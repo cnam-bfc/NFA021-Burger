@@ -1,3 +1,9 @@
+-- Mise à jour de la base de données
+-- Date: 2023-04-12
+-- Version avant mise à jour: 0
+-- Version après mise à jour: 1
+-- Description: Création de la base de données
+
 CREATE TABLE burger_recette(
    id_recette INT AUTO_INCREMENT,
    nom_recette VARCHAR(50),
