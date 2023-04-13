@@ -182,19 +182,21 @@ class Database
             }
 
             // Commit
-            try {
-                $commitResult = $this->pdo->commit();
-                if (!$commitResult) {
-                    throw new Exception('Impossible de mettre à jour la base de données (version ' . $databaseVersion . ' vers ' . self::LAST_VERSION . ')', 0, $e);
+            if ($this->pdo->inTransaction()) {
+                try {
+                    $commitResult = $this->pdo->commit();
+                    if (!$commitResult) {
+                        throw new Exception('Impossible de mettre à jour la base de données (version ' . $databaseVersion . ' vers ' . self::LAST_VERSION . ')', 0, $e);
+                        break;
+                    }
+                } catch (PDOException $e) {
+                    try {
+                        $this->pdo->rollBack();
+                    } catch (PDOException $e) {
+                    }
+                    throw new Exception('Impossible de mettre à jour la base de données (version ' . $databaseVersion . ' vers ' . self::LAST_VERSION . '), erreur lors de la mise à jour', 0, $e);
                     break;
                 }
-            } catch (PDOException $e) {
-                try {
-                    $this->pdo->rollBack();
-                } catch (PDOException $e) {
-                }
-                throw new Exception('Impossible de mettre à jour la base de données (version ' . $databaseVersion . ' vers ' . self::LAST_VERSION . '), erreur lors de la mise à jour', 0, $e);
-                break;
             }
         }
     }
