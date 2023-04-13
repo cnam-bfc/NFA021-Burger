@@ -3,7 +3,7 @@
 
 <!-- Wrapper (contenu de la page) -->
 <div class="padding_default">
-    <h1 class="titre margin_left_right_auto">Installation</h1>
+    <h1 class="titre_bulle">Installation</h1>
 
     <div id="boxs" class="wrapper axe_ligne main_axe_center wrap margin_bottom_top_large">
         <div class="box" id="box_install_bdd">
