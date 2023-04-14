@@ -18,7 +18,7 @@
     </div>
     <div class="commande">
         <div class="num_com"><p>004</p></div>
-        <div class="composition_com"></div>a
+        <div class="composition_com"></div>
         <div class="temps_com"><p>300</p></div>
     </div>
     <div class="commande">
