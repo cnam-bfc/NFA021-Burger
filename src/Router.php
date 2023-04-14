@@ -17,6 +17,8 @@ class Router
         // PARTIE CLIENT
         // Accueil client
         'accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilClient"],
+        'carte' => ["controller" => "CarteMenuController", "method" => "renderView"],
+
 
         // PARTIE EMPLOYÉ
         // Accueil employé
