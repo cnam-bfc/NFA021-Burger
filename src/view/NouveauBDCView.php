@@ -1,9 +1,11 @@
 <link rel="stylesheet" href="<?php echo CSS ?>GeneriqueTarek.css">
 <link rel="stylesheet" href="<?php echo CSS ?>NouveauBDC.css">
 
-<div id="wrapper">
+<div class="padding_default grow">
 
-    <h1 class="titre_page">Bon de Commande</h1>
+<div class="wrapper axe_colonne second_axe_center">
+        <h2 class="titre">Bon de commande</h2>
+    </div>
 
     <div class="conteneur">
         <div class="boxBDC">
@@ -75,11 +77,14 @@
                 </div>
                 <button onclick="ajouterLigne()" class='courbe'>+</button><br><br>
 
-                <div id = 'montant' class = 'bold'>
-                    <p>Montant TTC : <p>
+                <div id='montant' class='bold'>
+                    <p>Montant TTC :
+                    <p>
                 </div>
 
-                <input type="submit" value="Valider" class='centrer valider courbe'>
+                <div class="wrapper axe_colonne second_axe_center">
+                    <button class="bouton">Sauvegarder</button>
+                </div>
 
                 <script src="<?php echo JS ?>NouveauBDC.js"></script>
 
