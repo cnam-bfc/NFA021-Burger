@@ -1,7 +1,27 @@
-.margin_carte {
-    margin: 3% 10%;
+.box {
+    width: 170px;
+    height: 170px;
+    border-radius: 20px;
+    border: 2px solid black;
+    margin-top: 0;
 }
 
-.carte_titre {
+#wrapper_accueil {
+    max-width: 973px;
+}
+.espace_titre {
     width: 100%;
+}
+
+#espace_cuisinier, #espace_livreur, #espace_gerant {
+    border-radius: 20px;
+    border: 3px solid black;
+
+}
+img {
+    width: 60%;
+    height: auto;
+}
+h2 {
+    text-align: center;
 }
