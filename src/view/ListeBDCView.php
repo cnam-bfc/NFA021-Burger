@@ -4,7 +4,12 @@
 
 <div id="wrapper">
 
-    <h1 class='titre_page'>Liste des bons de commande</h1><br>
+    <div class="padding_default grow">
+
+        <div class="wrapper axe_colonne second_axe_center">
+            <h2 class="titre">Bon de commande</h2>
+        </div>
+    </div>
 
     <div class="navigation">
         <button class="btn_navigation visible" data-page="1">BDC ouverts</button>
@@ -39,6 +44,22 @@
 
         <div class="box_liste ouvert" data-page="1">
             <h2>BDC No 50</h2>
+            <p>Fournisseur</p>
+            <p>Montant TTC</p>
+            <button class="btn_valider">Valider</button>
+            <button class="btn_details">Détails</button>
+        </div>
+
+        <div class="box_liste ouvert" data-page="1">
+            <h2>BDC No 48</h2>
+            <p>Fournisseur</p>
+            <p>Montant TTC</p>
+            <button class="btn_valider">Valider</button>
+            <button class="btn_details">Détails</button>
+        </div>
+
+        <div class="box_liste ouvert" data-page="1">
+            <h2>BDC No 48</h2>
             <p>Fournisseur</p>
             <p>Montant TTC</p>
             <button class="btn_valider">Valider</button>
