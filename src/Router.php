@@ -18,6 +18,8 @@ class Router
         // Accueil client
         'accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilClient"],
         'accueil/refreshTopRecettes' => ["controller" => "AccueilController", "method" => "refreshTopRecetteAJAX"],
+        'carte' => ["controller" => "CarteMenuController", "method" => "renderView"],
+
 
         // PARTIE EMPLOYÉ
         // Accueil employé
@@ -47,6 +49,11 @@ class Router
         //Produits
         'gerant/nouveauproduit' => ["controller" => "NouveauProduitController", "method" => "renderView"],
         'gerant/listeproduits' => ["controller" => "ListeProduitsController", "method" => "renderView"],
+
+        // PARTIE CUISINIER
+        //Ecran de cuisine
+        'cuisinier' => ["controller" => "EcranCuisineController", "method" => "renderView"],
+        'cuisinier/recette' => ["controller" => "RecetteCuisineController", "method" => "renderView"],
 
         // PARTIE LIVREUR
         // Livraison
