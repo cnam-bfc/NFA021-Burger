@@ -18,8 +18,9 @@ class Router
         // Accueil client
         'accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilClient"],
         'accueil/refreshTopRecettes' => ["controller" => "AccueilController", "method" => "refreshTopRecetteAJAX"],
-        'carte' => ["controller" => "CarteMenuController", "method" => "renderView"],
 
+        // Carte des recettes
+        'carte' => ["controller" => "CarteMenuController", "method" => "renderView"],
 
         // PARTIE EMPLOYÉ
         // Accueil employé
@@ -46,12 +47,12 @@ class Router
         'gerant/listebdc' => ["controller" => "ListeBDCController", "method" => "renderView"],
         'gerant/nouveaubdc' => ["controller" => "NouveauBDCController", "method" => "renderView"],
 
-        //Produits
+        // Produits
         'gerant/nouveauproduit' => ["controller" => "NouveauProduitController", "method" => "renderView"],
         'gerant/listeproduits' => ["controller" => "ListeProduitsController", "method" => "renderView"],
 
         // PARTIE CUISINIER
-        //Ecran de cuisine
+        // Ecran de cuisine
         'cuisinier' => ["controller" => "EcranCuisineController", "method" => "renderView"],
         'cuisinier/recette' => ["controller" => "RecetteCuisineController", "method" => "renderView"],
 
@@ -60,7 +61,7 @@ class Router
         'livreur/livraisons' => ["controller" => "LivraisonController", "method" => "renderViewLivraison"],
         'livreur/itineraire' => ["controller" => "LivraisonController", "method" => "renderViewItineraire"],
 
-        // exemples
+        // Exemples
         'exemple' => ["controller" => "ExempleController", "method" => "renderView"],
     ];
 
