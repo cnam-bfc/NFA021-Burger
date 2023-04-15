@@ -6,13 +6,19 @@
 
 <div class="wrapper axe_colonne" id="wrapper_accueil">
     <img src=<?php echo $backgroundImage ?> class="accueil_margin">
-    <div class="accueil_margin" id="top_recette">
-        <?php foreach ($topRecette as $recette) { ?>
-            <div class="top_recette_accueil_div">
-                <img src=<?php echo $recette["img"] ?>>
-                <p><?php echo $recette["nom"] ?></p>
-            </div>
-        <?php } ?>
+    <div class="wrapper axe_ligne width_80 main_axe_space_between second_axe_center bold margin_auto font_size_large gap_left_right_moyen accueil_margin hidding" id="top_recette">
+        <div class="top_recette_accueil_div">
+            <img>
+            <p></p>
+        </div>
+        <div class="top_recette_accueil_div">
+            <img>
+            <p></p>
+        </div>
+        <div class="top_recette_accueil_div">
+            <p></p>
+            <img>
+        </div>
     </div>
     <div class="wrapper axe_colonne second_axe_center background_primaire accueil_margin">
         <h2 class="color_secondaire bold">Nos restaurants</h2>

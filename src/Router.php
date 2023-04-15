@@ -17,6 +17,7 @@ class Router
         // PARTIE CLIENT
         // Accueil client
         'accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilClient"],
+        'accueil/refreshTopRecettes' => ["controller" => "AccueilController", "method" => "refreshTopRecetteAJAX"],
 
         // PARTIE EMPLOYÉ
         // Accueil employé
