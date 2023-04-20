@@ -21,17 +21,20 @@ class RecetteDAO extends DAO
         // Requête
         $sqlQuery = "INSERT INTO burger_recette (
                                                 nom_recette,
+                                                description_recette,
                                                 photo_recette,
                                                 date_archive_recette,
                                                 prix_recette
                                                 ) VALUES (
                                                 :nom_recette,
+                                                :description_recette,
                                                 :photo_recette,
                                                 :date_archive_recette,
                                                 :prix_recette
                                                 )";
         $statement = $this->pdo->prepare($sqlQuery);
         $statement->bindValue(':nom_recette', $recette->getNomRecette(), PDO::PARAM_STR);
+        $statement->bindValue(':description_recette', $recette->getDescriptionRecette(), PDO::PARAM_STR);
         $statement->bindValue(':photo_recette', $recette->getPhotoRecette(), PDO::PARAM_STR);
         $statement->bindValue(':date_archive_recette', $recette->getDateArchiveRecette(), PDO::PARAM_STR);
         $statement->bindValue(':prix_recette', $recette->getPrixRecette(), PDO::PARAM_STR);
@@ -79,12 +82,14 @@ class RecetteDAO extends DAO
 
         // Requête
         $sqlQuery = "UPDATE burger_recette SET nom_recette = :nom_recette,
+                                            description_recette = :description_recette,
                                             photo_recette = :photo_recette,
                                             date_archive_recette = :date_archive_recette,
                                             prix_recette = :prix_recette
                                             WHERE id_recette = :id_recette";
         $statement = $this->pdo->prepare($sqlQuery);
         $statement->bindValue(':nom_recette', $recette->getNomRecette(), PDO::PARAM_STR);
+        $statement->bindValue(':description_recette', $recette->getDescriptionRecette(), PDO::PARAM_STR);
         $statement->bindValue(':photo_recette', $recette->getPhotoRecette(), PDO::PARAM_STR);
         $statement->bindValue(':date_archive_recette', $recette->getDateArchiveRecette(), PDO::PARAM_STR);
         $statement->bindValue(':prix_recette', $recette->getPrixRecette(), PDO::PARAM_STR);
@@ -95,7 +100,7 @@ class RecetteDAO extends DAO
     /**
      * Méthode permettant de récupérer tous les objets
      * 
-     * @return array (tableau d'objets)
+     * @return Recette[] (tableau d'objets)
      */
     public function selectAll()
     {
@@ -112,6 +117,7 @@ class RecetteDAO extends DAO
             $recette = new Recette();
             $recette->setIdRecette($row['id_recette']);
             $recette->setNomRecette($row['nom_recette']);
+            $recette->setDescriptionRecette($row['description_recette']);
             $recette->setPhotoRecette($row['photo_recette']);
             $recette->setDateArchiveRecette($row['date_archive_recette']);
             $recette->setPrixRecette($row['prix_recette']);
@@ -149,6 +155,7 @@ class RecetteDAO extends DAO
         $recette = new Recette();
         $recette->setIdRecette($result['id_recette']);
         $recette->setNomRecette($result['nom_recette']);
+        $recette->setDescriptionRecette($result['description_recette']);
         $recette->setPhotoRecette($result['photo_recette']);
         $recette->setDateArchiveRecette($result['date_archive_recette']);
         $recette->setPrixRecette($result['prix_recette']);
@@ -159,7 +166,7 @@ class RecetteDAO extends DAO
     /**
      * Méthode permettant de récupérer les 3 recettes les plus vendus au cours de la dernière semaine
      * 
-     * @return array (tableau d'objets)
+     * @return Recette[] (tableau d'objets)
      */
     public function selectTop3Recette()
     {
@@ -188,6 +195,7 @@ class RecetteDAO extends DAO
             $recette = new Recette();
             $recette->setIdRecette($row['id_recette']);
             $recette->setNomRecette($row['nom_recette']);
+            $recette->setDescriptionRecette($row['description_recette']);
             $recette->setPhotoRecette($row['photo_recette']);
             $recette->setDateArchiveRecette($row['date_archive_recette']);
             $recette->setPrixRecette($row['prix_recette']);
