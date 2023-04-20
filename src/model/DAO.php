@@ -43,7 +43,7 @@ abstract class DAO
     /**
      * Méthode abstraite qui permet de récupérer tous les objets
      * 
-     * @return array[Object]
+     * @return Object[]
      */
     abstract public function selectAll();
 
