@@ -1,6 +1,9 @@
 <!-- on inclut la feuille de style -->
 <link rel="stylesheet" href="<?php echo CSS; ?>Stock.css">
 
+<!-- on inclut la feuille js -->
+<script src="<?php echo JS; ?>Stock.js"></script>
+
 <div class="wrapper axe_colonne second_axe_center main_axe_space_between grow">
 
     <h1 class="titre_souligne">Réception de commande</h1>
@@ -9,19 +12,12 @@
         <div> <!-- Bon commande -->
             <label for="bon_de_commande">Bon de commande</label>
             <select name="bon_de_commande" id="bon_de_commande" required>
-                <option value="0">Choisir un bon de commande</option>
-                <option value="1">BDC 1</option>
-                <option value="2">BDC 2</option>
-                <option value="3">BDC 3</option>
+                <option value="-1">Non référencé</option>
             </select>
         </div>
-        <div id="" class="hidding"> <!-- Fournisseur -->
+        <div id=""> <!-- Fournisseur -->
             <label for="fournisseur">Fournisseur</label>
             <select name="fournisseur" id="fournisseur">
-                <option value="0">Choisir un fournisseur</option>
-                <option value="1">Fournisseur 1</option>
-                <option value="2">Fournisseur 2</option>
-                <option value="3">Fournisseur 3</option>
             </select>
         </div>
     </section>

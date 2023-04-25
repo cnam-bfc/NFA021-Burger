@@ -204,4 +204,26 @@ class IngredientDAO extends DAO
 
         return $ingredient;
     }
+
+    /**
+     * Méthode permettant de récupérer les ingrédients nécessaire pour l'inventaire et également l'unité associée
+     * 
+     * Note : voir si on tri en SQL ou en PHP
+     * Note 2 : pour le moment on renvoi un tableau et pas un objet, voir comment faire avec M. Martinez
+     */
+    public function selectAllForInventaire() {
+
+        // Requête
+        $sqlQuery = "SELECT id_ingredient, nom_ingredient, photo_ingredient, quantite_stock_ingredient, diminutif_unite 
+        FROM `burger_ingredient`
+        LEFT JOIN burger_unite ON burger_ingredient.id_unite_fk = burger_unite.id_unite
+        WHERE date_archive_ingredient IS NULL ;";
+         $statement = $this->pdo->prepare($sqlQuery);
+         $statement->execute();
+ 
+         // Traitement des résultats
+         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+         return $result;
+    }
+
 }

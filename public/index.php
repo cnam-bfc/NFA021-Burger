@@ -14,6 +14,24 @@ if (!file_exists(DATA_FOLDER)) {
 }
 chdir(DATA_FOLDER);
 
+// on vérifie si dans data les dossier "utilisateurs" "recettes" et "ingredients" existents sinon on les créer
+if (!file_exists(DATA_FOLDER . "utilisateurs")) {
+    mkdir(DATA_FOLDER . "utilisateurs", 0777, true);
+}
+
+if (!file_exists(DATA_FOLDER . "recettes")) {
+    mkdir(DATA_FOLDER . "recettes", 0777, true);
+}
+
+if (!file_exists(DATA_FOLDER . "ingredients")) {
+    mkdir(DATA_FOLDER . "ingredients", 0777, true);
+}
+
+// on défini leur chemin
+define("DATA_UTILISATEURS", DATA_FOLDER . "utilisateurs/");
+define("DATA_RECETTES", DATA_FOLDER . "recettes/");
+define("DATA_INGREDIENTS", DATA_FOLDER . "ingredients/");
+
 // On récupère le chemin absolu du navigateur du client vers index.php (exemple si URL = http://localhost/Projet/PHP/Burger/index.php, alors $browserPathToIndex = /Projet/PHP/Burger/index.php)
 $browserPathToIndex = $_SERVER['PHP_SELF'];
 
