@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DAO Ingredient
+ * DAO Fournisseur
  */
 class FournisseurDAO extends DAO
 {
