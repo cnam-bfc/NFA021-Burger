@@ -27,7 +27,11 @@ class Router
         'employe/accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilEmploye"],
 
         // Visu burger
-        'visuModifsBurgers' => ["controller" => "ModifsBurgersController" , "method" => "renderViewPimpBurgers"],
+        'visuModifsBurgers' => ["controller" => "ModifsBurgersController", "method" => "renderViewPimpBurgers"],
+        'visuModifsBurgers/ingredients' => ["controller" => "ModifsBurgersController", "method" => "getIngredients"],
+
+        // Choix entre Livraison et Click&Collect
+        'CollectLivraison' => ["controller" => "CollectLivraisonController", "method" => "renderViewCollectORDelivery"],
 
         // PARTIE GÉRANT
         // Statistiques
