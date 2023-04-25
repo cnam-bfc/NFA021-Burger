@@ -130,7 +130,7 @@ class IngredientDAO extends DAO
     /**
      * Méthode permettant de récupérer tous les objets
      * 
-     * @return array (tableau d'objets)
+     * @return Ingredient[] (tableau d'objets)
      */
     public function selectAll()
     {
