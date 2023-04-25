@@ -7,7 +7,7 @@ class Database
      * 
      * @var int
      */
-    const LAST_VERSION = 5;
+    const LAST_VERSION = 6;
 
     private static $instance = null;
 
@@ -117,14 +117,17 @@ class Database
 
                 // Insertion de la version 0
                 $this->pdo->exec('INSERT INTO _metadata (id, version) VALUES (1, 0)');
-
-                // Création du trigger empêchant l'ajout de lignes dans la table _metadata
-                $this->pdo->exec('CREATE TRIGGER forbid_metadata_insert BEFORE INSERT ON _metadata FOR EACH ROW BEGIN SIGNAL SQLSTATE "45000" SET MESSAGE_TEXT = "Insertion on _metadata table is not allowed"; END');
-
-                $databaseVersion = 0;
             } catch (PDOException $e) {
                 throw new Exception('Impossible de créer la table _metadata', 0, $e);
             }
+
+            try {
+                // Création du trigger empêchant l'ajout de lignes dans la table _metadata
+                $this->pdo->exec('CREATE TRIGGER forbid_metadata_insert BEFORE INSERT ON _metadata FOR EACH ROW BEGIN SIGNAL SQLSTATE "45000" SET MESSAGE_TEXT = "Insertion on _metadata table is not allowed"; END');
+            } catch (PDOException $e) {
+            }
+
+            $databaseVersion = 0;
         }
 
         // Convert to int
