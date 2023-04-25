@@ -35,6 +35,7 @@ class Router
 
         // Stock et inventaire
         'gerant/inventaire' => ["controller" => "InventaireController", "method" => "renderViewInventaire"],
+        'gerant/inventaire/refreshTableauInventaire' => ["controller" => "InventaireController", "method" => "refreshTableauInventaire"],
         'gerant/stock' => ["controller" => "StockController", "method" => "renderViewStock"],
 
         // Recettes
