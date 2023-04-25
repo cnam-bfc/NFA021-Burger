@@ -11,9 +11,9 @@
             </a>
         </div>
         <div class="box wrapper axe_colonne margin_large main_axe_center second_axe_center">
-            <a href="http://localhost/NFA021-Burger/public/gerant/stocks" class="wrapper wrap axe_colonne main_axe_space_evenly main_axe_center second_axe_center grow">
+            <a href="http://localhost/NFA021-Burger/public/gerant/stock" class="wrapper wrap axe_colonne main_axe_space_evenly main_axe_center second_axe_center grow">
                 <img src=<?php echo $icones[1]["img"] ?> class='img'>
-                <h2 class="bold">Stocks</h2>
+                <h2 class="bold">Stock</h2>
             </a>
         </div>
         <div class="box wrapper axe_colonne margin_large main_axe_center second_axe_center">
