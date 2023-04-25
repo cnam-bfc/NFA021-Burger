@@ -162,7 +162,7 @@ class Form
      * @param array $extensions (extensions autorisées)
      * @return string|null (chemin du fichier ou null si le paramètre n'existe pas)
      */
-    public static function getFile($paramName, $required = true, $maxSize = 2048000, $extensions = array("jpg", "png", "gif"))
+    public static function getFile($paramName, $required = true, $maxSize = 2097152, $extensions = array("jpg", "png", "gif"))
     {
         // On récupère la valeur du paramètre
         $value = null;
