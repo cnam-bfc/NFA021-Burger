@@ -103,7 +103,7 @@ $(function () {
         celluleDiv.addClass("wrapper main_axe_center second_axe_center");
 
         // Bouton monter
-        let boutonMonter = $("<button>").addClass("bouton");
+        let boutonMonter = $("<button>").attr("type", "button").addClass("bouton");
         boutonMonter.click(function () {
             // Récupérer la ligne précédente
             let lignePrecedente = ligne.prev();
@@ -117,7 +117,7 @@ $(function () {
         celluleDiv.append(boutonMonter);
 
         // Bouton descendre
-        let boutonDescendre = $("<button>").addClass("bouton");
+        let boutonDescendre = $("<button>").attr("type", "button").addClass("bouton");
         boutonDescendre.click(function () {
             // Récupérer la ligne suivante
             let ligneSuivante = ligne.next();
@@ -131,7 +131,7 @@ $(function () {
         celluleDiv.append(boutonDescendre);
 
         // Bouton supprimer
-        let boutonSupprimer = $("<button>").addClass("bouton");
+        let boutonSupprimer = $("<button>").attr("type", "button").addClass("bouton");
         boutonSupprimer.click(function () {
             // Supprimer la ligne
             ligne.remove();
@@ -286,7 +286,23 @@ $(function () {
 
                     // Redirection vers la page de la recette
                     setTimeout(function () {
-                        window.location.href = "modifier?id=" + data.id;
+                        // Si on modifie la recette et que l'image de la recette n'a pas été modifiée
+                        if (url.pathname.endsWith("/recettes/modifier") && inputImage[0].files.length == 0) {
+                            // Réactivation des champs du formulaire
+                            disabledElements.forEach(function (element) {
+                                element.prop("disabled", false);
+                            });
+
+                            // Suppression icone et texte de chargement (fontawesome)
+                            enregistrerRecette.html(old_html);
+
+                            // On enlève la couleur du bouton
+                            enregistrerRecette.css('background-color', '');
+                        }
+                        // Sinon si on ajoute une recette, on redirige vers la page de modification de la recette
+                        else {
+                            window.location.href = "modifier?id=" + data.id;
+                        }
                     }, 1000);
                 }
                 // Si la recette n'a pas été modifiée

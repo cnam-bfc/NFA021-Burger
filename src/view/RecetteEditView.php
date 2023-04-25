@@ -63,7 +63,7 @@
                             <tr></tr>
                             <tr>
                                 <td colspan="6">
-                                    <button class="bouton" id="ajouter_ingredient"><i class="fa-solid fa-plus"></i> Ajouter un ingrédient</button>
+                                    <button type="button" class="bouton" id="ajouter_ingredient"><i class="fa-solid fa-plus"></i> Ajouter un ingrédient</button>
                                 </td>
                             </tr>
                         </tfoot>
@@ -73,7 +73,7 @@
         </div>
 
         <div class="wrapper main_axe_space_around">
-            <button id="enregistrer" class="bouton bouton_primaire" type="submit">Enregistrer</button>
+            <button type="submit" id="enregistrer" class="bouton bouton_primaire">Enregistrer</button>
         </div>
     </form>
 </div>
