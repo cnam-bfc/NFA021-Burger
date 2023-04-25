@@ -37,7 +37,7 @@ class RecetteEditController extends Controller
         $view->recetteNom = $recette->getNomRecette();
         $view->recetteDescription = $recette->getDescriptionRecette();
         $view->recettePrix = $recette->getPrixRecette();
-        $view->recetteImage = $recette->getPhotoRecette();
+        $view->recetteImage = DATA_RECETTES . $recette->getIdRecette() . '/presentation.img';
 
         $view->renderView();
     }
