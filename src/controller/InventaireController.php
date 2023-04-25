@@ -24,6 +24,7 @@ class InventaireController extends Controller
             $result = array();
             foreach ($ingredients as $ingredient) {
                 $result[] = array(
+                    "id" => $ingredient["id_ingredient"],
                     "photo" => IMG . $ingredient["photo_ingredient"],
                     "nom" => $ingredient["nom_ingredient"],
                     "stock" => $ingredient["quantite_stock_ingredient"],
@@ -37,6 +38,33 @@ class InventaireController extends Controller
                 return $a['nom'] <=> $b['nom'];
             });
         }
+
+        // envoi des données à la vue
+        $view = new View(BaseTemplate::JSON);
+
+        $view->json = $result;
+
+        $view->renderView();
+    }
+
+    public function miseAJourInventaire()
+    {
+        // On vérifie et on récupère les données du formulaire sous forme de json
+        $rawData = Form::getParam('data', Form::METHOD_POST, Form::TYPE_MIXED);
+        $data = json_decode($rawData, true);
+
+        // on traite les données et on actualise la base de données
+        $ingredientDAO = new IngredientDAO();
+        $result = array();
+        foreach ($data as $ingredient) {
+            $ingredientAUpdate = $ingredientDAO -> selectById($ingredient['id']);
+            $ingredientAUpdate->setQuantiteStockIngredient($ingredient['stock']);
+            $ingredientDAO->update($ingredientAUpdate);
+        }
+
+        $result = array(
+            "success" => true
+        );
 
         // envoi des données à la vue
         $view = new View(BaseTemplate::JSON);

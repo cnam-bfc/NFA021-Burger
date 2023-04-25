@@ -32,6 +32,6 @@
     </div>
 
     <div class="center_items_horizontal">
-        <button class="bouton bouton_primaire margin_bottom_top_large">Valider</button>
+        <button class="bouton bouton_primaire margin_bottom_top_large" id="bouton_mise_a_jour">Valider</button>
     </div>
 </div>
