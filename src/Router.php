@@ -50,6 +50,7 @@ class Router
         // Produits
         'gerant/nouveauproduit' => ["controller" => "NouveauProduitController", "method" => "renderView"],
         'gerant/listeproduits' => ["controller" => "ListeProduitsController", "method" => "renderView"],
+        
 
         // PARTIE CUISINIER
         // Ecran de cuisine
