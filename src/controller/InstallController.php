@@ -16,10 +16,15 @@ class InstallController extends Controller
      */
     public function testConnectionBdd()
     {
+        // $host = $_POST['host_bdd'];
         $host = Form::getParam('host_bdd', Form::METHOD_POST, Form::TYPE_STRING);
+        // $port = $_POST['port_bdd'];
         $port = Form::getParam('port_bdd', Form::METHOD_POST, Form::TYPE_INT);
+        // $database = $_POST['database_bdd'];
         $database = Form::getParam('database_bdd', Form::METHOD_POST, Form::TYPE_STRING);
+        // $user = $_POST['user_bdd'];
         $user = Form::getParam('user_bdd', Form::METHOD_POST, Form::TYPE_STRING);
+        // $password = $_POST['password_bdd'];
         $password = Form::getParam('password_bdd', Form::METHOD_POST, Form::TYPE_STRING);
 
         $success = Database::testConnectionBdd($host, $port, $database, $user, $password);
@@ -28,7 +33,7 @@ class InstallController extends Controller
             'success' => $success
         );
 
-        $view = new View(BaseTemplate::JSON, null);
+        $view = new View(BaseTemplate::JSON);
 
         // Définission des variables utilisées dans la vue
         $view->json = $json;
@@ -41,10 +46,15 @@ class InstallController extends Controller
      */
     public function install()
     {
+        // $bdd_host = $_POST['host_bdd'];
         $bdd_host = Form::getParam('host_bdd', Form::METHOD_POST, Form::TYPE_STRING);
+        // $bdd_port = $_POST['port_bdd'];
         $bdd_port = Form::getParam('port_bdd', Form::METHOD_POST, Form::TYPE_INT);
+        // $bdd_database = $_POST['database_bdd'];
         $bdd_database = Form::getParam('database_bdd', Form::METHOD_POST, Form::TYPE_STRING);
+        // $bdd_user = $_POST['user_bdd'];
         $bdd_user = Form::getParam('user_bdd', Form::METHOD_POST, Form::TYPE_STRING);
+        // $bdd_password = $_POST['password_bdd'];
         $bdd_password = Form::getParam('password_bdd', Form::METHOD_POST, Form::TYPE_STRING);
 
         // Création du fichier de configuration
@@ -70,18 +80,16 @@ class InstallController extends Controller
             $success = Database::createInstance();
         }
 
-        /*
         if ($success) {
-            // Création des tables
-            $success = Database::createTables($bdd_host, $bdd_port, $bdd_database, $bdd_user, $bdd_password);
+            // Mise à jour de la base de données
+            $success = Database::getInstance()->update();
         }
-        */
 
         $json = array(
             'success' => $success
         );
 
-        $view = new View(BaseTemplate::JSON, null);
+        $view = new View(BaseTemplate::JSON);
 
         // Définission des variables utilisées dans la vue
         $view->json = $json;

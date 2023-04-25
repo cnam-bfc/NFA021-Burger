@@ -7,7 +7,7 @@
 <script src="<?php echo JS; ?>statistiques.js"></script>
 
 <!-- content -->
-<div class="wrapper axe_ligne grow">
+<div class="wrapper axe_ligne grow ">
     <section id="menu_gauche" class="wrapper axe_colonne width_25 background_senaire"> <!-- peut se plier -->
         <div class="onglets"> <!-- permet de choisir la div à afficher -->
             <a class="onglet">Selection</a>
@@ -16,7 +16,7 @@
         </div>
         <div id="selection_graphe">
             <div class="box_graphe">
-                <p class="graphe_categorie bold"><i class="fa-solid fa-arrow-turn-down-right"></i>Ventes</p>
+                <p class="graphe_categorie bold">Ventes</p>
                 <p class="graphe_choix"><a href="#">Burger</a><p>
                 <p class="graphe_choix"><a href="#">Ingedient</a></p>
             </div>
@@ -49,7 +49,7 @@
         </div>
     </section>
     <section class="wrapper axe_colonne second_axe_center width_100 main_axe_space_between" id="contenu">
-        <div class="titre margin_bottom_top_large">
+        <div class="titre_souligne">
             <h1>Statistiques</h1>
         </div>
 

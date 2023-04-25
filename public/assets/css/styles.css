@@ -48,8 +48,8 @@ body {
 
 body {
     font-family: 'Roboto', sans-serif;
-    display : flex;
-    flex-direction : column;
+    display: flex;
+    flex-direction: column;
     justify-content: space-between;
 }
 
@@ -116,6 +116,34 @@ body {
 
 .grow {
     flex-grow: 1;
+}
+
+.gap_moyen {
+    gap: var(--espacement_moyen);
+}
+
+.gap_petit {
+    gap: var(--espacement_petit);
+}
+
+.gap_top_bottom_moyen {
+    gap: var(--espacement_moyen) 0;
+}
+
+.gap_top_bottom_petit {
+    gap: var(--espacement_petit) 0;
+}
+
+.gap_left_right_moyen {
+    gap: 0 var(--espacement_moyen);
+}
+
+.gap_left_right_petit {
+    gap: 0 var(--espacement_petit);
+}
+
+.hidding {
+    display: none;
 }
 
 /******************************** MARGIN - PADDING ***********************************/
@@ -217,14 +245,12 @@ body {
 
 .padding_default {
     padding: 0 var(--espacement_extreme_large);
-    padding-top: var(--espacement_large);
     padding-bottom: var(--espacement_large);
 }
 
 @media screen and (max-width: 740px) {
     .padding_default {
         padding: 0 var(--espacement_large);
-        padding-top: var(--espacement_large);
         padding-bottom: var(--espacement_large);
     }
 }
@@ -232,7 +258,6 @@ body {
 @media screen and (max-width: 480px) {
     .padding_default {
         padding: 0 var(--espacement_moyen);
-        padding-top: var(--espacement_moyen);
         padding-bottom: var(--espacement_large);
     }
 }
@@ -241,6 +266,14 @@ body {
 
 .width_100 {
     width: 100%;
+}
+
+.width_80 {
+    width: 80%;
+}
+
+.width_75 {
+    width: 75%;
 }
 
 .width_50 {
@@ -360,29 +393,27 @@ body {
 **************************************************************************************/
 
 /********************************* TITRE "BULLE" *************************************/
-.titre {
+.titre_bulle {
     font-weight: bold;
     font-size: var(--taille_titre);
     text-align: center;
-    /*
-    color: var(--quinnaire);
-    background-color: var(--primaire);
-    */
+    margin: var(--espacement_large) auto;
     background-color: var(--senaire);
     border-radius: 10px;
     padding: 30px 20px;
     width: 500px;
 }
 
-.titre_margin_top {
-    margin-top: var(--espacement_large);
-}
-
-.titre_margin_bottom {
-    margin-bottom: var(--espacement_large);
-}
-
 /********************************* TITRE "BARRE" *************************************/
+
+.titre_souligne {
+    font-weight: bold;
+    font-size: var(--taille_titre);
+    text-align: center;
+    border-bottom: 1px solid black;
+    margin: var(--espacement_large) 0;
+    padding: 0 var(--espacement_large) var(--espacement_moyen);
+}
 
 
 /*************************************************************************************
@@ -403,8 +434,10 @@ body {
 /* Champs de saisie */
 .form-input>input,
 .form-input>textarea,
-input.input,
-textarea.textarea {
+.form-input>select,
+.input,
+.textarea,
+.select {
     display: block;
     padding: 10px;
     border: 2px solid #ccc;
@@ -412,28 +445,36 @@ textarea.textarea {
 }
 
 .form-input>textarea,
-textarea.textarea {
+.textarea {
     resize: vertical;
     min-height: 100px;
 }
 
 .form-input>input:invalid,
-.form-input>textarea:invalid {
+.form-input>textarea:invalid,
+.form-input>select:invalid,
+input:invalid,
+textarea:invalid,
+select:invalid {
     border: 2px solid red;
 }
 
-/*
-.form-input>input:valid,
-.form-input>textarea:valid {
-    border: 2px solid green;
-}
-*/
-
 .form-input>input:focus,
 .form-input>textarea:focus,
-input.input:focus,
-textarea.textarea:focus {
+.form-input>select:focus,
+.input:focus,
+.textarea:focus,
+.select:focus {
     outline: none;
+}
+
+.form-input>input:disabled,
+.form-input>textarea:disabled,
+.form-input>select:disabled,
+.input:disabled,
+.textarea:disabled,
+.select:disabled {
+    cursor: not-allowed;
 }
 
 /* Bouton radio */
@@ -444,13 +485,6 @@ input[type="checkbox"].input {
     width: 25px;
     height: 25px;
     cursor: pointer;
-}
-
-.form-input>input[type="radio"]:disabled,
-.form-input>input[type="checkbox"]:disabled,
-input[type="radio"].input:disabled,
-input[type="checkbox"].input:disabled {
-    cursor: not-allowed;
 }
 
 .form-input+.form-input {
@@ -470,7 +504,7 @@ input[type="checkbox"].input:disabled {
 **************************************************************************************/
 
 /******************************* BOUTON VALIDATION ***********************************/
-button.bouton {
+.bouton {
     background-color: #e6e6e6;
     color: black;
     border: none;
@@ -482,18 +516,18 @@ button.bouton {
 }
 
 /*
-button.bouton.bouton_primaire {
+.bouton.bouton_primaire {
     background-color: var(--primaire);
     color: var(--quinnaire);
 }
 */
 
-button.bouton:disabled {
-    background-color: #f0f0f0;
+.bouton:disabled {
+    opacity: 0.5;
     cursor: not-allowed;
 }
 
-button.bouton:hover {
+.bouton:hover {
     /* Rendre la couleur plus foncée */
     background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
 }
@@ -561,39 +595,64 @@ button.bouton:hover {
 /*************************************************************************************
 ************************************** TABLEAU ***************************************
 **************************************************************************************/
-table.tableau {
+.tableau {
     width: 100%;
     border-collapse: separate;
-    border-spacing: 0;
+    border-spacing: 0 10px;
+    margin: -10px 0;
 }
 
-table.tableau tr {
+.tableau tr {
     background-color: #e6e6e6;
     color: black;
-    border-radius: 20px;
 }
 
-table.tableau td {
+.tableau td,
+.tableau th {
     text-align: center;
     vertical-align: middle;
 }
 
-table.tableau td+td {
-    padding-left: 10px;
-    padding-right: 10px;
+.tableau td {
+    padding: 5px;
 }
 
-table.tableau>thead {
+.tableau th {
+    padding: 20px 5px;
+}
+
+/* Bordure arrondie pour chaque ligne */
+.tableau td:first-child,
+.tableau th:first-child {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.tableau td:last-child,
+.tableau th:last-child {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.tableau>thead {
     font-weight: bold;
-    margin-bottom: 50px;
 }
 
-table.tableau>tfoot {
+.tableau>tfoot {
     font-weight: bold;
-    margin-top: 50px;
-    padding-top: 20px;
 }
 
-table.tableau button.bouton {
+.tableau .bouton {
     padding: 10px;
+}
+
+.tableau img {
+    max-width: 60px;
+    max-height: 60px;
+}
+
+.delimitation_trait {
+    border: 0.1pt solid #e5e3e3;
+    width: 80%;
+    margin: 15px 0;
 }

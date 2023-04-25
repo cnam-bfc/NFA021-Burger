@@ -63,10 +63,16 @@ if (!Configuration::isInstalled()) {
         return;
     }
 }
-// Si l'application est déjà installé et qu'un utilisateur tente d'accéder à la page d'installation, on le redirige vers la page d'accueil
-elseif (Configuration::isInstalled() && stripos($route, "install") === 0) {
-    Router::redirect("");
-    return;
+// Si l'application est déjà installé
+elseif (Configuration::isInstalled()) {
+    // Si un utilisateur tente d'accéder à la page d'installation, on le redirige vers la page d'accueil
+    if (stripos($route, "install") === 0) {
+        Router::redirect("");
+        return;
+    }
+
+    // Mise à jour de la base de données
+    Database::getInstance()->update();
 }
 
 Router::route($route);

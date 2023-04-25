@@ -1,14 +1,15 @@
 <!-- On ajoute la feuille de style associé à la page -->
-<link rel="stylesheet" href="<?php echo CSS ?>EditRecette.css">
+<link rel="stylesheet" href="<?php echo CSS ?>RecetteEdit.css">
+
+<!-- On ajoute le script associé à la page -->
+<script src="<?php echo JS ?>RecetteEdit.js"></script>
 
 <!-- Wrapper (contenu de la page) -->
 <div class="padding_default grow">
-    <div class="wrapper main_axe_space_around">
-        <h1 class="titre"><?= $titre ?></h1>
-    </div>
+    <h1 class="titre_bulle"><?= $titre ?></h1>
 
     <!-- Ligne contenant les informations générales et la composition de la recette -->
-    <div id="boxs" class="wrapper axe_ligne wrap padding_bottom_top_large">
+    <div id="boxs" class="wrapper axe_ligne wrap margin_bottom_top_large">
         <!-- Box informations générales -->
         <div class="box" id="informations_generales">
             <h2 class="box_titre">Informations générales</h2>
@@ -52,6 +53,7 @@
                             <th>Prix</th>
                             <th><!-- Bouton actions rapide --></th>
                         </tr>
+                        <tr></tr>
                     </thead>
                     <tbody>
                         <tr>
@@ -74,7 +76,7 @@
                             </td>
                             <td>
                                 <div class="wrapper main_axe_center second_axe_center">
-                                    <button class="bouton"><i class="fa-solid fa-arrow-up"></i></button>
+                                    <button class="bouton" disabled><i class="fa-solid fa-arrow-up"></i></button>
                                     <button class="bouton"><i class="fa-solid fa-arrow-down"></i></button>
                                     <button class="bouton"><i class="fa-solid fa-trash"></i></button>
                                 </div>
@@ -153,13 +155,14 @@
                             <td>
                                 <div class="wrapper main_axe_center second_axe_center">
                                     <button class="bouton"><i class="fa-solid fa-arrow-up"></i></button>
-                                    <button class="bouton"><i class="fa-solid fa-arrow-down"></i></button>
+                                    <button class="bouton" disabled><i class="fa-solid fa-arrow-down"></i></button>
                                     <button class="bouton"><i class="fa-solid fa-trash"></i></button>
                                 </div>
                             </td>
                         </tr>
                     </tbody>
                     <tfoot>
+                        <tr></tr>
                         <tr>
                             <td colspan="6">
                                 <button class="bouton" id="ajouter_ingredient"><i class="fa-solid fa-plus"></i> Ajouter un ingrédient</button>

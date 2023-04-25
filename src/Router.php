@@ -17,6 +17,10 @@ class Router
         // PARTIE CLIENT
         // Accueil client
         'accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilClient"],
+        'accueil/refreshTopRecettes' => ["controller" => "AccueilController", "method" => "refreshTopRecetteAJAX"],
+
+        // Carte des recettes
+        'carte' => ["controller" => "CarteMenuController", "method" => "renderView"],
 
         // PARTIE EMPLOYÉ
         // Accueil employé
@@ -36,17 +40,37 @@ class Router
         // Statistiques
         'gerant/statistiques' => ["controller" => "StatistiquesController", "method" => "renderViewStatistiques"],
 
+        // Stock et inventaire
+        'gerant/inventaire' => ["controller" => "InventaireController", "method" => "renderViewInventaire"],
+        'gerant/stock' => ["controller" => "StockController", "method" => "renderViewStock"],
+
         // Recettes
         'gerant/recettes' => ["controller" => "RecetteController", "method" => "renderViewRecettes"],
-        'gerant/recettes/ajouter' => ["controller" => "EditRecetteController", "method" => "renderViewAjouterRecette"],
-        'gerant/recettes/modifier' => ["controller" => "EditRecetteController", "method" => "renderViewModifierRecette"],
-        'gerant/recettes/supprimer' => ["controller" => "EditRecetteController", "method" => "renderViewSupprimerRecette"],
-
+        'gerant/recettes/list' => ["controller" => "RecetteController", "method" => "listeRecettes"],
+        'gerant/recettes/supprimer' => ["controller" => "RecetteController", "method" => "supprimerRecette"],
+        'gerant/recettes/ajouter' => ["controller" => "RecetteEditController", "method" => "renderViewAjouterRecette"],
+        'gerant/recettes/modifier' => ["controller" => "RecetteEditController", "method" => "renderViewModifierRecette"],
+        
         // BDC
-        'gerant/nouveauproduit' => ["controller" => "NouveauProduitController", "method" => "renderView"],
         'gerant/listebdc' => ["controller" => "ListeBDCController", "method" => "renderView"],
         'gerant/nouveaubdc' => ["controller" => "NouveauBDCController", "method" => "renderView"],
+
+        // Produits
+        'gerant/nouveauproduit' => ["controller" => "NouveauProduitController", "method" => "renderView"],
         'gerant/listeproduits' => ["controller" => "ListeProduitsController", "method" => "renderView"],
+
+        // PARTIE CUISINIER
+        // Ecran de cuisine
+        'cuisinier' => ["controller" => "EcranCuisineController", "method" => "renderView"],
+        'cuisinier/recette' => ["controller" => "RecetteCuisineController", "method" => "renderView"],
+
+        // PARTIE LIVREUR
+        // Livraison
+        'livreur/livraisons' => ["controller" => "LivraisonController", "method" => "renderViewLivraison"],
+        'livreur/itineraire' => ["controller" => "LivraisonController", "method" => "renderViewItineraire"],
+
+        // Exemples
+        'exemple' => ["controller" => "ExempleController", "method" => "renderView"],
     ];
 
     /**

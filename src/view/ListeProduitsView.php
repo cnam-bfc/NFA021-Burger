@@ -1,162 +1,127 @@
-<link rel="stylesheet" href="<?php echo CSS ?>GeneriqueTarek.css">
 <link rel="stylesheet" href="<?php echo CSS ?>ListeProduits.css">
-<link rel="stylesheet" href="<?php echo CSS ?>style.css">
+<link rel="stylesheet" href="<?php echo CSS ?>GeneriqueTarek.css">
 
-<body>
 
-    <div id="wrapper">
-        <div class="conteneur">
-            <h1 class="titre_page">Liste des produits</h1>
-            <div class="box">
-                <input type="text" id="myInput" class='courbe' onkeyup="myFunction()" placeholder="Recherchez un produit...">
-                <table id="myTable">
-                    <thead>
-                        <tr>
-                            <th class='courbe bold'>Icone</th>
-                            <th onclick="sortTable(1)" class='courbe bold'>Produit</th>
-                            <th onclick="sortTable(2)" class='courbe bold'>Description</th>
-                            <th onclick="sortTable(3)" class='courbe bold'>Fournisseur</th>
-                            <th onclick="sortTable(4)" class='courbe bold'>Qte Stock</th>
-                            <th onclick="sortTable(5)" class='courbe bold'>Stock mini</th>
-                            <th onclick="sortTable(6)" class='courbe bold'>Qte Standard</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <div class="conteneur">
-                            <tr>
-                                <td><img src=<?php echo $icone[1]["img"] ?> class='img'></td>
-                                <td>Pain</td>
-                                <td>
-                                    <p> Farine de blé, levure, <br /> graine de sésame, sel.</p>
-                                </td>
-                                <td>Fournisseur</td>
-                                <td>150</td>
-                                <td>50</td>
-                                <td>150</td>
-                                <td><img src=<?php echo $icone[0]["img"] ?> class='img'></td>
-                            </tr>
+<div class="padding_default grow">
 
-                            <td colspan="7">
-                                <hr />
-                            </td>
+    <div class="wrapper axe_colonne second_axe_center">
+        <h2 class="titre">Liste des produits</h2>
+    </div><br><br>
 
-                            <tr>
-                                <td><img src=<?php echo $icone[2]["img"] ?> class='img'></td>
-                                <td>Steak</td>
-                                <td>
-                                    <p> Viande bovine, <br /> sel, poivre.</p>
-                                </td>
-                                <td>Fournisseur</td>
-                                <td>150</td>
-                                <td>50</td>
-                                <td>150</td>
-                                <td><img src=<?php echo $icone[0]["img"] ?> class='img'></td>
-                            </tr>
+    <div style="display:flex; flex-direction: row">
+        <label for="recherche"><i class="loupe fa-solid fa-magnifying-glass fa-lg" style="color: #000;"></i></i></label>
+        <input type="text" id="recherche" class='courbe' onkeyup="rechercher()" placeholder="Recherchez..." />
+    </div><br>
 
-                            <td colspan="7">
-                                <hr />
-                            </td>
+    <div class="wrapper axe_colonne second_axe_center">
+        <!-- Tableau contenant les ingrédients de la recette -->
+        <table class="tableau">
+            <thead>
+                <tr>
+                    <th><!-- Image --></th>
+                    <th>Produit</th>
+                    <th>Allergene</th>
+                    <th>Fournisseur</th>
+                    <th>Stock</th>
+                    <th>Stock Mini</th>
+                    <th>Stock Standard</th>
+                    <th><!-- Bouton actions rapide --></th>
+                </tr>
+                <tr></tr>
+            </thead>
+            <tbody>
 
-                            <tr>
-                                <td><img src=<?php echo $icone[4]["img"] ?> class='img'></td>
-                                <td>Salade</td>
-                                <td>
-                                    <p> Batavia</p>
-                                </td>
-                                <td>Fournisseur</td>
-                                <td>150</td>
-                                <td>50</td>
-                                <td>150</td>
-                                <td><img src=<?php echo $icone[0]["img"] ?> class='img'></td>
-                            </tr>
+                <!-- <tr id='select'>
+                    <td><img src="<?= IMG . 'icone/pain.png' ?>"></td>
+                    <td>Pain</td>
+                    <td></td>
+                    <td>La Boulangerie Bleue</td>
+                    <td>250 u</td>
+                    <td>100 u</td>
+                    <td>400 u</td>
+                    <td><img src=<?php echo $icone[0]["img"] ?> class='img'></td>
+                </tr>
 
-                            <td colspan="7">
-                                <hr />
-                            </td>
+                <tr id='select'>
+                    <td><img src="<?= IMG . 'icone/steak.png' ?>"></td>
+                    <td>Steak</td>
+                    <td></td>
+                    <td>FreezeFood</td>
+                    <td>250 u</td>
+                    <td>100 u</td>
+                    <td>500 u</td>
+                    <td><img src=<?php echo $icone[0]["img"] ?> class='img'></td>
+                </tr>
 
-                            <tr>
-                                <td><img src=<?php echo $icone[3]["img"] ?> class='img'></td>
-                                <td>Tomate</td>
-                                <td>
-                                    <p> Coeur de boeuf</p>
-                                </td>
-                                <td>Fournisseur</td>
-                                <td>150</td>
-                                <td>50</td>
-                                <td>150</td>
-                                <td><img src=<?php echo $icone[0]["img"] ?> class='img'></td>
-                            </tr>
+                <tr id='select'>
+                    <td><img src="<?= IMG . 'icone/tomate.png' ?>"></td>
+                    <td>Tomate</td>
+                    <td></td>
+                    <td>BioMaraicher</td>
+                    <td>25 kg</td>
+                    <td>10 kg</td>
+                    <td>50 kg</td>
+                    <td><img src=<?php echo $icone[0]["img"] ?> class='img'></td>
+                </tr>
 
-                        </div>
-                    </tbody>
+                <tr id='select'>
+                    <td><img src="<?= IMG . 'icone/salade.png' ?>"></td>
+                    <td>Salade</td>
+                    <td></td>
+                    <td>BioMaraicher</td>
+                    <td>25 kg</td>
+                    <td>10 kg</td>
+                    <td>50 kg</td>
+                    <td><img src=<?php echo $icone[0]["img"] ?> class='img'></td>
+                </tr> -->
 
-                </table>
-                <br><br>
-            </div>
-        </div>
+                <?php
+                $host = 'localhost';
+                $bd = 'chabu';
+                $login = 'root';
+                $password = '';
+
+                global $pdo;
+                $result;
+                try {
+                    $pdo = new PDO('mysql:dbname=chabu;host=127.0.0.1;port=3307', $login, $password);
+                } catch (Exception $e) { //Le catch est chargé d’intercepter une éventuelle erreur
+                    die($e->getMessage());
+                }
+
+                $query = "SELECT * FROM burger_ingredient";
+                try {
+                    $statement = $pdo->prepare($query);
+                    $statement->execute();
+                    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+                } catch (Exception $e) {
+                    die("Erreur dans la requete " . $e->getMessage());
+                }
+                $i = 0;
+                
+                foreach ($result as $donnees) {
+                    $i++;
+                ?>
+                    <tr id='select'>
+                        <td><img src=<?php echo $icone[$i]["img"]; ?> class='img'></td>
+                        <td><?php echo $donnees['nom_ingredient']; ?></td>
+                        <td><?php echo $donnees['id_fournisseur_fk']; ?></td>
+                        <td><?php echo $donnees['quantite_stock_ingredient']; ?></td>
+                        <td><?php echo $donnees['quantite_standard']; ?></td>
+                        <td><?php echo $donnees['quantite_minimum']; ?></td>
+                        <td><img src=<?php echo $icone[0]["img"]; ?> class='img'></td>
+                    </tr>
+                <?php
+                
+                }
+                ?>
+
+            </tbody>
+            <tfoot>
+                <tr></tr>
+            </tfoot>
+        </table>
     </div>
-
-
-    <div class="container">
-        <h2>Liste des produits</h2>
-
-        <input type="text" id="myInput" class='courbe' onkeyup="myFunction()" placeholder="Recherchez ici...">
-
-        <ul class="responsive-table">
-            <li class="table-header">
-                <div class="col col-1">Icone</div>
-                <div class="col col-2" onclick="sortTableP()">Produit</div>
-                <div class="col col-3">Fournisseur</div>
-                <div class="col col-4">Stock</div>
-                <div class="col col-4">Stock mini</div>
-                <div class="col col-4">Qte Standard</div>
-                <div></div>
-            </li>
-
-            <li class="table-row">
-                <div class="col col-1" data-label="Icone"><img src=<?php echo $icone[1]["img"] ?> class='img'></div>
-                <div class="col col-2" data-label="Produit">Pain</div>
-                <div class="col col-3" data-label="Fournisseur">Fournisseur 1</div>
-                <div class="col col-4" data-label="Qte Stock">150</div>
-                <div class="col col-4" data-label="Stock mini">50</div>
-                <div class="col col-4" data-label="Qte Standard">150</div>
-                <div><img src=<?php echo $icone[0]["img"] ?> class='img'></div>
-            </li>
-
-            <li class="table-row">
-                <div class="col col-1" data-label="Icone"><img src=<?php echo $icone[2]["img"] ?> class='img'></div>
-                <div class="col col-2" data-label="Produit">Steak</div>
-                <div class="col col-3" data-label="Fournisseur">Fournisseur 1</div>
-                <div class="col col-4" data-label="Qte Stock">150</div>
-                <div class="col col-4" data-label="Stock mini">50</div>
-                <div class="col col-4" data-label="Qte Standard">150</div>
-                <div><img src=<?php echo $icone[0]["img"] ?> class='img'></div>
-            </li>
-
-            <li class="table-row">
-                <div class="col col-1" data-label="Icone"><img src=<?php echo $icone[3]["img"] ?> class='img'></div>
-                <div class="col col-2" data-label="Produit">Tomate</div>
-                <div class="col col-3" data-label="Fournisseur">Fournisseur 1</div>
-                <div class="col col-4" data-label="Qte Stock">10</div>
-                <div class="col col-4" data-label="Stock mini">5</div>
-                <div class="col col-4" data-label="Qte Standard">10</div>
-                <div><img src=<?php echo $icone[0]["img"] ?> class='img'></div>
-            </li>
-
-            <li class="table-row">
-                <div class="col col-1" data-label="Icone"><img src=<?php echo $icone[4]["img"] ?> class='img'></div>
-                <div class="col col-2" data-label="Produit">Salade</div>
-                <div class="col col-3" data-label="Fournisseur">Fournisseur 1</div>
-                <div class="col col-4" data-label="Qte Stock">10</div>
-                <div class="col col-4" data-label="Stock mini">5</div>
-                <div class="col col-4" data-label="Qte Standard">10</div>
-                <div><img src=<?php echo $icone[0]["img"] ?> class='img'></div>
-            </li>
-
-        </ul>
-    </div>
-
-</body>
+</div>
 
 <script src="<?php echo JS ?>ListeProduits.js"></script>
