@@ -28,20 +28,6 @@ class RecetteEditController extends Controller
             return;
         }
 
-        // Si l'utilisateur est entrain d'enregistrer la recette, on l'enregistre
-        if (Form::isFormSubmited(Form::METHOD_POST)) {
-            $nomRecette = Form::getParam('nom_recette', Form::METHOD_POST, Form::TYPE_STRING);
-            $descriptionRecette = Form::getParam('description_recette', Form::METHOD_POST, Form::TYPE_STRING);
-            $prixRecette = Form::getParam('prix_recette', Form::METHOD_POST, Form::TYPE_FLOAT);
-            $photoRecette = Form::getFile('image_recette', false);
-
-            // Modification de la recette
-            $recette->setNomRecette($nomRecette);
-            $recette->setDescriptionRecette($descriptionRecette);
-            $recette->setPrixRecette($prixRecette);
-            $recetteDAO->update($recette);
-        }
-
         $view = new View(BaseTemplate::EMPLOYE, 'RecetteEditView');
 
         // Définition des variables utilisées dans la vue
