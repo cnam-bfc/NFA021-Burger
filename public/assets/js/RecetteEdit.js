@@ -3,12 +3,15 @@ $(function () {
     const url = new URL(window.location.href);
 
     // Récupération des élements du DOM
+    const formRecette = $("#form_recette");
+    const enregistrerRecette = $("#enregistrer");
     const bodyTableauComposition = $("#tableau_composition tbody");
     const ajouterIngredient = $("#ajouter_ingredient");
 
     // Fonction permettant d'ajouter une ligne contenant un ingredient dans le tableau de composition de la recette
     function addIngredient(data) {
         let ligne = $("<tr>");
+        ligne.attr("data-id", data.id);
 
         // Image
         let cellule = $("<td>");
@@ -25,9 +28,10 @@ $(function () {
         let celluleDiv = $("<div>");
         celluleDiv.addClass("wrapper main_axe_center second_axe_center");
         let inputQuantite = $("<input>").attr({
+            name: "quantite_ingredient",
             type: "number",
             min: 0,
-            max: 99,
+            minlenght: 1,
             step: 1,
             value: data.quantite,
             required: true
@@ -43,6 +47,7 @@ $(function () {
         celluleDiv = $("<div>");
         celluleDiv.addClass("wrapper main_axe_center second_axe_center");
         let inputOptionnel = $("<input>").attr({
+            name: "optionnel_ingredient",
             type: "checkbox",
             checked: data.optionnel
         }).addClass("input");
@@ -55,6 +60,7 @@ $(function () {
         celluleDiv = $("<div>");
         celluleDiv.addClass("wrapper main_axe_center second_axe_center");
         let inputPrix = $("<input>").attr({
+            name: "prix_ingredient",
             type: "number",
             min: 0,
             max: 99.99,
@@ -204,4 +210,111 @@ $(function () {
         // On actualise la composition de la recette
         refreshIngredients();
     }
+
+    // Lors de la soumission du formulaire
+    formRecette.submit(function (event) {
+        // On empêche le formulaire de se soumettre
+        event.preventDefault();
+
+        let formDatas = new FormData(this);
+
+        // Si on modifie la recette
+        if (url.pathname.endsWith("/recettes/modifier")) {
+            // Récupération de l'id de la recette
+            let idRecette = url.searchParams.get("id");
+            formDatas.append("id", idRecette);
+        }
+
+        // Récupération des informations générales de la recette
+        // Nom
+        formDatas.append("nom", formRecette.find("input[name='nom_recette']").val());
+
+        // Description
+        formDatas.append("description", formRecette.find("textarea[name='description_recette']").val());
+
+        // Prix
+        formDatas.append("prix", formRecette.find("input[name='prix_recette']").val());
+
+        // Image de la recette
+        let inputImage = formRecette.find("input[name='image_recette']");
+        if (inputImage[0].files.length > 0) {
+            formDatas.append("image", inputImage[0].files[0]);
+        }
+
+        // Récupération des ingrédients
+        let ingredients = [];
+        bodyTableauComposition.children().each(function () {
+            let ingredient = {};
+            ingredient.id = $(this).attr("data-id");
+            ingredient.quantite = $(this).find("input[name='quantite_ingredient']").val();
+            ingredient.optionnel = $(this).find("input[name='optionnel_ingredient']").prop("checked");
+            if (ingredient.optionnel) {
+                ingredient.prix = $(this).find("input[name='prix_ingredient']").val();
+            }
+            ingredients.push(ingredient);
+        });
+        formDatas.append("ingredients", JSON.stringify(ingredients));
+
+        // Désactivation des champs du formulaire
+        let disabledElements = [];
+        formRecette.find("input, select, textarea, button").each(function () {
+            if (!$(this).prop("disabled")) {
+                $(this).prop("disabled", true);
+                disabledElements.push($(this));
+            }
+        });
+
+        // Ajout icone et texte de chargement (fontawesome)
+        let old_html = enregistrerRecette.html();
+        enregistrerRecette.html('<i class="fas fa-spinner fa-spin"></i> Chargement...');
+
+        // Envoi des données au serveur
+        $.ajax({
+            url: "enregistrer",
+            method: "POST",
+            data: formDatas,
+            processData: false,  // tell jQuery not to process the data
+            contentType: false,  // tell jQuery not to set contentType
+            dataType: "json",
+            success: function (data) {
+                // Si la recette a été modifiée
+                if (data.success) {
+                    // Afficher un message de succès
+                    enregistrerRecette.html('<i class="fas fa-check"></i> Enregistré !');
+                    // On change la couleur du bouton
+                    enregistrerRecette.css('background-color', '#28a745');
+
+                    // Redirection vers la page de la recette
+                    setTimeout(function () {
+                        window.location.href = "modifier?id=" + data.id;
+                    }, 1000);
+                }
+                // Si la recette n'a pas été modifiée
+                else {
+                    // Afficher un message d'erreur
+                    alert("Une erreur est survenue lors de l'enregistrement de la recette");
+
+                    // Réactivation des champs du formulaire
+                    disabledElements.forEach(function (element) {
+                        element.prop("disabled", false);
+                    });
+
+                    // Suppression icone et texte de chargement (fontawesome)
+                    enregistrerRecette.html(old_html);
+                }
+            },
+            error: function (data) {
+                // Afficher un message d'erreur
+                alert("Une erreur inconue est survenue");
+
+                // Réactivation des champs du formulaire
+                disabledElements.forEach(function (element) {
+                    element.prop("disabled", false);
+                });
+
+                // Suppression icone et texte de chargement (fontawesome)
+                enregistrerRecette.html(old_html);
+            }
+        });
+    });
 });

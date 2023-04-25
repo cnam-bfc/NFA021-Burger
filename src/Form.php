@@ -258,8 +258,8 @@ class Form
         echo 'File is uploaded successfully.';*/
         // *** FIN DU CODE INUTILE POUR NOTRE PROJET ***
 
-        // Retourne le chemin du fichier
-        return $_FILES[$paramName]['tmp_name'];
+        // Retourne le fichier
+        return $_FILES[$paramName];
     }
 
     /**
