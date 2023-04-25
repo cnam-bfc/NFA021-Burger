@@ -9,4 +9,17 @@ class ModifsBurgersController extends Controller
 
         $view->renderView();
     }
+    public function getIngredients()
+    {
+        $identifiant = $_POST['id'];
+        $view = new View(BaseTemplate::JSON, null);
+        
+        $view->json=array(
+            'ingredient' => array()
+
+        );
+
+        $view->renderView();
+    }
+
 }

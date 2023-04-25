@@ -23,7 +23,14 @@ class Router
         'employe/accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilEmploye"],
 
         // Visu burger
-        'visuModifsBurgers' => ["controller" => "ModifsBurgersController" , "method" => "renderViewPimpBurgers"],
+        'visuModifsBurgers' => ["controller" => "ModifsBurgersController", "method" => "renderViewPimpBurgers"],
+        'visuModifsBurgers/ingredients' => ["controller" => "ModifsBurgersController", "method" => "getIngredients"],
+
+
+
+        // Choix entre Livraison et Click&Collect
+
+        'CollectLivraison' => ["controller" => "CollectLivraisonController", "method" => "renderViewCollectORDelivery"],
 
         // PARTIE GÉRANT
         // Statistiques
@@ -34,7 +41,7 @@ class Router
         'gerant/recettes/ajouter' => ["controller" => "EditRecetteController", "method" => "renderViewAjouterRecette"],
         'gerant/recettes/modifier' => ["controller" => "EditRecetteController", "method" => "renderViewModifierRecette"],
         'gerant/recettes/supprimer' => ["controller" => "EditRecetteController", "method" => "renderViewSupprimerRecette"],
-        
+
         // BDC
         'gerant/nouveauproduit' => ["controller" => "NouveauProduitController", "method" => "renderView"],
         'gerant/listebdc' => ["controller" => "ListeBDCController", "method" => "renderView"],

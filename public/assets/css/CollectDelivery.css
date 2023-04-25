@@ -1,0 +1,15 @@
+.width_45 {
+    width: 45%;
+}
+
+.width_90 {
+    width: 90%;
+}
+
+#boxs {
+    gap: 25px;
+}
+
+#boxs>* {
+    flex: 1;
+}
