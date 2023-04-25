@@ -1,7 +1,9 @@
 $(function () {
+    // Récupération des élements du DOM
     const bodyTableauRecettes = $("#tableau_recettes tbody");
     const ajouterRecette = $("#ajouter_recette");
 
+    // Fonction permettant d'ajouter une ligne contenant une recette dans le tableau des recettes
     function addRecette(data) {
         let ligne = $("<tr>");
 
@@ -23,13 +25,12 @@ $(function () {
 
         // Ingrédients
         cellule = $("<td>");
-        // Ingrédients basiques
-        data.ingredientsBasique.forEach(element => {
-            cellule.append($("<li>").text(element.quantite + element.unite + " " + element.nom));
-        });
-        // Ingrédients optionnels
-        data.ingredientsOptionnel.forEach(element => {
-            cellule.append($("<li>").text(element.quantite + element.unite + " " + element.nom + " (optionnel)"));
+        data.ingredients.forEach(element => {
+            let ingredientText = element.quantite + element.unite + " " + element.nom;
+            if (element.optionnel) {
+                ingredientText += " (optionnel)";
+            }
+            cellule.append($("<li>").text(ingredientText));
         });
         ligne.append(cellule);
 
@@ -43,6 +44,7 @@ $(function () {
         // Conteneur des boutons
         let contenuCellule = $("<div>");
         contenuCellule.addClass('wrapper main_axe_center second_axe_center');
+
         // Bouton modifier
         let boutonModifier = $("<button>").addClass("bouton");
         boutonModifier.click(function () {
@@ -51,6 +53,7 @@ $(function () {
         });
         boutonModifier.append($("<i>").addClass("fa-solid fa-pen-to-square"));
         contenuCellule.append(boutonModifier);
+
         // Bouton supprimer
         let boutonSupprimer = $("<button>").addClass("bouton");
         boutonSupprimer.click(function () {
@@ -99,10 +102,13 @@ $(function () {
         cellule.append(contenuCellule);
         ligne.append(cellule);
 
+        // Ajout de la ligne au tableau
         bodyTableauRecettes.append(ligne);
     }
 
+    // Fonction permettant d'actualiser le tableau des recettes
     function refreshRecettes() {
+        // Supprimer le contenu du tableau
         bodyTableauRecettes.empty();
 
         // Ajout ligne de chargement
@@ -113,12 +119,16 @@ $(function () {
         ligne.append(cellule);
         bodyTableauRecettes.append(ligne);
 
+        // Récupération des recettes
         $.ajax({
-            url: "recettes/list",
+            url: "recettes/list/recettes",
             method: "GET",
             dataType: "json",
             success: function (data) {
+                // Supprimer la ligne de chargement
                 bodyTableauRecettes.empty();
+
+                // Si aucune recette n'a été trouvée, afficher "Aucun résultats"
                 if (data['data'].length == 0) {
                     let ligne = $("<tr>");
                     let cellule = $("<td>");
@@ -126,14 +136,19 @@ $(function () {
                     cellule.html("<br>Aucune recette n'a été trouvée<br><br>");
                     ligne.append(cellule);
                     bodyTableauRecettes.append(ligne);
-                } else {
+                }
+                // Sinon, ajouter chaque recette dans une nouvelle ligne
+                else {
                     data['data'].forEach(element => {
                         addRecette(element);
                     });
                 }
             },
             error: function (data) {
+                // Supprimer la ligne de chargement
                 bodyTableauRecettes.empty();
+
+                // Ajout ligne d'erreur
                 let ligne = $("<tr>");
                 let cellule = $("<td>");
                 cellule.attr("colspan", 6);

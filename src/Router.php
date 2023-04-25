@@ -39,10 +39,11 @@ class Router
 
         // Recettes
         'gerant/recettes' => ["controller" => "RecetteController", "method" => "renderViewRecettes"],
-        'gerant/recettes/list' => ["controller" => "RecetteController", "method" => "listeRecettes"],
+        'gerant/recettes/list/recettes' => ["controller" => "RecetteController", "method" => "listeRecettes"],
         'gerant/recettes/supprimer' => ["controller" => "RecetteController", "method" => "supprimerRecette"],
         'gerant/recettes/ajouter' => ["controller" => "RecetteEditController", "method" => "renderViewAjouterRecette"],
         'gerant/recettes/modifier' => ["controller" => "RecetteEditController", "method" => "renderViewModifierRecette"],
+        'gerant/recettes/list/ingredients' => ["controller" => "RecetteEditController", "method" => "listeIngredients"],
         
         // BDC
         'gerant/listebdc' => ["controller" => "ListeBDCController", "method" => "renderView"],
