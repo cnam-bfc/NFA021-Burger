@@ -41,10 +41,11 @@ AutoLoader::start();
 Session::start();
 
 // On initialise le routeur
-if (!isset($_GET["root"])) {
+if (!isset($_GET["r"])) {
     $route = "";
 } else {
-    $route = $_GET["root"];
+    $route = $_GET["r"];
+    unset($_GET["r"]);
     // On enlève le dernier slash de la route si il existe
     if (substr($route, -1) == "/") {
         $route = substr($route, 0, -1);
