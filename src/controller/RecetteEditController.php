@@ -177,7 +177,7 @@ class RecetteEditController extends Controller
         // CAS - Création d'une nouvelle recette
         if ($recetteId === null) {
             // Récupération de l'image de la recette
-            $recetteImage = Form::getFile('image', Form::METHOD_POST, true);
+            $recetteImage = Form::getFile('image', true);
 
             // Création de la recette
             $recette = new Recette();
@@ -193,7 +193,7 @@ class RecetteEditController extends Controller
         // CAS - Modification d'une recette existante
         else {
             // Récupération de l'image de la recette
-            $recetteImage = Form::getFile('image', Form::METHOD_POST, false);
+            $recetteImage = Form::getFile('image', false);
 
             // Récupération de la recette
             $recette = $recetteDAO->selectById($recetteId);

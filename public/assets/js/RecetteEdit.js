@@ -303,9 +303,12 @@ $(function () {
                     enregistrerRecette.html(old_html);
                 }
             },
-            error: function (data) {
-                // Afficher un message d'erreur
-                alert("Une erreur inconue est survenue");
+            error: function (jqXHR, textStatus, errorThrown) {
+                if (jqXHR.status !== 0) {
+                    alert('Erreur ' + jqXHR.status + ' : ' + errorThrown);
+                } else {
+                    alert('Une erreur inconue est survenue !\nVeuillez vérifier votre connexion internet.');
+                }
 
                 // Réactivation des champs du formulaire
                 disabledElements.forEach(function (element) {
