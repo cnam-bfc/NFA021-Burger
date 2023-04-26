@@ -16,18 +16,18 @@
 
 
     <div id="affichage">
-        
-        <div class="wrapper axe_ligne ">
 
-            <div class="txt" class="div1" style="background-color: white;">
+        <div class="wrapper axe_ligne">
+
+            <div class="txt" style="background-color: white;">
                 <p>Pain</p>
             </div>
             <div class="fleche" style="background-color: white; "> <img src="<?php echo IMG; ?>Fleches/FlecheCourbeGauche"> </div>
-            <div class="centre" style="background-color: white;"><img src="<?php echo IMG; ?>Ingrédients/painMoelleux.webp"></div>
+            <div class="centre" style="background-color: white;"><img src="<?php echo IMG; ?>Ingrédients/painMoelleuxHaut.webp"></div>
             <div class="vide"></div>
             <div class="vide"></div>
         </div><!--UnIngredient-->
-        <div class="wrapper axe_ligne ">
+        <div class="wrapper axe_ligne">
 
 
             <div class="vide"></div>
@@ -38,7 +38,7 @@
                 <p>Steak</p>
             </div>
         </div>
-        <div class="wrapper axe_ligne ">
+        <div class="wrapper axe_ligne">
 
 
             <div class="txt" style="background-color: white;">
@@ -49,6 +49,11 @@
             <div class="vide"></div>
             <div class="vide"></div>
         </div>
+
+        <script type="text/javascript">
+            console.log("html");
+            showData(1);
+        </script>
 
     </div><!--Affichage-->
 
