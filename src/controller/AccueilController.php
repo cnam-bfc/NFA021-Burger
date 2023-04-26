@@ -39,7 +39,7 @@ class AccueilController extends Controller
             $result = array();
             foreach ($topRecettes as $recette) {
                 $result[] = array(
-                    "nom" => $recette->getNom(),
+                    "nom" => $recette->getNomRecette(),
                     "image" => IMG . $recette->getPhotoRecette()
                 );
             }
