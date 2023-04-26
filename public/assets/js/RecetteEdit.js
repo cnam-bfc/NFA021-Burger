@@ -32,6 +32,7 @@ $(function () {
             type: "number",
             min: 0,
             minlenght: 1,
+            max: 999999,
             step: 1,
             value: data.quantite,
             required: true
