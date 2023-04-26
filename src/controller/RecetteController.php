@@ -137,7 +137,7 @@ class RecetteController extends Controller
                 'id' => $recette->getIdRecette(),
                 'nom' => $recette->getNomRecette(),
                 'description' => $recette->getDescriptionRecette(),
-                'image' => $recette->getPhotoRecette(),
+                'image' => DATA_RECETTES . $recette->getIdRecette() . '/presentation.img',
                 'prix' => $recette->getPrixRecette(),
                 'ingredients' => $jsonRecetteIngredients,
             );

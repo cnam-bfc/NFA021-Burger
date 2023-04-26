@@ -28,20 +28,6 @@ class RecetteEditController extends Controller
             return;
         }
 
-        // Si l'utilisateur est entrain d'enregistrer la recette, on l'enregistre
-        if (Form::isFormSubmited(Form::METHOD_POST)) {
-            $nomRecette = Form::getParam('nom_recette', Form::METHOD_POST, Form::TYPE_STRING);
-            $descriptionRecette = Form::getParam('description_recette', Form::METHOD_POST, Form::TYPE_STRING);
-            $prixRecette = Form::getParam('prix_recette', Form::METHOD_POST, Form::TYPE_FLOAT);
-            $photoRecette = Form::getFile('image_recette', false);
-
-            // Modification de la recette
-            $recette->setNomRecette($nomRecette);
-            $recette->setDescriptionRecette($descriptionRecette);
-            $recette->setPrixRecette($prixRecette);
-            $recetteDAO->update($recette);
-        }
-
         $view = new View(BaseTemplate::EMPLOYE, 'RecetteEditView');
 
         // Définition des variables utilisées dans la vue
@@ -51,7 +37,7 @@ class RecetteEditController extends Controller
         $view->recetteNom = $recette->getNomRecette();
         $view->recetteDescription = $recette->getDescriptionRecette();
         $view->recettePrix = $recette->getPrixRecette();
-        $view->recetteImage = $recette->getPhotoRecette();
+        $view->recetteImage = DATA_RECETTES . $recette->getIdRecette() . '/presentation.img';
 
         $view->renderView();
     }
@@ -117,6 +103,7 @@ class RecetteEditController extends Controller
 
             // Construction du json de l'ingrédient
             $jsonIngredient = array(
+                'id' => $ingredient->getIdIngredient(),
                 'nom' => $ingredient->getNomIngredient(),
                 'quantite' => $ingredientRecetteBasique->getQuantite(),
                 'unite' => $unite->getDiminutifUnite(),
@@ -154,6 +141,7 @@ class RecetteEditController extends Controller
 
             // Construction du json de l'ingrédient
             $jsonIngredient = array(
+                'id' => $ingredient->getIdIngredient(),
                 'nom' => $ingredient->getNomIngredient(),
                 'quantite' => $ingredientRecetteOptionnel->getQuantite(),
                 'unite' => $unite->getDiminutifUnite(),
@@ -163,6 +151,88 @@ class RecetteEditController extends Controller
 
             $json['data'][] = $jsonIngredient;
         }
+
+        $view = new View(BaseTemplate::JSON);
+
+        $view->json = $json;
+
+        $view->renderView();
+    }
+
+    public function enregistrerRecette()
+    {
+        // Récupération des paramètres
+        $recetteId = Form::getParam('id', Form::METHOD_POST, Form::TYPE_INT, false);
+        $recetteNom = Form::getParam('nom', Form::METHOD_POST, Form::TYPE_STRING);
+        $recetteDescription = Form::getParam('description', Form::METHOD_POST, Form::TYPE_STRING);
+        $recettePrix = Form::getParam('prix', Form::METHOD_POST, Form::TYPE_FLOAT);
+
+        $json = array();
+
+        // Initialisation des DAO
+        $recetteDAO = new RecetteDAO();
+        $ingredientRecetteBasiqueDAO = new IngredientRecetteBasiqueDAO();
+        $ingredientRecetteOptionnelDAO = new IngredientRecetteOptionnelDAO();
+
+        // CAS - Création d'une nouvelle recette
+        if ($recetteId === null) {
+            // Récupération de l'image de la recette
+            $recetteImage = Form::getFile('image', true);
+
+            // Création de la recette
+            $recette = new Recette();
+            $recette->setNomRecette($recetteNom);
+            $recette->setDescriptionRecette($recetteDescription);
+            $recette->setPrixRecette($recettePrix);
+
+            // Enregistrement de la recette
+            $recetteDAO->create($recette);
+
+            $recetteId = $recette->getIdRecette();
+        }
+        // CAS - Modification d'une recette existante
+        else {
+            // Récupération de l'image de la recette
+            $recetteImage = Form::getFile('image', false);
+
+            // Récupération de la recette
+            $recette = $recetteDAO->selectById($recetteId);
+
+            // Si la recette n'existe pas, on affiche une erreur
+            if ($recette === null) {
+                ErrorController::error(404, "La recette n'existe pas.");
+                return;
+            }
+
+            // Modification de la recette
+            $recette->setNomRecette($recetteNom);
+            $recette->setDescriptionRecette($recetteDescription);
+            $recette->setPrixRecette($recettePrix);
+
+            // Enregistrement de la recette
+            $recetteDAO->update($recette);
+        }
+
+        // Si une image est présente, on l'enregistre dans le bon dossier
+        if ($recetteImage !== null) {
+            // Déplacement de l'image dans le dossier des images de recettes
+            $recetteFolder = DATA_RECETTES . $recetteId . '/';
+            if (!file_exists($recetteFolder)) {
+                mkdir($recetteFolder, 0777, true);
+            }
+            $recetteImagePresentation = $recetteFolder . 'presentation.img';
+            move_uploaded_file($recetteImage['tmp_name'], $recetteImagePresentation);
+        }
+
+        // Enregistrement des ingrédients basiques
+        // TODO à faire
+
+        // Enregistrement des ingrédients optionnels
+        // TODO à faire
+
+        // Formatage du json
+        $json['success'] = true;
+        $json['id'] = $recetteId;
 
         $view = new View(BaseTemplate::JSON);
 
