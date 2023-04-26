@@ -51,8 +51,10 @@
         </div>
 
         <script type="text/javascript">
-            console.log("html");
-            showData(1);
+            $(document).ready(function() {
+                console.log("html");
+                showData(1);
+            });
         </script>
 
     </div><!--Affichage-->

@@ -11,26 +11,54 @@ class ModifsBurgersController extends Controller
     }
     public function getIngredients()
     {
+
+
+
         $idRecette = $_POST['id'];
-        $recetteDAO = new IngredientRecetteBasiqueDAO();
-        $tabIngredients = $recetteDAO->selectAllByIdRecette($idRecette);
 
+        /*Jusque là c'est good*/
+        $IngredientRecetteBasiqueDAO = new IngredientRecetteBasiqueDAO();
+        $IngredientsBasiques = $IngredientRecetteBasiqueDAO->selectAllByIdRecette($idRecette);
+        /* dans ce tableau  : $IngredientsRecette,
+        j'ai idRecette, idIngredient & quantite 
+        Je dois utiliser idIngredient pour avoire le nom de l'ingrédient & l'img éclatée
+        PS ce que je dois avoire au final c'est la nom, la quantité, l'image éclaté pour chaque ingrédient*/
         $ingredientDAO = new IngredientDAO();
-        $tabDetailsIngredients = array();
+        $tabResult = array();
 
-        foreach ($tabIngredients as $donnes) {
-            $tabDetailsIngredients[] = $ingredientDAO->selectById($donnes->getIdIngredient());
+        foreach ($IngredientsBasiques as $IngredientBasique) {
+            $idIngredient = $IngredientBasique->getIdIngredient();
+            $Ingredient = $ingredientDAO->selectById((int) $idIngredient);
+            $nom = $Ingredient->getNomIngredient();
+            $quantite = $IngredientBasique->getQuantite();
+            $imgEclatee = $Ingredient->getPhotoEclateeIngredient();
+            $tabResult[] = array('nom' => $nom, "quantite" => $quantite, "imgEclatee" => $imgEclatee);
         }
 
 
-        
+
+
+
+
+
+
+        /*$jsonIngredient = array(
+            'nom' => $ingredient->getNomIngredient(),
+            'quantite' => $ingredientRecetteBasique->getQuantite(),
+            'unite' => $unite->getDiminutifUnite(),
+            'optionnel' => false
+        );*/
+
+
+
 
 
 
 
         $view = new View(BaseTemplate::JSON, null);
 
-        $view->json = $tabDetailsIngredients;
+        $view->json = $tabResult;
+
 
         $view->renderView();
     }
