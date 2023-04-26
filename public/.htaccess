@@ -3,4 +3,4 @@ RewriteEngine On
 # On désactive la réécriture d'URL pour les fichiers déjà existants
 RewriteCond %{REQUEST_FILENAME} !-f
 # On génère l'URL avec un passage par get
-RewriteRule ^(.+)$ index.php?root=$1 [QSA,L]
+RewriteRule ^(.+)$ index.php?r=$1 [QSA,L]

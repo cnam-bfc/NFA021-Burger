@@ -81,10 +81,11 @@ class RecetteController extends Controller
                 $jsonIngredient = array(
                     'nom' => $ingredient->getNomIngredient(),
                     'quantite' => $ingredientRecetteBasique->getQuantite(),
-                    'unite' => $unite->getDiminutifUnite()
+                    'unite' => $unite->getDiminutifUnite(),
+                    'optionnel' => false
                 );
 
-                $jsonRecetteIngredientsBasique[] = $jsonIngredient;
+                $jsonRecetteIngredients[] = $jsonIngredient;
             }
 
             // Formatage des ingrédients optionnels en json
@@ -124,10 +125,11 @@ class RecetteController extends Controller
                 $jsonIngredient = array(
                     'nom' => $ingredient->getNomIngredient(),
                     'quantite' => $ingredientRecetteOptionnel->getQuantite(),
-                    'unite' => $unite->getDiminutifUnite()
+                    'unite' => $unite->getDiminutifUnite(),
+                    'optionnel' => true
                 );
 
-                $jsonRecetteIngredientsOptionnel[] = $jsonIngredient;
+                $jsonRecetteIngredients[] = $jsonIngredient;
             }
 
             // Formatage de la recette en json
@@ -135,10 +137,9 @@ class RecetteController extends Controller
                 'id' => $recette->getIdRecette(),
                 'nom' => $recette->getNomRecette(),
                 'description' => $recette->getDescriptionRecette(),
-                'image' => $recette->getPhotoRecette(),
+                'image' => DATA_RECETTES . $recette->getIdRecette() . '/presentation.img',
                 'prix' => $recette->getPrixRecette(),
-                'ingredientsBasique' => $jsonRecetteIngredientsBasique,
-                'ingredientsOptionnel' => $jsonRecetteIngredientsOptionnel
+                'ingredients' => $jsonRecetteIngredients,
             );
 
             $json['data'][] = $jsonRecette;

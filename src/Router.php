@@ -27,22 +27,35 @@ class Router
         'employe/accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilEmploye"],
 
         // Visu burger
-        'visuModifsBurgers' => ["controller" => "ModifsBurgersController" , "method" => "renderViewPimpBurgers"],
+        'visuModifsBurgers' => ["controller" => "ModifsBurgersController", "method" => "renderViewPimpBurgers"],
+        'visuModifsBurgers/ingredients' => ["controller" => "ModifsBurgersController", "method" => "getIngredients"],
+
+        // Choix entre Livraison et Click&Collect
+        'CollectLivraison' => ["controller" => "CollectLivraisonController", "method" => "renderViewCollectORDelivery"],
 
         // PARTIE GÉRANT
         // Statistiques
         'gerant/statistiques' => ["controller" => "StatistiquesController", "method" => "renderViewStatistiques"],
 
-        // Stock et inventaire
+        // Inventaire
         'gerant/inventaire' => ["controller" => "InventaireController", "method" => "renderViewInventaire"],
+        'gerant/inventaire/refreshTableauInventaire' => ["controller" => "InventaireController", "method" => "refreshTableauInventaire"],
+        'gerant/inventaire/miseAJourInventaire' => ["controller" => "InventaireController", "method" => "miseAJourInventaire"],
+
+        // Stock
         'gerant/stock' => ["controller" => "StockController", "method" => "renderViewStock"],
+        'gerant/stock/getBonsCommandesAJAX' => ["controller" => "StockController", "method" => "getBonsCommandesAJAX"],
+        'gerant/stock/getFournisseursAJAX' => ["controller" => "StockController", "method" => "getFournisseursAJAX"],
+        'gerant/stock/refreshTableauIngredientsAJAX' => ["controller" => "StockController", "method" => "refreshTableauIngredientsAJAX"],
 
         // Recettes
         'gerant/recettes' => ["controller" => "RecetteController", "method" => "renderViewRecettes"],
-        'gerant/recettes/list' => ["controller" => "RecetteController", "method" => "listeRecettes"],
+        'gerant/recettes/list/recettes' => ["controller" => "RecetteController", "method" => "listeRecettes"],
         'gerant/recettes/supprimer' => ["controller" => "RecetteController", "method" => "supprimerRecette"],
         'gerant/recettes/ajouter' => ["controller" => "RecetteEditController", "method" => "renderViewAjouterRecette"],
         'gerant/recettes/modifier' => ["controller" => "RecetteEditController", "method" => "renderViewModifierRecette"],
+        'gerant/recettes/list/ingredients' => ["controller" => "RecetteEditController", "method" => "listeIngredients"],
+        'gerant/recettes/enregistrer' => ["controller" => "RecetteEditController", "method" => "enregistrerRecette"],
         
         // BDC
         'gerant/listebdc' => ["controller" => "ListeBDCController", "method" => "renderView"],
@@ -51,6 +64,7 @@ class Router
         // Produits
         'gerant/nouveauproduit' => ["controller" => "NouveauProduitController", "method" => "renderView"],
         'gerant/listeproduits' => ["controller" => "ListeProduitsController", "method" => "renderView"],
+        
 
         // PARTIE CUISINIER
         // Ecran de cuisine

@@ -24,27 +24,23 @@ $(function () {
     // Lorsque bouton test_bdd est cliqué
     bdd_test.click(function () {
         // On récupère les champs nécessaire et vérifie leurs validités (vérification côté client)
-        if (bdd_host.val() == '') {
+        if (!bdd_host[0].validity.valid) {
             alert('Veuillez renseigner l\'adresse IP de la base de données');
             bdd_host.focus();
             return false;
-        } else if (bdd_port.val() == '') {
-            alert('Veuillez renseigner le port de la base de données');
+        } else if (!bdd_port[0].validity.valid) {
+            alert('Veuillez renseigner le numéro de port de la base de données');
             bdd_port.focus();
             return false;
-        } else if (isNaN(bdd_port.val())) {
-            alert('Le port de la base de données doit être un nombre');
-            bdd_port.focus();
-            return false;
-        } else if (bdd_database.val() == '') {
+        } else if (!bdd_database[0].validity.valid) {
             alert('Veuillez renseigner le nom de la base de données');
             bdd_database.focus();
             return false;
-        } else if (bdd_user.val() == '') {
+        } else if (!bdd_user[0].validity.valid) {
             alert('Veuillez renseigner le nom d\'utilisateur de la base de données');
             bdd_user.focus();
             return false;
-        } else if (bdd_password.val() == '') {
+        } else if (!bdd_password[0].validity.valid) {
             alert('Veuillez renseigner le mot de passe de la base de données');
             bdd_password.focus();
             return false;
