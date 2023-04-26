@@ -46,13 +46,13 @@ boutonValide.addEventListener('click', function() {
             commandeFocus.classList.add('focus');
         }
     }
-    // Fait disparaître la commande validée
-    commandeFocus.style.display = 'none';
+    // Fait disparaître la commande validée en lui rajoutant la classe "hidding"
+    commandeFocus.classList.add('hidding');
     // Décale les commandes suivantes
     const commandes = document.querySelectorAll('.commande');
     for (let i = 0; i < commandes.length; i++) {
-        if (commandes[i].style.display === 'none') {
-            commandes[i].style.transform = 'translateY(-100%)';
+        if (commandes[i].classList.contains('hidding')) {
+            
         }
     }
 });
@@ -64,10 +64,27 @@ document.addEventListener('keydown', function(event) {
     }
 });
 
-// Vérifie s'il n'y a qu'une seule commande et ajoute la classe focus
+// Ajoute un événement à la pression de la touche "Q" pour le bouton next
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Q') {
+        boutonNext.click();
+    }
+});
+
+// Ajoute un événement à la pression de la touche "D" pour le bouton prev
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'D') {
+        boutonPrev.click();
+    }
+});
+
+// Ajouter automatiquement la classe "focus" à une commande ne possédant pas la classe "hidden"
 const commandes = document.querySelectorAll('.commande');
-if (commandes.length === 1) {
-    commandes[0].classList.add('focus');
+for (let i = 0; i < commandes.length; i++) {
+    if (!commandes[i].classList.contains('hidden')) {
+        commandes[i].classList.add('focus');
+        break;
+    }
 }
 
 // Ajout des écouteurs d'événement sur les boutons "Préc." et "Suiv."

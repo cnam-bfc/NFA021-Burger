@@ -67,7 +67,7 @@
             </a>
         </div>
         <div class="box wrapper axe_colonne margin_large main_axe_center second_axe_center">
-            <a href="http://localhost/NFA021-Burger/public/livreur/trajet" class="wrapper wrap axe_colonne main_axe_space_evenly main_axe_center second_axe_center grow">
+            <a href="http://localhost/NFA021-Burger/public/livreur/itineraire" class="wrapper wrap axe_colonne main_axe_space_evenly main_axe_center second_axe_center grow">
                 <img src=<?php echo $icones[9]["img"] ?> class='img'>
                 <h2 class="bold">Trajet</h2>
             </a>
