@@ -7,15 +7,15 @@
     <div class="padding_default grow">
 
         <div class="wrapper axe_colonne second_axe_center">
-            <h2 class="titre">Bon de commande</h2>
+            <h2 class="titre_bulle">Bon de commande</h2>
         </div>
     </div>
-
+<!-- 
     <div class="navigation">
         <button class="btn_navigation visible" data-page="1">BDC ouverts</button>
         <button class="btn_navigation" data-page="2">BDC clôturés</button>
         <button class="btn_navigation" data-page="3">BDC annulés</button>
-    </div>
+    </div> -->
 
     <div class="conteneur_BDC">
         <div class="box_liste ouvert" data-page="1">
@@ -66,7 +66,7 @@
             <button class="btn_details">Détails</button>
         </div>
 
-        <div class="box_liste cloture" data-page="2">
+        <!-- <div class="box_liste cloture" data-page="2">
             <h2>BDC No 26</h2>
             <p>Fournisseur</p>
             <p>Montant TTC</p>
@@ -106,7 +106,7 @@
             <p>Fournisseur</p>
             <p>Montant TTC</p>
             <button class="btn_details">Détails</button>
-        </div>
+        </div> -->
 
     </div>
 </div><br><br>
