@@ -37,11 +37,16 @@ class Router
         // Statistiques
         'gerant/statistiques' => ["controller" => "StatistiquesController", "method" => "renderViewStatistiques"],
 
-        // Stock et inventaire
+        // Inventaire
         'gerant/inventaire' => ["controller" => "InventaireController", "method" => "renderViewInventaire"],
         'gerant/inventaire/refreshTableauInventaire' => ["controller" => "InventaireController", "method" => "refreshTableauInventaire"],
         'gerant/inventaire/miseAJourInventaire' => ["controller" => "InventaireController", "method" => "miseAJourInventaire"],
+
+        // Stock
         'gerant/stock' => ["controller" => "StockController", "method" => "renderViewStock"],
+        'gerant/stock/getBonsCommandesAJAX' => ["controller" => "StockController", "method" => "getBonsCommandesAJAX"],
+        'gerant/stock/getFournisseursAJAX' => ["controller" => "StockController", "method" => "getFournisseursAJAX"],
+        'gerant/stock/refreshTableauIngredientsAJAX' => ["controller" => "StockController", "method" => "refreshTableauIngredientsAJAX"],
 
         // Recettes
         'gerant/recettes' => ["controller" => "RecetteController", "method" => "renderViewRecettes"],
@@ -59,6 +64,7 @@ class Router
         // Produits
         'gerant/nouveauproduit' => ["controller" => "NouveauProduitController", "method" => "renderView"],
         'gerant/listeproduits' => ["controller" => "ListeProduitsController", "method" => "renderView"],
+        
 
         // PARTIE CUISINIER
         // Ecran de cuisine

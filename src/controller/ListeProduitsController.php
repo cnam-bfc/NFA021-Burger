@@ -5,14 +5,25 @@ class ListeProduitsController extends Controller
     {
         $view = new View(BaseTemplate::EMPLOYE, 'ListeProduitsView');
 
-        $view->icone = array(
-            ["nom" => "modifier", "img" => IMG . "icone/modifier.png"],
-            ["nom" => "pain", "img" => IMG . "icone/pain.png"],
-            ["nom" => "steak", "img" => IMG . "icone/steak.png"],
-            ["nom" => "tomate", "img" => IMG . "icone/tomate.png"],
-            ["nom" => "salade", "img" => IMG . "icone/salade.png"],
-            ["nom" => "plus", "img" => IMG . "icone/plus.png"],
+        $ingredientDAO = new IngredientDAO();
+        $view->ingr = $ingredientDAO->selectAll();
+
+        $ingr = $ingredientDAO->selectAll();
+
+        $icone = array();
+        foreach ($ingr as $donnees) {
+            $icone[] =
+                ["img" => IMG . $donnees->getPhotoIngredient()];
+        }
+
+        $view->modifier = array(
+            ["img" => IMG . "icone/Modifier.png"]
         );
+
+        $fournisseurDAO = new FournisseurDAO();
+        $view->fournisseur = $fournisseurDAO->selectAll();
+
+        $view->icone = $icone;
 
         $view->renderView();
     }
