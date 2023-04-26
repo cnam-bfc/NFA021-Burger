@@ -44,7 +44,7 @@
 
 </div>
 <div class="bouton">
-    <button>Valider</button>
+    <button id="boutonValide">Valider</button>
     <button id="boutonPrev">Préc.</button>
     <button id="boutonNext">Suiv.</button>
 </div>
