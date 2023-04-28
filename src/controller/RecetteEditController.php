@@ -162,10 +162,10 @@ class RecetteEditController extends Controller
     public function enregistrerRecette()
     {
         // Récupération des paramètres
-        $recetteId = Form::getParam('id', Form::METHOD_POST, Form::TYPE_INT, false);
-        $recetteNom = Form::getParam('nom', Form::METHOD_POST, Form::TYPE_STRING);
-        $recetteDescription = Form::getParam('description', Form::METHOD_POST, Form::TYPE_STRING);
-        $recettePrix = Form::getParam('prix', Form::METHOD_POST, Form::TYPE_FLOAT);
+        $recetteId = Form::getParam('id_recette', Form::METHOD_POST, Form::TYPE_INT, false);
+        $recetteNom = Form::getParam('nom_recette', Form::METHOD_POST, Form::TYPE_STRING);
+        $recetteDescription = Form::getParam('description_recette', Form::METHOD_POST, Form::TYPE_STRING);
+        $recettePrix = Form::getParam('prix_recette', Form::METHOD_POST, Form::TYPE_FLOAT);
 
         $json = array();
 
@@ -177,7 +177,7 @@ class RecetteEditController extends Controller
         // CAS - Création d'une nouvelle recette
         if ($recetteId === null) {
             // Récupération de l'image de la recette
-            $recetteImage = Form::getFile('image', true);
+            $recetteImage = Form::getFile('image_recette', true);
 
             // Création de la recette
             $recette = new Recette();
@@ -193,7 +193,7 @@ class RecetteEditController extends Controller
         // CAS - Modification d'une recette existante
         else {
             // Récupération de l'image de la recette
-            $recetteImage = Form::getFile('image', false);
+            $recetteImage = Form::getFile('image_recette', false);
 
             // Récupération de la recette
             $recette = $recetteDAO->selectById($recetteId);
@@ -211,6 +211,12 @@ class RecetteEditController extends Controller
 
             // Enregistrement de la recette
             $recetteDAO->update($recette);
+
+            // Suppression des ingrédients basiques de la recette
+            $ingredientRecetteBasiqueDAO->deleteAllByIdRecette($recetteId);
+
+            // Suppression des ingrédients optionnels de la recette
+            $ingredientRecetteOptionnelDAO->deleteAllByIdRecette($recetteId);
         }
 
         // Si une image est présente, on l'enregistre dans le bon dossier
@@ -224,11 +230,43 @@ class RecetteEditController extends Controller
             move_uploaded_file($recetteImage['tmp_name'], $recetteImagePresentation);
         }
 
-        // Enregistrement des ingrédients basiques
-        // TODO à faire
+        // Récupération des ingrédients
+        $ingredients = json_decode(Form::getParam('ingredients_recette', Form::METHOD_POST, Form::TYPE_STRING), true);
 
-        // Enregistrement des ingrédients optionnels
-        // TODO à faire
+        // Enregistrement des ingrédients
+        foreach ($ingredients as $ingredient) {
+            // Récupération des paramètres
+            $ingredientId = $ingredient['id_ingredient'];
+            $ingredientQuantite = $ingredient['quantite_ingredient'];
+            $ingredientOptionnel = $ingredient['optionnel_ingredient'];
+
+            // CAS - Ingrédient basique
+            if (!$ingredientOptionnel) {
+                // Création de l'ingrédient
+                $ingredientRecetteBasique = new IngredientRecetteBasique();
+                $ingredientRecetteBasique->setIdRecette($recetteId);
+                $ingredientRecetteBasique->setIdIngredient($ingredientId);
+                $ingredientRecetteBasique->setQuantite($ingredientQuantite);
+
+                // Enregistrement de l'ingrédient
+                $ingredientRecetteBasiqueDAO->create($ingredientRecetteBasique);
+            }
+            // CAS - Ingrédient optionnel
+            else {
+                // Récupération du prix
+                $ingredientPrix = $ingredient['prix_ingredient'];
+
+                // Création de l'ingrédient
+                $ingredientRecetteOptionnel = new IngredientRecetteOptionnel();
+                $ingredientRecetteOptionnel->setIdRecette($recetteId);
+                $ingredientRecetteOptionnel->setIdIngredient($ingredientId);
+                $ingredientRecetteOptionnel->setQuantite($ingredientQuantite);
+                $ingredientRecetteOptionnel->setPrix($ingredientPrix);
+
+                // Enregistrement de l'ingrédient
+                $ingredientRecetteOptionnelDAO->create($ingredientRecetteOptionnel);
+            }
+        }
 
         // Formatage du json
         $json['success'] = true;

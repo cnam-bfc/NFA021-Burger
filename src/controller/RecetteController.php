@@ -23,7 +23,7 @@ class RecetteController extends Controller
         $json['data'] = array();
 
         // Récupération des recettes
-        $recettes = $recetteDAO->selectAll();
+        $recettes = $recetteDAO->selectAllNonArchive();
 
         // Récupération des ingrédients
         $ingredients = $ingredientDAO->selectAll();
@@ -33,11 +33,6 @@ class RecetteController extends Controller
 
         // Formatage des recettes en json
         foreach ($recettes as $recette) {
-            // Si la recette est archivée, on ne l'affiche pas
-            if ($recette->getDateArchiveRecette() !== null) {
-                continue;
-            }
-
             // Récupération des ingrédients basiques de la recette
             $ingredientRecetteBasiques = $ingredientRecetteBasiqueDAO->selectAllByIdRecette($recette->getIdRecette());
 

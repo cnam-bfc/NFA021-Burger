@@ -60,6 +60,26 @@ class IngredientRecetteOptionnelDAO extends DAO
     }
 
     /**
+     * Méthode permettant de supprimer tous les objets d'une recette
+     * 
+     * @param int $idRecette (id de la recette des objets à supprimer)
+     * @throws Exception (si l'id de la recette n'est pas renseigné)
+     */
+    public function deleteAllByIdRecette($idRecette)
+    {
+        // Vérification que l'id de la recette est renseigné
+        if ($idRecette === null) {
+            throw new Exception("L'id de la recette doit être renseigné");
+        }
+
+        // Requête
+        $sqlQuery = "DELETE FROM burger_ingredient_optionnel WHERE id_recette = :id_recette";
+        $statement = $this->pdo->prepare($sqlQuery);
+        $statement->bindValue(':id_recette', $idRecette, PDO::PARAM_INT);
+        $statement->execute();
+    }
+
+    /**
      * Méthode permettant de mettre à jour un objet
      * 
      * @param IngredientRecetteOptionnel $ingredientRecetteOptionnel (objet à mettre à jour)

@@ -206,4 +206,31 @@ class RecetteDAO extends DAO
 
         return $recettes;
     }
+
+    public function selectAllNonArchive()
+    {
+        // Requête
+        $sqlQuery = "SELECT * FROM burger_recette WHERE date_archive_recette IS NULL or date_archive_recette > NOW()";
+        $statement = $this->pdo->prepare($sqlQuery);
+        $statement->execute();
+
+        // Traitement des résultats
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $recettes = array();
+        foreach ($result as $row) {
+            // Création d'un nouvel objet
+            $recette = new Recette();
+            $recette->setIdRecette($row['id_recette']);
+            $recette->setNomRecette($row['nom_recette']);
+            $recette->setDescriptionRecette($row['description_recette']);
+            $recette->setPhotoRecette($row['photo_recette']);
+            $recette->setDateArchiveRecette($row['date_archive_recette']);
+            $recette->setPrixRecette($row['prix_recette']);
+
+            // Ajout de l'objet dans le tableau
+            $recettes[] = $recette;
+        }
+
+        return $recettes;
+    }
 }
