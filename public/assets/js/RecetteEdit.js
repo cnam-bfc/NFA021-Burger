@@ -318,7 +318,7 @@ $(function () {
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 if (jqXHR.status !== 0) {
-                    alert('Erreur ' + jqXHR.status + ' : ' + errorThrown);
+                    alert('Erreur ' + jqXHR.status + ' : ' + errorThrown.replaceAll("<br>", "\n"));
                 } else {
                     alert('Une erreur inconue est survenue !\nVeuillez vérifier votre connexion internet.');
                 }
