@@ -12,22 +12,36 @@ class InstallController extends Controller
     }
 
     /**
-     * Méthode permettant de tester la connexion à la base de données
+     * Méthode permettant de configurer les identifiants de connexion à la base de données
      */
-    public function testConnectionBdd()
+    public function configBdd()
     {
-        // $host = $_POST['host_bdd'];
         $host = Form::getParam('host_bdd', Form::METHOD_POST, Form::TYPE_STRING);
-        // $port = $_POST['port_bdd'];
         $port = Form::getParam('port_bdd', Form::METHOD_POST, Form::TYPE_INT);
-        // $database = $_POST['database_bdd'];
         $database = Form::getParam('database_bdd', Form::METHOD_POST, Form::TYPE_STRING);
-        // $user = $_POST['user_bdd'];
         $user = Form::getParam('user_bdd', Form::METHOD_POST, Form::TYPE_STRING);
-        // $password = $_POST['password_bdd'];
         $password = Form::getParam('password_bdd', Form::METHOD_POST, Form::TYPE_STRING);
 
+        // Test de la connexion à la base de données
         $success = Database::testConnectionBdd($host, $port, $database, $user, $password);
+
+        // Si le test est un succès, on enregistre les informations de connexion dans le fichier de configuration
+        if ($success) {
+            // Création du fichier de configuration
+            $config = array(
+                'bdd' => array(
+                    'host' => $host,
+                    'port' => $port,
+                    'database' => $database,
+                    'user' => $user,
+                    'password' => $password
+                )
+            );
+
+            $config_json = json_encode($config, JSON_PRETTY_PRINT);
+
+            $success = file_put_contents(DATA_FOLDER . 'config.json', $config_json);
+        }
 
         $json = array(
             'success' => $success
@@ -42,47 +56,16 @@ class InstallController extends Controller
     }
 
     /**
-     * Méthode permettant d'installer l'application
+     * Méthode permettant d'installer la base de données
      */
-    public function install()
+    public function installBdd()
     {
-        // $bdd_host = $_POST['host_bdd'];
-        $bdd_host = Form::getParam('host_bdd', Form::METHOD_POST, Form::TYPE_STRING);
-        // $bdd_port = $_POST['port_bdd'];
-        $bdd_port = Form::getParam('port_bdd', Form::METHOD_POST, Form::TYPE_INT);
-        // $bdd_database = $_POST['database_bdd'];
-        $bdd_database = Form::getParam('database_bdd', Form::METHOD_POST, Form::TYPE_STRING);
-        // $bdd_user = $_POST['user_bdd'];
-        $bdd_user = Form::getParam('user_bdd', Form::METHOD_POST, Form::TYPE_STRING);
-        // $bdd_password = $_POST['password_bdd'];
-        $bdd_password = Form::getParam('password_bdd', Form::METHOD_POST, Form::TYPE_STRING);
-
-        // Création du fichier de configuration
-        $json = array(
-            'bdd' => array(
-                'host' => $bdd_host,
-                'port' => $bdd_port,
-                'database' => $bdd_database,
-                'user' => $bdd_user,
-                'password' => $bdd_password
-            )
-        );
-
-        $json_data = json_encode($json, JSON_PRETTY_PRINT);
-
-        $success = file_put_contents(DATA_FOLDER . 'config.json', $json_data);
-
-        if ($success) {
-            // Rechargement de la configuration
-            Configuration::createInstance();
-
-            // Connexion à la base de données
-            $success = Database::createInstance();
-        }
+        // Connexion à la base de données
+        $success = Database::createInstance();
 
         if ($success) {
             // Mise à jour de la base de données
-            $success = Database::getInstance()->update();
+            Database::getInstance()->update();
         }
 
         $json = array(
