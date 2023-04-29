@@ -3,11 +3,6 @@ class Configuration
 {
     private static $instance = null;
 
-    public static function isInstalled()
-    {
-        return file_exists(DATA_FOLDER . 'config.json');
-    }
-
     public static function getInstance()
     {
         if (is_null(self::$instance)) {
