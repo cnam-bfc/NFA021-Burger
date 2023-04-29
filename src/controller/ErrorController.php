@@ -1,10 +1,15 @@
 <?php
 class ErrorController extends Controller
 {
-    public static function error($code, $message)
+    public static function error($code, $message, $renderView = true)
     {
-        $controller = new ErrorController();
-        $controller->renderView($code, $message);
+        if ($renderView) {
+            $controller = new ErrorController();
+            $controller->renderView($code, $message);
+        } else {
+            // Définition du code d'erreur HTTP
+            header("HTTP/1.0 " . $code . " " . $message);
+        }
     }
 
     public function renderView($code, $message)
