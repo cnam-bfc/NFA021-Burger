@@ -55,6 +55,17 @@ define("JS", ASSETS . "js/"); // Dossier des scripts JavaScript
 require_once 'AutoLoader.php';
 AutoLoader::start();
 
+// On initialise le gestionnaire d'erreurs
+register_shutdown_function(function () {
+    $error = error_get_last();
+    if ($error !== null) {
+        $message = $error["message"];
+        // On formate les retours à la ligne
+        $message = str_replace("\n", "<br>", $message);
+        ErrorController::error(500, $message, false);
+    }
+});
+
 // On initialise la session
 Session::start();
 
@@ -75,7 +86,7 @@ if (!isset($_GET["r"])) {
 }
 
 // Si l'application n'est pas installée, on redirige vers l'installation
-if (!Configuration::isInstalled()) {
+if (!file_exists(DATA_FOLDER . ".installed.lock")) {
     // Si la route ne commence pas par 'install', on redirige vers la page d'installation
     if (stripos($route, "install") !== 0) {
         Router::redirect("install");
@@ -83,7 +94,7 @@ if (!Configuration::isInstalled()) {
     }
 }
 // Si l'application est déjà installé
-elseif (Configuration::isInstalled()) {
+elseif (file_exists(DATA_FOLDER . ".installed.lock")) {
     // Si un utilisateur tente d'accéder à la page d'installation, on le redirige vers la page d'accueil
     if (stripos($route, "install") === 0) {
         Router::redirect("");
