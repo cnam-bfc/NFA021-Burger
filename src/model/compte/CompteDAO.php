@@ -21,15 +21,18 @@ class CompteDAO extends DAO
         // Requête
         $sqlQuery = "INSERT INTO burger_compte (
                                                 login,
+                                                email,
                                                 password,
                                                 date_archive
                                                 ) VALUES (
                                                 :login,
+                                                :email,
                                                 :password,
                                                 :date_archive
                                                 )";
         $statement = $this->pdo->prepare($sqlQuery);
         $statement->bindValue(':login', $compte->getLogin(), PDO::PARAM_STR);
+        $statement->bindValue(':email', $compte->getEmail(), PDO::PARAM_STR);
         $statement->bindValue(':password', $compte->getHashedPassword(), PDO::PARAM_STR);
         $statement->bindValue(':date_archive', $compte->getDateArchive(), PDO::PARAM_STR);
         $statement->execute();
@@ -76,11 +79,13 @@ class CompteDAO extends DAO
 
         // Requête
         $sqlQuery = "UPDATE burger_compte SET login = :login,
+                                            email = :email,
                                             password = :password,
                                             date_archive = :date_archive
                                             WHERE id_compte = :id_compte";
         $statement = $this->pdo->prepare($sqlQuery);
         $statement->bindValue(':login', $compte->getLogin(), PDO::PARAM_STR);
+        $statement->bindValue(':email', $compte->getEmail(), PDO::PARAM_STR);
         $statement->bindValue(':password', $compte->getHashedPassword(), PDO::PARAM_STR);
         $statement->bindValue(':date_archive', $compte->getDateArchive(), PDO::PARAM_STR);
         $statement->bindValue(':id_compte', $compte->getId(), PDO::PARAM_INT);
@@ -186,6 +191,7 @@ class CompteDAO extends DAO
     {
         $compte->setId($row['id_compte']);
         $compte->setLogin($row['login']);
+        $compte->setEmail($row['email']);
         $compte->setHashedPassword($row['password']);
         $compte->setDateArchive($row['date_archive']);
     }

@@ -1,5 +1,5 @@
 -- Mise à jour de la base de données
--- Date: 2023-04-29
+-- Date: 2023-04-30
 -- Version avant mise à jour: 0
 -- Version après mise à jour: 1
 -- Description: Création de la base de données
@@ -24,10 +24,12 @@ CREATE TABLE burger_unite(
 CREATE TABLE burger_compte(
    id_compte INT AUTO_INCREMENT,
    login VARCHAR(30) NOT NULL,
+   email VARCHAR(320) NOT NULL,
    password VARCHAR(255) NOT NULL,
    date_archive DATETIME,
    PRIMARY KEY(id_compte),
-   UNIQUE(login)
+   UNIQUE(login),
+   UNIQUE(email)
 );
 
 CREATE TABLE burger_fournisseur(

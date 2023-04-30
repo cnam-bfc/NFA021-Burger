@@ -20,6 +20,13 @@ class Compte
     private $login;
 
     /**
+     * Email du compte
+     * 
+     * @var string
+     */
+    private $email;
+
+    /**
      * Mot de passe (hashé) du compte
      * 
      * @var string
@@ -51,6 +58,16 @@ class Compte
     public function getLogin()
     {
         return $this->login;
+    }
+
+    /**
+     * Méthode permettant de récupérer l'email du compte
+     * 
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
     }
 
     /**
@@ -93,6 +110,17 @@ class Compte
     public function setLogin($login)
     {
         $this->login = $login;
+    }
+
+    /**
+     * Méthode permettant de modifier l'email du compte
+     * 
+     * @param string $email
+     * @return void
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
     }
 
     /**
