@@ -124,6 +124,37 @@ class RecetteDAO extends DAO
     }
 
     /**
+     * Méthode permettant de récupérer tous les objets non archivés
+     *
+     * @return Recette[] (tableau d'objets)
+     */
+    public function selectAllNonArchive()
+    {
+        // Requête
+        $sqlQuery = "SELECT * FROM burger_recette WHERE date_archive IS NULL OR date_archive > NOW()";
+        $statement = $this->pdo->prepare($sqlQuery);
+        $statement->execute();
+
+        // Traitement des résultats
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $recettes = array();
+        foreach ($result as $row) {
+            // Création d'un nouvel objet
+            $recette = new Recette();
+            $recette->setId($row['id_recette']);
+            $recette->setNom($row['nom']);
+            $recette->setDescription($row['description']);
+            $recette->setPrix($row['prix']);
+            $recette->setDateArchive($row['date_archive']);
+
+            // Ajout de l'objet dans le tableau
+            $recettes[] = $recette;
+        }
+
+        return $recettes;
+    }
+
+    /**
      * Méthode permettant de récupérer un objet par son id
      * 
      * @param int $id (id de l'objet à récupérer)
@@ -179,32 +210,6 @@ class RecetteDAO extends DAO
         if ($statement->rowCount() < 3) {
             return null;
         }
-
-        // Traitement des résultats
-        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-        $recettes = array();
-        foreach ($result as $row) {
-            // Création d'un nouvel objet
-            $recette = new Recette();
-            $recette->setId($row['id_recette']);
-            $recette->setNom($row['nom']);
-            $recette->setDescription($row['description']);
-            $recette->setPrix($row['prix']);
-            $recette->setDateArchive($row['date_archive']);
-
-            // Ajout de l'objet dans le tableau
-            $recettes[] = $recette;
-        }
-
-        return $recettes;
-    }
-
-    public function selectAllNonArchive()
-    {
-        // Requête
-        $sqlQuery = "SELECT * FROM burger_recette WHERE date_archive IS NULL OR date_archive > NOW()";
-        $statement = $this->pdo->prepare($sqlQuery);
-        $statement->execute();
 
         // Traitement des résultats
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
