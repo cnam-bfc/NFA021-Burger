@@ -141,7 +141,7 @@ class CommandeClientLivraisonDAO extends DAO
     public function selectAll()
     {
         // Requête
-        $sqlQuery = "SELECT * FROM burger_commande_client, burger_commande_client_livraison WHERE burger_commande_client.id_commande_client = burger_commande_client_livraison.id_commande_client";
+        $sqlQuery = "SELECT *, burger_commande_client_livraison.id_compte_fk AS 'id_livreur_fk' FROM burger_commande_client, burger_commande_client_livraison WHERE burger_commande_client.id_commande_client = burger_commande_client_livraison.id_commande_client";
         $statement = $this->pdo->query($sqlQuery);
         $statement->execute();
 
@@ -167,7 +167,7 @@ class CommandeClientLivraisonDAO extends DAO
     public function selectAllNonArchive()
     {
         // Requête
-        $sqlQuery = "SELECT * FROM burger_commande_client, burger_commande_client_livraison WHERE burger_commande_client.id_commande_client = burger_commande_client_livraison.id_commande_client AND (burger_commande_client.date_archive IS NULL OR burger_commande_client.date_archive > NOW())";
+        $sqlQuery = "SELECT *, burger_commande_client_livraison.id_compte_fk AS 'id_livreur_fk' FROM burger_commande_client, burger_commande_client_livraison WHERE burger_commande_client.id_commande_client = burger_commande_client_livraison.id_commande_client AND (burger_commande_client.date_archive IS NULL OR burger_commande_client.date_archive > NOW())";
         $statement = $this->pdo->query($sqlQuery);
         $statement->execute();
 
@@ -194,7 +194,7 @@ class CommandeClientLivraisonDAO extends DAO
     public function selectById($id)
     {
         // Requête
-        $sqlQuery = "SELECT * FROM burger_commande_client, burger_commande_client_livraison WHERE burger_commande_client.id_commande_client = burger_commande_client_livraison.id_commande_client AND burger_commande_client.id_commande_client = :id_commande_client";
+        $sqlQuery = "SELECT *, burger_commande_client_livraison.id_compte_fk AS 'id_livreur_fk' FROM burger_commande_client, burger_commande_client_livraison WHERE burger_commande_client.id_commande_client = burger_commande_client_livraison.id_commande_client AND burger_commande_client.id_commande_client = :id_commande_client";
         $statement = $this->pdo->prepare($sqlQuery);
         $statement->bindValue(':id_commande_client', $id, PDO::PARAM_INT);
         $statement->execute();
@@ -237,7 +237,7 @@ class CommandeClientLivraisonDAO extends DAO
         $commandeClientLivraison->setAdresseVille($row['adresse_ville']);
         $commandeClientLivraison->setAdresseRue($row['adresse_rue']);
         $commandeClientLivraison->setAdresseNumero($row['adresse_numero']);
-        $commandeClientLivraison->setIdLivreur($row['id_compte_fk']);
+        $commandeClientLivraison->setIdLivreur($row['id_livreur_fk']);
 
         return $commandeClientLivraison;
     }
