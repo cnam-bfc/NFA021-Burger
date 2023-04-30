@@ -116,16 +116,16 @@ class CommandeClientDAO extends DAO
 
         // Traitement des résultats
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-        $commandeClients = array();
+        $commandesClients = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
             $commandeClient = $this->convertTableRowToObject($row);
 
             // Ajout de l'objet dans le tableau
-            $commandeClients[] = $commandeClient;
+            $commandesClients[] = $commandeClient;
         }
 
-        return $commandeClients;
+        return $commandesClients;
     }
 
     /**
@@ -142,16 +142,16 @@ class CommandeClientDAO extends DAO
 
         // Traitement des résultats
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-        $commandeClients = array();
+        $commandesClients = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
             $commandeClient = $this->convertTableRowToObject($row);
 
             // Ajout de l'objet dans le tableau
-            $commandeClients[] = $commandeClient;
+            $commandesClients[] = $commandeClient;
         }
 
-        return $commandeClients;
+        return $commandesClients;
     }
 
     /**

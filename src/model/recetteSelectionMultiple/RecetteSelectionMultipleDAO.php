@@ -101,16 +101,16 @@ class RecetteSelectionMultipleDAO extends DAO
 
         // Traitement des résultats
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-        $recetteSelectionMultiples = array();
+        $recettesSelectionsMultiples = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
             $recetteSelectionMultiple = $this->convertTableRowToObject($row);
 
             // Ajout de l'objet dans le tableau
-            $recetteSelectionMultiples[] = $recetteSelectionMultiple;
+            $recettesSelectionsMultiples[] = $recetteSelectionMultiple;
         }
 
-        return $recetteSelectionMultiples;
+        return $recettesSelectionsMultiples;
     }
 
     /**

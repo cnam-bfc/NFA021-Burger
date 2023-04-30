@@ -101,16 +101,16 @@ class CommandeFournisseurDAO extends DAO
 
         // Traitement des résultats
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-        $commandeFournisseurs = array();
+        $commandesFournisseurs = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
             $commandeFournisseur = $this->convertTableRowToObject($row);
 
             // Ajout de l'objet dans le tableau
-            $commandeFournisseurs[] = $commandeFournisseur;
+            $commandesFournisseurs[] = $commandeFournisseur;
         }
 
-        return $commandeFournisseurs;
+        return $commandesFournisseurs;
     }
 
     /**
@@ -127,16 +127,16 @@ class CommandeFournisseurDAO extends DAO
 
         // Traitement des résultats
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-        $commandeFournisseurs = array();
+        $commandesFournisseurs = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
             $commandeFournisseur = $this->convertTableRowToObject($row);
 
             // Ajout de l'objet dans le tableau
-            $commandeFournisseurs[] = $commandeFournisseur;
+            $commandesFournisseurs[] = $commandeFournisseur;
         }
 
-        return $commandeFournisseurs;
+        return $commandesFournisseurs;
     }
 
     /**
