@@ -20,26 +20,6 @@ class Security
         self::$instance = new Security();
     }
 
-    private $passwordHashKey;
-
-    /**
-     * Constructeur
-     */
-    public function __construct()
-    {
-        $config = Configuration::getInstance();
-
-        // Si la clé de hashage n'existe pas, on la génère
-        if (!$config->hasSecurityPasswordHashKey()) {
-            $this->passwordHashKey = bin2hex(random_bytes(32));
-            $config->setSecurityPasswordHashKey($this->passwordHashKey);
-        }
-        // Sinon on récupère la clé de hashage
-        else {
-            $this->passwordHashKey = $config->getSecurityPasswordHashKey();
-        }
-    }
-
     /**
      * Fonction permettant de hasher un mot de passe
      * 
