@@ -100,9 +100,6 @@ elseif (file_exists(DATA_FOLDER . ".installed.lock")) {
         Router::redirect("");
         return;
     }
-
-    // Mise à jour de la base de données
-    Database::getInstance()->update();
 }
 
 Router::route($route);
