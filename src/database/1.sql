@@ -141,10 +141,10 @@ CREATE TABLE burger_commande_client_livraison(
    adresse_ville VARCHAR(50) NOT NULL,
    adresse_rue VARCHAR(50) NOT NULL,
    adresse_numero VARCHAR(10),
-   id_compte INT,
+   id_compte_fk INT,
    PRIMARY KEY(id_commande_client),
    FOREIGN KEY(id_commande_client) REFERENCES burger_commande_client(id_commande_client),
-   FOREIGN KEY(id_compte) REFERENCES burger_livreur(id_compte)
+   FOREIGN KEY(id_compte_fk) REFERENCES burger_livreur(id_compte)
 );
 
 CREATE TABLE burger_commande_client_retrait(
