@@ -16,6 +16,7 @@ class AutoLoader
         'Form' => 'Form.php',
         'Session' => 'Session.php',
         'Router' => 'Router.php',
+        'Security' => 'Security.php',
         'Database' => 'Database.php',
         'UserSession' => 'UserSession.php',
         'Controller' => 'controller' . DIRECTORY_SEPARATOR . 'Controller.php',
