@@ -10,51 +10,44 @@ class Recette
      * 
      * @var int
      */
-    private $idRecette;
+    private $id;
 
     /**
      * Nom de la recette
      *
      * @var string
      */
-    private $nomRecette;
+    private $nom;
 
     /**
      * Description de la recette
      * 
      * @var string
      */
-    private $descriptionRecette;
-
-    /**
-     * Chemin vers la photo de la recette
-     *
-     * @var string
-     */
-    private $photoRecette;
-
-    /**
-     * Date d'archivage de la recette
-     * 
-     * @var string
-     */
-    private $dateArchiveRecette;
+    private $description;
 
     /**
      * Prix de la recette
      * 
      * @var double
      */
-    private $prixRecette;
+    private $prix;
+
+    /**
+     * Date d'archivage de la recette
+     * 
+     * @var string
+     */
+    private $dateArchive;
 
     /**
      * Méthode permettant de récupérer l'identifiant de la recette
      * 
      * @return int
      */
-    public function getIdRecette()
+    public function getId()
     {
-        return $this->idRecette;
+        return $this->id;
     }
 
     /**
@@ -62,9 +55,9 @@ class Recette
      * 
      * @return string
      */
-    public function getNomRecette()
+    public function getNom()
     {
-        return $this->nomRecette;
+        return $this->nom;
     }
 
     /**
@@ -72,29 +65,9 @@ class Recette
      * 
      * @return string
      */
-    public function getDescriptionRecette()
+    public function getDescription()
     {
-        return $this->descriptionRecette;
-    }
-
-    /**
-     * Méthode permettant de récupérer le chemin vers la photo de la recette
-     * 
-     * @return string
-     */
-    public function getPhotoRecette()
-    {
-        return $this->photoRecette;
-    }
-
-    /**
-     * Méthode permettant de récupérer la date d'archivage de la recette
-     * 
-     * @return string
-     */
-    public function getDateArchiveRecette()
-    {
-        return $this->dateArchiveRecette;
+        return $this->description;
     }
 
     /**
@@ -102,9 +75,19 @@ class Recette
      * 
      * @return double
      */
-    public function getPrixRecette()
+    public function getPrix()
     {
-        return $this->prixRecette;
+        return $this->prix;
+    }
+
+    /**
+     * Méthode permettant de récupérer la date d'archivage de la recette
+     * 
+     * @return string
+     */
+    public function getDateArchive()
+    {
+        return $this->dateArchive;
     }
 
     /**
@@ -113,9 +96,9 @@ class Recette
      * @param int $idRecette
      * @return void
      */
-    public function setIdRecette($idRecette)
+    public function setId($idRecette)
     {
-        $this->idRecette = $idRecette;
+        $this->id = $idRecette;
     }
 
     /**
@@ -124,9 +107,9 @@ class Recette
      * @param string $nomRecette
      * @return void
      */
-    public function setNomRecette($nomRecette)
+    public function setNom($nomRecette)
     {
-        $this->nomRecette = $nomRecette;
+        $this->nom = $nomRecette;
     }
 
     /**
@@ -135,31 +118,9 @@ class Recette
      * @param string $descriptionRecette
      * @return void
      */
-    public function setDescriptionRecette($descriptionRecette)
+    public function setDescription($descriptionRecette)
     {
-        $this->descriptionRecette = $descriptionRecette;
-    }
-
-    /**
-     * Méthode permettant de modifier le chemin vers la photo de la recette
-     * 
-     * @param string $photoRecette
-     * @return void
-     */
-    public function setPhotoRecette($photoRecette)
-    {
-        $this->photoRecette = $photoRecette;
-    }
-
-    /**
-     * Méthode permettant de modifier la date d'archivage de la recette
-     * 
-     * @param string $dateArchiveRecette
-     * @return void
-     */
-    public function setDateArchiveRecette($dateArchiveRecette)
-    {
-        $this->dateArchiveRecette = $dateArchiveRecette;
+        $this->description = $descriptionRecette;
     }
 
     /**
@@ -168,8 +129,19 @@ class Recette
      * @param double $prixRecette
      * @return void
      */
-    public function setPrixRecette($prixRecette)
+    public function setPrix($prixRecette)
     {
-        $this->prixRecette = $prixRecette;
+        $this->prix = $prixRecette;
+    }
+
+    /**
+     * Méthode permettant de modifier la date d'archivage de la recette
+     * 
+     * @param string $dateArchiveRecette
+     * @return void
+     */
+    public function setDateArchive($dateArchiveRecette)
+    {
+        $this->dateArchive = $dateArchiveRecette;
     }
 }
