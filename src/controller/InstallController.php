@@ -28,20 +28,15 @@ class InstallController extends Controller
 
         // Si le test est un succès, on enregistre les informations de connexion dans le fichier de configuration
         if ($success) {
-            // Création du fichier de configuration
-            $config = array(
-                'bdd' => array(
-                    'host' => $host,
-                    'port' => $port,
-                    'database' => $database,
-                    'user' => $user,
-                    'password' => $password
-                )
-            );
+            // Modification du fichier de configuration
+            $config = Configuration::getInstance();
 
-            $config_json = json_encode($config, JSON_PRETTY_PRINT);
-
-            $success = file_put_contents(DATA_FOLDER . 'config.json', $config_json);
+            // Modification des informations de connexion à la base de données
+            $config->setBddHost($host);
+            $config->setBddPort($port);
+            $config->setBddName($database);
+            $config->setBddUser($user);
+            $config->setBddPassword($password);
         }
 
         $json = array(
@@ -66,6 +61,43 @@ class InstallController extends Controller
 
         $json = array(
             'success' => $success
+        );
+
+        $view = new View(BaseTemplate::JSON);
+
+        // Définission des variables utilisées dans la vue
+        $view->json = $json;
+
+        $view->renderView();
+    }
+
+    /**
+     * Méthode permettant de créer un compte gérant
+     */
+    public function createGerant()
+    {
+        // Récupération des paramètres de la requête
+        $nom = Form::getParam('nom_gerant', Form::METHOD_POST, Form::TYPE_STRING);
+        $prenom = Form::getParam('prenom_gerant', Form::METHOD_POST, Form::TYPE_STRING);
+        $login = Form::getParam('login_gerant', Form::METHOD_POST, Form::TYPE_STRING);
+        $password = Form::getParam('password_gerant', Form::METHOD_POST, Form::TYPE_STRING);
+
+        // Hashage du mot de passe
+        $password = Security::getInstance()->hashPassword($password);
+
+        // Création du compte gérant
+        $gerant = new Gerant();
+        $gerant->setNom($nom);
+        $gerant->setPrenom($prenom);
+        $gerant->setLogin($login);
+        $gerant->setHashedPassword($password);
+
+        // Enregistrement du compte gérant
+        $gerantDAO = new GerantDAO();
+        $gerantDAO->create($gerant);
+
+        $json = array(
+            'success' => true
         );
 
         $view = new View(BaseTemplate::JSON);
