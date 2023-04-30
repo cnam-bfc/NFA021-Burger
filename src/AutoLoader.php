@@ -44,20 +44,29 @@ class AutoLoader
      */
     public static function autoload($class)
     {
+        // On construit les chemins possibles vers la classe
+        if (substr($class, -3) == 'DAO') {
+            $modelFolder = lcfirst(substr($class, 0, -3));
+        } else {
+            $modelFolder = lcfirst($class);
+        }
+        $modelPath = MODEL . $modelFolder . DIRECTORY_SEPARATOR . $class . '.php';
+        $controllerPath = CONTROLLER . $class . '.php';
+        $viewPath = VIEW . $class . '.php';
         switch ($class) {
                 // Si la classe est un modèle (DAO ou Objet)
-            case file_exists(MODEL . (substr($class, -3) == 'DAO' ? strtolower(substr($class, 0, -3)) : strtolower($class)) . DIRECTORY_SEPARATOR . $class . '.php'):
-                require_once MODEL . (substr($class, -3) == 'DAO' ? strtolower(substr($class, 0, -3)) : strtolower($class)) . DIRECTORY_SEPARATOR . $class . '.php';
+            case file_exists($modelPath):
+                require_once $modelPath;
                 break;
 
                 // Si la classe est un contrôleur
-            case file_exists(CONTROLLER . $class . '.php'):
-                require_once CONTROLLER . $class . '.php';
+            case file_exists($controllerPath):
+                require_once $controllerPath;
                 break;
 
                 // Si la classe est une vue
-            case file_exists(VIEW . $class . '.php'):
-                require_once VIEW . $class . '.php';
+            case file_exists($viewPath):
+                require_once $viewPath;
                 break;
 
                 // Sinon on affiche une erreur
