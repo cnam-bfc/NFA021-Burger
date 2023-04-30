@@ -16,6 +16,7 @@ class InstallController extends Controller
      */
     public function configBdd()
     {
+        // Récupération des paramètres de la requête
         $host = Form::getParam('host_bdd', Form::METHOD_POST, Form::TYPE_STRING);
         $port = Form::getParam('port_bdd', Form::METHOD_POST, Form::TYPE_INT);
         $database = Form::getParam('database_bdd', Form::METHOD_POST, Form::TYPE_STRING);
@@ -62,11 +63,6 @@ class InstallController extends Controller
     {
         // Connexion à la base de données
         $success = Database::createInstance();
-
-        if ($success) {
-            // Mise à jour de la base de données
-            Database::getInstance()->update();
-        }
 
         $json = array(
             'success' => $success
