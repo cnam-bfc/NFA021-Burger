@@ -112,7 +112,10 @@ class LivreurDAO extends DAO
         $livreurs = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $livreur = $this->convertTableRowToObject($row);
+            $livreur = new Livreur();
+
+            // Remplissage de l'objet
+            $this->fillObject($livreur, $row);
 
             // Ajout de l'objet dans le tableau
             $livreurs[] = $livreur;
@@ -138,7 +141,10 @@ class LivreurDAO extends DAO
         $livreurs = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $livreur = $this->convertTableRowToObject($row);
+            $livreur = new Livreur();
+
+            // Remplissage de l'objet
+            $this->fillObject($livreur, $row);
 
             // Ajout de l'objet dans le tableau
             $livreurs[] = $livreur;
@@ -170,29 +176,25 @@ class LivreurDAO extends DAO
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
         // Création d'un nouvel objet
-        $livreur = $this->convertTableRowToObject($result);
+        $livreur = new Livreur();
+
+        // Remplissage de l'objet
+        $this->fillObject($livreur, $result);
 
         return $livreur;
     }
 
     /**
-     * Méthode permettant de remplir un objet à partir d'un tableau
+     * Méthode permettant de remplir un objet à partir d'un tableau (ligne issue de la base de données)
      * 
+     * @param Livreur $livreur (objet à remplir)
      * @param array $row (tableau contenant les données)
-     * @return Livreur
      */
-    protected function convertTableRowToObject($row)
+    public function fillObject($livreur, $row)
     {
-        // Création d'un nouvel objet
-        $livreur = new Livreur();
-        $livreur->setId($row['id_compte']);
-        $livreur->setLogin($row['login']);
-        $livreur->setHashedPassword($row['password']);
-        $livreur->setDateArchive($row['date_archive']);
-        $livreur->setMatricule($row['matricule']);
-        $livreur->setNom($row['nom']);
-        $livreur->setPrenom($row['prenom']);
+        // Remplissage des attributs de l'employé
+        $this->employeDAO->fillObject($livreur, $row);
 
-        return $livreur;
+        // Remplissage des attributs du livreur
     }
 }

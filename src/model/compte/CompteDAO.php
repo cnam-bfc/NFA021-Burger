@@ -104,7 +104,10 @@ class CompteDAO extends DAO
         $comptes = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $compte = $this->convertTableRowToObject($row);
+            $compte = new Compte();
+
+            // Remplissage de l'objet
+            $this->fillObject($compte, $row);
 
             // Ajout de l'objet dans le tableau
             $comptes[] = $compte;
@@ -130,7 +133,10 @@ class CompteDAO extends DAO
         $comptes = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $compte = $this->convertTableRowToObject($row);
+            $compte = new Compte();
+
+            // Remplissage de l'objet
+            $this->fillObject($compte, $row);
 
             // Ajout de l'objet dans le tableau
             $comptes[] = $compte;
@@ -162,26 +168,25 @@ class CompteDAO extends DAO
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
         // Création d'un nouvel objet
-        $compte = $this->convertTableRowToObject($result);
+        $compte = new Compte();
+
+        // Remplissage de l'objet
+        $this->fillObject($compte, $result);
 
         return $compte;
     }
 
     /**
-     * Méthode permettant de remplir un objet à partir d'un tableau
+     * Méthode permettant de remplir un objet à partir d'un tableau (ligne issue de la base de données)
      * 
+     * @param Compte $compte (objet à remplir)
      * @param array $row (tableau contenant les données)
-     * @return Compte
      */
-    protected function convertTableRowToObject($row)
+    public function fillObject($compte, $row)
     {
-        // Création d'un nouvel objet
-        $compte = new Compte();
         $compte->setId($row['id_compte']);
         $compte->setLogin($row['login']);
         $compte->setHashedPassword($row['password']);
         $compte->setDateArchive($row['date_archive']);
-
-        return $compte;
     }
 }

@@ -104,7 +104,10 @@ class CommandeFournisseurDAO extends DAO
         $commandesFournisseurs = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $commandeFournisseur = $this->convertTableRowToObject($row);
+            $commandeFournisseur = new CommandeFournisseur();
+
+            // Remplissage de l'objet
+            $this->fillObject($commandeFournisseur, $row);
 
             // Ajout de l'objet dans le tableau
             $commandesFournisseurs[] = $commandeFournisseur;
@@ -130,7 +133,10 @@ class CommandeFournisseurDAO extends DAO
         $commandesFournisseurs = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $commandeFournisseur = $this->convertTableRowToObject($row);
+            $commandeFournisseur = new CommandeFournisseur();
+
+            // Remplissage de l'objet
+            $this->fillObject($commandeFournisseur, $row);
 
             // Ajout de l'objet dans le tableau
             $commandesFournisseurs[] = $commandeFournisseur;
@@ -162,26 +168,25 @@ class CommandeFournisseurDAO extends DAO
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
         // Création d'un nouvel objet
-        $commandeFournisseur = $this->convertTableRowToObject($result);
+        $commandeFournisseur = new CommandeFournisseur();
+
+        // Remplissage de l'objet
+        $this->fillObject($commandeFournisseur, $result);
 
         return $commandeFournisseur;
     }
 
     /**
-     * Méthode permettant de remplir un objet à partir d'un tableau
+     * Méthode permettant de remplir un objet à partir d'un tableau (ligne issue de la base de données)
      * 
+     * @param CommandeFournisseur $commandeFournisseur (objet à remplir)
      * @param array $row (tableau contenant les données)
-     * @return CommandeFournisseur
      */
-    protected function convertTableRowToObject($row)
+    public function fillObject($commandeFournisseur, $row)
     {
-        // Création d'un nouvel objet
-        $commandeFournisseur = new CommandeFournisseur();
         $commandeFournisseur->setId($row['id_commande_fournisseur']);
         $commandeFournisseur->setDateCommande($row['date_commande']);
         $commandeFournisseur->setDateArchive($row['date_archive']);
         $commandeFournisseur->setIdFournisseur($row['id_fournisseur_fk']);
-
-        return $commandeFournisseur;
     }
 }

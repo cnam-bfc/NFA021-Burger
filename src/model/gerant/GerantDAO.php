@@ -112,7 +112,10 @@ class GerantDAO extends DAO
         $gerants = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $gerant = $this->convertTableRowToObject($row);
+            $gerant = new Gerant();
+
+            // Remplissage de l'objet
+            $this->fillObject($gerant, $row);
 
             // Ajout de l'objet dans le tableau
             $gerants[] = $gerant;
@@ -138,7 +141,10 @@ class GerantDAO extends DAO
         $gerants = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $gerant = $this->convertTableRowToObject($row);
+            $gerant = new Gerant();
+
+            // Remplissage de l'objet
+            $this->fillObject($gerant, $row);
 
             // Ajout de l'objet dans le tableau
             $gerants[] = $gerant;
@@ -170,29 +176,25 @@ class GerantDAO extends DAO
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
         // Création d'un nouvel objet
-        $gerant = $this->convertTableRowToObject($result);
+        $gerant = new Gerant();
+
+        // Remplissage de l'objet
+        $this->fillObject($gerant, $result);
 
         return $gerant;
     }
 
     /**
-     * Méthode permettant de remplir un objet à partir d'un tableau
+     * Méthode permettant de remplir un objet à partir d'un tableau (ligne issue de la base de données)
      * 
+     * @param Gerant $gerant (objet à remplir)
      * @param array $row (tableau contenant les données)
-     * @return Gerant
      */
-    protected function convertTableRowToObject($row)
+    public function fillObject($gerant, $row)
     {
-        // Création d'un nouvel objet
-        $gerant = new Gerant();
-        $gerant->setId($row['id_compte']);
-        $gerant->setLogin($row['login']);
-        $gerant->setHashedPassword($row['password']);
-        $gerant->setDateArchive($row['date_archive']);
-        $gerant->setMatricule($row['matricule']);
-        $gerant->setNom($row['nom']);
-        $gerant->setPrenom($row['prenom']);
+        // Remplissage des attributs de l'employé
+        $this->employeDAO->fillObject($gerant, $row);
 
-        return $gerant;
+        // Remplissage des attributs du gérant
     }
 }

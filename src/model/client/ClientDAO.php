@@ -155,7 +155,10 @@ class ClientDAO extends DAO
         $clients = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $client = $this->convertTableRowToObject($row);
+            $client = new Client();
+
+            // Remplissage de l'objet
+            $this->fillObject($client, $row);
 
             // Ajout de l'objet dans le tableau
             $clients[] = $client;
@@ -181,7 +184,10 @@ class ClientDAO extends DAO
         $clients = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $client = $this->convertTableRowToObject($row);
+            $client = new Client();
+
+            // Remplissage de l'objet
+            $this->fillObject($client, $row);
 
             // Ajout de l'objet dans le tableau
             $clients[] = $client;
@@ -213,25 +219,26 @@ class ClientDAO extends DAO
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
         // Création d'un nouvel objet
-        $client = $this->convertTableRowToObject($result);
+        $client = new Client();
+
+        // Remplissage de l'objet
+        $this->fillObject($client, $result);
 
         return $client;
     }
 
     /**
-     * Méthode permettant de remplir un objet à partir d'un tableau
+     * Méthode permettant de remplir un objet à partir d'un tableau (ligne issue de la base de données)
      * 
+     * @param Client $client (objet à remplir)
      * @param array $row (tableau contenant les données)
-     * @return Client
      */
-    protected function convertTableRowToObject($row)
+    public function fillObject($client, $row)
     {
-        // Création d'un nouvel objet
-        $client = new Client();
-        $client->setId($row['id_compte']);
-        $client->setLogin($row['login']);
-        $client->setHashedPassword($row['password']);
-        $client->setDateArchive($row['date_archive']);
+        // Remplissage des attributs du compte
+        $this->compteDAO->fillObject($client, $row);
+
+        // Remplissage des attributs du client
         $client->setNom($row['nom']);
         $client->setPrenom($row['prenom']);
         $client->setTelephone($row['telephone']);
@@ -241,7 +248,5 @@ class ClientDAO extends DAO
         $client->setAdresseVille($row['adresse_ville']);
         $client->setAdresseRue($row['adresse_rue']);
         $client->setAdresseNumero($row['adresse_numero']);
-
-        return $client;
     }
 }

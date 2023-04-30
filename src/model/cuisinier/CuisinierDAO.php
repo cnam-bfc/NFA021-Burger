@@ -112,7 +112,10 @@ class CuisinierDAO extends DAO
         $cuisiniers = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $cuisinier = $this->convertTableRowToObject($row);
+            $cuisinier = new Cuisinier();
+
+            // Remplissage de l'objet
+            $this->fillObject($cuisinier, $row);
 
             // Ajout de l'objet dans le tableau
             $cuisiniers[] = $cuisinier;
@@ -138,7 +141,10 @@ class CuisinierDAO extends DAO
         $cuisiniers = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $cuisinier = $this->convertTableRowToObject($row);
+            $cuisinier = new Cuisinier();
+
+            // Remplissage de l'objet
+            $this->fillObject($cuisinier, $row);
 
             // Ajout de l'objet dans le tableau
             $cuisiniers[] = $cuisinier;
@@ -170,29 +176,25 @@ class CuisinierDAO extends DAO
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
         // Création d'un nouvel objet
-        $cuisinier = $this->convertTableRowToObject($result);
+        $cuisinier = new Cuisinier();
+
+        // Remplissage de l'objet
+        $this->fillObject($cuisinier, $result);
 
         return $cuisinier;
     }
 
     /**
-     * Méthode permettant de remplir un objet à partir d'un tableau
+     * Méthode permettant de remplir un objet à partir d'un tableau (ligne issue de la base de données)
      * 
+     * @param Cuisinier $cuisinier (objet à remplir)
      * @param array $row (tableau contenant les données)
-     * @return Cuisinier
      */
-    protected function convertTableRowToObject($row)
+    public function fillObject($cuisinier, $row)
     {
-        // Création d'un nouvel objet
-        $cuisinier = new Cuisinier();
-        $cuisinier->setId($row['id_compte']);
-        $cuisinier->setLogin($row['login']);
-        $cuisinier->setHashedPassword($row['password']);
-        $cuisinier->setDateArchive($row['date_archive']);
-        $cuisinier->setMatricule($row['matricule']);
-        $cuisinier->setNom($row['nom']);
-        $cuisinier->setPrenom($row['prenom']);
+        // Remplissage des attributs de l'employé
+        $this->employeDAO->fillObject($cuisinier, $row);
 
-        return $cuisinier;
+        // Remplissage des attributs du cuisinier
     }
 }

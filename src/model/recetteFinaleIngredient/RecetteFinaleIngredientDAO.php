@@ -96,7 +96,10 @@ class RecetteFinaleIngredientDAO extends DAO
         $recettesFinalesIngredients = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $recetteFinaleIngredient = $this->convertTableRowToObject($row);
+            $recetteFinaleIngredient = new RecetteFinaleIngredient();
+
+            // Remplissage de l'objet
+            $this->fillObject($recetteFinaleIngredient, $row);
 
             // Ajout de l'objet dans le tableau
             $recettesFinalesIngredients[] = $recetteFinaleIngredient;
@@ -124,7 +127,10 @@ class RecetteFinaleIngredientDAO extends DAO
         $recettesFinalesIngredients = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $recetteFinaleIngredient = $this->convertTableRowToObject($row);
+            $recetteFinaleIngredient = new RecetteFinaleIngredient();
+
+            // Remplissage de l'objet
+            $this->fillObject($recetteFinaleIngredient, $row);
 
             // Ajout de l'objet dans le tableau
             $recettesFinalesIngredients[] = $recetteFinaleIngredient;
@@ -162,25 +168,26 @@ class RecetteFinaleIngredientDAO extends DAO
 
         // Traitement des résultats
         $row = $statement->fetch(PDO::FETCH_ASSOC);
-        $recetteFinaleIngredient = $this->convertTableRowToObject($row);
+
+        // Création d'un nouvel objet
+        $recetteFinaleIngredient = new RecetteFinaleIngredient();
+
+        // Remplissage de l'objet
+        $this->fillObject($recetteFinaleIngredient, $row);
 
         return $recetteFinaleIngredient;
     }
 
     /**
-     * Méthode permettant de remplir un objet à partir d'un tableau
+     * Méthode permettant de remplir un objet à partir d'un tableau (ligne issue de la base de données)
      * 
+     * @param RecetteFinaleIngredient $recetteFinaleIngredient (objet à remplir)
      * @param array $row (tableau contenant les données)
-     * @return RecetteFinaleIngredient
      */
-    protected function convertTableRowToObject($row)
+    public function fillObject($recetteFinaleIngredient, $row)
     {
-        // Création d'un nouvel objet
-        $recetteFinaleIngredient = new RecetteFinaleIngredient();
         $recetteFinaleIngredient->setIdIngredient($row['id_ingredient_fk']);
         $recetteFinaleIngredient->setIdRecetteFinale($row['id_recette_finale_fk']);
         $recetteFinaleIngredient->setQuantite($row['quantite']);
-
-        return $recetteFinaleIngredient;
     }
 }

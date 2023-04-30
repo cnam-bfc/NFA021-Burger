@@ -125,7 +125,10 @@ class EmployeDAO extends DAO
         $employes = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $employe = $this->convertTableRowToObject($row);
+            $employe = new Employe();
+
+            // Remplissage de l'objet
+            $this->fillObject($employe, $row);
 
             // Ajout de l'objet dans le tableau
             $employes[] = $employe;
@@ -151,7 +154,10 @@ class EmployeDAO extends DAO
         $employes = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $employe = $this->convertTableRowToObject($row);
+            $employe = new Employe();
+
+            // Remplissage de l'objet
+            $this->fillObject($employe, $row);
 
             // Ajout de l'objet dans le tableau
             $employes[] = $employe;
@@ -183,29 +189,28 @@ class EmployeDAO extends DAO
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
         // Création d'un nouvel objet
-        $employe = $this->convertTableRowToObject($result);
+        $employe = new Employe();
+
+        // Remplissage de l'objet
+        $this->fillObject($employe, $result);
 
         return $employe;
     }
 
     /**
-     * Méthode permettant de remplir un objet à partir d'un tableau
+     * Méthode permettant de remplir un objet à partir d'un tableau (ligne issue de la base de données)
      * 
+     * @param Employe $employe (objet à remplir)
      * @param array $row (tableau contenant les données)
-     * @return Employe
      */
-    protected function convertTableRowToObject($row)
+    public function fillObject($employe, $row)
     {
-        // Création d'un nouvel objet
-        $employe = new Employe();
-        $employe->setId($row['id_compte']);
-        $employe->setLogin($row['login']);
-        $employe->setHashedPassword($row['password']);
-        $employe->setDateArchive($row['date_archive']);
+        // Remplissage des attributs du compte
+        $this->compteDAO->fillObject($employe, $row);
+
+        // Remplissage des attributs de l'employé
         $employe->setMatricule($row['matricule']);
         $employe->setNom($row['nom']);
         $employe->setPrenom($row['prenom']);
-
-        return $employe;
     }
 }

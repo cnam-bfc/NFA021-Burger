@@ -150,7 +150,10 @@ class CommandeClientLivraisonDAO extends DAO
         $commandesClientsLivraisons = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $commandeClientLivraison = $this->convertTableRowToObject($row);
+            $commandeClientLivraison = new CommandeClientLivraison();
+
+            // Remplissage de l'objet
+            $this->fillObject($commandeClientLivraison, $row);
 
             // Ajout de l'objet dans le tableau
             $commandesClientsLivraisons[] = $commandeClientLivraison;
@@ -176,7 +179,10 @@ class CommandeClientLivraisonDAO extends DAO
         $commandesClientsLivraisons = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $commandeClientLivraison = $this->convertTableRowToObject($row);
+            $commandeClientLivraison = new CommandeClientLivraison();
+
+            // Remplissage de l'objet
+            $this->fillObject($commandeClientLivraison, $row);
 
             // Ajout de l'objet dans le tableau
             $commandesClientsLivraisons[] = $commandeClientLivraison;
@@ -208,28 +214,26 @@ class CommandeClientLivraisonDAO extends DAO
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
         // Création d'un nouvel objet
-        $commandeClientLivraison = $this->convertTableRowToObject($result);
+        $commandeClientLivraison = new CommandeClientLivraison();
+
+        // Remplissage de l'objet
+        $this->fillObject($commandeClientLivraison, $result);
 
         return $commandeClientLivraison;
     }
 
     /**
-     * Méthode permettant de remplir un objet à partir d'un tableau
+     * Méthode permettant de remplir un objet à partir d'un tableau (ligne issue de la base de données)
      * 
+     * @param CommandeClientLivraison $commandeClientLivraison (objet à remplir)
      * @param array $row (tableau contenant les données)
-     * @return CommandeClientLivraison
      */
-    protected function convertTableRowToObject($row)
+    public function fillObject($commandeClientLivraison, $row)
     {
-        // Création d'un nouvel objet
-        $commandeClientLivraison = new CommandeClientLivraison();
-        $commandeClientLivraison->setId($row['id_commande_client']);
-        $commandeClientLivraison->setPrix($row['prix']);
-        $commandeClientLivraison->setDateCommande($row['date_commande']);
-        $commandeClientLivraison->setDatePret($row['date_pret']);
-        $commandeClientLivraison->setDateArchive($row['date_archive']);
-        $commandeClientLivraison->setIdEmballage($row['id_emballage_fk']);
-        $commandeClientLivraison->setIdClient($row['id_compte_fk']);
+        // Remplissage des attributs de la commande client
+        $this->commandeClientDAO->fillObject($commandeClientLivraison, $row);
+
+        // Remplissage des attributs de la commande client livraison
         $commandeClientLivraison->setHeureLivraison($row['heure_livraison']);
         $commandeClientLivraison->setAdresseOsmType($row['adresse_osm_type']);
         $commandeClientLivraison->setAdresseOsmId($row['adresse_osm_id']);
@@ -238,7 +242,5 @@ class CommandeClientLivraisonDAO extends DAO
         $commandeClientLivraison->setAdresseRue($row['adresse_rue']);
         $commandeClientLivraison->setAdresseNumero($row['adresse_numero']);
         $commandeClientLivraison->setIdLivreur($row['id_livreur_fk']);
-
-        return $commandeClientLivraison;
     }
 }

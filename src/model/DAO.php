@@ -56,10 +56,10 @@ abstract class DAO
     abstract public function selectById($id);
 
     /**
-     * Méthode abstraite qui permet de remplir un objet à partir d'un tableau
+     * Méthode abstraite qui permet de remplir un objet à partir d'un tableau (ligne issue de la base de données)
      * 
-     * @param array $array
-     * @return Object
+     * @param Object $object (objet à remplir)
+     * @param array $array (tableau contenant les données, ligne issues de la base de données)
      */
-    abstract protected function convertTableRowToObject($array);
+    abstract public function fillObject($object, $array);
 }

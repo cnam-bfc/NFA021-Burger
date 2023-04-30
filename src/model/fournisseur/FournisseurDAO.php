@@ -99,7 +99,10 @@ class FournisseurDAO extends DAO
         $fournisseurs = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $fournisseur = $this->convertTableRowToObject($row);
+            $fournisseur = new Fournisseur();
+
+            // Remplissage de l'objet
+            $this->fillObject($fournisseur, $row);
 
             // Ajout de l'objet dans le tableau
             $fournisseurs[] = $fournisseur;
@@ -125,7 +128,10 @@ class FournisseurDAO extends DAO
         $fournisseurs = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $fournisseur = $this->convertTableRowToObject($row);
+            $fournisseur = new Fournisseur();
+
+            // Remplissage de l'objet
+            $this->fillObject($fournisseur, $row);
 
             // Ajout de l'objet dans le tableau
             $fournisseurs[] = $fournisseur;
@@ -157,25 +163,24 @@ class FournisseurDAO extends DAO
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
         // Création d'un nouvel objet
-        $fournisseur = $this->convertTableRowToObject($result);
+        $fournisseur = new Fournisseur();
+
+        // Remplissage de l'objet
+        $this->fillObject($fournisseur, $result);
 
         return $fournisseur;
     }
 
     /**
-     * Méthode permettant de remplir un objet à partir d'un tableau
+     * Méthode permettant de remplir un objet à partir d'un tableau (ligne issue de la base de données)
      * 
+     * @param Fournisseur $fournisseur (objet à remplir)
      * @param array $row (tableau contenant les données)
-     * @return Fournisseur
      */
-    protected function convertTableRowToObject($row)
+    public function fillObject($fournisseur, $row)
     {
-        // Création d'un nouvel objet
-        $fournisseur = new Fournisseur();
         $fournisseur->setId($row['id_fournisseur']);
         $fournisseur->setNom($row['nom']);
         $fournisseur->setDateArchive($row['date_archive']);
-
-        return $fournisseur;
     }
 }

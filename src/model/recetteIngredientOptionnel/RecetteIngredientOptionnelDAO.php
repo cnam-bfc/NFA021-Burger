@@ -126,7 +126,10 @@ class RecetteIngredientOptionnelDAO extends DAO
         $recettesIngredientsOptionnels = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $recetteIngredientOptionnel = $this->convertTableRowToObject($row);
+            $recetteIngredientOptionnel = new RecetteIngredientOptionnel();
+
+            // Remplissage de l'objet
+            $this->fillObject($recetteIngredientOptionnel, $row);
 
             // Ajout de l'objet dans le tableau
             $recettesIngredientsOptionnels[] = $recetteIngredientOptionnel;
@@ -154,7 +157,10 @@ class RecetteIngredientOptionnelDAO extends DAO
         $recettesIngredientsOptionnels = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $recetteIngredientOptionnel = $this->convertTableRowToObject($row);
+            $recetteIngredientOptionnel = new RecetteIngredientOptionnel();
+
+            // Remplissage de l'objet
+            $this->fillObject($recetteIngredientOptionnel, $row);
 
             // Ajout de l'objet dans le tableau
             $recettesIngredientsOptionnels[] = $recetteIngredientOptionnel;
@@ -192,27 +198,28 @@ class RecetteIngredientOptionnelDAO extends DAO
 
         // Traitement des résultats
         $row = $statement->fetch(PDO::FETCH_ASSOC);
-        $recetteIngredientOptionnel = $this->convertTableRowToObject($row);
+
+        // Création d'un nouvel objet
+        $recetteIngredientOptionnel = new RecetteIngredientOptionnel();
+
+        // Remplissage de l'objet
+        $this->fillObject($recetteIngredientOptionnel, $row);
 
         return $recetteIngredientOptionnel;
     }
 
     /**
-     * Méthode permettant de remplir un objet à partir d'un tableau
+     * Méthode permettant de remplir un objet à partir d'un tableau (ligne issue de la base de données)
      * 
+     * @param RecetteIngredientOptionnel $recetteIngredientOptionnel (objet à remplir)
      * @param array $row (tableau contenant les données)
-     * @return RecetteIngredientOptionnel
      */
-    protected function convertTableRowToObject($row)
+    public function fillObject($recetteIngredientOptionnel, $row)
     {
-        // Création d'un nouvel objet
-        $recetteIngredientOptionnel = new RecetteIngredientOptionnel();
         $recetteIngredientOptionnel->setIdRecette($row['id_recette_fk']);
         $recetteIngredientOptionnel->setIdIngredient($row['id_ingredient_fk']);
         $recetteIngredientOptionnel->setQuantite($row['quantite']);
         $recetteIngredientOptionnel->setPrix($row['prix']);
         $recetteIngredientOptionnel->setOrdre($row['ordre']);
-
-        return $recetteIngredientOptionnel;
     }
 }

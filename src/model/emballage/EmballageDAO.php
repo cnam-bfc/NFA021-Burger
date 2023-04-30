@@ -99,7 +99,10 @@ class EmballageDAO extends DAO
         $emballages = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $emballage = $this->convertTableRowToObject($row);
+            $emballage = new Emballage();
+
+            // Remplissage de l'objet
+            $this->fillObject($emballage, $row);
 
             // Ajout de l'objet dans le tableau
             $emballages[] = $emballage;
@@ -125,7 +128,10 @@ class EmballageDAO extends DAO
         $emballages = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $emballage = $this->convertTableRowToObject($row);
+            $emballage = new Emballage();
+
+            // Remplissage de l'objet
+            $this->fillObject($emballage, $row);
 
             // Ajout de l'objet dans le tableau
             $emballages[] = $emballage;
@@ -157,25 +163,24 @@ class EmballageDAO extends DAO
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
         // Création d'un nouvel objet
-        $emballage = $this->convertTableRowToObject($result);
+        $emballage = new Emballage();
+
+        // Remplissage de l'objet
+        $this->fillObject($emballage, $result);
 
         return $emballage;
     }
 
     /**
-     * Méthode permettant de remplir un objet à partir d'un tableau
+     * Méthode permettant de remplir un objet à partir d'un tableau (ligne issue de la base de données)
      * 
+     * @param Emballage $emballage (objet à remplir)
      * @param array $row (tableau contenant les données)
-     * @return Emballage
      */
-    protected function convertTableRowToObject($row)
+    public function fillObject($emballage, $row)
     {
-        // Création d'un nouvel objet
-        $emballage = new Emballage();
         $emballage->setId($row['id_emballage']);
         $emballage->setNom($row['nom']);
         $emballage->setDateArchive($row['date_archive']);
-
-        return $emballage;
     }
 }

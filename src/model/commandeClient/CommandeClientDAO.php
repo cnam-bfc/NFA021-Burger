@@ -119,7 +119,10 @@ class CommandeClientDAO extends DAO
         $commandesClients = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $commandeClient = $this->convertTableRowToObject($row);
+            $commandeClient = new CommandeClient();
+
+            // Remplissage de l'objet
+            $this->fillObject($commandeClient, $row);
 
             // Ajout de l'objet dans le tableau
             $commandesClients[] = $commandeClient;
@@ -145,7 +148,10 @@ class CommandeClientDAO extends DAO
         $commandesClients = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $commandeClient = $this->convertTableRowToObject($row);
+            $commandeClient = new CommandeClient();
+
+            // Remplissage de l'objet
+            $this->fillObject($commandeClient, $row);
 
             // Ajout de l'objet dans le tableau
             $commandesClients[] = $commandeClient;
@@ -177,21 +183,22 @@ class CommandeClientDAO extends DAO
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
         // Création d'un nouvel objet
-        $commandeClient = $this->convertTableRowToObject($result);
+        $commandeClient = new CommandeClient();
+
+        // Remplissage de l'objet
+        $this->fillObject($commandeClient, $result);
 
         return $commandeClient;
     }
 
     /**
-     * Méthode permettant de remplir un objet à partir d'un tableau
+     * Méthode permettant de remplir un objet à partir d'un tableau (ligne issue de la base de données)
      * 
+     * @param CommandeClient $commandeClient (objet à remplir)
      * @param array $row (tableau contenant les données)
-     * @return CommandeClient
      */
-    protected function convertTableRowToObject($row)
+    public function fillObject($commandeClient, $row)
     {
-        // Création d'un nouvel objet
-        $commandeClient = new CommandeClient();
         $commandeClient->setId($row['id_commande_client']);
         $commandeClient->setPrix($row['prix']);
         $commandeClient->setDateCommande($row['date_commande']);
@@ -199,7 +206,5 @@ class CommandeClientDAO extends DAO
         $commandeClient->setDateArchive($row['date_archive']);
         $commandeClient->setIdEmballage($row['id_emballage_fk']);
         $commandeClient->setIdClient($row['id_compte_fk']);
-
-        return $commandeClient;
     }
 }

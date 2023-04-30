@@ -104,7 +104,10 @@ class RecetteSelectionMultipleDAO extends DAO
         $recettesSelectionsMultiples = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $recetteSelectionMultiple = $this->convertTableRowToObject($row);
+            $recetteSelectionMultiple = new RecetteSelectionMultiple();
+
+            // Remplissage de l'objet
+            $this->fillObject($recetteSelectionMultiple, $row);
 
             // Ajout de l'objet dans le tableau
             $recettesSelectionsMultiples[] = $recetteSelectionMultiple;
@@ -136,26 +139,25 @@ class RecetteSelectionMultipleDAO extends DAO
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
         // Création d'un nouvel objet
-        $recetteSelectionMultiple = $this->convertTableRowToObject($result);
+        $recetteSelectionMultiple = new RecetteSelectionMultiple();
+
+        // Remplissage de l'objet
+        $this->fillObject($recetteSelectionMultiple, $result);
 
         return $recetteSelectionMultiple;
     }
 
     /**
-     * Méthode permettant de remplir un objet à partir d'un tableau
+     * Méthode permettant de remplir un objet à partir d'un tableau (ligne issue de la base de données)
      * 
+     * @param RecetteSelectionMultiple $recetteSelectionMultiple (objet à remplir)
      * @param array $row (tableau contenant les données)
-     * @return RecetteSelectionMultiple
      */
-    protected function convertTableRowToObject($row)
+    public function fillObject($recetteSelectionMultiple, $row)
     {
-        // Création d'un nouvel objet
-        $recetteSelectionMultiple = new RecetteSelectionMultiple();
         $recetteSelectionMultiple->setId($row['id_recette_selection_multiple']);
         $recetteSelectionMultiple->setQuantite($row['quantite']);
         $recetteSelectionMultiple->setOrdre($row['ordre']);
         $recetteSelectionMultiple->setIdRecette($row['id_recette_fk']);
-
-        return $recetteSelectionMultiple;
     }
 }

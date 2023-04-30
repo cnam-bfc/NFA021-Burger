@@ -121,7 +121,10 @@ class RecetteIngredientBasiqueDAO extends DAO
         $recettesIngredientsBasiques = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $recetteIngredientBasique = $this->convertTableRowToObject($row);
+            $recetteIngredientBasique = new RecetteIngredientBasique();
+
+            // Remplissage de l'objet
+            $this->fillObject($recetteIngredientBasique, $row);
 
             // Ajout de l'objet dans le tableau
             $recettesIngredientsBasiques[] = $recetteIngredientBasique;
@@ -149,7 +152,10 @@ class RecetteIngredientBasiqueDAO extends DAO
         $recettesIngredientsBasiques = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $recetteIngredientBasique = $this->convertTableRowToObject($row);
+            $recetteIngredientBasique = new RecetteIngredientBasique();
+
+            // Remplissage de l'objet
+            $this->fillObject($recetteIngredientBasique, $row);
 
             // Ajout de l'objet dans le tableau
             $recettesIngredientsBasiques[] = $recetteIngredientBasique;
@@ -187,26 +193,27 @@ class RecetteIngredientBasiqueDAO extends DAO
 
         // Traitement des résultats
         $row = $statement->fetch(PDO::FETCH_ASSOC);
-        $recetteIngredientBasique = $this->convertTableRowToObject($row);
+
+        // Création d'un nouvel objet
+        $recetteIngredientBasique = new RecetteIngredientBasique();
+
+        // Remplissage de l'objet
+        $this->fillObject($recetteIngredientBasique, $row);
 
         return $recetteIngredientBasique;
     }
 
     /**
-     * Méthode permettant de remplir un objet à partir d'un tableau
+     * Méthode permettant de remplir un objet à partir d'un tableau (ligne issue de la base de données)
      * 
+     * @param RecetteIngredientBasique $recetteIngredientBasique (objet à remplir)
      * @param array $row (tableau contenant les données)
-     * @return RecetteIngredientBasique
      */
-    protected function convertTableRowToObject($row)
+    public function fillObject($recetteIngredientBasique, $row)
     {
-        // Création d'un nouvel objet
-        $recetteIngredientBasique = new RecetteIngredientBasique();
         $recetteIngredientBasique->setIdRecette($row['id_recette_fk']);
         $recetteIngredientBasique->setIdIngredient($row['id_ingredient_fk']);
         $recetteIngredientBasique->setQuantite($row['quantite']);
         $recetteIngredientBasique->setOrdre($row['ordre']);
-
-        return $recetteIngredientBasique;
     }
 }

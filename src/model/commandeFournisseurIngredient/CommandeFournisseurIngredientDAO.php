@@ -101,7 +101,10 @@ class CommandeFournisseurIngredientDAO extends DAO
         $commandesFournisseursIngredients = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $commandeFournisseurIngredient = $this->convertTableRowToObject($row);
+            $commandeFournisseurIngredient = new CommandeFournisseurIngredient();
+
+            // Remplissage de l'objet
+            $this->fillObject($commandeFournisseurIngredient, $row);
 
             // Ajout de l'objet dans le tableau
             $commandesFournisseursIngredients[] = $commandeFournisseurIngredient;
@@ -129,7 +132,10 @@ class CommandeFournisseurIngredientDAO extends DAO
         $commandeFournisseurIngredients = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $commandeFournisseurIngredient = $this->convertTableRowToObject($row);
+            $commandeFournisseurIngredient = new CommandeFournisseurIngredient();
+
+            // Remplissage de l'objet
+            $this->fillObject($commandeFournisseurIngredient, $row);
 
             // Ajout de l'objet dans le tableau
             $commandeFournisseurIngredients[] = $commandeFournisseurIngredient;
@@ -167,26 +173,27 @@ class CommandeFournisseurIngredientDAO extends DAO
 
         // Traitement des résultats
         $row = $statement->fetch(PDO::FETCH_ASSOC);
-        $commandeFournisseurIngredient = $this->convertTableRowToObject($row);
+
+        // Création d'un nouvel objet
+        $commandeFournisseurIngredient = new CommandeFournisseurIngredient();
+
+        // Remplissage de l'objet
+        $this->fillObject($commandeFournisseurIngredient, $row);
 
         return $commandeFournisseurIngredient;
     }
 
     /**
-     * Méthode permettant de remplir un objet à partir d'un tableau
+     * Méthode permettant de remplir un objet à partir d'un tableau (ligne issue de la base de données)
      * 
+     * @param CommandeFournisseurIngredient $commandeFournisseurIngredient (objet à remplir)
      * @param array $row (tableau contenant les données)
-     * @return CommandeFournisseurIngredient
      */
-    protected function convertTableRowToObject($row)
+    public function fillObject($commandeFournisseurIngredient, $row)
     {
-        // Création d'un nouvel objet
-        $commandeFournisseurIngredient = new CommandeFournisseurIngredient();
         $commandeFournisseurIngredient->setIdIngredient($row['id_ingredient_fk']);
         $commandeFournisseurIngredient->setIdCommandeFournisseur($row['id_commande_fournisseur_fk']);
         $commandeFournisseurIngredient->setQuantiteCommandee($row['quantite_commandee']);
         $commandeFournisseurIngredient->setQuantiteRecue($row['quantite_recue']);
-
-        return $commandeFournisseurIngredient;
     }
 }

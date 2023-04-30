@@ -115,7 +115,10 @@ class CommandeClientRetraitDAO extends DAO
         $commandesClientsRetraits = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $commandeClientRetrait = $this->convertTableRowToObject($row);
+            $commandeClientRetrait = new CommandeClientRetrait();
+
+            // Remplissage de l'objet
+            $this->fillObject($commandeClientRetrait, $row);
 
             // Ajout de l'objet dans le tableau
             $commandesClientsRetraits[] = $commandeClientRetrait;
@@ -141,7 +144,10 @@ class CommandeClientRetraitDAO extends DAO
         $commandesClientsRetraits = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $commandeClientRetrait = $this->convertTableRowToObject($row);
+            $commandeClientRetrait = new CommandeClientRetrait();
+
+            // Remplissage de l'objet
+            $this->fillObject($commandeClientRetrait, $row);
 
             // Ajout de l'objet dans le tableau
             $commandesClientsRetraits[] = $commandeClientRetrait;
@@ -173,30 +179,26 @@ class CommandeClientRetraitDAO extends DAO
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
         // Création d'un nouvel objet
-        $commandeClientRetrait = $this->convertTableRowToObject($result);
+        $commandeClientRetrait = new CommandeClientRetrait();
+
+        // Remplissage de l'objet
+        $this->fillObject($commandeClientRetrait, $result);
 
         return $commandeClientRetrait;
     }
 
     /**
-     * Méthode permettant de remplir un objet à partir d'un tableau
+     * Méthode permettant de remplir un objet à partir d'un tableau (ligne issue de la base de données)
      * 
+     * @param CommandeClientRetrait $commandeClientRetrait (objet à remplir)
      * @param array $row (tableau contenant les données)
-     * @return CommandeClientRetrait
      */
-    protected function convertTableRowToObject($row)
+    public function fillObject($commandeClientRetrait, $row)
     {
-        // Création d'un nouvel objet
-        $commandeClientRetrait = new CommandeClientRetrait();
-        $commandeClientRetrait->setId($row['id_commande_client']);
-        $commandeClientRetrait->setPrix($row['prix']);
-        $commandeClientRetrait->setDateCommande($row['date_commande']);
-        $commandeClientRetrait->setDatePret($row['date_pret']);
-        $commandeClientRetrait->setDateArchive($row['date_archive']);
-        $commandeClientRetrait->setIdEmballage($row['id_emballage_fk']);
-        $commandeClientRetrait->setIdClient($row['id_compte_fk']);
-        $commandeClientRetrait->setHeureRetrait($row['heure_retrait']);
+        // Remplissage des attributs de la commande client
+        $this->commandeClientDAO->fillObject($commandeClientRetrait, $row);
 
-        return $commandeClientRetrait;
+        // Remplissage des attributs de la commande client retrait
+        $commandeClientRetrait->setHeureRetrait($row['heure_retrait']);
     }
 }

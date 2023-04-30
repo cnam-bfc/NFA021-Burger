@@ -134,7 +134,10 @@ class IngredientDAO extends DAO
         $ingredients = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $ingredient = $this->convertTableRowToObject($row);
+            $ingredient = new Ingredient();
+
+            // Remplissage de l'objet
+            $this->fillObject($ingredient, $row);
 
             // Ajout de l'objet dans le tableau
             $ingredients[] = $ingredient;
@@ -160,7 +163,10 @@ class IngredientDAO extends DAO
         $ingredients = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $ingredient = $this->convertTableRowToObject($row);
+            $ingredient = new Ingredient();
+
+            // Remplissage de l'objet
+            $this->fillObject($ingredient, $row);
 
             // Ajout de l'objet dans le tableau
             $ingredients[] = $ingredient;
@@ -192,21 +198,22 @@ class IngredientDAO extends DAO
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
         // Création d'un nouvel objet
-        $ingredient = $this->convertTableRowToObject($result);
+        $ingredient = new Ingredient();
+
+        // Remplissage de l'objet
+        $this->fillObject($ingredient, $result);
 
         return $ingredient;
     }
 
     /**
-     * Méthode permettant de remplir un objet à partir d'un tableau
+     * Méthode permettant de remplir un objet à partir d'un tableau (ligne issue de la base de données)
      * 
+     * @param Ingredient $ingredient (objet à remplir)
      * @param array $row (tableau contenant les données)
-     * @return Ingredient
      */
-    protected function convertTableRowToObject($row)
+    public function fillObject($ingredient, $row)
     {
-        // Création d'un nouvel objet
-        $ingredient = new Ingredient();
         $ingredient->setId($row['id_ingredient']);
         $ingredient->setNom($row['nom']);
         $ingredient->setQuantiteStock($row['quantite_stock']);
@@ -217,7 +224,5 @@ class IngredientDAO extends DAO
         $ingredient->setDateArchive($row['date_archive']);
         $ingredient->setIdUnite($row['id_unite_fk']);
         $ingredient->setIdFournisseur($row['id_fournisseur_fk']);
-
-        return $ingredient;
     }
 }

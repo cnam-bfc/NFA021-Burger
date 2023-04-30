@@ -104,7 +104,10 @@ class RecetteFinaleDAO extends DAO
         $recetteFinales = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $recetteFinale = $this->convertTableRowToObject($row);
+            $recetteFinale = new RecetteFinale();
+
+            // Remplissage de l'objet
+            $this->fillObject($recetteFinale, $row);
 
             // Ajout de l'objet dans le tableau
             $recetteFinales[] = $recetteFinale;
@@ -136,26 +139,25 @@ class RecetteFinaleDAO extends DAO
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
         // Création d'un nouvel objet
-        $recetteFinale = $this->convertTableRowToObject($result);
+        $recetteFinale = new RecetteFinale();
+
+        // Remplissage de l'objet
+        $this->fillObject($recetteFinale, $result);
 
         return $recetteFinale;
     }
 
     /**
-     * Méthode permettant de remplir un objet à partir d'un tableau
+     * Méthode permettant de remplir un objet à partir d'un tableau (ligne issue de la base de données)
      * 
+     * @param RecetteFinale $recetteFinale (objet à remplir)
      * @param array $row (tableau contenant les données)
-     * @return RecetteFinale
      */
-    protected function convertTableRowToObject($row)
+    public function fillObject($recetteFinale, $row)
     {
-        // Création d'un nouvel objet
-        $recetteFinale = new RecetteFinale();
         $recetteFinale->setId($row['id_recette_finale']);
         $recetteFinale->setQuantite($row['quantite']);
         $recetteFinale->setIdCommandeClient($row['id_commande_client_fk']);
         $recetteFinale->setIdRecette($row['id_recette_fk']);
-
-        return $recetteFinale;
     }
 }

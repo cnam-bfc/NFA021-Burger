@@ -104,7 +104,10 @@ class UniteDAO extends DAO
         $unites = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $unite = $this->convertTableRowToObject($row);
+            $unite = new Unite();
+
+            // Remplissage de l'objet
+            $this->fillObject($unite, $row);
 
             // Ajout de l'objet dans le tableau
             $unites[] = $unite;
@@ -130,7 +133,10 @@ class UniteDAO extends DAO
         $unites = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $unite = $this->convertTableRowToObject($row);
+            $unite = new Unite();
+
+            // Remplissage de l'objet
+            $this->fillObject($unite, $row);
 
             // Ajout de l'objet dans le tableau
             $unites[] = $unite;
@@ -162,26 +168,25 @@ class UniteDAO extends DAO
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
         // Création d'un nouvel objet
-        $unite = $this->convertTableRowToObject($result);
+        $unite = new Unite();
+
+        // Remplissage de l'objet
+        $this->fillObject($unite, $result);
 
         return $unite;
     }
 
     /**
-     * Méthode permettant de remplir un objet à partir d'un tableau
+     * Méthode permettant de remplir un objet à partir d'un tableau (ligne issue de la base de données)
      * 
+     * @param Unite $unite (objet à remplir)
      * @param array $row (tableau contenant les données)
-     * @return Unite
      */
-    protected function convertTableRowToObject($row)
+    public function fillObject($unite, $row)
     {
-        // Création d'un nouvel objet
-        $unite = new Unite();
         $unite->setId($row['id_unite']);
         $unite->setNom($row['nom']);
         $unite->setDiminutif($row['diminutif']);
         $unite->setDateArchive($row['date_archive']);
-
-        return $unite;
     }
 }
