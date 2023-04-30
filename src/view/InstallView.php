@@ -52,7 +52,7 @@
 
                     <!-- Bouton pour tester la connexion à la base de données -->
                     <div class="form-action">
-                        <button type="submit" class="bouton" disabled>Tester la connexion à la base de données</button>
+                        <button type="submit" class="bouton" disabled>Tester et enregistrer la configuration</button>
                     </div>
                 </div>
             </div>
