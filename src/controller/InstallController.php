@@ -111,6 +111,132 @@ class InstallController extends Controller
     }
 
     /**
+     * Fonction permettant d'installer les unités par défaut
+     */
+    public function installUnites()
+    {
+        // Création des DAO
+        $uniteDAO = new UniteDAO();
+
+        // On lance une transaction
+        Database::getInstance()->getPDO()->beginTransaction();
+
+        // Création des unités par défaut
+        // Pièce
+        $unitePiece = new Unite();
+        $unitePiece->setNom('Pièce');
+        $unitePiece->setDiminutif('pce');
+        $uniteDAO->create($unitePiece);
+
+        // Gramme
+        $uniteGramme = new Unite();
+        $uniteGramme->setNom('Gramme');
+        $uniteGramme->setDiminutif('g');
+        $uniteDAO->create($uniteGramme);
+
+        // Kilogramme
+        $uniteKilogramme = new Unite();
+        $uniteKilogramme->setNom('Kilogramme');
+        $uniteKilogramme->setDiminutif('kg');
+        $uniteDAO->create($uniteKilogramme);
+
+        // Millilitre
+        $uniteMillilitre = new Unite();
+        $uniteMillilitre->setNom('Millilitre');
+        $uniteMillilitre->setDiminutif('ml');
+        $uniteDAO->create($uniteMillilitre);
+
+        // Litre
+        $uniteLitre = new Unite();
+        $uniteLitre->setNom('Litre');
+        $uniteLitre->setDiminutif('L');
+        $uniteDAO->create($uniteLitre);
+
+        // On valide la transaction
+        Database::getInstance()->getPDO()->commit();
+
+        $json = array(
+            'success' => true
+        );
+
+        $view = new View(BaseTemplate::JSON);
+
+        // Définission des variables utilisées dans la vue
+        $view->json = $json;
+
+        $view->renderView();
+    }
+
+    /**
+     * Méthode permettant d'installer les emballages par défaut
+     */
+    public function installEmballages()
+    {
+        // Création des DAO
+        $emballageDAO = new EmballageDAO();
+
+        // On lance une transaction
+        Database::getInstance()->getPDO()->beginTransaction();
+
+        // Création des emballages par défaut
+        // Carton
+        $emballageCarton = new Emballage();
+        $emballageCarton->setNom('Carton');
+        $emballageDAO->create($emballageCarton);
+
+        // Isotherme
+        $emballageIsotherme = new Emballage();
+        $emballageIsotherme->setNom('Isotherme');
+        $emballageDAO->create($emballageIsotherme);
+
+        // On valide la transaction
+        Database::getInstance()->getPDO()->commit();
+
+        $json = array(
+            'success' => true
+        );
+
+        $view = new View(BaseTemplate::JSON);
+
+        // Définission des variables utilisées dans la vue
+        $view->json = $json;
+
+        $view->renderView();
+    }
+
+    /**
+     * Méthode permettant d'installer les fournisseurs par défaut
+     */
+    public function installFournisseurs()
+    {
+        // Création des DAO
+        $fournisseurDAO = new FournisseurDAO();
+
+        // On lance une transaction
+        Database::getInstance()->getPDO()->beginTransaction();
+
+        // Création des fournisseurs par défaut
+        // Marché
+        $fournisseurMarche = new Fournisseur();
+        $fournisseurMarche->setNom('Marché');
+        $fournisseurDAO->create($fournisseurMarche);
+
+        // On valide la transaction
+        Database::getInstance()->getPDO()->commit();
+
+        $json = array(
+            'success' => true
+        );
+
+        $view = new View(BaseTemplate::JSON);
+
+        // Définission des variables utilisées dans la vue
+        $view->json = $json;
+
+        $view->renderView();
+    }
+
+    /**
      * Fonction permettant de terminer l'installation
      */
     public function finish()
