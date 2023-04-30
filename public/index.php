@@ -14,7 +14,7 @@ if (!file_exists(DATA_FOLDER)) {
 }
 chdir(DATA_FOLDER);
 
-// on vérifie si dans data les dossier "utilisateurs" "recettes" et "ingredients" existents sinon on les créer
+// On vérifie si dans data les dossier "utilisateurs" "recettes" et "ingredients" existents sinon on les créer
 if (!file_exists(DATA_FOLDER . "utilisateurs")) {
     mkdir(DATA_FOLDER . "utilisateurs", 0777, true);
 }
@@ -27,7 +27,7 @@ if (!file_exists(DATA_FOLDER . "ingredients")) {
     mkdir(DATA_FOLDER . "ingredients", 0777, true);
 }
 
-// on défini leur chemin
+// On défini leur chemin dans des constantes
 define("DATA_UTILISATEURS", DATA_FOLDER . "utilisateurs/");
 define("DATA_RECETTES", DATA_FOLDER . "recettes/");
 define("DATA_INGREDIENTS", DATA_FOLDER . "ingredients/");
@@ -81,6 +81,94 @@ if (!isset($_GET["r"])) {
 
         // On redirige vers la route sans le slash
         Router::redirect($route);
+        return;
+    }
+}
+
+// On gère l'affichage des images stockées dans le dossier 'data'
+// Si la route commence par 'assets/img/ingredients/', on affiche l'image correspondante
+if (stripos($route, "assets/img/ingredients/") === 0) {
+    // Vérification faille de sécurité : Traversée de dossiers (Directory traversal attack)
+    $basePath = DATA_INGREDIENTS;
+    $realBasePath = realpath($basePath);
+
+    $userPath = DATA_INGREDIENTS . substr($route, strlen("assets/img/ingredients/"));
+    $realUserPath = realpath($userPath);
+
+    // Si le chemin réel de l'image ne commence pas par le chemin réel du dossier des images, alors c'est une tentative de traversée de dossiers
+    if ($realUserPath === false || strpos($realUserPath, $realBasePath) !== 0) {
+        ErrorController::error(403, "Accès interdit");
+        return;
+    }
+    // Sinon si le fichier existe, on l'affiche
+    elseif (file_exists($realUserPath)) {
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        $mime = $finfo->file($realUserPath);
+        // Vérification du type MIME
+        if (!in_array($mime, ["image/jpeg", "image/png", "image/gif"])) {
+            ErrorController::error(403, "Accès interdit");
+            return;
+        }
+        header("Content-Type: " . $mime);
+        readfile($realUserPath);
+        return;
+    }
+}
+
+// Si la route commence par 'assets/img/recettes/', on affiche l'image correspondante
+if (stripos($route, "assets/img/recettes/") === 0) {
+    // Vérification faille de sécurité : Traversée de dossiers (Directory traversal attack)
+    $basePath = DATA_RECETTES;
+    $realBasePath = realpath($basePath);
+
+    $userPath = DATA_RECETTES . substr($route, strlen("assets/img/recettes/"));
+    $realUserPath = realpath($userPath);
+
+    // Si le chemin réel de l'image ne commence pas par le chemin réel du dossier des images, alors c'est une tentative de traversée de dossiers
+    if ($realUserPath === false || strpos($realUserPath, $realBasePath) !== 0) {
+        ErrorController::error(403, "Accès interdit");
+        return;
+    }
+    // Sinon si le fichier existe, on l'affiche
+    elseif (file_exists($realUserPath)) {
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        $mime = $finfo->file($realUserPath);
+        // Vérification du type MIME
+        if (!in_array($mime, ["image/jpeg", "image/png", "image/gif"])) {
+            ErrorController::error(403, "Accès interdit");
+            return;
+        }
+        header("Content-Type: " . $mime);
+        readfile($realUserPath);
+        return;
+    }
+}
+
+// Si la route commence par 'assets/img/utilisateurs/', on affiche l'image correspondante
+if (stripos($route, "assets/img/utilisateurs/") === 0) {
+    // Vérification faille de sécurité : Traversée de dossiers (Directory traversal attack)
+    $basePath = DATA_UTILISATEURS;
+    $realBasePath = realpath($basePath);
+
+    $userPath = DATA_UTILISATEURS . substr($route, strlen("assets/img/utilisateurs/"));
+    $realUserPath = realpath($userPath);
+
+    // Si le chemin réel de l'image ne commence pas par le chemin réel du dossier des images, alors c'est une tentative de traversée de dossiers
+    if ($realUserPath === false || strpos($realUserPath, $realBasePath) !== 0) {
+        ErrorController::error(403, "Accès interdit");
+        return;
+    }
+    // Sinon si le fichier existe, on l'affiche
+    elseif (file_exists($realUserPath)) {
+        $finfo = new finfo(FILEINFO_MIME_TYPE);
+        $mime = $finfo->file($realUserPath);
+        // Vérification du type MIME
+        if (!in_array($mime, ["image/jpeg", "image/png", "image/gif"])) {
+            ErrorController::error(403, "Accès interdit");
+            return;
+        }
+        header("Content-Type: " . $mime);
+        readfile($realUserPath);
         return;
     }
 }

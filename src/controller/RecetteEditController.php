@@ -37,7 +37,7 @@ class RecetteEditController extends Controller
         $view->recetteNom = $recette->getNom();
         $view->recetteDescription = $recette->getDescription();
         $view->recettePrix = $recette->getPrix();
-        $view->recetteImage = DATA_RECETTES . $recette->getId() . '/presentation.img';
+        $view->recetteImage = IMG . 'recettes' . DIRECTORY_SEPARATOR . $recette->getId()  . DIRECTORY_SEPARATOR . 'presentation.img';
 
         $view->renderView();
     }
@@ -51,8 +51,8 @@ class RecetteEditController extends Controller
         $recetteDAO = new RecetteDAO();
         $ingredientDAO = new IngredientDAO();
         $uniteDAO = new UniteDAO();
-        $ingredientRecetteBasiqueDAO = new IngredientRecetteBasiqueDAO();
-        $ingredientRecetteOptionnelDAO = new IngredientRecetteOptionnelDAO();
+        $recetteIngredientBasiqueDAO = new RecetteIngredientBasiqueDAO();
+        $recetteIngredientOptionnelDAO = new RecetteIngredientOptionnelDAO();
 
         $json = array();
         $json['data'] = array();
@@ -70,15 +70,15 @@ class RecetteEditController extends Controller
 
         // Formatage des ingrédients en json
         // Récupération des ingrédients basiques de la recette
-        $ingredientRecetteBasiques = $ingredientRecetteBasiqueDAO->selectAllByIdRecette($recette->getId());
+        $recetteIngredientBasiques = $recetteIngredientBasiqueDAO->selectAllByIdRecette($recette->getId());
 
         // Récupération des ingrédients optionnels de la recette
-        $ingredientRecetteOptionnels = $ingredientRecetteOptionnelDAO->selectAllByIdRecette($recette->getId());
+        $recetteIngredientOptionnels = $recetteIngredientOptionnelDAO->selectAllByIdRecette($recette->getId());
 
         // Formatage des ingrédients basiques en json
-        foreach ($ingredientRecetteBasiques as $ingredientRecetteBasique) {
+        foreach ($recetteIngredientBasiques as $recetteIngredientBasique) {
             // Récupération de l'ingrédient
-            $ingredient = $ingredientDAO->selectById($ingredientRecetteBasique->getIdIngredient());
+            $ingredient = $ingredientDAO->selectById($recetteIngredientBasique->getIdIngredient());
 
             // Si l'ingrédient n'existe pas, on passe à l'ingrédient de la recette suivant
             if ($ingredient === null) {
@@ -104,7 +104,7 @@ class RecetteEditController extends Controller
             $jsonIngredient = array(
                 'id' => $ingredient->getId(),
                 'nom' => $ingredient->getNom(),
-                'quantite' => $ingredientRecetteBasique->getQuantite(),
+                'quantite' => $recetteIngredientBasique->getQuantite(),
                 'unite' => $unite->getDiminutif(),
                 'optionnel' => false
             );
@@ -113,9 +113,9 @@ class RecetteEditController extends Controller
         }
 
         // Formatage des ingrédients optionnels en json
-        foreach ($ingredientRecetteOptionnels as $ingredientRecetteOptionnel) {
+        foreach ($recetteIngredientOptionnels as $recetteIngredientOptionnel) {
             // Récupération de l'ingrédient
-            $ingredient = $ingredientDAO->selectById($ingredientRecetteOptionnel->getIdIngredient());
+            $ingredient = $ingredientDAO->selectById($recetteIngredientOptionnel->getIdIngredient());
 
             // Si l'ingrédient n'existe pas, on passe à l'ingrédient de la recette suivant
             if ($ingredient === null) {
@@ -141,10 +141,10 @@ class RecetteEditController extends Controller
             $jsonIngredient = array(
                 'id' => $ingredient->getId(),
                 'nom' => $ingredient->getNom(),
-                'quantite' => $ingredientRecetteOptionnel->getQuantite(),
+                'quantite' => $recetteIngredientOptionnel->getQuantite(),
                 'unite' => $unite->getDiminutif(),
                 'optionnel' => true,
-                'prix' => $ingredientRecetteOptionnel->getPrix()
+                'prix' => $recetteIngredientOptionnel->getPrix()
             );
 
             $json['data'][] = $jsonIngredient;
@@ -169,8 +169,8 @@ class RecetteEditController extends Controller
 
         // Initialisation des DAO
         $recetteDAO = new RecetteDAO();
-        $ingredientRecetteBasiqueDAO = new IngredientRecetteBasiqueDAO();
-        $ingredientRecetteOptionnelDAO = new IngredientRecetteOptionnelDAO();
+        $recetteIngredientBasiqueDAO = new RecetteIngredientBasiqueDAO();
+        $recetteIngredientOptionnelDAO = new RecetteIngredientOptionnelDAO();
 
         // CAS - Création d'une nouvelle recette
         if ($recetteId === null) {
@@ -211,16 +211,16 @@ class RecetteEditController extends Controller
             $recetteDAO->update($recette);
 
             // Suppression des ingrédients basiques de la recette
-            $ingredientRecetteBasiqueDAO->deleteAllByIdRecette($recetteId);
+            $recetteIngredientBasiqueDAO->deleteAllByIdRecette($recetteId);
 
             // Suppression des ingrédients optionnels de la recette
-            $ingredientRecetteOptionnelDAO->deleteAllByIdRecette($recetteId);
+            $recetteIngredientOptionnelDAO->deleteAllByIdRecette($recetteId);
         }
 
         // Si une image est présente, on l'enregistre dans le bon dossier
         if ($recetteImage !== null) {
             // Déplacement de l'image dans le dossier des images de recettes
-            $recetteFolder = DATA_RECETTES . $recetteId . '/';
+            $recetteFolder = DATA_RECETTES . $recetteId . DIRECTORY_SEPARATOR;
             if (!file_exists($recetteFolder)) {
                 mkdir($recetteFolder, 0777, true);
             }
@@ -241,13 +241,13 @@ class RecetteEditController extends Controller
             // CAS - Ingrédient basique
             if (!$ingredientOptionnel) {
                 // Création de l'ingrédient
-                $ingredientRecetteBasique = new IngredientRecetteBasique();
-                $ingredientRecetteBasique->setIdRecette($recetteId);
-                $ingredientRecetteBasique->setIdIngredient($ingredientId);
-                $ingredientRecetteBasique->setQuantite($ingredientQuantite);
+                $recetteIngredientBasique = new RecetteIngredientBasique();
+                $recetteIngredientBasique->setIdRecette($recetteId);
+                $recetteIngredientBasique->setIdIngredient($ingredientId);
+                $recetteIngredientBasique->setQuantite($ingredientQuantite);
 
                 // Enregistrement de l'ingrédient
-                $ingredientRecetteBasiqueDAO->create($ingredientRecetteBasique);
+                $recetteIngredientBasiqueDAO->create($recetteIngredientBasique);
             }
             // CAS - Ingrédient optionnel
             else {
@@ -255,14 +255,14 @@ class RecetteEditController extends Controller
                 $ingredientPrix = $ingredient['prix_ingredient'];
 
                 // Création de l'ingrédient
-                $ingredientRecetteOptionnel = new IngredientRecetteOptionnel();
-                $ingredientRecetteOptionnel->setIdRecette($recetteId);
-                $ingredientRecetteOptionnel->setIdIngredient($ingredientId);
-                $ingredientRecetteOptionnel->setQuantite($ingredientQuantite);
-                $ingredientRecetteOptionnel->setPrix($ingredientPrix);
+                $recetteIngredientOptionnel = new RecetteIngredientOptionnel();
+                $recetteIngredientOptionnel->setIdRecette($recetteId);
+                $recetteIngredientOptionnel->setIdIngredient($ingredientId);
+                $recetteIngredientOptionnel->setQuantite($ingredientQuantite);
+                $recetteIngredientOptionnel->setPrix($ingredientPrix);
 
                 // Enregistrement de l'ingrédient
-                $ingredientRecetteOptionnelDAO->create($ingredientRecetteOptionnel);
+                $recetteIngredientOptionnelDAO->create($recetteIngredientOptionnel);
             }
         }
 

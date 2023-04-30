@@ -16,8 +16,8 @@ class RecetteController extends Controller
         $recetteDAO = new RecetteDAO();
         $ingredientDAO = new IngredientDAO();
         $uniteDAO = new UniteDAO();
-        $ingredientRecetteBasiqueDAO = new IngredientRecetteBasiqueDAO();
-        $ingredientRecetteOptionnelDAO = new IngredientRecetteOptionnelDAO();
+        $recetteIngredientBasiqueDAO = new RecetteIngredientBasiqueDAO();
+        $recetteIngredientOptionnelDAO = new RecetteIngredientOptionnelDAO();
 
         $json = array();
         $json['data'] = array();
@@ -34,10 +34,12 @@ class RecetteController extends Controller
         // Formatage des recettes en json
         foreach ($recettes as $recette) {
             // Récupération des ingrédients basiques de la recette
-            $ingredientRecetteBasiques = $ingredientRecetteBasiqueDAO->selectAllByIdRecette($recette->getId());
+            $ingredientRecetteBasiques = $recetteIngredientBasiqueDAO->selectAllByIdRecette($recette->getId());
 
             // Récupération des ingrédients optionnels de la recette
-            $ingredientRecetteOptionnels = $ingredientRecetteOptionnelDAO->selectAllByIdRecette($recette->getId());
+            $ingredientRecetteOptionnels = $recetteIngredientOptionnelDAO->selectAllByIdRecette($recette->getId());
+
+            $jsonRecetteIngredients = array();
 
             // Formatage des ingrédients basiques en json
             foreach ($ingredientRecetteBasiques as $ingredientRecetteBasique) {
@@ -130,7 +132,7 @@ class RecetteController extends Controller
                 'id' => $recette->getId(),
                 'nom' => $recette->getNom(),
                 'description' => $recette->getDescription(),
-                'image' => DATA_RECETTES . $recette->getId() . '/presentation.img',
+                'image' => IMG . 'recettes' . DIRECTORY_SEPARATOR . $recette->getId()  . DIRECTORY_SEPARATOR . 'presentation.img',
                 'prix' => $recette->getPrix(),
                 'ingredients' => $jsonRecetteIngredients,
             );
