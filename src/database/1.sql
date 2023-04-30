@@ -94,9 +94,9 @@ CREATE TABLE burger_client(
 
 CREATE TABLE burger_employe(
    id_compte INT,
-   matricule_employe VARCHAR(32),
-   nom_employe VARCHAR(50) NOT NULL,
-   prenom_employe VARCHAR(50) NOT NULL,
+   matricule VARCHAR(32),
+   nom VARCHAR(50) NOT NULL,
+   prenom VARCHAR(50) NOT NULL,
    PRIMARY KEY(id_compte),
    FOREIGN KEY(id_compte) REFERENCES burger_compte(id_compte)
 );
