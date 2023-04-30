@@ -107,4 +107,25 @@ class InstallController extends Controller
 
         $view->renderView();
     }
+
+    /**
+     * Fonction permettant de terminer l'installation
+     */
+    public function finish()
+    {
+        // Créer le fichier '.installed.lock'
+        $file = fopen('.installed.lock', 'w');
+        fclose($file);
+
+        $json = array(
+            'success' => true
+        );
+
+        $view = new View(BaseTemplate::JSON);
+
+        // Définission des variables utilisées dans la vue
+        $view->json = $json;
+
+        $view->renderView();
+    }
 }
