@@ -192,7 +192,7 @@ class RecetteDAO extends DAO
         $sqlQuery = "SELECT * 
                     FROM burger_recette AS br
                     LEFT JOIN burger_recette_finale AS brf ON br.id_recette = brf.id_recette_fk
-                    LEFT JOIN burger_commande_client AS bcc ON brf.id_commande_fk = bcc.id_commande
+                    LEFT JOIN burger_commande_client AS bcc ON brf.id_commande_fk = bcc.id_commande_client
                     WHERE date_commande BETWEEN DATE_SUB(NOW(), INTERVAL 1 MONTH) AND NOW()
                     GROUP BY id_recette 
                     ORDER BY COUNT(id_recette) 
