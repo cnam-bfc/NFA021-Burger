@@ -10,30 +10,37 @@ class Unite
      * 
      * @var int
      */
-    private $idUnite;
+    private $id;
 
     /**
      * Nom de l'unite
      *
      * @var string
      */
-    private $nomUnite;
+    private $nom;
 
     /**
      * Diminutif de l'unite
      * 
      * @var string
      */
-    private $diminutifUnite;
+    private $diminutif;
+
+    /**
+     * Date d'archivage de l'unite
+     * 
+     * @var string
+     */
+    private $dateArchive;
 
     /**
      * Méthode permettant de récupérer l'identifiant de l'unite
      * 
      * @return int
      */
-    public function getIdUnite()
+    public function getId()
     {
-        return $this->idUnite;
+        return $this->id;
     }
 
     /**
@@ -41,9 +48,9 @@ class Unite
      * 
      * @return string
      */
-    public function getNomUnite()
+    public function getNom()
     {
-        return $this->nomUnite;
+        return $this->nom;
     }
 
     /**
@@ -51,41 +58,61 @@ class Unite
      * 
      * @return string
      */
-    public function getDiminutifUnite()
+    public function getDiminutif()
     {
-        return $this->diminutifUnite;
+        return $this->diminutif;
+    }
+
+    /**
+     * Méthode permettant de récupérer la date d'archivage de l'unite
+     * 
+     * @return string
+     */
+    public function getDateArchive()
+    {
+        return $this->dateArchive;
     }
 
     /**
      * Méthode permettant de modifier l'identifiant de l'unite
      * 
-     * @param int $idUnite
+     * @param int $id
      * @return void
      */
-    public function setIdUnite($idUnite)
+    public function setId($id)
     {
-        $this->idUnite = $idUnite;
+        $this->id = (int) $id;
     }
 
     /**
      * Méthode permettant de modifier le nom de l'unite
      * 
-     * @param string $nomUnite
+     * @param string $nom
      * @return void
      */
-    public function setNomUnite($nomUnite)
+    public function setNom($nom)
     {
-        $this->nomUnite = $nomUnite;
+        $this->nom = $nom;
     }
-
     /**
      * Méthode permettant de modifier le diminutif de l'unite
      * 
-     * @param string $diminutifUnite
+     * @param string $diminutif
      * @return void
      */
-    public function setDiminutifUnite($diminutifUnite)
+    public function setDiminutif($diminutif)
     {
-        $this->diminutifUnite = $diminutifUnite;
+        $this->diminutif = $diminutif;
+    }
+
+    /**
+     * Méthode permettant de modifier la date d'archivage de l'unite
+     * 
+     * @param string $dateArchive
+     * @return void
+     */
+    public function setDateArchive($dateArchive)
+    {
+        $this->dateArchive = $dateArchive;
     }
 }
