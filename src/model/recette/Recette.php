@@ -93,55 +93,55 @@ class Recette
     /**
      * Méthode permettant de modifier l'identifiant de la recette
      * 
-     * @param int $idRecette
+     * @param int $id
      * @return void
      */
-    public function setId($idRecette)
+    public function setId($id)
     {
-        $this->id = $idRecette;
+        $this->id = $id;
     }
 
     /**
      * Méthode permettant de modifier le nom de la recette
      * 
-     * @param string $nomRecette
+     * @param string $nom
      * @return void
      */
-    public function setNom($nomRecette)
+    public function setNom($nom)
     {
-        $this->nom = $nomRecette;
+        $this->nom = $nom;
     }
 
     /**
      * Méthode permettant de modifier la description de la recette
      * 
-     * @param string $descriptionRecette
+     * @param string $description
      * @return void
      */
-    public function setDescription($descriptionRecette)
+    public function setDescription($description)
     {
-        $this->description = $descriptionRecette;
+        $this->description = $description;
     }
 
     /**
      * Méthode permettant de modifier le prix de la recette
      * 
-     * @param double $prixRecette
+     * @param double $prix
      * @return void
      */
-    public function setPrix($prixRecette)
+    public function setPrix($prix)
     {
-        $this->prix = $prixRecette;
+        $this->prix = $prix;
     }
 
     /**
      * Méthode permettant de modifier la date d'archivage de la recette
      * 
-     * @param string $dateArchiveRecette
+     * @param string $dateArchive
      * @return void
      */
-    public function setDateArchive($dateArchiveRecette)
+    public function setDateArchive($dateArchive)
     {
-        $this->dateArchive = $dateArchiveRecette;
+        $this->dateArchive = $dateArchive;
     }
 }
