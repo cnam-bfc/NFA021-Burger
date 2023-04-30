@@ -96,7 +96,7 @@ class UniteDAO extends DAO
     {
         // Requête
         $sqlQuery = "SELECT * FROM burger_unite";
-        $statement = $this->pdo->prepare($sqlQuery);
+        $statement = $this->pdo->query($sqlQuery);
         $statement->execute();
 
         // Traitement des résultats
@@ -126,7 +126,7 @@ class UniteDAO extends DAO
     {
         // Requête
         $sqlQuery = "SELECT * FROM burger_unite WHERE date_archive IS NULL OR date_archive > NOW()";
-        $statement = $this->pdo->prepare($sqlQuery);
+        $statement = $this->pdo->query($sqlQuery);
         $statement->execute();
 
         // Traitement des résultats

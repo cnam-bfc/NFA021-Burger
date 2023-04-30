@@ -101,7 +101,7 @@ class RecetteDAO extends DAO
     {
         // Requête
         $sqlQuery = "SELECT * FROM burger_recette";
-        $statement = $this->pdo->prepare($sqlQuery);
+        $statement = $this->pdo->query($sqlQuery);
         $statement->execute();
 
         // Traitement des résultats
@@ -132,7 +132,7 @@ class RecetteDAO extends DAO
     {
         // Requête
         $sqlQuery = "SELECT * FROM burger_recette WHERE date_archive IS NULL OR date_archive > NOW()";
-        $statement = $this->pdo->prepare($sqlQuery);
+        $statement = $this->pdo->query($sqlQuery);
         $statement->execute();
 
         // Traitement des résultats
@@ -203,7 +203,7 @@ class RecetteDAO extends DAO
                     GROUP BY id_recette 
                     ORDER BY COUNT(id_recette) 
                     DESC LIMIT 3";
-        $statement = $this->pdo->prepare($sqlQuery);
+        $statement = $this->pdo->query($sqlQuery);
         $statement->execute();
 
         // Vérification que l'on a bien un résultat
