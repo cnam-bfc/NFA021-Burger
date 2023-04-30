@@ -98,7 +98,7 @@ class Recette
      */
     public function setId($id)
     {
-        $this->id = $id;
+        $this->id = (int) $id;
     }
 
     /**
@@ -131,7 +131,7 @@ class Recette
      */
     public function setPrix($prix)
     {
-        $this->prix = $prix;
+        $this->prix = (double) $prix;
     }
 
     /**
