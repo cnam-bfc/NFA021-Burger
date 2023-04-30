@@ -199,9 +199,9 @@ class ClientDAO extends DAO
     public function selectById($id)
     {
         // Requête
-        $sqlQuery = "SELECT * FROM burger_compte, burger_client WHERE burger_compte.id_compte = burger_client.id_compte AND burger_compte.id_compte = :id_client";
+        $sqlQuery = "SELECT * FROM burger_compte, burger_client WHERE burger_compte.id_compte = burger_client.id_compte AND burger_compte.id_compte = :id_compte";
         $statement = $this->pdo->prepare($sqlQuery);
-        $statement->bindValue(':id_client', $id, PDO::PARAM_INT);
+        $statement->bindValue(':id_compte', $id, PDO::PARAM_INT);
         $statement->execute();
 
         // Vérification que l'on a bien un résultat
