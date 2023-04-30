@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Objet IngredientRecetteOptionnel
+ * Objet RecetteIngredientOptionnel
  */
-class IngredientRecetteOptionnel
+class RecetteIngredientOptionnel
 {
     /**
      * Identifiant de la recette
@@ -13,25 +13,32 @@ class IngredientRecetteOptionnel
     private $idRecette;
 
     /**
-     * Identifiant de l'ingredient
+     * Identifiant de l'ingrédient
      * 
      * @var int
      */
     private $idIngredient;
 
     /**
-     * Quantité de l'ingredient dans la recette
+     * Quantité de l'ingrédient
      * 
      * @var int
      */
     private $quantite;
 
     /**
-     * Prix de l'ingredient optionnel dans la recette
+     * Prix de l'ingrédient
      * 
      * @var float
      */
     private $prix;
+
+    /**
+     * Ordre de l'ingrédient dans la recette
+     * 
+     * @var int
+     */
+    private $ordre;
 
     /**
      * Méthode permettant de récupérer l'identifiant de la recette
@@ -44,7 +51,7 @@ class IngredientRecetteOptionnel
     }
 
     /**
-     * Méthode permettant de récupérer l'identifiant de l'ingredient
+     * Méthode permettant de récupérer l'identifiant de l'ingrédient
      * 
      * @return int
      */
@@ -54,7 +61,7 @@ class IngredientRecetteOptionnel
     }
 
     /**
-     * Méthode permettant de récupérer la quantité de l'ingredient dans la recette
+     * Méthode permettant de récupérer la quantité de l'ingrédient
      * 
      * @return int
      */
@@ -64,13 +71,23 @@ class IngredientRecetteOptionnel
     }
 
     /**
-     * Méthode permettant de récupérer le prix de l'ingredient optionnel dans la recette
+     * Méthode permettant de récupérer le prix de l'ingrédient
      * 
      * @return float
      */
     public function getPrix()
     {
         return $this->prix;
+    }
+
+    /**
+     * Méthode permettant de récupérer l'ordre de l'ingrédient dans la recette
+     * 
+     * @return int
+     */
+    public function getOrdre()
+    {
+        return $this->ordre;
     }
 
     /**
@@ -81,39 +98,50 @@ class IngredientRecetteOptionnel
      */
     public function setIdRecette($idRecette)
     {
-        $this->idRecette = $idRecette;
+        $this->idRecette = (int) $idRecette;
     }
 
     /**
-     * Méthode permettant de modifier l'identifiant de l'ingredient
+     * Méthode permettant de modifier l'identifiant de l'ingrédient
      * 
      * @param int $idIngredient
      * @return void
      */
     public function setIdIngredient($idIngredient)
     {
-        $this->idIngredient = $idIngredient;
+        $this->idIngredient = (int) $idIngredient;
     }
 
     /**
-     * Méthode permettant de modifier la quantité de l'ingredient dans la recette
+     * Méthode permettant de modifier la quantité de l'ingrédient
      * 
      * @param int $quantite
      * @return void
      */
     public function setQuantite($quantite)
     {
-        $this->quantite = $quantite;
+        $this->quantite = (int) $quantite;
     }
 
     /**
-     * Méthode permettant de modifier le prix de l'ingredient optionnel dans la recette
-     * 
+     * Méthode permettant de modifier le prix de l'ingrédient
+     *
      * @param float $prix
      * @return void
      */
     public function setPrix($prix)
     {
-        $this->prix = $prix;
+        $this->prix = (float) $prix;
+    }
+
+    /**
+     * Méthode permettant de modifier l'ordre de l'ingrédient dans la recette
+     * 
+     * @param int $ordre
+     * @return void
+     */
+    public function setOrdre($ordre)
+    {
+        $this->ordre = (int) $ordre;
     }
 }
