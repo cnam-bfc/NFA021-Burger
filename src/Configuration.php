@@ -18,14 +18,13 @@ class Configuration
 
     const CATEGORY_BDD = 'bdd';
 
-    private $config = null;
+    private $config = array();
 
     private function __construct()
     {
-        if (!file_exists(DATA_FOLDER . 'config.json')) {
-            throw new Exception('Le fichier de configuration n\'existe pas');
+        if (file_exists(DATA_FOLDER . 'config.json')) {
+            $this->config = json_decode(file_get_contents(DATA_FOLDER . 'config.json'), true);
         }
-        $this->config = json_decode(file_get_contents(DATA_FOLDER . 'config.json'), true);
     }
 
     /**************************
