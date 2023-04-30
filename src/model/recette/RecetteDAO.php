@@ -109,12 +109,7 @@ class RecetteDAO extends DAO
         $recettes = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $recette = new Recette();
-            $recette->setId($row['id_recette']);
-            $recette->setNom($row['nom']);
-            $recette->setDescription($row['description']);
-            $recette->setPrix($row['prix']);
-            $recette->setDateArchive($row['date_archive']);
+            $recette = $this->convertTableRowToObject($row);
 
             // Ajout de l'objet dans le tableau
             $recettes[] = $recette;
@@ -140,12 +135,7 @@ class RecetteDAO extends DAO
         $recettes = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $recette = new Recette();
-            $recette->setId($row['id_recette']);
-            $recette->setNom($row['nom']);
-            $recette->setDescription($row['description']);
-            $recette->setPrix($row['prix']);
-            $recette->setDateArchive($row['date_archive']);
+            $recette = $this->convertTableRowToObject($row);
 
             // Ajout de l'objet dans le tableau
             $recettes[] = $recette;
@@ -177,12 +167,7 @@ class RecetteDAO extends DAO
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
         // Création d'un nouvel objet
-        $recette = new Recette();
-        $recette->setId($result['id_recette']);
-        $recette->setNom($result['nom']);
-        $recette->setDescription($result['description']);
-        $recette->setPrix($result['prix']);
-        $recette->setDateArchive($result['date_archive']);
+        $recette = $this->convertTableRowToObject($result);
 
         return $recette;
     }
@@ -216,17 +201,31 @@ class RecetteDAO extends DAO
         $recettes = array();
         foreach ($result as $row) {
             // Création d'un nouvel objet
-            $recette = new Recette();
-            $recette->setId($row['id_recette']);
-            $recette->setNom($row['nom']);
-            $recette->setDescription($row['description']);
-            $recette->setPrix($row['prix']);
-            $recette->setDateArchive($row['date_archive']);
+            $recette = $this->convertTableRowToObject($row);
 
             // Ajout de l'objet dans le tableau
             $recettes[] = $recette;
         }
 
         return $recettes;
+    }
+
+    /**
+     * Méthode permettant de remplir un objet à partir d'un tableau
+     * 
+     * @param array $row (tableau contenant les données)
+     * @return Recette
+     */
+    protected function convertTableRowToObject($row)
+    {
+        // Création d'un nouvel objet
+        $recette = new Recette();
+        $recette->setId($row['id_recette']);
+        $recette->setNom($row['nom']);
+        $recette->setDescription($row['description']);
+        $recette->setPrix($row['prix']);
+        $recette->setDateArchive($row['date_archive']);
+
+        return $recette;
     }
 }
