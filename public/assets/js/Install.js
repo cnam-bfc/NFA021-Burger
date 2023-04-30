@@ -6,7 +6,7 @@ $(function () {
     let form_install_unites = $('#install_unites');
     let form_install_emballages = $('#install_emballages');
     let form_install_fournisseurs = $('#install_fournisseurs');
-    let form_install_finish = $('#install_finish');
+    let form_install_finish = $('#finish_install');
 
     // Fonction permettant de charger la partie de configuration de la base de données
     function loadConfigBdd() {
@@ -323,6 +323,7 @@ $(function () {
         // On récupère les champs nécessaire
         let nom_gerant = form_create_gerant.find('input[name="nom_gerant"]');
         let prenom_gerant = form_create_gerant.find('input[name="prenom_gerant"]');
+        let email_gerant = form_create_gerant.find('input[name="email_gerant"]');
         let login_gerant = form_create_gerant.find('input[name="login_gerant"]');
         let password_gerant = form_create_gerant.find('input[name="password_gerant"]');
         let password_confirm_gerant = form_create_gerant.find('input[name="password_confirm_gerant"]');
@@ -358,6 +359,7 @@ $(function () {
             data: {
                 nom_gerant: nom_gerant.val(),
                 prenom_gerant: prenom_gerant.val(),
+                email_gerant: email_gerant.val(),
                 login_gerant: login_gerant.val(),
                 password_gerant: password_gerant.val()
             },

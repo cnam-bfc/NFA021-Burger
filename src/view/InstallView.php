@@ -105,6 +105,11 @@
                         <label for="prenom_gerant">Prénom</label>
                         <input type="text" id="prenom_gerant" name="prenom_gerant" placeholder="Prénom du compte gérant" required disabled>
                     </div>
+                    <!-- Champ pour l'email du compte gérant -->
+                    <div class="form-input">
+                        <label for="email_gerant">Email</label>
+                        <input type="email" id="email_gerant" name="email_gerant" placeholder="Email du compte gérant" required disabled>
+                    </div>
                     <!-- Champ pour le login du compte gérant -->
                     <div class="form-input">
                         <label for="login_gerant">Identifiant</label>
