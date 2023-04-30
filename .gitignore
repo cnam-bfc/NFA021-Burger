@@ -99,8 +99,6 @@ dist/
 nbdist/
 .nb-gradle/
 
-
 # Covers Project specific settings
 data/*
 !data/.htaccess
-!data/config.exemple.json
