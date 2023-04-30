@@ -26,7 +26,8 @@ CREATE TABLE burger_compte(
    login VARCHAR(30) NOT NULL,
    password VARCHAR(255) NOT NULL,
    date_archive DATETIME,
-   PRIMARY KEY(id_compte)
+   PRIMARY KEY(id_compte),
+   UNIQUE(login)
 );
 
 CREATE TABLE burger_fournisseur(
