@@ -6,338 +6,282 @@
 class Ingredient
 {
     /**
-     * Identifiant de l'ingrédient
-     *
-     * @var int
-     */
-    private $idIngredient;
-
-    /**
-     * Nom de l'ingrédient
-     * 
-     * @var string
-     */
-    private $nomIngredient;
-
-    /**
-     * Quantité de l'ingrédient en stock
-     *
-     * @var int
-     */
-    private $quantiteStockIngredient;
-
-    /**
-     * Chemin vers la photo de l'ingrédient
-     *
-     * @var string
-     */
-    private $photoIngredient;
-
-    /**
-     * Chemin vers la photo éclatée de l'ingrédient
-     *
-     * @var string
-     */
-    private $photoEclateeIngredient;
-
-    /**
-     * Dernière date d'inventaire de l'ingrédient
-     *
-     * @var string
-     */
-    private $dateInventaireIngredient;
-
-    /**
-     * Indique si l'ingrédient est en stock automatique
-     *
-     * @var boolean
-     */
-    private $stockAutoIngredient;
-
-    /**
-     * Quantité standard de l'ingrédient
-     *
-     * @var int
-     */
-    private $quantiteStandard;
-
-    /**
-     * Quantité minimum de l'ingrédient
-     *
-     * @var int
-     */
-    private $quantiteMinimum;
-
-    /**
-     * Date d'archivage de l'ingrédient
-     *
-     * @var string
-     */
-    private $dateArchiveIngredient;
-
-    /**
-     * Identifiant du fournisseur de l'ingrédient (clé étrangère)
+     * Identifiant de l'ingredient
      * 
      * @var int
      */
-    private $idFournisseurFK;
+    private $id;
 
     /**
-     * Identifiant de l'unité de l'ingrédient (clé étrangère)
+     * Nom de l'ingredient
      *
+     * @var string
+     */
+    private $nom;
+
+    /**
+     * Quantité en stock de l'ingredient
+     * 
      * @var int
      */
-    private $idUniteFK;
+    private $quantiteStock;
 
     /**
-     * Méthode permettant de récupérer l'identifiant de l'ingrédient
-     *
+     * Stock automatique de l'ingredient
+     * 
+     * @var bool
+     */
+    private $stockAuto;
+
+    /**
+     * Quanité standard du stock automatique de l'ingredient
+     * 
+     * @var int
+     */
+    private $quantiteStandardStockAuto;
+
+    /**
+     * Quantité minimale du stock automatique de l'ingredient
+     * 
+     * @var int
+     */
+    private $quantiteMinimaleStockAuto;
+
+    /**
+     * Date du dernier inventaire de l'ingredient
+     * 
+     * @var string
+     */
+    private $dateDernierInventaire;
+
+    /**
+     * Date d'archivage de l'ingredient
+     * 
+     * @var string
+     */
+    private $dateArchive;
+
+    /**
+     * Identifiant de l'unite de l'ingredient
+     * 
+     * @var int
+     */
+    private $idUnite;
+
+    /**
+     * Identifiant du fournisseur de l'ingredient
+     * 
+     * @var int
+     */
+    private $idFournisseur;
+
+    /**
+     * Méthode permettant de récupérer l'identifiant de l'ingredient
+     * 
      * @return int
      */
-    public function getIdIngredient()
+    public function getId()
     {
-        return $this->idIngredient;
+        return $this->id;
     }
 
     /**
-     * Méthode permettant de récupérer le nom de l'ingrédient
-     *
+     * Méthode permettant de récupérer le nom de l'ingredient
+     * 
      * @return string
      */
-    public function getNomIngredient()
+    public function getNom()
     {
-        return $this->nomIngredient;
+        return $this->nom;
     }
 
     /**
-     * Méthode permettant de récupérer la quantité de l'ingrédient en stock
-     *
+     * Méthode permettant de récupérer la quantité en stock de l'ingredient
+     * 
      * @return int
      */
-    public function getQuantiteStockIngredient()
+    public function getQuantiteStock()
     {
-        return $this->quantiteStockIngredient;
+        return $this->quantiteStock;
     }
 
     /**
-     * Méthode permettant de récupérer le chemin vers la photo de l'ingrédient
-     *
+     * Méthode permettant de récupérer si le stock de l'ingredient est géré de façon automatique
+     * 
+     * @return bool
+     */
+    public function isStockAuto()
+    {
+        return $this->stockAuto;
+    }
+
+    /**
+     * Méthode permettant de récupérer la quantité standard du stock automatique de l'ingredient
+     * 
+     * @return int
+     */
+    public function getQuantiteStandardStockAuto()
+    {
+        return $this->quantiteStandardStockAuto;
+    }
+
+    /**
+     * Méthode permettant de récupérer la quantité minimale du stock automatique de l'ingredient
+     * 
+     * @return int
+     */
+    public function getQuantiteMinimaleStockAuto()
+    {
+        return $this->quantiteMinimaleStockAuto;
+    }
+
+    /**
+     * Méthode permettant de récupérer la date du dernier inventaire de l'ingredient
+     * 
      * @return string
      */
-    public function getPhotoIngredient()
+    public function getDateDernierInventaire()
     {
-        return $this->photoIngredient;
+        return $this->dateDernierInventaire;
     }
 
     /**
-     * Méthode permettant de récupérer le chemin vers la photo éclatée de l'ingrédient
-     *
+     * Méthode permettant de récupérer la date d'archivage de l'ingredient
+     * 
      * @return string
      */
-    public function getPhotoEclateeIngredient()
+    public function getDateArchive()
     {
-        return $this->photoEclateeIngredient;
+        return $this->dateArchive;
     }
 
     /**
-     * Méthode permettant de récupérer la dernière date d'inventaire de l'ingrédient
-     *
-     * @return string
+     * Méthode permettant de récupérer l'identifiant de l'unite de l'ingredient
+     * 
+     * @return int
      */
-    public function getDateInventaireIngredient()
+    public function getIdUnite()
     {
-        return $this->dateInventaireIngredient;
+        return $this->idUnite;
     }
 
     /**
-     * Méthode permettant de récupérer l'indicateur de stock automatique de l'ingrédient
-     *
-     * @return boolean
-     */
-    public function getStockAutoIngredient()
-    {
-        return $this->stockAutoIngredient;
-    }
-
-    /**
-     * Méthode permettant de récupérer la quantité standard de l'ingrédient
+     * Méthode permettant de récupérer l'identifiant du fournisseur de l'ingredient
      *
      * @return int
      */
-    public function getQuantiteStandard()
+    public function getIdFournisseur()
     {
-        return $this->quantiteStandard;
+        return $this->idFournisseur;
     }
 
     /**
-     * Méthode permettant de récupérer la quantité minimum de l'ingrédient
-     *
-     * @return int
-     */
-    public function getQuantiteMinimum()
-    {
-        return $this->quantiteMinimum;
-    }
-
-    /**
-     * Méthode permettant de récupérer la date d'archivage de l'ingrédient
-     *
-     * @return string
-     */
-    public function getDateArchiveIngredient()
-    {
-        return $this->dateArchiveIngredient;
-    }
-
-    /**
-     * Méthode permettant de récupérer l'identifiant du fournisseur de l'ingrédient
-     *
-     * @return int
-     */
-    public function getIdFournisseurFK()
-    {
-        return $this->idFournisseurFK;
-    }
-
-    /**
-     * Méthode permettant de récupérer l'identifiant de l'unité de l'ingrédient
-     *
-     * @return int
-     */
-    public function getIdUniteFK()
-    {
-        return $this->idUniteFK;
-    }
-
-    /**
-     * Méthode permettant de modifier l'identifiant de l'ingrédient
-     *
-     * @param int $idIngredient
+     * Méthode permettant de modifier l'identifiant de l'ingredient
+     * 
+     * @param int $id
      * @return void
      */
-    public function setIdIngredient($idIngredient)
+    public function setId($id)
     {
-        $this->idIngredient = $idIngredient;
+        $this->id = (int) $id;
     }
 
     /**
-     * Méthode permettant de modifier le nom de l'ingrédient
-     *
-     * @param string $nomIngredient
+     * Méthode permettant de modifier le nom de l'ingredient
+     * 
+     * @param string $nom
      * @return void
      */
-    public function setNomIngredient($nomIngredient)
+    public function setNom($nom)
     {
-        $this->nomIngredient = $nomIngredient;
+        $this->nom = $nom;
     }
 
     /**
-     * Méthode permettant de modifier la quantité de l'ingrédient en stock
-     *
-     * @param int $quantiteStockIngredient
+     * Méthode permettant de modifier la quantité en stock de l'ingredient
+     * 
+     * @param int $quantiteStock
      * @return void
      */
-    public function setQuantiteStockIngredient($quantiteStockIngredient)
+    public function setQuantiteStock($quantiteStock)
     {
-        $this->quantiteStockIngredient = $quantiteStockIngredient;
+        $this->quantiteStock = (int) $quantiteStock;
     }
 
     /**
-     * Méthode permettant de modifier le chemin vers la photo de l'ingrédient
-     *
-     * @param string $photoIngredient
+     * Méthode permettant de modifier si le stock de l'ingredient est géré de façon automatique
+     * 
+     * @param bool $stockAuto
      * @return void
      */
-    public function setPhotoIngredient($photoIngredient)
+    public function setStockAuto($stockAuto)
     {
-        $this->photoIngredient = $photoIngredient;
+        $this->stockAuto = (bool) $stockAuto;
     }
 
     /**
-     * Méthode permettant de modifier le chemin vers la photo éclatée de l'ingrédient
-     *
-     * @param string $photoEclateeIngredient
+     * Méthode permettant de modifier la quantité standard du stock automatique de l'ingredient
+     * 
+     * @param int $quantiteStandardStockAuto
      * @return void
      */
-    public function setPhotoEclateeIngredient($photoEclateeIngredient)
+    public function setQuantiteStandardStockAuto($quantiteStandardStockAuto)
     {
-        $this->photoEclateeIngredient = $photoEclateeIngredient;
+        $this->quantiteStandardStockAuto = (int) $quantiteStandardStockAuto;
     }
 
     /**
-     * Méthode permettant de modifier la dernière date d'inventaire de l'ingrédient
-     *
-     * @param string $dateInventaireIngredient
+     * Méthode permettant de modifier la quantité minimale du stock automatique de l'ingredient
+     * 
+     * @param int $quantiteMinimaleStockAuto
      * @return void
      */
-    public function setDateInventaireIngredient($dateInventaireIngredient)
+    public function setQuantiteMinimaleStockAuto($quantiteMinimaleStockAuto)
     {
-        $this->dateInventaireIngredient = $dateInventaireIngredient;
+        $this->quantiteMinimaleStockAuto = (int) $quantiteMinimaleStockAuto;
     }
 
     /**
-     * Méthode permettant de modifier l'indicateur de stock automatique de l'ingrédient
-     *
-     * @param boolean $stockAutoIngredient
+     * Méthode permettant de modifier la date du dernier inventaire de l'ingredient
+     * 
+     * @param string $dateDernierInventaire
      * @return void
      */
-    public function setStockAutoIngredient($stockAutoIngredient)
+    public function setDateDernierInventaire($dateDernierInventaire)
     {
-        $this->stockAutoIngredient = $stockAutoIngredient;
+        $this->dateDernierInventaire = $dateDernierInventaire;
     }
 
     /**
-     * Méthode permettant de modifier la quantité standard de l'ingrédient
-     *
-     * @param int $quantiteStandard
+     * Méthode permettant de modifier la date d'archivage de l'ingredient
+     * 
+     * @param string $dateArchive
      * @return void
      */
-    public function setQuantiteStandard($quantiteStandard)
+    public function setDateArchive($dateArchive)
     {
-        $this->quantiteStandard = $quantiteStandard;
+        $this->dateArchive = $dateArchive;
     }
 
     /**
-     * Méthode permettant de modifier la quantité minimum de l'ingrédient
-     *
-     * @param int $quantiteMinimum
+     * Méthode permettant de modifier l'identifiant de l'unite de l'ingredient
+     * 
+     * @param int $idUnite
      * @return void
      */
-    public function setQuantiteMinimum($quantiteMinimum)
+    public function setIdUnite($idUnite)
     {
-        $this->quantiteMinimum = $quantiteMinimum;
+        $this->idUnite = (int) $idUnite;
     }
 
     /**
-     * Méthode permettant de modifier la date d'archivage de l'ingrédient
-     *
-     * @param string $dateArchiveIngredient
+     * Méthode permettant de modifier l'identifiant du fournisseur de l'ingredient
+     * 
+     * @param int $idFournisseur
      * @return void
      */
-    public function setDateArchiveIngredient($dateArchiveIngredient)
+    public function setIdFournisseur($idFournisseur)
     {
-        $this->dateArchiveIngredient = $dateArchiveIngredient;
-    }
-
-    /**
-     * Méthode permettant de modifier l'identifiant du fournisseur de l'ingrédient
-     *
-     * @param int $idFournisseurFK
-     * @return void
-     */
-    public function setIdFournisseurFK($idFournisseurFK)
-    {
-        $this->idFournisseurFK = $idFournisseurFK;
-    }
-
-    /**
-     * Méthode permettant de modifier l'identifiant de l'unité de l'ingrédient
-     *
-     * @param int $idUniteFK
-     * @return void
-     */
-    public function setIdUniteFK($idUniteFK)
-    {
-        $this->idUniteFK = $idUniteFK;
+        $this->idFournisseur = (int) $idFournisseur;
     }
 }
