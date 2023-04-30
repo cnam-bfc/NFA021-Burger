@@ -94,6 +94,7 @@ class Unite
     {
         $this->nom = $nom;
     }
+
     /**
      * Méthode permettant de modifier le diminutif de l'unite
      * 
