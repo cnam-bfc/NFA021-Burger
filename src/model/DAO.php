@@ -24,7 +24,7 @@ abstract class DAO
      * 
      * @param Object $object
      */
-    abstract public function create(&$object);
+    abstract public function create($object);
 
     /**
      * Méthode abstraite qui permet de supprimer un objet
