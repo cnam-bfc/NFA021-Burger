@@ -55,15 +55,25 @@ define("JS", ASSETS . "js/"); // Dossier des scripts JavaScript
 require_once 'AutoLoader.php';
 AutoLoader::start();
 
-// On initialise le gestionnaire d'erreurs
-register_shutdown_function(function () {
-    $error = error_get_last();
-    if ($error !== null) {
-        $message = $error["message"];
-        // On formate les retours à la ligne
-        $message = str_replace("\n", "<br>", $message);
-        ErrorController::error(500, $message, false);
-    }
+// On initialise le gestionnaire d'erreurs, exécution de code personnalisé (mais garde l'affichage de l'erreur par défaut)
+// Erreurs PHP
+set_error_handler(function ($errno, $errstr, $errfile, $errline) {
+    // On formate les retours à la ligne
+    $errstr = str_replace("\n", "<br>", $errstr);
+    ErrorController::error(500, $errstr, false, false);
+
+    // On affiche l'erreur par défaut
+    return false;
+});
+// Exceptions PHP
+set_exception_handler(function ($exception) {
+    // On formate les retours à la ligne
+    $message = str_replace("\n", "<br>", $exception->getMessage());
+    ErrorController::error(500, $message, false, false);
+
+    // On affiche l'erreur par défaut
+    restore_exception_handler();
+    throw $exception;
 });
 
 // On initialise la session
@@ -117,9 +127,8 @@ if (stripos($route, "assets/img/ingredients/") === 0) {
         }
     }
 }
-
 // Si la route commence par 'assets/img/recettes/', on affiche l'image correspondante
-if (stripos($route, "assets/img/recettes/") === 0) {
+elseif (stripos($route, "assets/img/recettes/") === 0) {
     // Vérification faille de sécurité : Traversée de dossiers (Directory traversal attack)
     $basePath = DATA_RECETTES;
     $realBasePath = realpath($basePath);
@@ -149,9 +158,8 @@ if (stripos($route, "assets/img/recettes/") === 0) {
         }
     }
 }
-
 // Si la route commence par 'assets/img/utilisateurs/', on affiche l'image correspondante
-if (stripos($route, "assets/img/utilisateurs/") === 0) {
+elseif (stripos($route, "assets/img/utilisateurs/") === 0) {
     // Vérification faille de sécurité : Traversée de dossiers (Directory traversal attack)
     $basePath = DATA_UTILISATEURS;
     $realBasePath = realpath($basePath);
