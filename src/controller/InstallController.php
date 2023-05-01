@@ -79,7 +79,7 @@ class InstallController extends Controller
         // Récupération des paramètres de la requête
         $nom = Form::getParam('nom_gerant', Form::METHOD_POST, Form::TYPE_STRING);
         $prenom = Form::getParam('prenom_gerant', Form::METHOD_POST, Form::TYPE_STRING);
-        $email = Form::getParam('email_gerant', Form::METHOD_POST, Form::TYPE_STRING);
+        $email = Form::getParam('email_gerant', Form::METHOD_POST, Form::TYPE_EMAIL);
         $login = Form::getParam('login_gerant', Form::METHOD_POST, Form::TYPE_STRING);
         $password = Form::getParam('password_gerant', Form::METHOD_POST, Form::TYPE_STRING);
 
