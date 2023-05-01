@@ -1,14 +1,18 @@
 <?php
 class ErrorController extends Controller
 {
-    public static function error($code, $message, $renderView = true)
+    public static function error($code, $message, $renderView = true, $exit = true)
     {
         // Définition du code d'erreur HTTP
-        header("HTTP/1.0 " . $code . " " . $message);
+        header($_SERVER["SERVER_PROTOCOL"] . ' ' . $code . ' ' . $message);
 
         if ($renderView) {
             $controller = new ErrorController();
             $controller->renderView($code, $message);
+        }
+
+        if ($exit) {
+            exit();
         }
     }
 
