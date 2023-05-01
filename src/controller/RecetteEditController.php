@@ -103,6 +103,7 @@ class RecetteEditController extends Controller
             // Construction du json de l'ingrédient
             $jsonIngredient = array(
                 'id' => $ingredient->getId(),
+                'image' => IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId()  . DIRECTORY_SEPARATOR . 'presentation.img',
                 'nom' => $ingredient->getNom(),
                 'quantite' => $recetteIngredientBasique->getQuantite(),
                 'unite' => $unite->getDiminutif(),
@@ -140,6 +141,7 @@ class RecetteEditController extends Controller
             // Construction du json de l'ingrédient
             $jsonIngredient = array(
                 'id' => $ingredient->getId(),
+                'image' => IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId()  . DIRECTORY_SEPARATOR . 'presentation.img',
                 'nom' => $ingredient->getNom(),
                 'quantite' => $recetteIngredientOptionnel->getQuantite(),
                 'unite' => $unite->getDiminutif(),
@@ -234,6 +236,10 @@ class RecetteEditController extends Controller
         // Enregistrement des ingrédients
         foreach ($ingredients as $ingredient) {
             // Récupération des paramètres
+            // Vérification valeurs présentes
+            if (empty($ingredient['id_ingredient']) || empty($ingredient['quantite_ingredient']) || empty($ingredient['optionnel_ingredient'])) {
+                continue;
+            }
             $ingredientId = $ingredient['id_ingredient'];
             $ingredientQuantite = $ingredient['quantite_ingredient'];
             $ingredientOptionnel = $ingredient['optionnel_ingredient'];
@@ -252,6 +258,10 @@ class RecetteEditController extends Controller
             // CAS - Ingrédient optionnel
             else {
                 // Récupération du prix
+                // Vérification valeur présente
+                if (empty($ingredient['prix_ingredient'])) {
+                    continue;
+                }
                 $ingredientPrix = $ingredient['prix_ingredient'];
 
                 // Création de l'ingrédient
