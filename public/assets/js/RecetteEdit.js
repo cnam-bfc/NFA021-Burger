@@ -318,7 +318,12 @@ $(function () {
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 if (jqXHR.status !== 0) {
-                    alert('Erreur ' + jqXHR.status + ' : ' + errorThrown.replaceAll("<br>", "\n"));
+                    let alertMessage = 'Erreur ' + jqXHR.status;
+                    // Si errorThrown contient des informations (est une chaîne de caractères)
+                    if (typeof errorThrown === 'string') {
+                        alertMessage += ' : ' + errorThrown.replace(/<br>/g, "\n");
+                    }
+                    alert(alertMessage);
                 } else {
                     alert('Une erreur inconue est survenue !\nVeuillez vérifier votre connexion internet.');
                 }
