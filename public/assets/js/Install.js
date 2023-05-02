@@ -1,80 +1,230 @@
 $(function () {
-    let bdd_success = false;
-    let install_success = false;
+    // Forms
+    let form_config_bdd = $('#config_bdd');
+    let form_install_bdd = $('#install_bdd');
+    let form_create_gerant = $('#create_gerant');
+    let form_install_unites = $('#install_unites');
+    let form_install_emballages = $('#install_emballages');
+    let form_install_fournisseurs = $('#install_fournisseurs');
+    let form_install_finish = $('#finish_install');
 
-    // Boutons
-    let install = $('#install');
-    let bdd_test = $('#test_bdd');
+    // Fonction permettant de charger la partie de configuration de la base de données
+    function loadConfigBdd() {
+        // On récupère le titre de la box
+        let title = form_config_bdd.find('h2[class="box_titre"]');
+        // On récupère les champs input
+        let inputs = form_config_bdd.find('input');
+        // On récupère le bouton de soumission
+        let submit = form_config_bdd.find('button[type="submit"]');
 
-    // Champs
-    let bdd_host = $('#host_bdd');
-    let bdd_port = $('#port_bdd');
-    let bdd_database = $('#database_bdd');
-    let bdd_user = $('#user_bdd');
-    let bdd_password = $('#password_bdd');
+        // On désactive les champs input et le bouton de soumission
+        inputs.prop('disabled', true);
+        submit.prop('disabled', true);
 
-    function refreshInstallButton() {
-        if (bdd_success) {
-            install.prop('disabled', false);
-        } else {
-            install.prop('disabled', true);
-        }
+        // On change le titre de la box (Ajout icone de chargement)
+        let old_title = title.html();
+        title.html('<i class="fa-solid fa-spinner fa-spin"></i> ' + old_title);
+
+        // On attend 1 seconde
+        setTimeout(function () {
+            // On remet le titre de la box à son état initial
+            title.html(old_title);
+
+            // On active les champs input et le bouton de soumission
+            inputs.prop('disabled', false);
+            submit.prop('disabled', false);
+        }, 1000);
     }
 
-    // Lorsque bouton test_bdd est cliqué
-    bdd_test.click(function () {
-        // On récupère les champs nécessaire et vérifie leurs validités (vérification côté client)
-        if (!bdd_host[0].validity.valid) {
-            alert('Veuillez renseigner l\'adresse IP de la base de données');
-            bdd_host.focus();
-            return false;
-        } else if (!bdd_port[0].validity.valid) {
-            alert('Veuillez renseigner le numéro de port de la base de données');
-            bdd_port.focus();
-            return false;
-        } else if (!bdd_database[0].validity.valid) {
-            alert('Veuillez renseigner le nom de la base de données');
-            bdd_database.focus();
-            return false;
-        } else if (!bdd_user[0].validity.valid) {
-            alert('Veuillez renseigner le nom d\'utilisateur de la base de données');
-            bdd_user.focus();
-            return false;
-        } else if (!bdd_password[0].validity.valid) {
-            alert('Veuillez renseigner le mot de passe de la base de données');
-            bdd_password.focus();
-            return false;
-        }
+    // Fonction permettant de charger la partie d'installation de la base de données
+    function loadInstallBdd() {
+        // On récupère le titre de la box
+        let title = form_install_bdd.find('h2[class="box_titre"]');
+        // On récupère les champs input
+        let inputs = form_install_bdd.find('input');
+        // On récupère le bouton de soumission
+        let submit = form_install_bdd.find('button[type="submit"]');
 
-        // Désactivation des champs
-        bdd_host.prop('disabled', true);
-        bdd_port.prop('disabled', true);
-        bdd_database.prop('disabled', true);
-        bdd_user.prop('disabled', true);
-        bdd_password.prop('disabled', true);
+        // On désactive les champs input et le bouton de soumission
+        inputs.prop('disabled', true);
+        submit.prop('disabled', true);
 
-        // Désactivation du bouton
-        bdd_test.prop('disabled', true);
+        // On change le titre de la box (Ajout icone de chargement)
+        let old_title = title.html();
+        title.html('<i class="fa-solid fa-spinner fa-spin"></i> ' + old_title);
 
-        // Ajout icone de chargement (fontawesome)
-        let old_html = bdd_test.html();
-        bdd_test.html('<i class="fas fa-spinner fa-spin"></i> Connexion à la base de données...');
+        // On attend 1 seconde
+        setTimeout(function () {
+            // On remet le titre de la box à son état initial
+            title.html(old_title);
+
+            // On active les champs input et le bouton de soumission
+            inputs.prop('disabled', false);
+            submit.prop('disabled', false);
+        }, 1000);
+    }
+
+    // Fonction permettant de charger la partie de création du compte gérant
+    function loadCreateGerant() {
+        // On récupère le titre de la box
+        let title = form_create_gerant.find('h2[class="box_titre"]');
+        // On récupère les champs input
+        let inputs = form_create_gerant.find('input');
+        // On récupère le bouton de soumission
+        let submit = form_create_gerant.find('button[type="submit"]');
+
+        // On désactive les champs input et le bouton de soumission
+        inputs.prop('disabled', true);
+        submit.prop('disabled', true);
+
+        // On change le titre de la box (Ajout icone de chargement)
+        let old_title = title.html();
+        title.html('<i class="fa-solid fa-spinner fa-spin"></i> ' + old_title);
+
+        // On attend 1 seconde
+        setTimeout(function () {
+            // On remet le titre de la box à son état initial
+            title.html(old_title);
+
+            // On active les champs input et le bouton de soumission
+            inputs.prop('disabled', false);
+            submit.prop('disabled', false);
+        }, 1000);
+    }
+
+    // Fonction permettant de charger la partie d'installation des unités
+    function loadInstallUnites() {
+        // On récupère le titre de la box
+        let title = form_install_unites.find('h2[class="box_titre"]');
+        // On récupère les champs input
+        let inputs = form_install_unites.find('input');
+        // On récupère le bouton de soumission
+        let submit = form_install_unites.find('button[type="submit"]');
+
+        // On désactive les champs input et le bouton de soumission
+        inputs.prop('disabled', true);
+        submit.prop('disabled', true);
+
+        // On change le titre de la box (Ajout icone de chargement)
+        let old_title = title.html();
+        title.html('<i class="fa-solid fa-spinner fa-spin"></i> ' + old_title);
+
+        // On attend 1 seconde
+        setTimeout(function () {
+            // On remet le titre de la box à son état initial
+            title.html(old_title);
+
+            // On active les champs input et le bouton de soumission
+            inputs.prop('disabled', false);
+            submit.prop('disabled', false);
+        }, 1000);
+    }
+
+    // Fonction permettant de charger la partie d'installation des emballages
+    function loadInstallEmballages() {
+        // On récupère le titre de la box
+        let title = form_install_emballages.find('h2[class="box_titre"]');
+        // On récupère les champs input
+        let inputs = form_install_emballages.find('input');
+        // On récupère le bouton de soumission
+        let submit = form_install_emballages.find('button[type="submit"]');
+
+        // On désactive les champs input et le bouton de soumission
+        inputs.prop('disabled', true);
+        submit.prop('disabled', true);
+
+        // On change le titre de la box (Ajout icone de chargement)
+        let old_title = title.html();
+        title.html('<i class="fa-solid fa-spinner fa-spin"></i> ' + old_title);
+
+        // On attend 1 seconde
+        setTimeout(function () {
+            // On remet le titre de la box à son état initial
+            title.html(old_title);
+
+            // On active les champs input et le bouton de soumission
+            inputs.prop('disabled', false);
+            submit.prop('disabled', false);
+        }, 1000);
+    }
+
+    // Fonction permettant de charger la partie d'installation des fournisseurs
+    function loadInstallFournisseurs() {
+        // On récupère le titre de la box
+        let title = form_install_fournisseurs.find('h2[class="box_titre"]');
+        // On récupère les champs input
+        let inputs = form_install_fournisseurs.find('input');
+        // On récupère le bouton de soumission
+        let submit = form_install_fournisseurs.find('button[type="submit"]');
+
+        // On désactive les champs input et le bouton de soumission
+        inputs.prop('disabled', true);
+        submit.prop('disabled', true);
+
+        // On change le titre de la box (Ajout icone de chargement)
+        let old_title = title.html();
+        title.html('<i class="fa-solid fa-spinner fa-spin"></i> ' + old_title);
+
+        // On attend 1 seconde
+        setTimeout(function () {
+            // On remet le titre de la box à son état initial
+            title.html(old_title);
+
+            // On active les champs input et le bouton de soumission
+            inputs.prop('disabled', false);
+            submit.prop('disabled', false);
+        }, 1000);
+    }
+
+    // Fonction permettant de charger la partie d'installation finale
+    function loadInstallFinish() {
+        // On récupère le bouton de soumission
+        let submit = form_install_finish.find('button[type="submit"]');
+
+        // On active le bouton de soumission
+        submit.prop('disabled', false);
+    }
+
+    // Fonction permettant de sauvegarder la partie de configuration de la base de données
+    function saveConfigBdd() {
+        // On récupère les champs nécessaire
+        let host_bdd = form_config_bdd.find('input[name="host_bdd"]');
+        let port_bdd = form_config_bdd.find('input[name="port_bdd"]');
+        let database_bdd = form_config_bdd.find('input[name="database_bdd"]');
+        let user_bdd = form_config_bdd.find('input[name="user_bdd"]');
+        let password_bdd = form_config_bdd.find('input[name="password_bdd"]');
+
+        // On regroupe tous les champs dans un tableau
+        let inputs = form_config_bdd.find('input');
+
+        // On récupère le bouton de soumission
+        let submit = form_config_bdd.find('button[type="submit"]');
+
+        // On désactive les champs input et le bouton de soumission
+        inputs.prop('disabled', true);
+        submit.prop('disabled', true);
+
+        // On change le bouton de soumission (Ajout icone de chargement)
+        let old_submit = submit.html();
+        submit.html('<i class="fa-solid fa-spinner fa-spin"></i> ' + old_submit);
+
+        let success = false;
 
         // On envoie les données au serveur
         $.ajax({
-            url: 'install/test_bdd',
+            url: 'install/config_bdd',
             type: 'POST',
-            dataType: 'json',
             data: {
-                host_bdd: bdd_host.val(),
-                port_bdd: bdd_port.val(),
-                database_bdd: bdd_database.val(),
-                user_bdd: bdd_user.val(),
-                password_bdd: bdd_password.val()
+                host_bdd: host_bdd.val(),
+                port_bdd: port_bdd.val(),
+                database_bdd: database_bdd.val(),
+                user_bdd: user_bdd.val(),
+                password_bdd: password_bdd.val()
             },
+            dataType: 'json',
             success: function (data) {
                 if (data['success']) {
-                    bdd_success = true;
+                    success = true;
                 } else {
                     // On affiche un message d'erreur
                     alert('Impossible de se connecter à la base de données !\nVeuillez vérifier les identifiants et le port de la base de données.');
@@ -82,105 +232,485 @@ $(function () {
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 if (jqXHR.status !== 0) {
-                    alert('Erreur ' + jqXHR.status + ' : ' + errorThrown);
+                    let alertMessage = 'Erreur ' + jqXHR.status;
+                    // Si errorThrown contient des informations (est une chaîne de caractères)
+                    if (typeof errorThrown === 'string') {
+                        alertMessage += ' : ' + errorThrown.replace(/<br>/g, "\n");
+                    }
+                    alert(alertMessage);
                 } else {
                     alert('Une erreur inconue est survenue !\nVeuillez vérifier votre connexion internet.');
                 }
             },
             complete: function () {
-                // Si la connexion à la base de données a échoué
-                if (!bdd_success) {
-                    // On réactive les champs
-                    bdd_host.prop('disabled', false);
-                    bdd_port.prop('disabled', false);
-                    bdd_database.prop('disabled', false);
-                    bdd_user.prop('disabled', false);
-                    bdd_password.prop('disabled', false);
-
-                    // On réactive le bouton
-                    bdd_test.prop('disabled', false);
-
-                    // On remet le bouton à son état initial
-                    bdd_test.html(old_html);
-                }
-                // Sinon, on a réussi à se connecter à la base de données
-                else {
+                // Si la connexion à la base de données est réussie
+                if (success) {
                     // On remplace le bouton par un bouton de validation
-                    bdd_test.html('<i class="fa-solid fa-check"></i> Base de données connectée !');
+                    submit.html('<i class="fa-solid fa-check"></i> Base de données connectée !');
                     // On change la couleur du bouton
-                    bdd_test.css('background-color', '#28a745');
-                }
+                    submit.css('background-color', '#28a745');
 
-                // Refresh du bouton install
-                refreshInstallButton();
+                    // On charge la partie d'installation de la base de données
+                    loadInstallBdd();
+                }
+                // Si la connexion à la base de données à échouée
+                else {
+                    // On remet le bouton de soumission à son état initial
+                    submit.html(old_submit);
+
+                    // On active les champs input et le bouton de soumission
+                    inputs.prop('disabled', false);
+                    submit.prop('disabled', false);
+                }
             }
         });
-    });
+    }
 
-    // Lorsque le bouton install est cliqué
-    install.click(function () {
-        refreshInstallButton();
+    // Fonction permettant de sauvegarder la partie d'installation de création du compte gérant
+    function saveInstallBdd() {
+        // On récupère le bouton de soumission
+        let submit = form_install_bdd.find('button[type="submit"]');
 
-        if (install.prop('disabled')) {
-            return false;
-        }
+        // On désactive le bouton de soumission
+        submit.prop('disabled', true);
 
-        // Désactivation du bouton
-        install.prop('disabled', true);
+        // On change le bouton de soumission (Ajout icone de chargement)
+        let old_submit = submit.html();
+        submit.html('<i class="fa-solid fa-spinner fa-spin"></i> ' + old_submit);
 
-        // Ajout icone de chargement (fontawesome)
-        let old_html = install.html();
-        install.html('<i class="fa-solid fa-spinner fa-spin"></i> Installation...');
+        let success = false;
 
         // On envoie les données au serveur
         $.ajax({
-            url: 'install/install',
+            url: 'install/install_bdd',
             type: 'POST',
             dataType: 'json',
-            data: {
-                host_bdd: bdd_host.val(),
-                port_bdd: bdd_port.val(),
-                database_bdd: bdd_database.val(),
-                user_bdd: bdd_user.val(),
-                password_bdd: bdd_password.val()
-            },
             success: function (data) {
                 if (data['success']) {
-                    install_success = true;
-
-                    // On redirige vers la page d'accueil dans 1s
-                    setTimeout(function () {
-                        window.location.href = 'accueil';
-                    }, 1000);
+                    success = true;
                 } else {
                     // On affiche un message d'erreur
-                    alert('Une erreur est survenue lors de l\'installation !\nVeuillez réessayer.');
+                    alert('Impossible d\'installer la base de données !\nVeuillez vérifier les permissions de l\'utilisateur de la base de données.');
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 if (jqXHR.status !== 0) {
-                    alert('Erreur ' + jqXHR.status + ' : ' + errorThrown);
+                    let alertMessage = 'Erreur ' + jqXHR.status;
+                    // Si errorThrown contient des informations (est une chaîne de caractères)
+                    if (typeof errorThrown === 'string') {
+                        alertMessage += ' : ' + errorThrown.replace(/<br>/g, "\n");
+                    }
+                    alert(alertMessage);
                 } else {
                     alert('Une erreur inconue est survenue !\nVeuillez vérifier votre connexion internet.');
                 }
             },
             complete: function () {
-                // Si l'installation a échoué
-                if (!install_success) {
-                    // On réactive le bouton
-                    install.prop('disabled', false);
-
-                    // On remet le bouton à son état initial
-                    install.html(old_html);
-                }
-                // Sinon, l'installation a réussi
-                else {
+                // Si l'installation de la base de données est réussie
+                if (success) {
                     // On remplace le bouton par un bouton de validation
-                    install.html('<i class="fa-solid fa-check"></i> Installation terminée !');
+                    submit.html('<i class="fa-solid fa-check"></i> Base de données installée !');
                     // On change la couleur du bouton
-                    install.css('background-color', '#28a745');
+                    submit.css('background-color', '#28a745');
+
+                    // On charge la partie de création du compte gérant
+                    loadCreateGerant();
+                }
+                // Si l'installation de la base de données à échouée
+                else {
+                    // On remet le bouton de soumission à son état initial
+                    submit.html(old_submit);
+
+                    // On active le bouton de soumission
+                    submit.prop('disabled', false);
                 }
             }
         });
+    }
+
+    // Fonction permettant de sauvegarder la partie de création du compte gérant
+    function saveCreateGerant() {
+        // On récupère les champs nécessaire
+        let nom_gerant = form_create_gerant.find('input[name="nom_gerant"]');
+        let prenom_gerant = form_create_gerant.find('input[name="prenom_gerant"]');
+        let email_gerant = form_create_gerant.find('input[name="email_gerant"]');
+        let login_gerant = form_create_gerant.find('input[name="login_gerant"]');
+        let password_gerant = form_create_gerant.find('input[name="password_gerant"]');
+        let password_confirm_gerant = form_create_gerant.find('input[name="password_confirm_gerant"]');
+
+        // On vériifie que les mots de passe correspondent
+        if (password_gerant.val() !== password_confirm_gerant.val()) {
+            // On affiche un message d'erreur
+            alert('Les mots de passe ne correspondent pas !');
+
+            return;
+        }
+
+        // On regroupe tous les champs dans un tableau
+        let inputs = form_create_gerant.find('input');
+
+        // On récupère le bouton de soumission
+        let submit = form_create_gerant.find('button[type="submit"]');
+
+        // On désactive les champs input et le bouton de soumission
+        inputs.prop('disabled', true);
+        submit.prop('disabled', true);
+
+        // On change le bouton de soumission (Ajout icone de chargement)
+        let old_submit = submit.html();
+        submit.html('<i class="fa-solid fa-spinner fa-spin"></i> ' + old_submit);
+
+        let success = false;
+
+        // On envoie les données au serveur
+        $.ajax({
+            url: 'install/create_gerant',
+            type: 'POST',
+            data: {
+                nom_gerant: nom_gerant.val(),
+                prenom_gerant: prenom_gerant.val(),
+                email_gerant: email_gerant.val(),
+                login_gerant: login_gerant.val(),
+                password_gerant: password_gerant.val()
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data['success']) {
+                    success = true;
+                } else {
+                    // On affiche un message d'erreur
+                    alert('Impossible de créer le compte gérant !\nVeuillez vérifier les informations saisies.');
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                if (jqXHR.status !== 0) {
+                    let alertMessage = 'Erreur ' + jqXHR.status;
+                    // Si errorThrown contient des informations (est une chaîne de caractères)
+                    if (typeof errorThrown === 'string') {
+                        alertMessage += ' : ' + errorThrown.replace(/<br>/g, "\n");
+                    }
+                    alert(alertMessage);
+                } else {
+                    alert('Une erreur inconue est survenue !\nVeuillez vérifier votre connexion internet.');
+                }
+            },
+            complete: function () {
+                // Si la création du compte gérant est réussie
+                if (success) {
+                    // On remplace le bouton par un bouton de validation
+                    submit.html('<i class="fa-solid fa-check"></i> Compte gérant créé !');
+                    // On change la couleur du bouton
+                    submit.css('background-color', '#28a745');
+
+                    // On charge la partie d'installation des unités
+                    loadInstallUnites();
+
+                    // On charge la partie d'installation des emballages
+                    loadInstallEmballages();
+
+                    // On charge la partie d'installation des fournisseurs
+                    loadInstallFournisseurs();
+
+                    // On charge la partie d'installation finale
+                    loadInstallFinish();
+                }
+                // Si la création du compte gérant à échouée
+                else {
+                    // On remet le bouton de soumission à son état initial
+                    submit.html(old_submit);
+
+                    // On active les champs input et le bouton de soumission
+                    inputs.prop('disabled', false);
+                    submit.prop('disabled', false);
+                }
+            }
+        });
+    }
+
+    // Fonction permettant de sauvegarder la partie d'installation des unités
+    function saveInstallUnites() {
+        // On récupère le bouton de soumission
+        let submit = form_install_unites.find('button[type="submit"]');
+
+        // On désactive le bouton de soumission
+        submit.prop('disabled', true);
+
+        // On change le bouton de soumission (Ajout icone de chargement)
+        let old_submit = submit.html();
+        submit.html('<i class="fa-solid fa-spinner fa-spin"></i> ' + old_submit);
+
+        let success = false;
+
+        // On envoie les données au serveur
+        $.ajax({
+            url: 'install/install_unites',
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+                if (data['success']) {
+                    success = true;
+                } else {
+                    // On affiche un message d'erreur
+                    alert('Impossible d\'installer les unités !\nVeuillez vérifier les permissions de l\'utilisateur de la base de données.');
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                if (jqXHR.status !== 0) {
+                    let alertMessage = 'Erreur ' + jqXHR.status;
+                    // Si errorThrown contient des informations (est une chaîne de caractères)
+                    if (typeof errorThrown === 'string') {
+                        alertMessage += ' : ' + errorThrown.replace(/<br>/g, "\n");
+                    }
+                    alert(alertMessage);
+                } else {
+                    alert('Une erreur inconue est survenue !\nVeuillez vérifier votre connexion internet.');
+                }
+            },
+            complete: function () {
+                // Si l'installation des unités est réussie
+                if (success) {
+                    // On remplace le bouton par un bouton de validation
+                    submit.html('<i class="fa-solid fa-check"></i> Unités installées !');
+                    // On change la couleur du bouton
+                    submit.css('background-color', '#28a745');
+                }
+                // Si l'installation des unités à échouée
+                else {
+                    // On remet le bouton de soumission à son état initial
+                    submit.html(old_submit);
+
+                    // On active le bouton de soumission
+                    submit.prop('disabled', false);
+                }
+            }
+        });
+    }
+
+    // Fonction permettant de sauvegarder la partie d'installation des emballages
+    function saveInstallEmballages() {
+        // On récupère le bouton de soumission
+        let submit = form_install_emballages.find('button[type="submit"]');
+
+        // On désactive le bouton de soumission
+        submit.prop('disabled', true);
+
+        // On change le bouton de soumission (Ajout icone de chargement)
+        let old_submit = submit.html();
+        submit.html('<i class="fa-solid fa-spinner fa-spin"></i> ' + old_submit);
+
+        let success = false;
+
+        // On envoie les données au serveur
+        $.ajax({
+            url: 'install/install_emballages',
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+                if (data['success']) {
+                    success = true;
+                } else {
+                    // On affiche un message d'erreur
+                    alert('Impossible d\'installer les emballages !\nVeuillez vérifier les permissions de l\'utilisateur de la base de données.');
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                if (jqXHR.status !== 0) {
+                    let alertMessage = 'Erreur ' + jqXHR.status;
+                    // Si errorThrown contient des informations (est une chaîne de caractères)
+                    if (typeof errorThrown === 'string') {
+                        alertMessage += ' : ' + errorThrown.replace(/<br>/g, "\n");
+                    }
+                    alert(alertMessage);
+                } else {
+                    alert('Une erreur inconue est survenue !\nVeuillez vérifier votre connexion internet.');
+                }
+            },
+            complete: function () {
+                // Si l'installation des emballages est réussie
+                if (success) {
+                    // On remplace le bouton par un bouton de validation
+                    submit.html('<i class="fa-solid fa-check"></i> Emballages installés !');
+                    // On change la couleur du bouton
+                    submit.css('background-color', '#28a745');
+                }
+                // Si l'installation des emballages à échouée
+                else {
+                    // On remet le bouton de soumission à son état initial
+                    submit.html(old_submit);
+
+                    // On active le bouton de soumission
+                    submit.prop('disabled', false);
+                }
+            }
+        });
+    }
+
+    // Fonction permettant de sauvegarder la partie d'installation des fournisseurs
+    function saveInstallFournisseurs() {
+        // On récupère le bouton de soumission
+        let submit = form_install_fournisseurs.find('button[type="submit"]');
+
+        // On désactive le bouton de soumission
+        submit.prop('disabled', true);
+
+        // On change le bouton de soumission (Ajout icone de chargement)
+        let old_submit = submit.html();
+        submit.html('<i class="fa-solid fa-spinner fa-spin"></i> ' + old_submit);
+
+        let success = false;
+
+        // On envoie les données au serveur
+        $.ajax({
+            url: 'install/install_fournisseurs',
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+                if (data['success']) {
+                    success = true;
+                } else {
+                    // On affiche un message d'erreur
+                    alert('Impossible d\'installer les fournisseurs !\nVeuillez vérifier les permissions de l\'utilisateur de la base de données.');
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                if (jqXHR.status !== 0) {
+                    let alertMessage = 'Erreur ' + jqXHR.status;
+                    // Si errorThrown contient des informations (est une chaîne de caractères)
+                    if (typeof errorThrown === 'string') {
+                        alertMessage += ' : ' + errorThrown.replace(/<br>/g, "\n");
+                    }
+                    alert(alertMessage);
+                } else {
+                    alert('Une erreur inconue est survenue !\nVeuillez vérifier votre connexion internet.');
+                }
+            },
+            complete: function () {
+                // Si l'installation des fournisseurs est réussie
+                if (success) {
+                    // On remplace le bouton par un bouton de validation
+                    submit.html('<i class="fa-solid fa-check"></i> Fournisseurs installés !');
+                    // On change la couleur du bouton
+                    submit.css('background-color', '#28a745');
+                }
+                // Si l'installation des fournisseurs à échouée
+                else {
+                    // On remet le bouton de soumission à son état initial
+                    submit.html(old_submit);
+
+                    // On active le bouton de soumission
+                    submit.prop('disabled', false);
+                }
+            }
+        });
+    }
+
+    // Fonction permettant de sauvegarder la partie d'installation finale
+    function saveInstallFinish() {
+        // On récupère le bouton de soumission
+        let submit = form_install_finish.find('button[type="submit"]');
+
+        // On désactive le bouton de soumission
+        submit.prop('disabled', true);
+
+        // On change le bouton de soumission (Ajout icone de chargement)
+        let old_submit = submit.html();
+        submit.html('<i class="fa-solid fa-spinner fa-spin"></i> ' + old_submit);
+
+        let success = false;
+
+        // On envoie les données au serveur
+        $.ajax({
+            url: 'install/finish',
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+                if (data['success']) {
+                    success = true;
+                } else {
+                    // On affiche un message d'erreur
+                    alert('Impossible de terminer l\'installation !\nVeuillez vérifier les permissions d\'écriture dans le dossier "data".');
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                if (jqXHR.status !== 0) {
+                    let alertMessage = 'Erreur ' + jqXHR.status;
+                    // Si errorThrown contient des informations (est une chaîne de caractères)
+                    if (typeof errorThrown === 'string') {
+                        alertMessage += ' : ' + errorThrown.replace(/<br>/g, "\n");
+                    }
+                    alert(alertMessage);
+                } else {
+                    alert('Une erreur inconue est survenue !\nVeuillez vérifier votre connexion internet.');
+                }
+            },
+            complete: function () {
+                // Si l'installation finale est réussie
+                if (success) {
+                    // On remplace le bouton par un bouton de validation
+                    submit.html('<i class="fa-solid fa-check"></i> Installation terminée !');
+                    // On change la couleur du bouton
+                    submit.css('background-color', '#28a745');
+
+                    // On redirige vers la page de connexion
+                    setTimeout(function () {
+                        window.location.href = 'login';
+                    }, 1000);
+                }
+                // Si l'installation finale à échouée
+                else {
+                    // On remet le bouton de soumission à son état initial
+                    submit.html(old_submit);
+
+                    // On active le bouton de soumission
+                    submit.prop('disabled', false);
+                }
+            }
+        });
+    }
+
+    // Initialisation des formulaires
+    form_config_bdd.submit(function (e) {
+        e.preventDefault();
+
+        saveConfigBdd();
     });
+
+    form_install_bdd.submit(function (e) {
+        e.preventDefault();
+
+        saveInstallBdd();
+    });
+
+    form_create_gerant.submit(function (e) {
+        e.preventDefault();
+
+        saveCreateGerant();
+    });
+
+    form_install_unites.submit(function (e) {
+        e.preventDefault();
+
+        saveInstallUnites();
+    });
+
+    form_install_emballages.submit(function (e) {
+        e.preventDefault();
+
+        saveInstallEmballages();
+    });
+
+    form_install_fournisseurs.submit(function (e) {
+        e.preventDefault();
+
+        saveInstallFournisseurs();
+    });
+
+    form_install_finish.submit(function (e) {
+        e.preventDefault();
+
+        saveInstallFinish();
+    });
+
+    // On charge la partie configuration de la base de données
+    loadConfigBdd();
 });

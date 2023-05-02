@@ -195,8 +195,12 @@ class Form
                 break;
             case UPLOAD_ERR_NO_FILE:
                 //throw new RuntimeException('No file sent.');
-                ErrorController::error(400, "Aucun fichier envoyé pour le paramètre " . $paramName);
-                exit;
+                if ($required) {
+                    ErrorController::error(400, "Aucun fichier envoyé pour le paramètre " . $paramName);
+                    exit;
+                } else {
+                    return null;
+                }
             case UPLOAD_ERR_INI_SIZE:
             case UPLOAD_ERR_FORM_SIZE:
                 //throw new RuntimeException('Exceeded filesize limit.');
