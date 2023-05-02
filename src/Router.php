@@ -59,6 +59,8 @@ class Router
         
         // BDC
         'gerant/listebdc' => ["controller" => "ListeBDCController", "method" => "renderView"],
+        'gerant/listebdc/donnees' => ["controller" => "ListeBDCController", "method" => "donneesBdc"],
+        'gerant/listebdc/valider' => ["controller" => "ListeBDCController", "method" => "validerBdc"],
         'gerant/nouveaubdc' => ["controller" => "NouveauBDCController", "method" => "renderView"],
 
         // Produits

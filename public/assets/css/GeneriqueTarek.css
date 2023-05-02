@@ -12,7 +12,7 @@
 .conteneur {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
+    justify-content: center;
 }
 
 .titre_fenetre {

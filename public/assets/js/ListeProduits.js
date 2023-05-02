@@ -30,14 +30,6 @@ function rechercher() {
   }
 }
 
-// // Obtenez l'élément de bouton par son identifiant
-// const bouton = document.getElementById('bouton');
-
-// // Ajoutez un écouteur d'événements de clic au bouton
-// bouton.addEventListener('click', () => {
-//     // Rediriger vers la page souhaitée
-//     window.location.href = 'nouveauproduit';
-// });
 
 // Obtenez tous les éléments <td> avec l'id 'bouton'
 const boutons = document.querySelectorAll('#bouton');
@@ -50,10 +42,10 @@ boutons.forEach(bouton => {
         const ligne = event.target.closest('tr');
         
         // Récupérez la valeur du deuxième <td> de la ligne
-        const deuxiemeTd = ligne.querySelector('td:nth-child(2)').textContent;
+        const idIngredient = ligne.querySelector('td:nth-child(6)').textContent;
         
         // Redirigez vers la page souhaitée avec la valeur du deuxième <td>
-        window.location.href = `nouveauproduit?nomProduit=${deuxiemeTd}`;
+        window.location.href = `nouveauproduit?idIngredient=${idIngredient}`;
     });
 });
 

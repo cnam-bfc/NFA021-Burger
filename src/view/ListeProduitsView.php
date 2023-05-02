@@ -14,7 +14,7 @@
     </div><br>
 
     <div class="wrapper axe_colonne second_axe_center">
-        <!-- Tableau contenant les ingrédients de la recette -->
+        <!-- Tableau contenant les ingrédients enregistrés -->
         <table class="tableau">
             <thead>
                 <tr>
@@ -23,7 +23,8 @@
                     <th>Fournisseur</th>
                     <th>Stock</th>
                     <th>Stock Standard</th>
-                    <th><!-- Bouton actions rapide --></th>
+                    <th class = 'hidding'>Id</th>
+                    <th><!-- Bouton de modification --></th>
                 </tr>
                 <tr></tr>
             </thead>
@@ -41,6 +42,7 @@
                                         echo $data->getNomFournisseur(); } ?></td>
                         <td><?php echo $donnees->getQuantiteStockIngredient(); ?></td>
                         <td><?php echo $donnees->getQuantiteStandard(); ?></td>
+                        <td class = 'hidding'><?php echo $donnees->getIdIngredient(); ?></td>
                         <td><img src=<?php echo $modifier[0]["img"]; ?> class='img' id='bouton'></td>
                     </tr>
                 <?php

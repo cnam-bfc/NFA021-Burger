@@ -13,6 +13,13 @@ class Bdc
     private $idBdc;
 
     /**
+     * Etat du bdc
+     *
+     * @var boolean
+     */
+    private $etatBdc;
+
+    /**
      * Date de création du bdc
      * 
      * @var string
@@ -34,18 +41,6 @@ class Bdc
     private $idFournisseurFK;
 
     /**
-     * Méthode permettant d'instancier un objet de la classe Bdc
-     *
-     * @param int $idBdc @param string $nomBdc
-     * @return void
-     */
-    function __construct ($idBdc, $dateCreationBdc) {
-        $this->setIdBdc($idBdc);
-        $this->setDateCreationBdc($dateCreationBdc);
-        $this->setDateCreationBdc($dateCreationBdc);
-    }
-
-    /**
      * Méthode permettant de récupérer l'identifiant du bdc
      *
      * @return int
@@ -53,6 +48,16 @@ class Bdc
     public function getIdBdc()
     {
         return $this->idBdc;
+    }
+
+    /**
+     * Méthode permettant de récupérer l'etat du bdc
+     *
+     * @return int
+     */
+    public function getEtatBdc()
+    {
+        return $this->etatBdc;
     }
 
     /**
@@ -97,6 +102,17 @@ class Bdc
     }
 
     /**
+     * Méthode permettant de modifier l'etat du bdc
+     *
+     * @param int $etatBdc
+     * @return void
+     */
+    public function setEtatBdc($etatBdc)
+    {
+        $this->etatBdc = $etatBdc;
+    }
+
+    /**
      * Méthode permettant de modifier la date création du bdc
      *
      * @param string $dateCreationBdc
@@ -126,6 +142,6 @@ class Bdc
      */
     public function setIdFournisseurFK($idFournisseurFK)
     {
-        $this->dateCreationBdc = $idFournisseurFK;
+        $this->idFournisseurFK = $idFournisseurFK;
     }
 }

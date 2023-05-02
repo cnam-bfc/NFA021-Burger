@@ -21,9 +21,13 @@ class BdcDAO extends DAO
         // Traitement des résultats
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         $bdc = array();
-        foreach ($result as $row) {
+        foreach ($result as $ligne) {
             // Création d'un nouvel objet
-            $bdc1 = new Bdc ($row['id_commande'], $row['date_commande']);
+            $bdc1 = new Bdc();
+            $bdc1->setIdBdc($ligne['id_commande']);
+            $bdc1->setEtatBdc($ligne['etat_commande']);
+            $bdc1->setDateCreationBdc($ligne['date_commande']);
+            $bdc1->setIdFournisseurFK($ligne['id_fournisseur_fk']);
 
             // Ajout de l'objet dans le tableau
             $bdc[] = $bdc1;
