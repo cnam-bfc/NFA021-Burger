@@ -92,4 +92,31 @@ class BdcDAO extends DAO
 
         return $fournisseur;
     }
+
+    /**
+     * Méthode permettant de récupérer tous les objets
+     * 
+     * @return array (tableau d'objets)
+     */
+    public function selectAllNotArchived()
+    {
+        // Requête
+        $sqlQuery = "SELECT * FROM burger_commande_fournisseur WHERE date_archive_commande IS NULL";
+        $statement = $this->pdo->prepare($sqlQuery);
+        $statement->execute();
+
+        // Traitement des résultats
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $bdc = array();
+        foreach ($result as $row) {
+            // Création d'un nouvel objet
+            $bdc1 = new Bdc ($row['id_commande'], $row['date_commande']);
+            $bdc1 -> setIdFournisseurFK($row['id_fournisseur_fk']);
+
+            // Ajout de l'objet dans le tableau
+            $bdc[] = $bdc1;
+        }
+
+        return $bdc;
+    }
 }

@@ -126,6 +126,6 @@ class Bdc
      */
     public function setIdFournisseurFK($idFournisseurFK)
     {
-        $this->dateCreationBdc = $idFournisseurFK;
+        $this->idFournisseurFK = $idFournisseurFK;
     }
 }

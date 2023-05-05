@@ -152,7 +152,6 @@ class IngredientCommandeFournisseurDAO extends DAO
             // Ajout de l'objet dans le tableau
             $ingredientCommandeFournisseurs[] = $ingredientCommandeFournisseur;
         }
-
         return $ingredientCommandeFournisseurs;
     }
 }
