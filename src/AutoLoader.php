@@ -8,6 +8,24 @@
 class AutoLoader
 {
     /**
+     * Tableau contenant les chemins vers les dossiers contenant les classes du projet
+     */
+    private static $paths = [
+        'App' => 'App.php',
+        'Configuration' => 'Configuration.php',
+        'Form' => 'Form.php',
+        'Session' => 'Session.php',
+        'Router' => 'Router.php',
+        'Security' => 'Security.php',
+        'Database' => 'Database.php',
+        'UserSession' => 'UserSession.php',
+        'Controller' => 'controller' . DIRECTORY_SEPARATOR . 'Controller.php',
+        'DAO' => 'model' . DIRECTORY_SEPARATOR . 'DAO.php',
+        'View' => 'view' . DIRECTORY_SEPARATOR . 'View.php',
+        'BaseTemplate' => 'view' . DIRECTORY_SEPARATOR . 'template' . DIRECTORY_SEPARATOR . 'BaseTemplate.php'
+    ];
+
+    /**
      * Méthode permettant de démarrer l'autoloader
      *
      * @return void
@@ -16,23 +34,6 @@ class AutoLoader
     {
         // Cette fonction sera appelée chaque fois qu'une classe sera instanciée et que PHP ne la trouvera pas dans le code actuel.
         spl_autoload_register(array(__CLASS__, 'autoload'));
-
-        // Chargement des fichiers de base
-        require_once 'App.php'; // Classe principale du projet
-        require_once 'Configuration.php'; // Gestion de la configuration
-        require_once 'Form.php'; // Gestion des formulaires
-        require_once 'Session.php'; // Gestion de la session
-        require_once 'Router.php'; // Gestion des routes
-        require_once 'Database.php'; // Gestion de la base de données
-        require_once 'UserSession.php'; // Gestion de la session utilisateur
-
-        // MVC
-        require_once 'controller' . DIRECTORY_SEPARATOR . 'Controller.php'; // Classe mère des contrôleurs
-
-        require_once 'model' . DIRECTORY_SEPARATOR . 'DAO.php'; // Classe mère des modèles
-
-        require_once 'view' . DIRECTORY_SEPARATOR . 'View.php'; // Classe permettant de générer une vue
-        require_once 'view' . DIRECTORY_SEPARATOR . 'template' . DIRECTORY_SEPARATOR . 'BaseTemplate.php';
     }
 
     /**
@@ -44,20 +45,34 @@ class AutoLoader
      */
     public static function autoload($class)
     {
+        // On construit les chemins possibles vers la classe
+        if (substr($class, -3) == 'DAO') {
+            $modelFolder = lcfirst(substr($class, 0, -3));
+        } else {
+            $modelFolder = lcfirst($class);
+        }
+        $modelPath = MODEL . $modelFolder . DIRECTORY_SEPARATOR . $class . '.php';
+        $controllerPath = CONTROLLER . $class . '.php';
+        $viewPath = VIEW . $class . '.php';
         switch ($class) {
                 // Si la classe est un modèle (DAO ou Objet)
-            case file_exists(MODEL . (substr($class, -3) == 'DAO' ? strtolower(substr($class, 0, -3)) : strtolower($class)) . DIRECTORY_SEPARATOR . $class . '.php'):
-                require_once MODEL . (substr($class, -3) == 'DAO' ? strtolower(substr($class, 0, -3)) : strtolower($class)) . DIRECTORY_SEPARATOR . $class . '.php';
+            case file_exists($modelPath):
+                require_once $modelPath;
                 break;
 
                 // Si la classe est un contrôleur
-            case file_exists(CONTROLLER . $class . '.php'):
-                require_once CONTROLLER . $class . '.php';
+            case file_exists($controllerPath):
+                require_once $controllerPath;
                 break;
 
                 // Si la classe est une vue
-            case file_exists(VIEW . $class . '.php'):
-                require_once VIEW . $class . '.php';
+            case file_exists($viewPath):
+                require_once $viewPath;
+                break;
+
+                // Si la classe est une classe du projet
+            case array_key_exists($class, self::$paths):
+                require_once self::$paths[$class];
                 break;
 
                 // Sinon on affiche une erreur

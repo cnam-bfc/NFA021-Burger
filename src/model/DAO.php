@@ -24,7 +24,7 @@ abstract class DAO
      * 
      * @param Object $object
      */
-    abstract public function create(&$object);
+    abstract public function create($object);
 
     /**
      * Méthode abstraite qui permet de supprimer un objet
@@ -54,4 +54,12 @@ abstract class DAO
      * @return Object
      */
     abstract public function selectById($id);
+
+    /**
+     * Méthode abstraite qui permet de remplir un objet à partir d'un tableau (ligne issue de la base de données)
+     * 
+     * @param Object $object (objet à remplir)
+     * @param array $array (tableau contenant les données, ligne issues de la base de données)
+     */
+    abstract public function fillObject($object, $array);
 }

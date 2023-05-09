@@ -11,8 +11,13 @@ class Router
     const ROUTES = [
         // Installation
         'install' => ["controller" => "InstallController", "method" => "renderView"],
-        'install/test_bdd' => ["controller" => "InstallController", "method" => "testConnectionBdd"],
-        'install/install' => ["controller" => "InstallController", "method" => "install"],
+        'install/config_bdd' => ["controller" => "InstallController", "method" => "configBdd"],
+        'install/install_bdd' => ["controller" => "InstallController", "method" => "installBdd"],
+        'install/create_gerant' => ["controller" => "InstallController", "method" => "createGerant"],
+        'install/install_unites' => ["controller" => "InstallController", "method" => "installUnites"],
+        'install/install_emballages' => ["controller" => "InstallController", "method" => "installEmballages"],
+        'install/install_fournisseurs' => ["controller" => "InstallController", "method" => "installFournisseurs"],
+        'install/finish' => ["controller" => "InstallController", "method" => "finish"],
 
         // PARTIE CLIENT
         // Accueil client
@@ -57,7 +62,7 @@ class Router
         'gerant/recettes/modifier' => ["controller" => "RecetteEditController", "method" => "renderViewModifierRecette"],
         'gerant/recettes/list/ingredients' => ["controller" => "RecetteEditController", "method" => "listeIngredients"],
         'gerant/recettes/enregistrer' => ["controller" => "RecetteEditController", "method" => "enregistrerRecette"],
-        
+
         // BDC
         'gerant/listebdc' => ["controller" => "ListeBDCController", "method" => "renderView"],
         'gerant/nouveaubdc' => ["controller" => "NouveauBDCController", "method" => "renderView"],
@@ -65,7 +70,7 @@ class Router
         // Produits
         'gerant/nouveauproduit' => ["controller" => "NouveauProduitController", "method" => "renderView"],
         'gerant/listeproduits' => ["controller" => "ListeProduitsController", "method" => "renderView"],
-        
+
 
         // PARTIE CUISINIER
         // Ecran de cuisine

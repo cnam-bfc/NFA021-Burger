@@ -12,22 +12,32 @@ class InstallController extends Controller
     }
 
     /**
-     * Méthode permettant de tester la connexion à la base de données
+     * Méthode permettant de configurer les identifiants de connexion à la base de données
      */
-    public function testConnectionBdd()
+    public function configBdd()
     {
-        // $host = $_POST['host_bdd'];
+        // Récupération des paramètres de la requête
         $host = Form::getParam('host_bdd', Form::METHOD_POST, Form::TYPE_STRING);
-        // $port = $_POST['port_bdd'];
         $port = Form::getParam('port_bdd', Form::METHOD_POST, Form::TYPE_INT);
-        // $database = $_POST['database_bdd'];
         $database = Form::getParam('database_bdd', Form::METHOD_POST, Form::TYPE_STRING);
-        // $user = $_POST['user_bdd'];
         $user = Form::getParam('user_bdd', Form::METHOD_POST, Form::TYPE_STRING);
-        // $password = $_POST['password_bdd'];
         $password = Form::getParam('password_bdd', Form::METHOD_POST, Form::TYPE_STRING);
 
+        // Test de la connexion à la base de données
         $success = Database::testConnectionBdd($host, $port, $database, $user, $password);
+
+        // Si le test est un succès, on enregistre les informations de connexion dans le fichier de configuration
+        if ($success) {
+            // Modification du fichier de configuration
+            $config = Configuration::getInstance();
+
+            // Modification des informations de connexion à la base de données
+            $config->setBddHost($host);
+            $config->setBddPort($port);
+            $config->setBddName($database);
+            $config->setBddUser($user);
+            $config->setBddPassword($password);
+        }
 
         $json = array(
             'success' => $success
@@ -42,51 +52,201 @@ class InstallController extends Controller
     }
 
     /**
-     * Méthode permettant d'installer l'application
+     * Méthode permettant d'installer la base de données
      */
-    public function install()
+    public function installBdd()
     {
-        // $bdd_host = $_POST['host_bdd'];
-        $bdd_host = Form::getParam('host_bdd', Form::METHOD_POST, Form::TYPE_STRING);
-        // $bdd_port = $_POST['port_bdd'];
-        $bdd_port = Form::getParam('port_bdd', Form::METHOD_POST, Form::TYPE_INT);
-        // $bdd_database = $_POST['database_bdd'];
-        $bdd_database = Form::getParam('database_bdd', Form::METHOD_POST, Form::TYPE_STRING);
-        // $bdd_user = $_POST['user_bdd'];
-        $bdd_user = Form::getParam('user_bdd', Form::METHOD_POST, Form::TYPE_STRING);
-        // $bdd_password = $_POST['password_bdd'];
-        $bdd_password = Form::getParam('password_bdd', Form::METHOD_POST, Form::TYPE_STRING);
-
-        // Création du fichier de configuration
-        $json = array(
-            'bdd' => array(
-                'host' => $bdd_host,
-                'port' => $bdd_port,
-                'database' => $bdd_database,
-                'user' => $bdd_user,
-                'password' => $bdd_password
-            )
-        );
-
-        $json_data = json_encode($json, JSON_PRETTY_PRINT);
-
-        $success = file_put_contents(DATA_FOLDER . 'config.json', $json_data);
-
-        if ($success) {
-            // Rechargement de la configuration
-            Configuration::createInstance();
-
-            // Connexion à la base de données
-            $success = Database::createInstance();
-        }
-
-        if ($success) {
-            // Mise à jour de la base de données
-            $success = Database::getInstance()->update();
-        }
+        // Connexion à la base de données
+        $success = Database::createInstance();
 
         $json = array(
             'success' => $success
+        );
+
+        $view = new View(BaseTemplate::JSON);
+
+        // Définission des variables utilisées dans la vue
+        $view->json = $json;
+
+        $view->renderView();
+    }
+
+    /**
+     * Méthode permettant de créer un compte gérant
+     */
+    public function createGerant()
+    {
+        // Récupération des paramètres de la requête
+        $nom = Form::getParam('nom_gerant', Form::METHOD_POST, Form::TYPE_STRING);
+        $prenom = Form::getParam('prenom_gerant', Form::METHOD_POST, Form::TYPE_STRING);
+        $email = Form::getParam('email_gerant', Form::METHOD_POST, Form::TYPE_EMAIL);
+        $login = Form::getParam('login_gerant', Form::METHOD_POST, Form::TYPE_STRING);
+        $password = Form::getParam('password_gerant', Form::METHOD_POST, Form::TYPE_STRING);
+
+        // Hashage du mot de passe
+        $password = Security::getInstance()->hashPassword($password);
+
+        // Création du compte gérant
+        $gerant = new Gerant();
+        $gerant->setNom($nom);
+        $gerant->setPrenom($prenom);
+        $gerant->setEmail($email);
+        $gerant->setLogin($login);
+        $gerant->setHashedPassword($password);
+
+        // Enregistrement du compte gérant
+        $gerantDAO = new GerantDAO();
+        $gerantDAO->create($gerant);
+
+        $json = array(
+            'success' => true
+        );
+
+        $view = new View(BaseTemplate::JSON);
+
+        // Définission des variables utilisées dans la vue
+        $view->json = $json;
+
+        $view->renderView();
+    }
+
+    /**
+     * Fonction permettant d'installer les unités par défaut
+     */
+    public function installUnites()
+    {
+        // Création des DAO
+        $uniteDAO = new UniteDAO();
+
+        // On lance une transaction
+        Database::getInstance()->getPDO()->beginTransaction();
+
+        // Création des unités par défaut
+        // Pièce
+        $unitePiece = new Unite();
+        $unitePiece->setNom('Pièce');
+        $unitePiece->setDiminutif('pce');
+        $uniteDAO->create($unitePiece);
+
+        // Gramme
+        $uniteGramme = new Unite();
+        $uniteGramme->setNom('Gramme');
+        $uniteGramme->setDiminutif('g');
+        $uniteDAO->create($uniteGramme);
+
+        // Kilogramme
+        $uniteKilogramme = new Unite();
+        $uniteKilogramme->setNom('Kilogramme');
+        $uniteKilogramme->setDiminutif('kg');
+        $uniteDAO->create($uniteKilogramme);
+
+        // Millilitre
+        $uniteMillilitre = new Unite();
+        $uniteMillilitre->setNom('Millilitre');
+        $uniteMillilitre->setDiminutif('ml');
+        $uniteDAO->create($uniteMillilitre);
+
+        // Litre
+        $uniteLitre = new Unite();
+        $uniteLitre->setNom('Litre');
+        $uniteLitre->setDiminutif('L');
+        $uniteDAO->create($uniteLitre);
+
+        // On valide la transaction
+        Database::getInstance()->getPDO()->commit();
+
+        $json = array(
+            'success' => true
+        );
+
+        $view = new View(BaseTemplate::JSON);
+
+        // Définission des variables utilisées dans la vue
+        $view->json = $json;
+
+        $view->renderView();
+    }
+
+    /**
+     * Méthode permettant d'installer les emballages par défaut
+     */
+    public function installEmballages()
+    {
+        // Création des DAO
+        $emballageDAO = new EmballageDAO();
+
+        // On lance une transaction
+        Database::getInstance()->getPDO()->beginTransaction();
+
+        // Création des emballages par défaut
+        // Carton
+        $emballageCarton = new Emballage();
+        $emballageCarton->setNom('Carton');
+        $emballageDAO->create($emballageCarton);
+
+        // Isotherme
+        $emballageIsotherme = new Emballage();
+        $emballageIsotherme->setNom('Isotherme');
+        $emballageDAO->create($emballageIsotherme);
+
+        // On valide la transaction
+        Database::getInstance()->getPDO()->commit();
+
+        $json = array(
+            'success' => true
+        );
+
+        $view = new View(BaseTemplate::JSON);
+
+        // Définission des variables utilisées dans la vue
+        $view->json = $json;
+
+        $view->renderView();
+    }
+
+    /**
+     * Méthode permettant d'installer les fournisseurs par défaut
+     */
+    public function installFournisseurs()
+    {
+        // Création des DAO
+        $fournisseurDAO = new FournisseurDAO();
+
+        // On lance une transaction
+        Database::getInstance()->getPDO()->beginTransaction();
+
+        // Création des fournisseurs par défaut
+        // Marché
+        $fournisseurMarche = new Fournisseur();
+        $fournisseurMarche->setNom('Marché');
+        $fournisseurDAO->create($fournisseurMarche);
+
+        // On valide la transaction
+        Database::getInstance()->getPDO()->commit();
+
+        $json = array(
+            'success' => true
+        );
+
+        $view = new View(BaseTemplate::JSON);
+
+        // Définission des variables utilisées dans la vue
+        $view->json = $json;
+
+        $view->renderView();
+    }
+
+    /**
+     * Fonction permettant de terminer l'installation
+     */
+    public function finish()
+    {
+        // Créer le fichier '.installed.lock'
+        $file = fopen('.installed.lock', 'w');
+        fclose($file);
+
+        $json = array(
+            'success' => true
         );
 
         $view = new View(BaseTemplate::JSON);

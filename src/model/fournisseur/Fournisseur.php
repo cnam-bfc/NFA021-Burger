@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Objet Fournisseur
  */
@@ -6,57 +7,85 @@ class Fournisseur
 {
     /**
      * Identifiant du fournisseur
-     *
+     * 
      * @var int
      */
-    private $idFournisseur;
+    private $id;
 
     /**
      * Nom du fournisseur
+     *
+     * @var string
+     */
+    private $nom;
+
+    /**
+     * Date d'archivage du fournisseur
      * 
      * @var string
      */
-    private $nomFournisseur;
+    private $dateArchive;
 
     /**
      * Méthode permettant de récupérer l'identifiant du fournisseur
-     *
+     * 
      * @return int
      */
-    public function getIdFournisseur()
+    public function getId()
     {
-        return $this->idFournisseur;
+        return $this->id;
     }
 
     /**
      * Méthode permettant de récupérer le nom du fournisseur
-     *
+     * 
      * @return string
      */
-    public function getNomFournisseur()
+    public function getNom()
     {
-        return $this->nomFournisseur;
+        return $this->nom;
     }
 
     /**
-     * Méthode permettant de définir l'identifiant du fournisseur
-     *
-     * @param int $idFournisseur Identifiant du fournisseur
-     * @return void
+     * Méthode permettant de récupérer la date d'archivage du fournisseur
+     * 
+     * @return string
      */
-    public function setIdFournisseur($idFournisseur)
+    public function getDateArchive()
     {
-        $this->idFournisseur = $idFournisseur;
+        return $this->dateArchive;
     }
 
     /**
-     * Méthode permettant de définir le nom du fournisseur
-     *
-     * @param string $nomFournisseur Nom du fournisseur
+     * Méthode permettant de modifier l'identifiant du fournisseur
+     * 
+     * @param int $id
      * @return void
      */
-    public function setNomFournisseur($nomFournisseur)
+    public function setId($id)
     {
-        $this->nomFournisseur = $nomFournisseur;
+        $this->id = (int) $id;
+    }
+
+    /**
+     * Méthode permettant de modifier le nom du fournisseur
+     * 
+     * @param string $nom
+     * @return void
+     */
+    public function setNom($nom)
+    {
+        $this->nom = $nom;
+    }
+
+    /**
+     * Méthode permettant de modifier la date d'archivage du fournisseur
+     * 
+     * @param string $dateArchive
+     * @return void
+     */
+    public function setDateArchive($dateArchive)
+    {
+        $this->dateArchive = $dateArchive;
     }
 }

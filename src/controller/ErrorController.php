@@ -1,18 +1,24 @@
 <?php
 class ErrorController extends Controller
 {
-    public static function error($code, $message)
+    public static function error($code, $message, $renderView = true, $exit = true)
     {
-        $controller = new ErrorController();
-        $controller->renderView($code, $message);
+        // Définition du code d'erreur HTTP
+        header($_SERVER["SERVER_PROTOCOL"] . ' ' . $code . ' ' . $message);
+
+        if ($renderView) {
+            $controller = new ErrorController();
+            $controller->renderView($code, $message);
+        }
+
+        if ($exit) {
+            exit();
+        }
     }
 
-    public function renderView($code, $message)
+    private function renderView($code, $message)
     {
         $view = new View(BaseTemplate::EMPTY, 'ErrorView');
-
-        // Définition du code d'erreur HTTP
-        header("HTTP/1.0 " . $code . " " . $message);
 
         // Définition des variables utilisées dans la vue
         $view->code = $code;

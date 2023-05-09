@@ -11,40 +11,37 @@ class RecetteDAO extends DAO
      * @param Recette $recette (objet à créer qui ne possède pas d'id, celui-ci sera affecté par la méthode)
      * @throws Exception (si l'objet possède déjà un id)
      */
-    public function create(&$recette)
+    public function create($recette)
     {
         // Vérification que l'objet n'a pas d'id
-        if ($recette->getIdRecette() !== null) {
+        if ($recette->getId() !== null) {
             throw new Exception("L'objet à créer ne doit pas avoir d'id");
         }
 
         // Requête
         $sqlQuery = "INSERT INTO burger_recette (
-                                                nom_recette,
-                                                description_recette,
-                                                photo_recette,
-                                                date_archive_recette,
-                                                prix_recette
+                                                nom,
+                                                description,
+                                                prix,
+                                                date_archive
                                                 ) VALUES (
-                                                :nom_recette,
-                                                :description_recette,
-                                                :photo_recette,
-                                                :date_archive_recette,
-                                                :prix_recette
+                                                :nom,
+                                                :description,
+                                                :prix,
+                                                :date_archive
                                                 )";
         $statement = $this->pdo->prepare($sqlQuery);
-        $statement->bindValue(':nom_recette', $recette->getNomRecette(), PDO::PARAM_STR);
-        $statement->bindValue(':description_recette', $recette->getDescriptionRecette(), PDO::PARAM_STR);
-        $statement->bindValue(':photo_recette', $recette->getPhotoRecette(), PDO::PARAM_STR);
-        $statement->bindValue(':date_archive_recette', $recette->getDateArchiveRecette(), PDO::PARAM_STR);
-        $statement->bindValue(':prix_recette', $recette->getPrixRecette(), PDO::PARAM_STR);
+        $statement->bindValue(':nom', $recette->getNom(), PDO::PARAM_STR);
+        $statement->bindValue(':description', $recette->getDescription(), PDO::PARAM_STR);
+        $statement->bindValue(':prix', $recette->getPrix(), PDO::PARAM_STR);
+        $statement->bindValue(':date_archive', $recette->getDateArchive(), PDO::PARAM_STR);
         $statement->execute();
 
         // Récupération de l'id généré par l'autoincrement de la base de données
         $id = $this->pdo->lastInsertId();
 
         // Affectation de l'id à l'objet
-        $recette->setIdRecette($id);
+        $recette->setId($id);
     }
 
     /**
@@ -56,14 +53,14 @@ class RecetteDAO extends DAO
     public function delete($recette)
     {
         // Vérification que l'objet a un id
-        if ($recette->getIdRecette() === null) {
+        if ($recette->getId() === null) {
             throw new Exception("L'objet à supprimer doit avoir un id");
         }
 
         // Requête
         $sqlQuery = "DELETE FROM burger_recette WHERE id_recette = :id_recette";
         $statement = $this->pdo->prepare($sqlQuery);
-        $statement->bindValue(':id_recette', $recette->getIdRecette(), PDO::PARAM_INT);
+        $statement->bindValue(':id_recette', $recette->getId(), PDO::PARAM_INT);
         $statement->execute();
     }
 
@@ -76,24 +73,22 @@ class RecetteDAO extends DAO
     public function update($recette)
     {
         // Vérification que l'objet a un id
-        if ($recette->getIdRecette() === null) {
+        if ($recette->getId() === null) {
             throw new Exception("L'objet à mettre à jour doit avoir un id");
         }
 
         // Requête
-        $sqlQuery = "UPDATE burger_recette SET nom_recette = :nom_recette,
-                                            description_recette = :description_recette,
-                                            photo_recette = :photo_recette,
-                                            date_archive_recette = :date_archive_recette,
-                                            prix_recette = :prix_recette
+        $sqlQuery = "UPDATE burger_recette SET nom = :nom,
+                                            description = :description,
+                                            prix = :prix,
+                                            date_archive = :date_archive
                                             WHERE id_recette = :id_recette";
         $statement = $this->pdo->prepare($sqlQuery);
-        $statement->bindValue(':nom_recette', $recette->getNomRecette(), PDO::PARAM_STR);
-        $statement->bindValue(':description_recette', $recette->getDescriptionRecette(), PDO::PARAM_STR);
-        $statement->bindValue(':photo_recette', $recette->getPhotoRecette(), PDO::PARAM_STR);
-        $statement->bindValue(':date_archive_recette', $recette->getDateArchiveRecette(), PDO::PARAM_STR);
-        $statement->bindValue(':prix_recette', $recette->getPrixRecette(), PDO::PARAM_STR);
-        $statement->bindValue(':id_recette', $recette->getIdRecette(), PDO::PARAM_INT);
+        $statement->bindValue(':nom', $recette->getNom(), PDO::PARAM_STR);
+        $statement->bindValue(':description', $recette->getDescription(), PDO::PARAM_STR);
+        $statement->bindValue(':prix', $recette->getPrix(), PDO::PARAM_STR);
+        $statement->bindValue(':date_archive', $recette->getDateArchive(), PDO::PARAM_STR);
+        $statement->bindValue(':id_recette', $recette->getId(), PDO::PARAM_INT);
         $statement->execute();
     }
 
@@ -106,7 +101,7 @@ class RecetteDAO extends DAO
     {
         // Requête
         $sqlQuery = "SELECT * FROM burger_recette";
-        $statement = $this->pdo->prepare($sqlQuery);
+        $statement = $this->pdo->query($sqlQuery);
         $statement->execute();
 
         // Traitement des résultats
@@ -115,12 +110,9 @@ class RecetteDAO extends DAO
         foreach ($result as $row) {
             // Création d'un nouvel objet
             $recette = new Recette();
-            $recette->setIdRecette($row['id_recette']);
-            $recette->setNomRecette($row['nom_recette']);
-            $recette->setDescriptionRecette($row['description_recette']);
-            $recette->setPhotoRecette($row['photo_recette']);
-            $recette->setDateArchiveRecette($row['date_archive_recette']);
-            $recette->setPrixRecette($row['prix_recette']);
+
+            // Remplissage de l'objet
+            $this->fillObject($recette, $row);
 
             // Ajout de l'objet dans le tableau
             $recettes[] = $recette;
@@ -129,11 +121,16 @@ class RecetteDAO extends DAO
         return $recettes;
     }
 
+    /**
+     * Méthode permettant de récupérer tous les objets non archivés
+     *
+     * @return Recette[] (tableau d'objets)
+     */
     public function selectAllNonArchive()
     {
         // Requête
-        $sqlQuery = "SELECT * FROM burger_recette WHERE date_archive_recette IS NULL or date_archive_recette > NOW()";
-        $statement = $this->pdo->prepare($sqlQuery);
+        $sqlQuery = "SELECT * FROM burger_recette WHERE date_archive IS NULL OR date_archive > NOW()";
+        $statement = $this->pdo->query($sqlQuery);
         $statement->execute();
 
         // Traitement des résultats
@@ -142,12 +139,9 @@ class RecetteDAO extends DAO
         foreach ($result as $row) {
             // Création d'un nouvel objet
             $recette = new Recette();
-            $recette->setIdRecette($row['id_recette']);
-            $recette->setNomRecette($row['nom_recette']);
-            $recette->setDescriptionRecette($row['description_recette']);
-            $recette->setPhotoRecette($row['photo_recette']);
-            $recette->setDateArchiveRecette($row['date_archive_recette']);
-            $recette->setPrixRecette($row['prix_recette']);
+
+            // Remplissage de l'objet
+            $this->fillObject($recette, $row);
 
             // Ajout de l'objet dans le tableau
             $recettes[] = $recette;
@@ -155,6 +149,7 @@ class RecetteDAO extends DAO
 
         return $recettes;
     }
+
     /**
      * Méthode permettant de récupérer un objet par son id
      * 
@@ -179,12 +174,9 @@ class RecetteDAO extends DAO
 
         // Création d'un nouvel objet
         $recette = new Recette();
-        $recette->setIdRecette($result['id_recette']);
-        $recette->setNomRecette($result['nom_recette']);
-        $recette->setDescriptionRecette($result['description_recette']);
-        $recette->setPhotoRecette($result['photo_recette']);
-        $recette->setDateArchiveRecette($result['date_archive_recette']);
-        $recette->setPrixRecette($result['prix_recette']);
+
+        // Remplissage de l'objet
+        $this->fillObject($recette, $result);
 
         return $recette;
     }
@@ -200,12 +192,12 @@ class RecetteDAO extends DAO
         $sqlQuery = "SELECT * 
                     FROM burger_recette AS br
                     LEFT JOIN burger_recette_finale AS brf ON br.id_recette = brf.id_recette_fk
-                    LEFT JOIN burger_commande_client AS bcc ON brf.id_commande_fk = bcc.id_commande
+                    LEFT JOIN burger_commande_client AS bcc ON brf.id_commande_fk = bcc.id_commande_client
                     WHERE date_commande BETWEEN DATE_SUB(NOW(), INTERVAL 1 MONTH) AND NOW()
                     GROUP BY id_recette 
                     ORDER BY COUNT(id_recette) 
                     DESC LIMIT 3";
-        $statement = $this->pdo->prepare($sqlQuery);
+        $statement = $this->pdo->query($sqlQuery);
         $statement->execute();
 
         // Vérification que l'on a bien un résultat
@@ -219,17 +211,29 @@ class RecetteDAO extends DAO
         foreach ($result as $row) {
             // Création d'un nouvel objet
             $recette = new Recette();
-            $recette->setIdRecette($row['id_recette']);
-            $recette->setNomRecette($row['nom_recette']);
-            $recette->setDescriptionRecette($row['description_recette']);
-            $recette->setPhotoRecette($row['photo_recette']);
-            $recette->setDateArchiveRecette($row['date_archive_recette']);
-            $recette->setPrixRecette($row['prix_recette']);
+
+            // Remplissage de l'objet
+            $this->fillObject($recette, $row);
 
             // Ajout de l'objet dans le tableau
             $recettes[] = $recette;
         }
 
         return $recettes;
+    }
+
+    /**
+     * Méthode permettant de remplir un objet à partir d'un tableau (ligne issue de la base de données)
+     * 
+     * @param Recette $recette (objet à remplir)
+     * @param array $row (tableau contenant les données)
+     */
+    public function fillObject($recette, $row)
+    {
+        $recette->setId($row['id_recette']);
+        $recette->setNom($row['nom']);
+        $recette->setDescription($row['description']);
+        $recette->setPrix($row['prix']);
+        $recette->setDateArchive($row['date_archive']);
     }
 }
