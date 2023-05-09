@@ -21,6 +21,7 @@ class Router
 
         // Carte des recettes
         'carte' => ["controller" => "CarteMenuController", "method" => "renderView"],
+        'carte/listeBurgers' => ["controller" => "CarteMenuController", "method" => "listeBurgers"],
 
         // PARTIE EMPLOYÉ
         // Accueil employé

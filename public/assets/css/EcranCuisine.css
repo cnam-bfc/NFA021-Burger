@@ -5,7 +5,7 @@ body {
 #wrapper {
     width: 95%;
     height: 90%;
-    margin : 40px;
+    margin : 10px 40px 10px 40px;
     justify-content: center;
     text-align: center;
 }
@@ -65,7 +65,7 @@ div .num_com p {
 .bouton {
     height: 30px;
     text-align: center;
-    background-color: black;
+    background-color: transparent;
 }
 
 button{
