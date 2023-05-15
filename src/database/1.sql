@@ -69,6 +69,7 @@ CREATE TABLE burger_emballage(
 CREATE TABLE burger_ingredient(
    id_ingredient INT AUTO_INCREMENT,
    nom VARCHAR(50) NOT NULL,
+   afficher_vue_eclatee BOOLEAN NOT NULL,
    quantite_stock INT NOT NULL,
    stock_auto BOOLEAN NOT NULL,
    stock_auto_quantite_standard INT,

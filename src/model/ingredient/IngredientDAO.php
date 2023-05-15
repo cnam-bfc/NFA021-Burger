@@ -21,6 +21,7 @@ class IngredientDAO extends DAO
         // Requête
         $sqlQuery = "INSERT INTO burger_ingredient (
                                                 nom,
+                                                afficher_vue_eclatee,
                                                 quantite_stock,
                                                 stock_auto,
                                                 stock_auto_quantite_standard,
@@ -32,6 +33,7 @@ class IngredientDAO extends DAO
                                                 id_fournisseur_fk
                                                 ) VALUES (
                                                 :nom,
+                                                :afficher_vue_eclatee,
                                                 :quantite_stock,
                                                 :stock_auto,
                                                 :stock_auto_quantite_standard,
@@ -44,6 +46,7 @@ class IngredientDAO extends DAO
                                                 )";
         $statement = $this->pdo->prepare($sqlQuery);
         $statement->bindValue(':nom', $ingredient->getNom(), PDO::PARAM_STR);
+        $statement->bindValue(':afficher_vue_eclatee', $ingredient->isAfficherVueEclatee(), PDO::PARAM_BOOL);
         $statement->bindValue(':quantite_stock', $ingredient->getQuantiteStock(), PDO::PARAM_INT);
         $statement->bindValue(':stock_auto', $ingredient->isStockAuto(), PDO::PARAM_BOOL);
         $statement->bindValue(':stock_auto_quantite_standard', $ingredient->getQuantiteStandardStockAuto(), PDO::PARAM_INT);
@@ -97,6 +100,7 @@ class IngredientDAO extends DAO
 
         // Requête
         $sqlQuery = "UPDATE burger_ingredient SET nom = :nom,
+                                            afficher_vue_eclatee = :afficher_vue_eclatee,
                                             quantite_stock = :quantite_stock,
                                             stock_auto = :stock_auto,
                                             stock_auto_quantite_standard = :stock_auto_quantite_standard,
@@ -109,6 +113,7 @@ class IngredientDAO extends DAO
                                             WHERE id_ingredient = :id_ingredient";
         $statement = $this->pdo->prepare($sqlQuery);
         $statement->bindValue(':nom', $ingredient->getNom(), PDO::PARAM_STR);
+        $statement->bindValue(':afficher_vue_eclatee', $ingredient->isAfficherVueEclatee(), PDO::PARAM_BOOL);
         $statement->bindValue(':quantite_stock', $ingredient->getQuantiteStock(), PDO::PARAM_INT);
         $statement->bindValue(':stock_auto', $ingredient->isStockAuto(), PDO::PARAM_BOOL);
         $statement->bindValue(':stock_auto_quantite_standard', $ingredient->getQuantiteStandardStockAuto(), PDO::PARAM_INT);
@@ -221,6 +226,7 @@ class IngredientDAO extends DAO
     {
         $ingredient->setId($row['id_ingredient']);
         $ingredient->setNom($row['nom']);
+        $ingredient->setAfficherVueEclatee($row['afficher_vue_eclatee']);
         $ingredient->setQuantiteStock($row['quantite_stock']);
         $ingredient->setStockAuto($row['stock_auto']);
         $ingredient->setQuantiteStandardStockAuto($row['stock_auto_quantite_standard']);

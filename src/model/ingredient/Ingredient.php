@@ -20,6 +20,13 @@ class Ingredient
     private $nom;
 
     /**
+     * Afficher dans la vue éclatée
+     * 
+     * @var bool
+     */
+    private $afficherVueEclatee;
+
+    /**
      * Quantité en stock de l'ingredient
      * 
      * @var int
@@ -100,6 +107,16 @@ class Ingredient
     public function getNom()
     {
         return $this->nom;
+    }
+
+    /**
+     * Méthode permettant de récupérer si l'ingredient doit être affiché dans la vue éclatée
+     * 
+     * @return bool
+     */
+    public function isAfficherVueEclatee()
+    {
+        return $this->afficherVueEclatee;
     }
 
     /**
@@ -212,6 +229,17 @@ class Ingredient
     public function setNom($nom)
     {
         $this->nom = $nom;
+    }
+
+    /**
+     * Méthode permettant de modifier si l'ingredient doit être affiché dans la vue éclatée
+     * 
+     * @param bool $afficherVueEclatee
+     * @return void
+     */
+    public function setAfficherVueEclatee($afficherVueEclatee)
+    {
+        $this->afficherVueEclatee = (bool) $afficherVueEclatee;
     }
 
     /**
