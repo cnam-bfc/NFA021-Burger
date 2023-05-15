@@ -31,7 +31,8 @@ class Router
         'visuModifsBurgers/ingredients' => ["controller" => "ModifsBurgersController", "method" => "getIngredients"],
 
         // Choix entre Livraison et Click&Collect
-        'CollectLivraison' => ["controller" => "CollectLivraisonController", "method" => "renderViewCollectORDelivery"],
+        'collectLivraison' => ["controller" => "CollectLivraisonController", "method" => "renderViewCollectORDelivery"],
+        'collectLivraison/valider' =>["controller" => "CollectLivraisonController", "method" => "validation"],
 
         // PARTIE GÉRANT
         // Statistiques
