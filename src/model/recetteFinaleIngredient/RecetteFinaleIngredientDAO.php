@@ -13,25 +13,28 @@ class RecetteFinaleIngredientDAO extends DAO
      */
     public function create($recetteFinaleIngredient)
     {
-        // Vérification que l'objet possède les id nécessaire à sa création
-        if ($recetteFinaleIngredient->getIdIngredient() === null || $recetteFinaleIngredient->getIdRecetteFinale() === null) {
-            throw new Exception("L'objet à créer doit avoir un id de d'ingredient et un id de recette finale");
+        // Vérification que l'objet n'a pas d'id
+        if ($recetteFinaleIngredient->getId() !== null) {
+            throw new Exception("L'objet à créer ne doit pas avoir d'id");
         }
 
         // Requête
         $sqlQuery = "INSERT INTO burger_recette_finale_ingredient (
-                                                id_ingredient_fk,
+                                                ordre,
+                                                quantite,
                                                 id_recette_finale_fk,
-                                                quantite
+                                                id_ingredient_fk
                                                 ) VALUES (
-                                                :id_ingredient_fk,
+                                                :ordre,
+                                                :quantite,
                                                 :id_recette_finale_fk,
-                                                :quantite
+                                                :id_ingredient_fk
                                                 )";
         $statement = $this->pdo->prepare($sqlQuery);
-        $statement->bindValue(':id_ingredient_fk', $recetteFinaleIngredient->getIdIngredient(), PDO::PARAM_INT);
-        $statement->bindValue(':id_recette_finale_fk', $recetteFinaleIngredient->getIdRecetteFinale(), PDO::PARAM_INT);
+        $statement->bindValue(':ordre', $recetteFinaleIngredient->getOrdre(), PDO::PARAM_INT);
         $statement->bindValue(':quantite', $recetteFinaleIngredient->getQuantite(), PDO::PARAM_INT);
+        $statement->bindValue(':id_recette_finale_fk', $recetteFinaleIngredient->getIdRecetteFinale(), PDO::PARAM_INT);
+        $statement->bindValue(':id_ingredient_fk', $recetteFinaleIngredient->getIdIngredient(), PDO::PARAM_INT);
         $statement->execute();
     }
 
@@ -43,16 +46,15 @@ class RecetteFinaleIngredientDAO extends DAO
      */
     public function delete($recetteFinaleIngredient)
     {
-        // Vérification que l'objet possède les id nécessaire à sa création
-        if ($recetteFinaleIngredient->getIdIngredient() === null || $recetteFinaleIngredient->getIdRecetteFinale() === null) {
-            throw new Exception("L'objet à créer doit avoir un id de d'ingredient et un id de recette finale");
+        // Vérification que l'objet a un id
+        if ($recetteFinaleIngredient->getId() === null) {
+            throw new Exception("L'objet à supprimer doit avoir un id");
         }
 
         // Requête
-        $sqlQuery = "DELETE FROM burger_recette_finale_ingredient WHERE id_ingredient_fk = :id_ingredient_fk AND id_recette_finale_fk = :id_recette_finale_fk";
+        $sqlQuery = "DELETE FROM burger_recette_finale_ingredient WHERE id = :id";
         $statement = $this->pdo->prepare($sqlQuery);
-        $statement->bindValue(':id_ingredient_fk', $recetteFinaleIngredient->getIdIngredient(), PDO::PARAM_INT);
-        $statement->bindValue(':id_recette_finale_fk', $recetteFinaleIngredient->getIdRecetteFinale(), PDO::PARAM_INT);
+        $statement->bindValue(':id', $recetteFinaleIngredient->getId(), PDO::PARAM_INT);
         $statement->execute();
     }
 
@@ -64,18 +66,23 @@ class RecetteFinaleIngredientDAO extends DAO
      */
     public function update($recetteFinaleIngredient)
     {
-        // Vérification que l'objet possède les id nécessaire à sa création
-        if ($recetteFinaleIngredient->getIdIngredient() === null || $recetteFinaleIngredient->getIdRecetteFinale() === null) {
-            throw new Exception("L'objet à créer doit avoir un id de d'ingredient et un id de recette finale");
+        // Vérification que l'objet a un id
+        if ($recetteFinaleIngredient->getId() === null) {
+            throw new Exception("L'objet à mettre à jour doit avoir un id");
         }
 
         // Requête
-        $sqlQuery = "UPDATE burger_recette_finale_ingredient SET quantite = :quantite
-                                            WHERE id_ingredient_fk = :id_ingredient_fk AND id_recette_finale_fk = :id_recette_finale_fk";
+        $sqlQuery = "UPDATE burger_recette_finale_ingredient SET ordre = :ordre,
+                                            quantite = :quantite,
+                                            id_recette_finale_fk = :id_recette_finale_fk,
+                                            id_ingredient_fk = :id_ingredient_fk
+                                            WHERE id = :id";
         $statement = $this->pdo->prepare($sqlQuery);
+        $statement->bindValue(':ordre', $recetteFinaleIngredient->getOrdre(), PDO::PARAM_INT);
         $statement->bindValue(':quantite', $recetteFinaleIngredient->getQuantite(), PDO::PARAM_INT);
-        $statement->bindValue(':id_ingredient_fk', $recetteFinaleIngredient->getIdIngredient(), PDO::PARAM_INT);
         $statement->bindValue(':id_recette_finale_fk', $recetteFinaleIngredient->getIdRecetteFinale(), PDO::PARAM_INT);
+        $statement->bindValue(':id_ingredient_fk', $recetteFinaleIngredient->getIdIngredient(), PDO::PARAM_INT);
+        $statement->bindValue(':id', $recetteFinaleIngredient->getId(), PDO::PARAM_INT);
         $statement->execute();
     }
 
@@ -114,7 +121,7 @@ class RecetteFinaleIngredientDAO extends DAO
      * @param int $idRecette (id de la recette des objets à récupérer)
      * @return IngredientRecetteBasique[] (tableau d'objets)
      */
-    public function selectAllByIdRecette($idRecette)
+    public function selectAllByIdRecetteFinale($idRecette)
     {
         // Requête
         $sqlQuery = "SELECT * FROM burger_recette_finale_ingredient WHERE id_recette_finale_fk = :id_recette_finale_fk";
@@ -143,36 +150,19 @@ class RecetteFinaleIngredientDAO extends DAO
      * Méthode permettant de récupérer un objet par son id
      * 
      * @param int $id (id de l'objet à récupérer)
-     * @throws Exception (impossible de récupérer un objet par son id)
+     * @return RecetteFinaleIngredient (objet trouvé)
      */
     public function selectById($id)
     {
-        throw new Exception("Impossible de récupérer un objet par son id");
-    }
-
-    /**
-     * Méthode permettant de récupérer un objet par son id d'ingredient et son id de recette finale
-     * 
-     * @param int $idIngredient (id de l'ingredient de l'objet à récupérer)
-     * @param int $idRecetteFinale (id de la recette finale de l'objet à récupérer)
-     * @return IngredientRecetteBasique (objet récupéré)
-     */
-    public function selectByIdIngredientAndIdRecetteFinale($idIngredient, $idRecetteFinale)
-    {
         // Requête
-        $sqlQuery = "SELECT * FROM burger_recette_finale_ingredient WHERE id_ingredient_fk = :id_ingredient_fk AND id_recette_finale_fk = :id_recette_finale_fk";
+        $sqlQuery = "SELECT * FROM burger_recette_finale_ingredient WHERE id = :id";
         $statement = $this->pdo->prepare($sqlQuery);
-        $statement->bindValue(':id_ingredient_fk', $idIngredient, PDO::PARAM_INT);
-        $statement->bindValue(':id_recette_finale_fk', $idRecetteFinale, PDO::PARAM_INT);
+        $statement->bindValue(':id', $id, PDO::PARAM_INT);
         $statement->execute();
 
         // Traitement des résultats
         $row = $statement->fetch(PDO::FETCH_ASSOC);
-
-        // Création d'un nouvel objet
         $recetteFinaleIngredient = new RecetteFinaleIngredient();
-
-        // Remplissage de l'objet
         $this->fillObject($recetteFinaleIngredient, $row);
 
         return $recetteFinaleIngredient;
@@ -186,8 +176,10 @@ class RecetteFinaleIngredientDAO extends DAO
      */
     public function fillObject($recetteFinaleIngredient, $row)
     {
-        $recetteFinaleIngredient->setIdIngredient($row['id_ingredient_fk']);
-        $recetteFinaleIngredient->setIdRecetteFinale($row['id_recette_finale_fk']);
+        $recetteFinaleIngredient->setId($row['id']);
+        $recetteFinaleIngredient->setOrdre($row['ordre']);
         $recetteFinaleIngredient->setQuantite($row['quantite']);
+        $recetteFinaleIngredient->setIdRecetteFinale($row['id_recette_finale_fk']);
+        $recetteFinaleIngredient->setIdIngredient($row['id_ingredient_fk']);
     }
 }
