@@ -21,6 +21,10 @@
     max-height: 300px;
 }
 
+#informations_generales .box_contenu i {
+    font-size: small;
+}
+
 #tableau_composition tbody td span:not(:empty) {
     margin-left: 10px;
 }
