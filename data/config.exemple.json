@@ -1,9 +1,0 @@
-{
-    "bdd": {
-        "host": "localhost",
-        "port": 3306,
-        "database": "burger",
-        "user": "burger",
-        "password": "verysecurepassword"
-    }
-}

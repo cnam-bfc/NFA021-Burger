@@ -28,14 +28,14 @@ $(function () {
         let celluleDiv = $("<div>");
         celluleDiv.addClass("wrapper main_axe_center second_axe_center");
         let inputQuantite = $("<input>").attr({
-            name: "quantite_ingredient",
             type: "number",
             min: 0,
             minlenght: 1,
+            max: 999999,
             step: 1,
             value: data.quantite,
             required: true
-        }).addClass("input");
+        }).addClass("input quantite_ingredient");
         celluleDiv.append(inputQuantite);
         // Ajouter l'unité
         celluleDiv.append($("<span>").text(data.unite));
@@ -47,10 +47,9 @@ $(function () {
         celluleDiv = $("<div>");
         celluleDiv.addClass("wrapper main_axe_center second_axe_center");
         let inputOptionnel = $("<input>").attr({
-            name: "optionnel_ingredient",
             type: "checkbox",
             checked: data.optionnel
-        }).addClass("input");
+        }).addClass("input optionnel_ingredient");
         celluleDiv.append(inputOptionnel);
         cellule.append(celluleDiv);
         ligne.append(cellule);
@@ -60,14 +59,13 @@ $(function () {
         celluleDiv = $("<div>");
         celluleDiv.addClass("wrapper main_axe_center second_axe_center");
         let inputPrix = $("<input>").attr({
-            name: "prix_ingredient",
             type: "number",
             min: 0,
             max: 99.99,
             step: 0.01,
             value: data.prix,
             required: true
-        }).addClass("input");
+        }).addClass("input prix_ingredient");
         celluleDiv.append(inputPrix);
         celluleDiv.append($("<span>").text("€"));
         cellule.append(celluleDiv);
@@ -222,38 +220,23 @@ $(function () {
         if (url.pathname.endsWith("/recettes/modifier")) {
             // Récupération de l'id de la recette
             let idRecette = url.searchParams.get("id");
-            formDatas.append("id", idRecette);
-        }
-
-        // Récupération des informations générales de la recette
-        // Nom
-        formDatas.append("nom", formRecette.find("input[name='nom_recette']").val());
-
-        // Description
-        formDatas.append("description", formRecette.find("textarea[name='description_recette']").val());
-
-        // Prix
-        formDatas.append("prix", formRecette.find("input[name='prix_recette']").val());
-
-        // Image de la recette
-        let inputImage = formRecette.find("input[name='image_recette']");
-        if (inputImage[0].files.length > 0) {
-            formDatas.append("image", inputImage[0].files[0]);
+            formDatas.append("id_recette", idRecette);
         }
 
         // Récupération des ingrédients
-        let ingredients = [];
+        let ingredients_recette = [];
         bodyTableauComposition.children().each(function () {
-            let ingredient = {};
-            ingredient.id = $(this).attr("data-id");
-            ingredient.quantite = $(this).find("input[name='quantite_ingredient']").val();
-            ingredient.optionnel = $(this).find("input[name='optionnel_ingredient']").prop("checked");
-            if (ingredient.optionnel) {
-                ingredient.prix = $(this).find("input[name='prix_ingredient']").val();
+            let ingredient_recette = {};
+            // Récupération de l'id de l'ingrédient
+            ingredient_recette.id_ingredient = $(this).attr("data-id");
+            ingredient_recette.quantite_ingredient = $(this).find("input[class~='quantite_ingredient']").val();
+            ingredient_recette.optionnel_ingredient = $(this).find("input[class~='optionnel_ingredient']").prop("checked");
+            if (ingredient_recette.optionnel_ingredient) {
+                ingredient_recette.prix_ingredient = $(this).find("input[class~='prix_ingredient']").val();
             }
-            ingredients.push(ingredient);
+            ingredients_recette.push(ingredient_recette);
         });
-        formDatas.append("ingredients", JSON.stringify(ingredients));
+        formDatas.append("ingredients_recette", JSON.stringify(ingredients_recette));
 
         // Désactivation des champs du formulaire
         let disabledElements = [];
@@ -267,6 +250,17 @@ $(function () {
         // Ajout icone et texte de chargement (fontawesome)
         let old_html = enregistrerRecette.html();
         enregistrerRecette.html('<i class="fas fa-spinner fa-spin"></i> Chargement...');
+
+        // Déplacement de l'image de la recette de l'input vers l'élément img
+        let inputImage = formRecette.find("input[name='image_recette']");
+        let imageRecette = formRecette.find("img[id='image_recette_preview']");
+        if (inputImage[0].files.length > 0) {
+            imageRecette.attr("src", URL.createObjectURL(inputImage[0].files[0]));
+            // Suppression de l'image de la recette de l'input
+            inputImage.val("");
+            // Suppression de l'attribut "required" de l'input (si présent)
+            inputImage.removeAttr("required");
+        }
 
         // Envoi des données au serveur
         $.ajax({
@@ -286,8 +280,8 @@ $(function () {
 
                     // Redirection vers la page de la recette
                     setTimeout(function () {
-                        // Si on modifie la recette et que l'image de la recette n'a pas été modifiée
-                        if (url.pathname.endsWith("/recettes/modifier") && inputImage[0].files.length == 0) {
+                        // Si on modifie la recette
+                        if (url.pathname.endsWith("/recettes/modifier")) {
                             // Réactivation des champs du formulaire
                             disabledElements.forEach(function (element) {
                                 element.prop("disabled", false);
@@ -298,6 +292,9 @@ $(function () {
 
                             // On enlève la couleur du bouton
                             enregistrerRecette.css('background-color', '');
+
+                            // On actualise la composition de la recette
+                            refreshIngredients();
                         }
                         // Sinon si on ajoute une recette, on redirige vers la page de modification de la recette
                         else {
@@ -321,7 +318,12 @@ $(function () {
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 if (jqXHR.status !== 0) {
-                    alert('Erreur ' + jqXHR.status + ' : ' + errorThrown);
+                    let alertMessage = 'Erreur ' + jqXHR.status;
+                    // Si errorThrown contient des informations (est une chaîne de caractères)
+                    if (typeof errorThrown === 'string') {
+                        alertMessage += ' : ' + errorThrown.replace(/<br>/g, "\n");
+                    }
+                    alert(alertMessage);
                 } else {
                     alert('Une erreur inconue est survenue !\nVeuillez vérifier votre connexion internet.');
                 }

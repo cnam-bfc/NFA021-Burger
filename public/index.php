@@ -14,7 +14,7 @@ if (!file_exists(DATA_FOLDER)) {
 }
 chdir(DATA_FOLDER);
 
-// on vérifie si dans data les dossier "utilisateurs" "recettes" et "ingredients" existents sinon on les créer
+// On vérifie si dans data les dossier "utilisateurs" "recettes" et "ingredients" existents sinon on les créer
 if (!file_exists(DATA_FOLDER . "utilisateurs")) {
     mkdir(DATA_FOLDER . "utilisateurs", 0777, true);
 }
@@ -27,7 +27,7 @@ if (!file_exists(DATA_FOLDER . "ingredients")) {
     mkdir(DATA_FOLDER . "ingredients", 0777, true);
 }
 
-// on défini leur chemin
+// On défini leur chemin dans des constantes
 define("DATA_UTILISATEURS", DATA_FOLDER . "utilisateurs/");
 define("DATA_RECETTES", DATA_FOLDER . "recettes/");
 define("DATA_INGREDIENTS", DATA_FOLDER . "ingredients/");
@@ -55,6 +55,27 @@ define("JS", ASSETS . "js/"); // Dossier des scripts JavaScript
 require_once 'AutoLoader.php';
 AutoLoader::start();
 
+// On initialise le gestionnaire d'erreurs, exécution de code personnalisé (mais garde l'affichage de l'erreur par défaut)
+// Erreurs PHP
+set_error_handler(function ($errno, $errstr, $errfile, $errline) {
+    // On formate les retours à la ligne
+    $errstr = str_replace("\n", "<br>", $errstr);
+    ErrorController::error(500, $errstr, false, false);
+
+    // On affiche l'erreur par défaut
+    return false;
+});
+// Exceptions PHP
+set_exception_handler(function ($exception) {
+    // On formate les retours à la ligne
+    $message = str_replace("\n", "<br>", $exception->getMessage());
+    ErrorController::error(500, $message, false, false);
+
+    // On affiche l'erreur par défaut
+    restore_exception_handler();
+    throw $exception;
+});
+
 // On initialise la session
 Session::start();
 
@@ -74,8 +95,103 @@ if (!isset($_GET["r"])) {
     }
 }
 
+// On gère l'affichage des images stockées dans le dossier 'data'
+// Si la route commence par 'assets/img/ingredients/', on affiche l'image correspondante
+if (stripos($route, "assets/img/ingredients/") === 0) {
+    // Vérification faille de sécurité : Traversée de dossiers (Directory traversal attack)
+    $basePath = DATA_INGREDIENTS;
+    $realBasePath = realpath($basePath);
+
+    $userPath = DATA_INGREDIENTS . substr($route, strlen("assets/img/ingredients/"));
+    $realUserPath = realpath($userPath);
+
+    // On vérifie que le chemin réel existe
+    if ($realUserPath !== false) {
+        // Si le chemin réel de l'image ne commence pas par le chemin réel du dossier des images, alors c'est une tentative de traversée de dossiers
+        if (strpos($realUserPath, $realBasePath) !== 0) {
+            ErrorController::error(403, "Accès interdit");
+            return;
+        }
+        // Sinon si le fichier existe, on l'affiche
+        elseif (file_exists($realUserPath)) {
+            $finfo = new finfo(FILEINFO_MIME_TYPE);
+            $mime = $finfo->file($realUserPath);
+            // Vérification du type MIME
+            if (!in_array($mime, ["image/jpeg", "image/png", "image/gif"])) {
+                ErrorController::error(403, "Accès interdit");
+                return;
+            }
+            header("Content-Type: " . $mime);
+            readfile($realUserPath);
+            return;
+        }
+    }
+}
+// Si la route commence par 'assets/img/recettes/', on affiche l'image correspondante
+elseif (stripos($route, "assets/img/recettes/") === 0) {
+    // Vérification faille de sécurité : Traversée de dossiers (Directory traversal attack)
+    $basePath = DATA_RECETTES;
+    $realBasePath = realpath($basePath);
+
+    $userPath = DATA_RECETTES . substr($route, strlen("assets/img/recettes/"));
+    $realUserPath = realpath($userPath);
+
+    // On vérifie que le chemin réel existe
+    if ($realUserPath !== false) {
+        // Si le chemin réel de l'image ne commence pas par le chemin réel du dossier des images, alors c'est une tentative de traversée de dossiers
+        if (strpos($realUserPath, $realBasePath) !== 0) {
+            ErrorController::error(403, "Accès interdit");
+            return;
+        }
+        // Sinon si le fichier existe, on l'affiche
+        elseif (file_exists($realUserPath)) {
+            $finfo = new finfo(FILEINFO_MIME_TYPE);
+            $mime = $finfo->file($realUserPath);
+            // Vérification du type MIME
+            if (!in_array($mime, ["image/jpeg", "image/png", "image/gif"])) {
+                ErrorController::error(403, "Accès interdit");
+                return;
+            }
+            header("Content-Type: " . $mime);
+            readfile($realUserPath);
+            return;
+        }
+    }
+}
+// Si la route commence par 'assets/img/utilisateurs/', on affiche l'image correspondante
+elseif (stripos($route, "assets/img/utilisateurs/") === 0) {
+    // Vérification faille de sécurité : Traversée de dossiers (Directory traversal attack)
+    $basePath = DATA_UTILISATEURS;
+    $realBasePath = realpath($basePath);
+
+    $userPath = DATA_UTILISATEURS . substr($route, strlen("assets/img/utilisateurs/"));
+    $realUserPath = realpath($userPath);
+
+    // On vérifie que le chemin réel existe
+    if ($realUserPath !== false) {
+        // Si le chemin réel de l'image ne commence pas par le chemin réel du dossier des images, alors c'est une tentative de traversée de dossiers
+        if (strpos($realUserPath, $realBasePath) !== 0) {
+            ErrorController::error(403, "Accès interdit");
+            return;
+        }
+        // Sinon si le fichier existe, on l'affiche
+        elseif (file_exists($realUserPath)) {
+            $finfo = new finfo(FILEINFO_MIME_TYPE);
+            $mime = $finfo->file($realUserPath);
+            // Vérification du type MIME
+            if (!in_array($mime, ["image/jpeg", "image/png", "image/gif"])) {
+                ErrorController::error(403, "Accès interdit");
+                return;
+            }
+            header("Content-Type: " . $mime);
+            readfile($realUserPath);
+            return;
+        }
+    }
+}
+
 // Si l'application n'est pas installée, on redirige vers l'installation
-if (!Configuration::isInstalled()) {
+if (!file_exists(DATA_FOLDER . ".installed.lock")) {
     // Si la route ne commence pas par 'install', on redirige vers la page d'installation
     if (stripos($route, "install") !== 0) {
         Router::redirect("install");
@@ -83,15 +199,12 @@ if (!Configuration::isInstalled()) {
     }
 }
 // Si l'application est déjà installé
-elseif (Configuration::isInstalled()) {
+elseif (file_exists(DATA_FOLDER . ".installed.lock")) {
     // Si un utilisateur tente d'accéder à la page d'installation, on le redirige vers la page d'accueil
     if (stripos($route, "install") === 0) {
         Router::redirect("");
         return;
     }
-
-    // Mise à jour de la base de données
-    Database::getInstance()->update();
 }
 
 Router::route($route);

@@ -16,14 +16,14 @@ class RecetteController extends Controller
         $recetteDAO = new RecetteDAO();
         $ingredientDAO = new IngredientDAO();
         $uniteDAO = new UniteDAO();
-        $ingredientRecetteBasiqueDAO = new IngredientRecetteBasiqueDAO();
-        $ingredientRecetteOptionnelDAO = new IngredientRecetteOptionnelDAO();
+        $recetteIngredientBasiqueDAO = new RecetteIngredientBasiqueDAO();
+        $recetteIngredientOptionnelDAO = new RecetteIngredientOptionnelDAO();
 
         $json = array();
         $json['data'] = array();
 
         // Récupération des recettes
-        $recettes = $recetteDAO->selectAll();
+        $recettes = $recetteDAO->selectAllNonArchive();
 
         // Récupération des ingrédients
         $ingredients = $ingredientDAO->selectAll();
@@ -33,25 +33,21 @@ class RecetteController extends Controller
 
         // Formatage des recettes en json
         foreach ($recettes as $recette) {
-            // Si la recette est archivée, on ne l'affiche pas
-            if ($recette->getDateArchiveRecette() !== null) {
-                continue;
-            }
-
             // Récupération des ingrédients basiques de la recette
-            $ingredientRecetteBasiques = $ingredientRecetteBasiqueDAO->selectAllByIdRecette($recette->getIdRecette());
+            $ingredientRecetteBasiques = $recetteIngredientBasiqueDAO->selectAllByIdRecette($recette->getId());
 
             // Récupération des ingrédients optionnels de la recette
-            $ingredientRecetteOptionnels = $ingredientRecetteOptionnelDAO->selectAllByIdRecette($recette->getIdRecette());
+            $ingredientRecetteOptionnels = $recetteIngredientOptionnelDAO->selectAllByIdRecette($recette->getId());
+
+            $jsonRecetteIngredients = array();
 
             // Formatage des ingrédients basiques en json
-            $jsonRecetteIngredientsBasique = array();
             foreach ($ingredientRecetteBasiques as $ingredientRecetteBasique) {
                 /** @var Ingredient $ingredient */
                 $ingredient = null;
                 // Récupération de l'ingrédient
                 foreach ($ingredients as $ingredientTmp) {
-                    if ($ingredientTmp->getIdIngredient() === $ingredientRecetteBasique->getIdIngredient()) {
+                    if ($ingredientTmp->getId() === $ingredientRecetteBasique->getIdIngredient()) {
                         $ingredient = $ingredientTmp;
                         break;
                     }
@@ -66,7 +62,7 @@ class RecetteController extends Controller
                 $unite = null;
                 // Récupération de l'unité
                 foreach ($unites as $uniteTmp) {
-                    if ($uniteTmp->getIdUnite() === $ingredient->getIdUniteFK()) {
+                    if ($uniteTmp->getId() === $ingredient->getIdUnite()) {
                         $unite = $uniteTmp;
                         break;
                     }
@@ -79,9 +75,9 @@ class RecetteController extends Controller
 
                 // Construction du json de l'ingrédient
                 $jsonIngredient = array(
-                    'nom' => $ingredient->getNomIngredient(),
+                    'nom' => $ingredient->getNom(),
                     'quantite' => $ingredientRecetteBasique->getQuantite(),
-                    'unite' => $unite->getDiminutifUnite(),
+                    'unite' => $unite->getDiminutif(),
                     'optionnel' => false
                 );
 
@@ -89,13 +85,12 @@ class RecetteController extends Controller
             }
 
             // Formatage des ingrédients optionnels en json
-            $jsonRecetteIngredientsOptionnel = array();
             foreach ($ingredientRecetteOptionnels as $ingredientRecetteOptionnel) {
                 /** @var Ingredient $ingredient */
                 $ingredient = null;
                 // Récupération de l'ingrédient
                 foreach ($ingredients as $ingredientTmp) {
-                    if ($ingredientTmp->getIdIngredient() === $ingredientRecetteOptionnel->getIdIngredient()) {
+                    if ($ingredientTmp->getId() === $ingredientRecetteOptionnel->getIdIngredient()) {
                         $ingredient = $ingredientTmp;
                         break;
                     }
@@ -110,7 +105,7 @@ class RecetteController extends Controller
                 $unite = null;
                 // Récupération de l'unité
                 foreach ($unites as $uniteTmp) {
-                    if ($uniteTmp->getIdUnite() === $ingredient->getIdUniteFK()) {
+                    if ($uniteTmp->getId() === $ingredient->getIdUnite()) {
                         $unite = $uniteTmp;
                         break;
                     }
@@ -123,9 +118,9 @@ class RecetteController extends Controller
 
                 // Construction du json de l'ingrédient
                 $jsonIngredient = array(
-                    'nom' => $ingredient->getNomIngredient(),
+                    'nom' => $ingredient->getNom(),
                     'quantite' => $ingredientRecetteOptionnel->getQuantite(),
-                    'unite' => $unite->getDiminutifUnite(),
+                    'unite' => $unite->getDiminutif(),
                     'optionnel' => true
                 );
 
@@ -134,11 +129,11 @@ class RecetteController extends Controller
 
             // Formatage de la recette en json
             $jsonRecette = array(
-                'id' => $recette->getIdRecette(),
-                'nom' => $recette->getNomRecette(),
-                'description' => $recette->getDescriptionRecette(),
-                'image' => DATA_RECETTES . $recette->getIdRecette() . '/presentation.img',
-                'prix' => $recette->getPrixRecette(),
+                'id' => $recette->getId(),
+                'nom' => $recette->getNom(),
+                'description' => $recette->getDescription(),
+                'image' => IMG . 'recettes' . DIRECTORY_SEPARATOR . $recette->getId()  . DIRECTORY_SEPARATOR . 'presentation.img',
+                'prix' => $recette->getPrix(),
                 'ingredients' => $jsonRecetteIngredients,
             );
 
@@ -170,13 +165,13 @@ class RecetteController extends Controller
             $json['success'] = false;
         }
         // Si la recette est déjà archivée, on retourne une erreur
-        elseif ($recette->getDateArchiveRecette() !== null) {
+        elseif ($recette->getDateArchive() !== null) {
             $json['success'] = false;
         }
         // Sinon, on archive la recette
         else {
             // Archivage de la recette
-            $recette->setDateArchiveRecette(date('Y-m-d H:i:s'));
+            $recette->setDateArchive(date('Y-m-d H:i:s'));
 
             // Mise à jour de la recette
             $recetteDAO->update($recette);
