@@ -36,13 +36,13 @@
                 ?>
                     <tr id='select'>
                         <td><img src=<?php echo $icone[$i]["img"]; ?> class='img'></td>
-                        <td><?php echo $donnees->getNomIngredient(); ?></td>
+                        <td><?php echo $donnees->getNom(); ?></td>
                         <td><?php foreach ($fournisseur as $data) {
-                                    if ($data->getIdFournisseur() == $donnees->getIdFournisseurFK())
-                                        echo $data->getNomFournisseur(); } ?></td>
-                        <td><?php echo $donnees->getQuantiteStockIngredient(); ?></td>
-                        <td><?php echo $donnees->getQuantiteStandard(); ?></td>
-                        <td class = 'hidding'><?php echo $donnees->getIdIngredient(); ?></td>
+                                    if ($data->getId() == $donnees->getIdFournisseur())
+                                        echo $data->getNom(); } ?></td>
+                        <td><?php echo $donnees->getQuantiteStock(); ?></td>
+                        <td><?php echo $donnees->getQuantiteStandardStockAuto(); ?></td>
+                        <td class = 'hidding'><?php echo $donnees->getId(); ?></td>
                         <td><img src=<?php echo $modifier[0]["img"]; ?> class='img' id='bouton'></td>
                     </tr>
                 <?php

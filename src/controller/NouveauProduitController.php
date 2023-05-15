@@ -65,20 +65,20 @@ class NouveauProduitController extends Controller
                 $unite = $_POST['unite'];
 
             $ingr = new Ingredient();
-            $ingr->setNomIngredient($nom);
-            $ingr->setQuantiteStockIngredient($qteStock);
-            $ingr->setDateInventaireIngredient(date('Y-m-d H:i:s', time()));
-            $ingr->setStockAutoIngredient($wizard);
-            $ingr->setQuantiteMinimum($min);
-            $ingr->setQuantiteStandard($standard);
-            $ingr->setIdFournisseurFK($fournisseur);
-            $ingr->setIdUniteFK($unite);
+            $ingr->setNom($nom);
+            $ingr->setQuantiteStock($qteStock);
+            $ingr->setDateDernierInventaire(date('Y-m-d H:i:s', time()));
+            $ingr->setStockAuto($wizard);
+            $ingr->setQuantiteMinimaleStockAuto($min);
+            $ingr->setQuantiteStandardStockAuto($standard);
+            $ingr->setIdFournisseur($fournisseur);
+            $ingr->setIdUnite($unite);
 
             $dao = new IngredientDAO();
 
             if (isset($id)) {
                 // Si $id existe, alors il s'agit d'une mise à jour d'ingrédient.
-                $ingr->setIdIngredient($id);
+                $ingr->setId($id);
                 $dao->update($ingr);
             } else {
                 // Si $id n'existe pas, il s'agit d'une création d'ingrédient.

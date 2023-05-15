@@ -10,7 +10,7 @@ class ListeBDCController extends Controller
     public function donneesBdc()
     {
 
-        $bdcDao = new BdcDAO();
+        $bdcDao = new CommandeFournisseurDAO();
         $bdc = $bdcDao->selectAll();
 
         $fournisseurDao = new FournisseurDAO();
@@ -20,9 +20,9 @@ class ListeBDCController extends Controller
         foreach ($bdc as $donnees) {
 
             $tableau[] = array(
-                "id" => $donnees->getIdBdc(),
-                "etat" => $donnees->getEtatBdc(),
-                "fournisseur" => ($fournisseurDao->selectById($donnees->getIdFournisseurFK()))->getNomFournisseur()
+                "id" => $donnees->getId(),
+                "etat" => $donnees->getEtat(),
+                "fournisseur" => ($fournisseurDao->selectById($donnees->getIdFournisseur()))->getNom()
             );
         }
         $view = new View(BaseTemplate::JSON);
@@ -33,19 +33,20 @@ class ListeBDCController extends Controller
 
     public function validerBdc()
     {
-        $view = new View(BaseTemplate::EMPLOYE, 'ListeBDCView');
+        $view = new View(BaseTemplate::JSON);
 
         if (!empty($_POST['idBdc'])) {
             $idBdc = $_POST['idBdc'];
 
-            $dao = new BdcDAO();
+            $dao = new CommandeFournisseurDAO();
             $bdc = $dao->selectById($idBdc);
 
-            $bdc->setEtatBdc(1);
+            $bdc->setEtat(1);
 
             unset($_POST['idBdc']);
         }
 
+        $view-> json = array("result"=>"success");
         $view->renderView();
     }
 }

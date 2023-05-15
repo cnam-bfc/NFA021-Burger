@@ -21,6 +21,7 @@ class IngredientDAO extends DAO
         // Requête
         $sqlQuery = "INSERT INTO burger_ingredient (
                                                 nom,
+                                                prixFournisseur,
                                                 quantite_stock,
                                                 stock_auto,
                                                 stock_auto_quantite_standard,
@@ -31,6 +32,7 @@ class IngredientDAO extends DAO
                                                 id_fournisseur_fk
                                                 ) VALUES (
                                                 :nom,
+                                                :prixFournisseur,
                                                 :quantite_stock,
                                                 :stock_auto,
                                                 :stock_auto_quantite_standard,
@@ -42,6 +44,7 @@ class IngredientDAO extends DAO
                                                 )";
         $statement = $this->pdo->prepare($sqlQuery);
         $statement->bindValue(':nom', $ingredient->getNom(), PDO::PARAM_STR);
+        $statement->bindValue(':prixFournisseur', $ingredient->getPrix(), PDO::PARAM_INT);
         $statement->bindValue(':quantite_stock', $ingredient->getQuantiteStock(), PDO::PARAM_INT);
         $statement->bindValue(':stock_auto', $ingredient->isStockAuto(), PDO::PARAM_BOOL);
         $statement->bindValue(':stock_auto_quantite_standard', $ingredient->getQuantiteStandardStockAuto(), PDO::PARAM_INT);
@@ -94,6 +97,7 @@ class IngredientDAO extends DAO
 
         // Requête
         $sqlQuery = "UPDATE burger_ingredient SET nom = :nom,
+                                            prixF
                                             quantite_stock = :quantite_stock,
                                             stock_auto = :stock_auto,
                                             stock_auto_quantite_standard = :stock_auto_quantite_standard,

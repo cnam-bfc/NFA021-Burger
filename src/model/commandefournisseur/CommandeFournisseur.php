@@ -15,6 +15,13 @@ class CommandeFournisseur
     /**
      * Date d'une commande chez un fournisseur
      *
+     * @var int
+     */
+    private $etat;
+
+    /**
+     * Date d'une commande chez un fournisseur
+     *
      * @var string
      */
     private $dateCommande;
@@ -41,6 +48,16 @@ class CommandeFournisseur
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Méthode permettant de récupérer l'identifiant d'une commande chez un fournisseur
+     * 
+     * @return int
+     */
+    public function getEtat()
+    {
+        return $this->etat;
     }
 
     /**
@@ -82,6 +99,17 @@ class CommandeFournisseur
     public function setId($id)
     {
         $this->id = (int) $id;
+    }
+
+    /**
+     * Méthode permettant de modifier l'identifiant d'une commande chez un fournisseur
+     * 
+     * @param int $id
+     * @return void
+     */
+    public function setEtat($etat)
+    {
+        $this->id = (int) $etat;
     }
 
     /**

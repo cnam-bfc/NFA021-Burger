@@ -96,20 +96,25 @@ $(document).ready(function () {
 
             error: function (data) {
                 // message dans la console
-                console.log('Inventaire.js - refreshTableauInventaire - error');
+                console.log('Inventaire.js - BDC - error');
             }
         })
     }
     afficherBDC();
 
     let validerBDC = function ($id) {
+        console.log($id);
         $.ajax({
             url: 'listebdc/valider',
             type: 'POST',
             data: {idBdc : $id},
+            dataType: 'json',
             success: function (data) {
                 // message dans la console
                 console.log(data);
+                if (true) { //Modifier la condition pour être sur le succès
+                    afficherBDC();
+                }
             },
     
             error: function (data) {
@@ -117,6 +122,7 @@ $(document).ready(function () {
                 console.log('Inventaire.js - refreshTableauInventaire - error');
             }
         })
+        
     }
 });
 
