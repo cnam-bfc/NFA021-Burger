@@ -33,7 +33,7 @@ class CommandeFournisseurDAO extends DAO
                                                 :id_fournisseur_fk
                                                 )";
         $statement = $this->pdo->prepare($sqlQuery);
-        $statement->bindValue(':creation_automatique', $commandeFournisseur->getCreationAutomatique(), PDO::PARAM_BOOL);
+        $statement->bindValue(':creation_automatique', $commandeFournisseur->isCreationAutomatique(), PDO::PARAM_BOOL);
         $statement->bindValue(':date_creation', $commandeFournisseur->getDateCreation(), PDO::PARAM_STR);
         $statement->bindValue(':date_commande', $commandeFournisseur->getDateCommande(), PDO::PARAM_STR);
         $statement->bindValue(':date_archive', $commandeFournisseur->getDateArchive(), PDO::PARAM_STR);
@@ -88,7 +88,7 @@ class CommandeFournisseurDAO extends DAO
                                             id_fournisseur_fk = :id_fournisseur_fk
                                             WHERE id_commande_fournisseur = :id_commande_fournisseur";
         $statement = $this->pdo->prepare($sqlQuery);
-        $statement->bindValue(':creation_automatique', $commandeFournisseur->getCreationAutomatique(), PDO::PARAM_BOOL);
+        $statement->bindValue(':creation_automatique', $commandeFournisseur->isCreationAutomatique(), PDO::PARAM_BOOL);
         $statement->bindValue(':date_creation', $commandeFournisseur->getDateCreation(), PDO::PARAM_STR);
         $statement->bindValue(':date_commande', $commandeFournisseur->getDateCommande(), PDO::PARAM_STR);
         $statement->bindValue(':date_archive', $commandeFournisseur->getDateArchive(), PDO::PARAM_STR);
