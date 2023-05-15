@@ -15,8 +15,8 @@ class StockController extends Controller
     public function getBonsCommandesAJAX()
     {
         // On récupère tous les bons de commandes
-        $bdcDAO = new BdcDAO();
-        $bonsCommande = $bdcDAO->selectAllNotArchived();
+        $bdcDAO = new CommandeFournisseurDAO();
+        $bonsCommande = $bdcDAO->selectAllNonArchive();
 
         // on récupère les données pour la vue
         $result = array();
@@ -25,9 +25,9 @@ class StockController extends Controller
         if (!empty($bonsCommande)) {
             foreach ($bonsCommande as $bonCommande) {
                 $result[] = array(
-                    "id_commande" => $bonCommande -> getIdBdc(),
-                    "date_commande" => $bonCommande -> getDateCreationBdc(),
-                    "id_fournisseur_fk" => $bonCommande -> getIdFournisseurFK()
+                    "id_commande" => $bonCommande -> getId(),
+                    "date_commande" => $bonCommande -> getDateCommande(),
+                    "id_fournisseur_fk" => $bonCommande -> getIdFournisseur()
                 );
             }
 
@@ -64,8 +64,8 @@ class StockController extends Controller
         if (!empty($fournisseurs)) {
             foreach ($fournisseurs as $fournisseur) {
                 $result[] = array(
-                    "id_fournisseur" => $fournisseur -> getIdFournisseur(),
-                    "nom_fournisseur" => $fournisseur -> getNomFournisseur()
+                    "id_fournisseur" => $fournisseur -> getId(),
+                    "nom_fournisseur" => $fournisseur -> getNom()
                 );
             }
 
