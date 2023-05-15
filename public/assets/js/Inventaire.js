@@ -126,6 +126,7 @@ $(document).ready(function () {
         // on boucle sur toutes les lignes et on prépare un json
         let json = new Array();
         let error = false;
+        // note modifier le foreach pour mettre une autre boucle afin de l'arrêter en cas d'erreur
         $('#tableau_inventaire>tbody>tr').each(function () {
             let id = $(this).attr('data_id');
             let nom = $(this).find('td:nth-child(2)').text();
@@ -187,5 +188,6 @@ $(document).ready(function () {
             }
         });
     }
+    
     $('#bouton_mise_a_jour').on('click', miseAJourTableau);
 });

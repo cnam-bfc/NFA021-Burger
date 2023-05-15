@@ -236,15 +236,25 @@ class IngredientDAO extends DAO
     {
         // Requête
         $sqlQuery = "SELECT * FROM burger_ingredient 
-        LEFT JOIN burger_unite ON burger_ingredient.id_unite_fk = burger_unite.id_unite
-        LEFT JOIN burger_constituer ON burger_ingredient.id_ingredient = burger_constituer.id_ingredient_fk
-        WHERE burger_constituer.id_commande = :id_commande";
+        LEFT JOIN burger_commande_fournisseur_ingredient ON burger_ingredient.id_ingredient = burger_commande_fournisseur_ingredient.id_ingredient_fk
+        WHERE burger_commande_fournisseur_ingredient.id_commande_fournisseur_fk = :id_commande";
         $statement = $this->pdo->prepare($sqlQuery);
         $statement->bindValue(':id_commande', $idCommande, PDO::PARAM_INT);
         $statement->execute();
 
         // Traitement des résultats
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
-    }
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $ingredients = array();
+        foreach ($result as $row) {
+            // Création d'un nouvel objet
+            $ingredient = new Ingredient();
 
+            // Remplissage de l'objet
+            $this->fillObject($ingredient, $row);
+
+            // Ajout de l'objet dans le tableau
+            $ingredients[] = $ingredient;
+        }
+        return $ingredients;
+    }
 }

@@ -25,9 +25,9 @@ class StockController extends Controller
         if (!empty($bonsCommande)) {
             foreach ($bonsCommande as $bonCommande) {
                 $result[] = array(
-                    "id_commande" => $bonCommande -> getId(),
-                    "date_commande" => $bonCommande -> getDateCommande(),
-                    "id_fournisseur_fk" => $bonCommande -> getIdFournisseur()
+                    "id_commande" => $bonCommande->getId(),
+                    "date_commande" => $bonCommande->getDateCommande(),
+                    "id_fournisseur_fk" => $bonCommande->getIdFournisseur()
                 );
             }
 
@@ -45,7 +45,7 @@ class StockController extends Controller
 
         $view->renderView();
     }
-    
+
     /**
      * Fonction qui permet de récupérer les fournisseurs
      *
@@ -64,8 +64,8 @@ class StockController extends Controller
         if (!empty($fournisseurs)) {
             foreach ($fournisseurs as $fournisseur) {
                 $result[] = array(
-                    "id_fournisseur" => $fournisseur -> getId(),
-                    "nom_fournisseur" => $fournisseur -> getNom()
+                    "id_fournisseur" => $fournisseur->getId(),
+                    "nom_fournisseur" => $fournisseur->getNom()
                 );
             }
 
@@ -82,7 +82,6 @@ class StockController extends Controller
         $view->json = $result;
 
         $view->renderView();
-
     }
 
     /**
@@ -92,7 +91,6 @@ class StockController extends Controller
      */
     public function refreshTableauIngredientsAJAX()
     {
-
         // On vérifie et on récupère les données du formulaire sous forme de json
         $rawData = Form::getParam('data', Form::METHOD_POST, Form::TYPE_MIXED);
         $data = json_decode($rawData, true);
@@ -101,17 +99,33 @@ class StockController extends Controller
         $IngredientDAO = new IngredientDAO();
         $ingredients = $IngredientDAO->selectByIdCommandeForStock($data);
 
+        // On récupère les informations liées au bon de commande et on traite pour faire la liaison avec les ingrédients
+        $commandeFournisseurIngredientDAO = new CommandeFournisseurIngredientDAO();
+        $commandeFournisseurIngredients = $commandeFournisseurIngredientDAO->selectAllByIdCommandeFournisseur($data);
+        $commandeFournisseurIngredientsFormat = array();
+        foreach ($commandeFournisseurIngredients as $commandeFournisseurIngredient) {
+            $commandeFournisseurIngredientsFormat[$commandeFournisseurIngredient->getIdIngredient()] = $commandeFournisseurIngredient->getQuantiteCommandee();
+        }
+
+        // on récupère toutes les unités et on traite pour faire la liaison avec les ingrédients
+        $uniteDAO = new UniteDAO();
+        $unites = $uniteDAO->selectAll();
+        $uniteFormat = array();
+        foreach ($unites as $unite) {
+            $uniteFormat[$unite->getId()] = $unite->getDiminutif();
+        }
+
         // On vérifie qu'on a bien reçu des ingrédients
         if (!empty($ingredients)) {
             // on récupère les données pour la vue
             $result = array();
             foreach ($ingredients as $ingredient) {
                 $result[] = array(
-                    "id" => $ingredient["id_ingredient"],
-                    "photo" => IMG . $ingredient["photo_ingredient"],
-                    "nom" => $ingredient["nom_ingredient"],
-                    "stock" => $ingredient["quantite_commande"],
-                    "unite" => $ingredient["diminutif_unite"]
+                    "id" => $ingredient->getId(),
+                    "photo" => IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'presentation.img',
+                    "nom" => $ingredient->getNom(),
+                    "quantite_attendu" => $commandeFournisseurIngredientsFormat[$ingredient->getId()],
+                    "unite" => $uniteFormat[$ingredient->getIdUnite()]
                 );
             }
 
@@ -121,6 +135,50 @@ class StockController extends Controller
                 return $a['nom'] <=> $b['nom'];
             });
         }
+
+        // envoi des données à la vue
+        $view = new View(BaseTemplate::JSON);
+
+        $view->json = $result;
+
+        $view->renderView();
+    }
+
+    public function validationBonCommandeAJAX()
+    {
+        // On vérifie et on récupère les données du formulaire sous forme de json
+        $rawData = Form::getParam('data', Form::METHOD_POST, Form::TYPE_MIXED);
+        $data = json_decode($rawData, true);
+
+        // on déclare les DAO
+        $ingredientDAO = new IngredientDAO();
+        $commandeFournisseurDAO = new CommandeFournisseurDAO();
+        $commandeFournisseurIngredientDAO = new CommandeFournisseurIngredientDAO();
+
+        // on procède à une transaction pour être sur que tous les ingrédients sont bien mis à jour
+        Database::getInstance()->getPDO()->beginTransaction();
+
+        // Mettre à jour les stocks
+        foreach ($data["ingredients"] as $ingredient) {
+            // On met la quantité reçu dans le bon de commande
+            $commandeFournisseurIngrdedient = $commandeFournisseurIngredientDAO->selectByIdIngredientAndIdCommandeFournisseur($data["id_bdc"], $ingredient["id"]);
+            $commandeFournisseurIngrdedient -> setQuantiteRecue($ingredient["quantite_recu"]);
+            $commandeFournisseurIngredientDAO->update($commandeFournisseurIngrdedient);
+
+            // on met à jour les stocks des ingrédients
+            $ingredientAMettreAJour = $ingredientDAO->selectById($ingredient["id"]);
+            $ingredientAMettreAJour->setQuantiteStock($ingredientAMettreAJour->getQuantiteStock() + $ingredient["quantite_recu"]);
+            $ingredientDAO->update($ingredientAMettreAJour);
+        }
+
+        // valider le bdc (date archive + États)
+        $commandeFournisseur = $commandeFournisseurDAO->selectById($data["id_bdc"]);
+        // TODO : une fois que les États seront la il faudra le modifier
+        $commandeFournisseur->setDateArchive(date("Y-m-d H:i:s"));
+        $commandeFournisseurDAO->update($commandeFournisseur);
+
+        // on valide la transaction
+        $result = Database::getInstance()->getPDO()->commit();
 
         // envoi des données à la vue
         $view = new View(BaseTemplate::JSON);
