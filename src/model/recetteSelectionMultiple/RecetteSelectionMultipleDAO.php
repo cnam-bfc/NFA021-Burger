@@ -20,17 +20,17 @@ class RecetteSelectionMultipleDAO extends DAO
 
         // Requête
         $sqlQuery = "INSERT INTO burger_recette_selection_multiple (
-                                                quantite,
                                                 ordre,
+                                                quantite,
                                                 id_recette_fk
                                                 ) VALUES (
-                                                :quantite,
                                                 :ordre,
+                                                :quantite,
                                                 :id_recette_fk
                                                 )";
         $statement = $this->pdo->prepare($sqlQuery);
-        $statement->bindValue(':quantite', $recetteSelectionMultiple->getQuantite(), PDO::PARAM_INT);
         $statement->bindValue(':ordre', $recetteSelectionMultiple->getOrdre(), PDO::PARAM_INT);
+        $statement->bindValue(':quantite', $recetteSelectionMultiple->getQuantite(), PDO::PARAM_INT);
         $statement->bindValue(':id_recette_fk', $recetteSelectionMultiple->getIdRecette(), PDO::PARAM_INT);
         $statement->execute();
 
@@ -75,13 +75,13 @@ class RecetteSelectionMultipleDAO extends DAO
         }
 
         // Requête
-        $sqlQuery = "UPDATE burger_recette_selection_multiple SET quantite = :quantite,
-                                            ordre = :ordre,
+        $sqlQuery = "UPDATE burger_recette_selection_multiple SET ordre = :ordre,
+                                            quantite = :quantite,
                                             id_recette_fk = :id_recette_fk
                                             WHERE id_recette_selection_multiple = :id_recette_selection_multiple";
         $statement = $this->pdo->prepare($sqlQuery);
-        $statement->bindValue(':quantite', $recetteSelectionMultiple->getQuantite(), PDO::PARAM_INT);
         $statement->bindValue(':ordre', $recetteSelectionMultiple->getOrdre(), PDO::PARAM_INT);
+        $statement->bindValue(':quantite', $recetteSelectionMultiple->getQuantite(), PDO::PARAM_INT);
         $statement->bindValue(':id_recette_fk', $recetteSelectionMultiple->getIdRecette(), PDO::PARAM_INT);
         $statement->bindValue(':id_recette_selection_multiple', $recetteSelectionMultiple->getId(), PDO::PARAM_INT);
         $statement->execute();
@@ -156,8 +156,8 @@ class RecetteSelectionMultipleDAO extends DAO
     public function fillObject($recetteSelectionMultiple, $row)
     {
         $recetteSelectionMultiple->setId($row['id_recette_selection_multiple']);
-        $recetteSelectionMultiple->setQuantite($row['quantite']);
         $recetteSelectionMultiple->setOrdre($row['ordre']);
+        $recetteSelectionMultiple->setQuantite($row['quantite']);
         $recetteSelectionMultiple->setIdRecette($row['id_recette_fk']);
     }
 }

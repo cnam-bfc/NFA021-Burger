@@ -13,18 +13,18 @@ class RecetteSelectionMultiple
     private $id;
 
     /**
-     * Quantité d'une sélection multiple d'une recette
-     *
-     * @var int
-     */
-    private $quantite;
-
-    /**
      * Ordre d'une sélection multiple d'une recette
      * 
      * @var int
      */
     private $ordre;
+
+    /**
+     * Quantité d'une sélection multiple d'une recette
+     *
+     * @var int
+     */
+    private $quantite;
 
     /**
      * Identifiant de la recette d'une sélection multiple d'une recette
@@ -44,16 +44,6 @@ class RecetteSelectionMultiple
     }
 
     /**
-     * Méthode permettant de récupérer la quantité d'une sélection multiple d'une recette
-     * 
-     * @return int
-     */
-    public function getQuantite()
-    {
-        return $this->quantite;
-    }
-
-    /**
      * Méthode permettant de récupérer l'ordre d'une sélection multiple d'une recette
      * 
      * @return int
@@ -61,6 +51,16 @@ class RecetteSelectionMultiple
     public function getOrdre()
     {
         return $this->ordre;
+    }
+
+    /**
+     * Méthode permettant de récupérer la quantité d'une sélection multiple d'une recette
+     * 
+     * @return int
+     */
+    public function getQuantite()
+    {
+        return $this->quantite;
     }
 
     /**
@@ -85,17 +85,6 @@ class RecetteSelectionMultiple
     }
 
     /**
-     * Méthode permettant de modifier la quantité d'une sélection multiple d'une recette
-     * 
-     * @param int $quantite
-     * @return void
-     */
-    public function setQuantite($quantite)
-    {
-        $this->quantite = (int) $quantite;
-    }
-
-    /**
      * Méthode permettant de modifier l'ordre d'une sélection multiple d'une recette
      * 
      * @param int $ordre
@@ -104,6 +93,17 @@ class RecetteSelectionMultiple
     public function setOrdre($ordre)
     {
         $this->ordre = (int) $ordre;
+    }
+
+    /**
+     * Méthode permettant de modifier la quantité d'une sélection multiple d'une recette
+     * 
+     * @param int $quantite
+     * @return void
+     */
+    public function setQuantite($quantite)
+    {
+        $this->quantite = (int) $quantite;
     }
 
     /**

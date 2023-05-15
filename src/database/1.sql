@@ -50,8 +50,8 @@ CREATE TABLE burger_commande_fournisseur(
 
 CREATE TABLE burger_recette_selection_multiple(
    id_recette_selection_multiple INT AUTO_INCREMENT,
-   quantite INT NOT NULL,
    ordre TINYINT NOT NULL,
+   quantite INT NOT NULL,
    id_recette_fk INT NOT NULL,
    PRIMARY KEY(id_recette_selection_multiple),
    FOREIGN KEY(id_recette_fk) REFERENCES burger_recette(id_recette)
