@@ -41,7 +41,9 @@ CREATE TABLE burger_fournisseur(
 
 CREATE TABLE burger_commande_fournisseur(
    id_commande_fournisseur INT AUTO_INCREMENT,
-   date_commande DATETIME NOT NULL,
+   creation_automatique BOOLEAN NOT NULL,
+   date_creation DATETIME NOT NULL,
+   date_commande DATETIME,
    date_archive DATETIME,
    id_fournisseur_fk INT NOT NULL,
    PRIMARY KEY(id_commande_fournisseur),
