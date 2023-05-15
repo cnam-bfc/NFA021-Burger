@@ -17,7 +17,7 @@ class ModifsBurgersController extends Controller
         $idRecette = $_POST['id'];
 
         /*Jusque là c'est good*/
-        $IngredientRecetteBasiqueDAO = new IngredientRecetteBasiqueDAO();
+        $IngredientRecetteBasiqueDAO = new RecetteIngredientBasiqueDAO();
         $IngredientsBasiques = $IngredientRecetteBasiqueDAO->selectAllByIdRecette($idRecette);
         /* dans ce tableau  : $IngredientsRecette,
         j'ai idRecette, idIngredient & quantite 
@@ -28,12 +28,22 @@ class ModifsBurgersController extends Controller
 
         foreach ($IngredientsBasiques as $IngredientBasique) {
             $idIngredient = $IngredientBasique->getIdIngredient();
+            $ordreIngredient = $IngredientBasique->getOrdre();
             $Ingredient = $ingredientDAO->selectById((int) $idIngredient);
-            $nom = $Ingredient->getNomIngredient();
+            $nom = $Ingredient->getNom();
             $quantite = $IngredientBasique->getQuantite();
-            $imgEclatee = $Ingredient->getPhotoEclateeIngredient();
-            $tabResult[] = array('nom' => $nom, "quantite" => $quantite, "imgEclatee" => $imgEclatee);
+            $imgEclatee = IMG . 'ingredients/' . $idIngredient . '/presentation.img';
+            $tabResult[] = array('nom' => $nom, "quantite" => $quantite, "imgEclatee" => $imgEclatee, 'ordre' => $ordreIngredient);
         }
+
+        // Fonction de comparaison personnalisée
+        usort($tabResult, function($a, $b) {
+            if ($a['ordre'] == $b['ordre']) {
+                return 0;
+            }
+            return ($a['ordre'] < $b['ordre']) ? -1 : 1;
+        });
+        
 
 
 

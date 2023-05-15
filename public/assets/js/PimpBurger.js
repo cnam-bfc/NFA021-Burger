@@ -66,7 +66,7 @@ function afficherCompoBurger(ingredient) {
     divPhoto.className = "centre";
 
     const ingrPicture = document.createElement("img");
-    ingrPicture.src = "/NFA021-Burger/public/assets/img/" + ingredient["imgEclatee"];
+    ingrPicture.src = ingredient["imgEclatee"];
     divPhoto.appendChild(ingrPicture);
 
     /* fin de déclaration  des variables*/
@@ -106,7 +106,7 @@ function afficherCompoBurger(ingredient) {
         // Ajouter la photo de l'ingrédient
         lastLine.appendChild(divPhoto);
         const ingrPicture = document.createElement("img");
-        ingrPicture.src = "/NFA021-Burger/public/assets/img/" + ingredient["imgEclatee"];
+        ingrPicture.src = ingredient["imgEclatee"];
 
         // ingrPicture.src = "<?php echo IMG; ?>....";
 
@@ -138,7 +138,7 @@ function afficherTabModifBurger(ingredient, response) {
 
     const tdImage = document.createElement("td");
     const ingrPicture = document.createElement("img");
-    ingrPicture.src = "/NFA021-Burger/public/assets/img/" + ingredient["imgEclatee"];
+    ingrPicture.src = ingredient["imgEclatee"];
     tdImage.appendChild(ingrPicture);
 
 
