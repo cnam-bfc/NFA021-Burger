@@ -16,7 +16,16 @@ class InventaireController extends Controller
     {
         // on récupère tous les ingrédients
         $ingredientDAO = new IngredientDAO();
-        $ingredients = $ingredientDAO->selectAllForInventaire();
+        $ingredients = $ingredientDAO->selectAll();
+
+        // on récupère toutes les unités
+        $uniteDAO = new UniteDAO();
+        $unites = $uniteDAO->selectAll();
+        $uniteFormat = array();
+        foreach ($unites as $unite) {
+            $uniteFormat[$unite->getId()] = $unite->getDiminutif();
+        }
+        
 
         // On vérifie qu'on a bien reçu des ingrédients
         if (!empty($ingredients)) {
@@ -24,11 +33,11 @@ class InventaireController extends Controller
             $result = array();
             foreach ($ingredients as $ingredient) {
                 $result[] = array(
-                    "id" => $ingredient["id_ingredient"],
-                    "photo" => IMG . $ingredient["photo_ingredient"],
-                    "nom" => $ingredient["nom_ingredient"],
-                    "stock" => $ingredient["quantite_stock_ingredient"],
-                    "unite" => $ingredient["diminutif_unite"]
+                    "id" => $ingredient->getId(),
+                    "photo" => IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'presentation.img',
+                    "nom" => $ingredient->getNom(),
+                    "stock" => $ingredient->getQuantiteStock(),
+                    "unite" => $uniteFormat[$ingredient->getIdUnite()]
                 );
             }
 
@@ -58,7 +67,7 @@ class InventaireController extends Controller
         $result = array();
         foreach ($data as $ingredient) {
             $ingredientAUpdate = $ingredientDAO -> selectById($ingredient['id']);
-            $ingredientAUpdate->setQuantiteStockIngredient($ingredient['stock']);
+            $ingredientAUpdate->setQuantiteStock($ingredient['stock']);
             $ingredientDAO->update($ingredientAUpdate);
         }
 
