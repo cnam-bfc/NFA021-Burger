@@ -20,15 +20,21 @@ class CommandeFournisseurDAO extends DAO
 
         // Requête
         $sqlQuery = "INSERT INTO burger_commande_fournisseur (
+                                                creation_automatique,
+                                                date_creation,
                                                 date_commande,
                                                 date_archive,
                                                 id_fournisseur_fk
                                                 ) VALUES (
+                                                :creation_automatique,
+                                                :date_creation,
                                                 :date_commande,
                                                 :date_archive,
                                                 :id_fournisseur_fk
                                                 )";
         $statement = $this->pdo->prepare($sqlQuery);
+        $statement->bindValue(':creation_automatique', $commandeFournisseur->isCreationAutomatique(), PDO::PARAM_BOOL);
+        $statement->bindValue(':date_creation', $commandeFournisseur->getDateCreation(), PDO::PARAM_STR);
         $statement->bindValue(':date_commande', $commandeFournisseur->getDateCommande(), PDO::PARAM_STR);
         $statement->bindValue(':date_archive', $commandeFournisseur->getDateArchive(), PDO::PARAM_STR);
         $statement->bindValue(':id_fournisseur_fk', $commandeFournisseur->getIdFournisseur(), PDO::PARAM_INT);
@@ -75,11 +81,15 @@ class CommandeFournisseurDAO extends DAO
         }
 
         // Requête
-        $sqlQuery = "UPDATE burger_commande_fournisseur SET date_commande = :date_commande,
+        $sqlQuery = "UPDATE burger_commande_fournisseur SET creation_automatique = :creation_automatique,
+                                            date_creation = :date_creation,
+                                            date_commande = :date_commande,
                                             date_archive = :date_archive,
                                             id_fournisseur_fk = :id_fournisseur_fk
                                             WHERE id_commande_fournisseur = :id_commande_fournisseur";
         $statement = $this->pdo->prepare($sqlQuery);
+        $statement->bindValue(':creation_automatique', $commandeFournisseur->isCreationAutomatique(), PDO::PARAM_BOOL);
+        $statement->bindValue(':date_creation', $commandeFournisseur->getDateCreation(), PDO::PARAM_STR);
         $statement->bindValue(':date_commande', $commandeFournisseur->getDateCommande(), PDO::PARAM_STR);
         $statement->bindValue(':date_archive', $commandeFournisseur->getDateArchive(), PDO::PARAM_STR);
         $statement->bindValue(':id_fournisseur_fk', $commandeFournisseur->getIdFournisseur(), PDO::PARAM_INT);
@@ -185,6 +195,8 @@ class CommandeFournisseurDAO extends DAO
     public function fillObject($commandeFournisseur, $row)
     {
         $commandeFournisseur->setId($row['id_commande_fournisseur']);
+        $commandeFournisseur->setCreationAutomatique($row['creation_automatique']);
+        $commandeFournisseur->setDateCreation($row['date_creation']);
         $commandeFournisseur->setDateCommande($row['date_commande']);
         $commandeFournisseur->setDateArchive($row['date_archive']);
         $commandeFournisseur->setIdFournisseur($row['id_fournisseur_fk']);
