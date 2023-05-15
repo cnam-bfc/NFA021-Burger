@@ -48,6 +48,13 @@ class Ingredient
     private $quantiteMinimaleStockAuto;
 
     /**
+     * Prix de l'ingredient auprès du fournisseur
+     * 
+     * @var float
+     */
+    private $prixFournisseur;
+
+    /**
      * Date du dernier inventaire de l'ingredient
      * 
      * @var string
@@ -133,6 +140,16 @@ class Ingredient
     public function getQuantiteMinimaleStockAuto()
     {
         return $this->quantiteMinimaleStockAuto;
+    }
+
+    /**
+     * Méthode permettant de récupérer le prix de l'ingredient auprès du fournisseur
+     * 
+     * @return float
+     */
+    public function getPrixFournisseur()
+    {
+        return $this->prixFournisseur;
     }
 
     /**
@@ -239,6 +256,17 @@ class Ingredient
     public function setQuantiteMinimaleStockAuto($quantiteMinimaleStockAuto)
     {
         $this->quantiteMinimaleStockAuto = (int) $quantiteMinimaleStockAuto;
+    }
+
+    /**
+     * Méthode permettant de modifier le prix de l'ingredient auprès du fournisseur
+     * 
+     * @param float $prixFournisseur
+     * @return void
+     */
+    public function setPrixFournisseur($prixFournisseur)
+    {
+        $this->prixFournisseur = (float) $prixFournisseur;
     }
 
     /**

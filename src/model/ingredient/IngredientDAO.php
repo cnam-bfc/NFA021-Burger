@@ -25,6 +25,7 @@ class IngredientDAO extends DAO
                                                 stock_auto,
                                                 stock_auto_quantite_standard,
                                                 stock_auto_quantite_minimum,
+                                                prix_fournisseur,
                                                 date_inventaire,
                                                 date_archive,
                                                 id_unite_fk,
@@ -35,6 +36,7 @@ class IngredientDAO extends DAO
                                                 :stock_auto,
                                                 :stock_auto_quantite_standard,
                                                 :stock_auto_quantite_minimum,
+                                                :prix_fournisseur,
                                                 :date_inventaire,
                                                 :date_archive,
                                                 :id_unite_fk,
@@ -46,6 +48,7 @@ class IngredientDAO extends DAO
         $statement->bindValue(':stock_auto', $ingredient->isStockAuto(), PDO::PARAM_BOOL);
         $statement->bindValue(':stock_auto_quantite_standard', $ingredient->getQuantiteStandardStockAuto(), PDO::PARAM_INT);
         $statement->bindValue(':stock_auto_quantite_minimum', $ingredient->getQuantiteMinimaleStockAuto(), PDO::PARAM_INT);
+        $statement->bindValue(':prix_fournisseur', $ingredient->getPrixFournisseur(), PDO::PARAM_STR);
         $statement->bindValue(':date_inventaire', $ingredient->getDateDernierInventaire(), PDO::PARAM_STR);
         $statement->bindValue(':date_archive', $ingredient->getDateArchive(), PDO::PARAM_STR);
         $statement->bindValue(':id_unite_fk', $ingredient->getIdUnite(), PDO::PARAM_INT);
@@ -98,6 +101,7 @@ class IngredientDAO extends DAO
                                             stock_auto = :stock_auto,
                                             stock_auto_quantite_standard = :stock_auto_quantite_standard,
                                             stock_auto_quantite_minimum = :stock_auto_quantite_minimum,
+                                            prix_fournisseur = :prix_fournisseur,
                                             date_inventaire = :date_inventaire,
                                             date_archive = :date_archive,
                                             id_unite_fk = :id_unite_fk,
@@ -109,6 +113,7 @@ class IngredientDAO extends DAO
         $statement->bindValue(':stock_auto', $ingredient->isStockAuto(), PDO::PARAM_BOOL);
         $statement->bindValue(':stock_auto_quantite_standard', $ingredient->getQuantiteStandardStockAuto(), PDO::PARAM_INT);
         $statement->bindValue(':stock_auto_quantite_minimum', $ingredient->getQuantiteMinimaleStockAuto(), PDO::PARAM_INT);
+        $statement->bindValue(':prix_fournisseur', $ingredient->getPrixFournisseur(), PDO::PARAM_STR);
         $statement->bindValue(':date_inventaire', $ingredient->getDateDernierInventaire(), PDO::PARAM_STR);
         $statement->bindValue(':date_archive', $ingredient->getDateArchive(), PDO::PARAM_STR);
         $statement->bindValue(':id_unite_fk', $ingredient->getIdUnite(), PDO::PARAM_INT);
@@ -220,6 +225,7 @@ class IngredientDAO extends DAO
         $ingredient->setStockAuto($row['stock_auto']);
         $ingredient->setQuantiteStandardStockAuto($row['stock_auto_quantite_standard']);
         $ingredient->setQuantiteMinimaleStockAuto($row['stock_auto_quantite_minimum']);
+        $ingredient->setPrixFournisseur($row['prix_fournisseur']);
         $ingredient->setDateDernierInventaire($row['date_inventaire']);
         $ingredient->setDateArchive($row['date_archive']);
         $ingredient->setIdUnite($row['id_unite_fk']);
@@ -246,5 +252,4 @@ class IngredientDAO extends DAO
         // Traitement des résultats
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
-
 }

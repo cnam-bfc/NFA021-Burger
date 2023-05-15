@@ -1,5 +1,5 @@
 -- Mise à jour de la base de données
--- Date: 2023-05-01
+-- Date: 2023-05-15
 -- Version avant mise à jour: 0
 -- Version après mise à jour: 1
 -- Description: Création de la base de données
@@ -71,6 +71,7 @@ CREATE TABLE burger_ingredient(
    stock_auto BOOLEAN NOT NULL,
    stock_auto_quantite_standard INT,
    stock_auto_quantite_minimum INT,
+   prix_fournisseur DECIMAL(19,4),
    date_inventaire DATETIME NOT NULL,
    date_archive DATETIME,
    id_unite_fk INT NOT NULL,
