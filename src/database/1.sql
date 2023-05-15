@@ -169,13 +169,14 @@ CREATE TABLE burger_recette_finale(
 ) ENGINE=InnoDB;
 
 CREATE TABLE burger_recette_ingredient_basique(
-   id_recette_fk INT,
-   id_ingredient_fk INT,
-   quantite INT NOT NULL,
+   id_recette_ingredient_basique INT AUTO_INCREMENT,
    ordre TINYINT NOT NULL,
-   PRIMARY KEY(id_recette_fk, id_ingredient_fk),
-   FOREIGN KEY(id_recette_fk) REFERENCES burger_recette(id_recette),
-   FOREIGN KEY(id_ingredient_fk) REFERENCES burger_ingredient(id_ingredient)
+   quantite INT NOT NULL,
+   id_ingredient_fk INT NOT NULL,
+   id_recette_fk INT NOT NULL,
+   PRIMARY KEY(id_recette_ingredient_basique),
+   FOREIGN KEY(id_ingredient_fk) REFERENCES burger_ingredient(id_ingredient),
+   FOREIGN KEY(id_recette_fk) REFERENCES burger_recette(id_recette)
 ) ENGINE=InnoDB;
 
 CREATE TABLE burger_recette_ingredient_optionnel(

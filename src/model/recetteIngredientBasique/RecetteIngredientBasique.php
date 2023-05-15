@@ -6,6 +6,13 @@
 class RecetteIngredientBasique
 {
     /**
+     * Identifiant
+     *
+     * @var int
+     */
+    private $id;
+
+    /**
      * Identifiant de la recette
      * 
      * @var int
@@ -20,6 +27,13 @@ class RecetteIngredientBasique
     private $idIngredient;
 
     /**
+     * Ordre de l'ingrédient dans la recette
+     * 
+     * @var int
+     */
+    private $ordre;
+
+    /**
      * Quantité de l'ingrédient
      * 
      * @var int
@@ -27,11 +41,14 @@ class RecetteIngredientBasique
     private $quantite;
 
     /**
-     * Ordre de l'ingrédient dans la recette
+     * Méthode permettant de récupérer l'identifiant
      * 
-     * @var int
+     * @return int
      */
-    private $ordre;
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Méthode permettant de récupérer l'identifiant de la recette
@@ -54,6 +71,16 @@ class RecetteIngredientBasique
     }
 
     /**
+     * Méthode permettant de récupérer l'ordre de l'ingrédient dans la recette
+     * 
+     * @return int
+     */
+    public function getOrdre()
+    {
+        return $this->ordre;
+    }
+
+    /**
      * Méthode permettant de récupérer la quantité de l'ingrédient
      * 
      * @return int
@@ -64,13 +91,14 @@ class RecetteIngredientBasique
     }
 
     /**
-     * Méthode permettant de récupérer l'ordre de l'ingrédient dans la recette
+     * Méthode permettant de modifier l'identifiant
      * 
-     * @return int
+     * @param int $id
+     * @return void
      */
-    public function getOrdre()
+    public function setId($id)
     {
-        return $this->ordre;
+        $this->id = (int) $id;
     }
 
     /**
@@ -96,17 +124,6 @@ class RecetteIngredientBasique
     }
 
     /**
-     * Méthode permettant de modifier la quantité de l'ingrédient
-     * 
-     * @param int $quantite
-     * @return void
-     */
-    public function setQuantite($quantite)
-    {
-        $this->quantite = (int) $quantite;
-    }
-
-    /**
      * Méthode permettant de modifier l'ordre de l'ingrédient dans la recette
      * 
      * @param int $ordre
@@ -115,5 +132,16 @@ class RecetteIngredientBasique
     public function setOrdre($ordre)
     {
         $this->ordre = (int) $ordre;
+    }
+
+    /**
+     * Méthode permettant de modifier la quantité de l'ingrédient
+     * 
+     * @param int $quantite
+     * @return void
+     */
+    public function setQuantite($quantite)
+    {
+        $this->quantite = (int) $quantite;
     }
 }
