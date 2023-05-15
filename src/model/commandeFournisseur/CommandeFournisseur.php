@@ -62,7 +62,7 @@ class CommandeFournisseur
      * 
      * @return bool
      */
-    public function getCreationAutomatique()
+    public function isCreationAutomatique()
     {
         return $this->creationAutomatique;
     }
