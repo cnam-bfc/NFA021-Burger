@@ -226,5 +226,24 @@ class IngredientDAO extends DAO
         $ingredient->setIdFournisseur($row['id_fournisseur_fk']);
     }
 
+    /**
+     * Méthode permettant de récupérer tous les IngredientCommandeFournisseur d'une commande en fonction de l'id de la commande
+     * 
+     * @param int $idCommande (id de la commande)
+     * @return array (tableau d'objets)
+     */
+    public function selectByIdCommandeForStock($idCommande)
+    {
+        // Requête
+        $sqlQuery = "SELECT * FROM burger_ingredient 
+        LEFT JOIN burger_unite ON burger_ingredient.id_unite_fk = burger_unite.id_unite
+        LEFT JOIN burger_constituer ON burger_ingredient.id_ingredient = burger_constituer.id_ingredient_fk
+        WHERE burger_constituer.id_commande = :id_commande";
+        $statement = $this->pdo->prepare($sqlQuery);
+        $statement->bindValue(':id_commande', $idCommande, PDO::PARAM_INT);
+        $statement->execute();
 
+        // Traitement des résultats
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

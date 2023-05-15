@@ -117,7 +117,7 @@ if (stripos($route, "assets/img/ingredients/") === 0) {
             $finfo = new finfo(FILEINFO_MIME_TYPE);
             $mime = $finfo->file($realUserPath);
             // Vérification du type MIME
-            if (!in_array($mime, ["image/jpeg", "image/png", "image/gif"])) {
+            if (!in_array($mime, ["image/jpeg", "image/png", "image/gif", "image/webp"])) {
                 ErrorController::error(403, "Accès interdit");
                 return;
             }
