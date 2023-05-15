@@ -7,7 +7,7 @@ class Database
      * 
      * @var int
      */
-    const LAST_VERSION = 6;
+    const LAST_VERSION = 1;
 
     private static $instance = null;
 
@@ -20,7 +20,10 @@ class Database
     {
         try {
             self::$instance = new Database();
+            // Connexion à la base de données
             self::$instance->connect();
+            // Mise à jour de la base de données
+            self::$instance->update();
             return true;
         } catch (PDOException $e) {
             return false;
