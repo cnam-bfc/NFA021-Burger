@@ -37,7 +37,7 @@ class RecetteEditController extends Controller
         $view->recetteNom = $recette->getNom();
         $view->recetteDescription = $recette->getDescription();
         $view->recettePrix = $recette->getPrix();
-        $view->recetteImage = IMG . 'recettes' . DIRECTORY_SEPARATOR . $recette->getId()  . DIRECTORY_SEPARATOR . 'presentation.img';
+        $view->recetteImage = IMG . 'recettes' . DIRECTORY_SEPARATOR . $recette->getId() . DIRECTORY_SEPARATOR . 'presentation.img';
 
         $view->renderView();
     }
@@ -103,7 +103,7 @@ class RecetteEditController extends Controller
             // Construction du json de l'ingrédient
             $jsonIngredient = array(
                 'id' => $ingredient->getId(),
-                'image' => IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId()  . DIRECTORY_SEPARATOR . 'presentation.img',
+                'image' => IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'presentation.img',
                 'nom' => $ingredient->getNom(),
                 'quantite' => $recetteIngredientBasique->getQuantite(),
                 'unite' => $unite->getDiminutif(),
@@ -141,7 +141,7 @@ class RecetteEditController extends Controller
             // Construction du json de l'ingrédient
             $jsonIngredient = array(
                 'id' => $ingredient->getId(),
-                'image' => IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId()  . DIRECTORY_SEPARATOR . 'presentation.img',
+                'image' => IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'presentation.img',
                 'nom' => $ingredient->getNom(),
                 'quantite' => $recetteIngredientOptionnel->getQuantite(),
                 'unite' => $unite->getDiminutif(),

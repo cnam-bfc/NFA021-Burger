@@ -132,7 +132,7 @@ class RecetteController extends Controller
                 'id' => $recette->getId(),
                 'nom' => $recette->getNom(),
                 'description' => $recette->getDescription(),
-                'image' => IMG . 'recettes' . DIRECTORY_SEPARATOR . $recette->getId()  . DIRECTORY_SEPARATOR . 'presentation.img',
+                'image' => IMG . 'recettes' . DIRECTORY_SEPARATOR . $recette->getId() . DIRECTORY_SEPARATOR . 'presentation.img',
                 'prix' => $recette->getPrix(),
                 'ingredients' => $jsonRecetteIngredients,
             );

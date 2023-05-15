@@ -28,7 +28,7 @@
                     </div>
                     <!-- Champ pour le prix de la recette -->
                     <div class="form-input">
-                        <label for="prix_recette">Prix</label>
+                        <label for="prix_recette">Prix <i>(en €)</i></label>
                         <input type="number" min="0" step="0.01" id="prix_recette" name="prix_recette" placeholder="Prix de la recette" <?php if (isset($recettePrix)) echo 'value=' . json_encode($recettePrix); ?> required>
                     </div>
                     <!-- Champ pour l'image de la recette -->
