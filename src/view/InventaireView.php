@@ -1,3 +1,6 @@
+<!-- on inclut la feuille de style -->
+<link rel="stylesheet" href="<?php echo CSS; ?>Inventaire.css">
+
 <!-- On ajoute la feuille de js associé à la page -->
 <script src="<?php echo JS ?>Inventaire.js"></script>
 

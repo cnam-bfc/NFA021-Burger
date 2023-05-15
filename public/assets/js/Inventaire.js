@@ -59,6 +59,7 @@ $(document).ready(function () {
                     // Première cellule
                     let td1 = $("<td></td>");
                     let img = $("<img>").attr("src", element.photo);
+                    img.addClass("img_ingredient");
                     td1.append(img);
 
                     // Deuxième cellule
@@ -123,14 +124,14 @@ $(document).ready(function () {
     // requête AJAX pour actualiser la base de donnée avec les nouvelles valeurs
     let miseAJourTableau = function () {
         // on boucle sur toutes les lignes et on prépare un json
-        let json = [];
+        let json = new Array();
         let error = false;
         $('#tableau_inventaire>tbody>tr').each(function () {
             let id = $(this).attr('data_id');
             let nom = $(this).find('td:nth-child(2)').text();
             let stock = $(this).find('td:nth-child(4)>div>input').val();
             // on vérifie que le stock n'est pas vide , null ou négatif
-            if (stock === null || stock == "" && stock >= 0) {
+            if (stock === null || stock === "" || stock < 0) {
                 alert("Le stock de l'ingrédient " + nom + " est vide.\nVeuillez entrer une valeur ou supprimer l'ingrédient de l'inventaire");
                 // on focus l'élément pour que l'utilisateur puisse le modifier
                 $(this).find('td:nth-child(4)>div>input').focus();
@@ -144,14 +145,15 @@ $(document).ready(function () {
                 error = true;
                 return;
             }
+            // CORRIGER
             json.push({
                 id: id,
                 stock: stock
             });
-
-            // on transforme en json
-            json = JSON.stringify(json);
         });
+
+        // on transforme en json
+        json = JSON.stringify(json);
 
         // si on a détecté une erreur, on arrête la fonction - vérification en + que le html
         if (error == true) {
