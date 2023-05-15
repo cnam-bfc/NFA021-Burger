@@ -20,6 +20,13 @@ class Ingredient
     private $nom;
 
     /**
+     * Prix fournisseur de l'ingredient
+     * 
+     * @var float
+     */
+    private $prixFournisseur;
+
+    /**
      * Quantité en stock de l'ingredient
      * 
      * @var int
@@ -93,6 +100,16 @@ class Ingredient
     public function getNom()
     {
         return $this->nom;
+    }
+
+      /**
+     * Méthode permettant de récupérer le prix fournisseur de l'ingredient
+     * 
+     * @return flaot
+     */
+    public function getPrix()
+    {
+        return $this->prixFournisseur;
     }
 
     /**
@@ -195,6 +212,17 @@ class Ingredient
     public function setNom($nom)
     {
         $this->nom = $nom;
+    }
+
+    /**
+     * Méthode permettant de modifier le prix de l'ingredient
+     * 
+     * @param float $prix
+     * @return void
+     */
+    public function setPrix($prix)
+    {
+        $this->prixFournisseur = $prix;
     }
 
     /**

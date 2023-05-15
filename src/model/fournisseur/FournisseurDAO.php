@@ -181,6 +181,5 @@ class FournisseurDAO extends DAO
     {
         $fournisseur->setId($row['id_fournisseur']);
         $fournisseur->setNom($row['nom']);
-        $fournisseur->setDateArchive($row['date_archive']);
     }
 }
