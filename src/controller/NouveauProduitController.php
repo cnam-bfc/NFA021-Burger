@@ -25,7 +25,6 @@ class NouveauProduitController extends Controller
             unset($_GET['idIngredient']);
 
             $view->ingredient = $ingr;
-            
         }
 
 
@@ -37,9 +36,13 @@ class NouveauProduitController extends Controller
 
             if (!empty($_POST['nom']))
                 $nom = $_POST["nom"];
+                
 
             if (!empty($_POST['fournisseur']))
                 $fournisseur = $_POST['fournisseur'];
+
+            if (!empty($_POST['prix']))
+                $prix = $_POST['prix'];
 
             if (isset($_POST['stockAuto']))
                 $wizard = 2;
@@ -66,6 +69,7 @@ class NouveauProduitController extends Controller
 
             $ingr = new Ingredient();
             $ingr->setNom($nom);
+            $ingr->setPrix($prix);
             $ingr->setQuantiteStock($qteStock);
             $ingr->setDateDernierInventaire(date('Y-m-d H:i:s', time()));
             $ingr->setStockAuto($wizard);
@@ -75,6 +79,19 @@ class NouveauProduitController extends Controller
             $ingr->setIdUnite($unite);
 
             $dao = new IngredientDAO();
+
+            // Récupération de l'image de la recette
+            $ingredientImage = Form::getFile('icone', false);
+
+            if ($ingredientImage !== null) {
+                // Déplacement de l'image dans le dossier des images de recettes
+                $ingredientFolder = DATA_INGREDIENTS . $id . DIRECTORY_SEPARATOR;
+                if (!file_exists($ingredientFolder)) {
+                    mkdir($ingredientFolder, 0777, true);
+                }
+                $ingredientImagePresentation = $ingredientFolder . 'presentation.img';
+                move_uploaded_file($ingredientImage['tmp_name'], $ingredientImagePresentation);
+            }
 
             if (isset($id)) {
                 // Si $id existe, alors il s'agit d'une mise à jour d'ingrédient.

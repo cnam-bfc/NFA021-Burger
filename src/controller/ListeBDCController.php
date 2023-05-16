@@ -5,6 +5,7 @@ class ListeBDCController extends Controller
     {
         $view = new View(BaseTemplate::EMPLOYE, 'ListeBDCView');
         $view->renderView();
+        //$this->donneesBdc();
     }
 
     public function donneesBdc()
@@ -35,18 +36,23 @@ class ListeBDCController extends Controller
     {
         $view = new View(BaseTemplate::JSON);
 
-        if (!empty($_POST['idBdc'])) {
-            $idBdc = $_POST['idBdc'];
+        if (isset($_POST['data'])) {
+
+            $jsonString = $_POST['data'];
+            $jsonData = json_decode($jsonString);
+    
+            $idBdc = $jsonData[0];
 
             $dao = new CommandeFournisseurDAO();
             $bdc = $dao->selectById($idBdc);
 
             $bdc->setEtat(1);
+            $dao->update($bdc);
 
-            unset($_POST['idBdc']);
+            unset($_POST['data']);
         }
 
-        $view-> json = array("result"=>"success");
+        $view->json = array("result" => "success");
         $view->renderView();
     }
 }

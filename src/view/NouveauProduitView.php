@@ -10,7 +10,7 @@
     <div class="conteneur">
         <div class="box_produit">
             <h2 class='titre_fenetre courbe'>Informations du produit</h2><br>
-            <form action="nouveauproduit" method="post">
+            <form action="nouveauproduit" method="post" enctype="multipart/form-data">
 
                 <?php if (!isset($ingredient)) { ?>
 
@@ -21,7 +21,7 @@
                     <input type="file" id="eclate" name="eclate"><br><br>
 
                     <label for="nom">Ingrédient :</label><br>
-                    <input type="text" id="nom" name="nom" class="courbe remplir"><br><br>
+                    <input type="text" id="nom" name="nom" class="courbe remplir" required><br><br>
 
                     <label for="fournisseur" class='bold'>Fournisseur :</label><br>
                     <select class='courbe' name='fournisseur'><br><br>
@@ -37,10 +37,10 @@
                     </select><br><br>
 
                     <label for="prix">Prix :</label><br>
-                    <input id="prix" name="prix" class="courbe remplir"><br><br>
+                    <input id="prix" name="prix" class="courbe remplir" required><br><br>
 
                     <label for="qteStock">Stock :</label><br>
-                    <input id="qteStock" name="qteStock" class="courbe remplir"><br><br>
+                    <input id="qteStock" name="qteStock" class="courbe remplir" required><br><br>
 
                     <label for="stockAuto">Stock Wizard :</label><br>
                     <input type="checkbox" id="stockAuto" name="stockAuto" class='courbe'><br><br>
@@ -77,7 +77,7 @@
                     <input type="file" id="eclate" name="eclate"><br><br>
 
                     <label for="nom"> Ingrédient :</label><br>
-                    <input type="text" id="nom" name="nom" class="courbe remplir" value=<?php echo $ingredient->getNom(); ?>><br><br>
+                    <input type="text" id="nom" name="nom" class="courbe remplir" value=<?php echo $ingredient->getNom(); ?> required><br><br>
 
                     <label for="fournisseur" class='bold'>Fournisseur :</label><br>
                     <select class='courbe' name='fournisseur'><br><br>
@@ -93,10 +93,10 @@
                     </select><br><br>
 
                     <label for="prix">Prix :</label><br>
-                    <input id="prix" name="prix" class="courbe remplir"><br><br>
+                    <input id="prix" name="prix" class="courbe remplir" value=<?php echo $ingredient->getPrix(); ?> required><br><br>
 
                     <label for="qteStock">Stock :</label><br>
-                    <input id="qteStock" name="qteStock" class="courbe remplir" value=<?php echo $ingredient->getQuantiteStock(); ?>><br><br>
+                    <input id="qteStock" name="qteStock" class="courbe remplir" value=<?php echo $ingredient->getQuantiteStock(); ?> required><br><br>
 
                     <label for="stockAuto">Stock Wizard :</label><br>
                     <input type="checkbox" id="stockAuto" name="stockAuto" class='courbe' <?php if ($ingredient->isStockAuto() != 0) { ?> checked <?php } ?>><br><br>
