@@ -96,7 +96,7 @@
         </div>
 
 
-        <button> Ajouter au panier</button>
+        <button id="Ajouter"> Ajouter au panier</button>
     </div>
 
 </div>

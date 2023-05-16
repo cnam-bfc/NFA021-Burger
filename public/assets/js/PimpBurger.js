@@ -10,18 +10,20 @@ function showData(BurgerID) {
             //vide la div #affichage
             var affichageDiv = document.getElementById("affichage");
             affichageDiv.innerHTML = "";
-
-
+            console.log("succes");
 
             /* Boucle qui parcourt le tableau résultat (tableau qui contient les ingrédients à afficher) */
+            console.log(response);
+            for (var i = 0; i < response[0][0].length; i++) {
+                for (var q = 0; q < response[0][0][i]['quantite']; q++) {
 
-            for (var i = 0; i < response.length; i++) {
-                afficherCompoBurger(response[i]);
-                afficherTabModifBurger(response[i], response);
+                    afficherCompoBurger(response[0][0][i]);
+
+
+                }
+                afficherTabModifBurger(response[0][0][i], response[0][0]);
             }
-            /*var id = $(response).find("table #votre_id").attr("id");
-            console.log(id);
-            */
+
             // jusque ici OK
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -130,7 +132,7 @@ function afficherTabModifBurger(ingredient, response) {
 
     //Déclaration des constantes pour cette function
 
-    const quantite = ingredient["quantite"];
+
 
 
     const tr = document.createElement("tr");
@@ -155,7 +157,7 @@ function afficherTabModifBurger(ingredient, response) {
     inputQuantIngr.setAttribute('id', 'inputQuantite' + ingredient["nom"]);
     inputQuantIngr.setAttribute('type', 'text');
     inputQuantIngr.setAttribute('readonly', 'readonly');
-    inputQuantIngr.setAttribute('value', ingredient['quantite']);
+    inputQuantIngr.setAttribute('value', quantiteIngrdient);
     divQuantIngr.appendChild(inputQuantIngr);// ici on insert les éléments les uns dans les autres, en partant de la fin
     tdQuantiteIngr.appendChild(divQuantIngr);
 
@@ -165,7 +167,10 @@ function afficherTabModifBurger(ingredient, response) {
     const boutonRetirer = document.createElement("button");
     boutonRetirer.className = 'boutonRetirer';
     boutonRetirer.textContent = "RETIRER";
+
+    //EVENT LISTENER SUR LE BOUTON REMETTRE/RETIRER
     boutonRetirer.addEventListener("click", function () {
+
 
         if (this.textContent == "RETIRER") {
             document.getElementById('inputQuantite' + ingredient['nom']).setAttribute("value", "0");
@@ -192,33 +197,59 @@ function afficherTabModifBurger(ingredient, response) {
                 const elemEnfantsDeLigne = ligneEnfants[index].childNodes;
                 console.log("tabModifs 1 ligne");
                 console.log(elemEnfantsDeLigne);
-                console.log(elemEnfantsDeLigne[1].textContent); //nom Ingredient
+
+                //nom Ingredient
+                console.log(elemEnfantsDeLigne[1].textContent);
                 console.log(elemEnfantsDeLigne);
+
+                // Bouton
                 const elemBouton = elemEnfantsDeLigne[3];
-                console.log('elemBouton');
-                console.log(elemBouton);
+
 
                 //si la ligne de l'ingrédient a un bouton Retirer
 
-                if (elemBouton.childNodes[0].textContent == "RETIRER")
-                    tabNomIngrARemettre.push(elemEnfantsDeLigne[1].textContent);
+                if (elemBouton.childNodes[0].textContent == "RETIRER") {
+
+
+                    for (var q = 0; q < elemEnfantsDeLigne[2].firstChild.firstChild.value; q++) {
+                        tabNomIngrARemettre.push(elemEnfantsDeLigne[1].textContent);
+                        console.log("quantite truc : ")
+                        console.log(elemEnfantsDeLigne[1].firstChild.textContent)
+
+                        console.log(elemEnfantsDeLigne[2].firstChild.firstChild.value);
+
+                    }
+                }
 
 
             }
-            console.log(tabNomIngrARemettre);
+            console.log("tabIngrédients à remettre")
+            console.log(tabNomIngrARemettre); //// CE TABLEAU EST OK
 
             //parcourir le tableau et mettre tous les ingrédients qui ne sont pas à quantite 0;
             /////////////////////////////////////////////////////////////////////////////////////////////
             //vide la div#affichage
+
             var affichageDiv = document.getElementById("affichage");
             affichageDiv.innerHTML = "";
             console.log("div affichage");
             console.log(affichageDiv.childNodes);
 
+
             //rempli la div affichage avec les nouvelles données
             for (var i = 0; i < response.length; i++) {
+
                 if (tabNomIngrARemettre.includes(response[i]["nom"])) {
-                    afficherCompoBurger(response[i]);
+
+
+                    for (var q = 0; q < response[i]['quantite']; q++) {
+
+
+                        afficherCompoBurger(response[i]);
+
+                    }
+
+
                 }
 
 
@@ -271,7 +302,9 @@ function afficherTabModifBurger(ingredient, response) {
             //rempli la div affichage avec les nouvelles données
             for (var i = 0; i < response.length; i++) {
                 if (tabNomIngrARemettre.includes(response[i]["nom"])) {
-                    afficherCompoBurger(response[i]);
+                    for (var q = 0; q < response[i]['quantite']; q++) {
+                        afficherCompoBurger(response[i]);
+                    }
                 }
 
 
@@ -302,6 +335,86 @@ function afficherTabModifBurger(ingredient, response) {
 
 
 }
+
+
+$(document).ready(function () {
+    const boutonAjoutPanier = document.getElementById("Ajouter");
+    boutonAjoutPanier.addEventListener("click", function () {
+
+        ///////////////////
+
+        const tabBodyModif = document.getElementById("tbodyMod");
+        const nbElem = tabBodyModif.childNodes.length;
+
+
+        //à partir de ça, il faut que j'arrive à metre chaque ingrédient qui un bouton RETIRER, dans le tableau qui suit
+        const tabIngrFinaux = [];
+
+
+        //boucle qui parcours donc les lignes de mon tableau tabModifs
+        for (let index = 1; index < nbElem; index++) {
+            // Récupération du nom de l'ingrédient dans une ligne du tableau modif 
+            const ligneEnfants = tabBodyModif.childNodes;
+            const elemEnfantsDeLigne = ligneEnfants[index].childNodes;
+            console.log("tabModifs 1 ligne");
+            console.log(elemEnfantsDeLigne);
+
+            //nom Ingredient
+            console.log(elemEnfantsDeLigne[1].textContent);
+            console.log(elemEnfantsDeLigne);
+
+            // Bouton
+            const elemBouton = elemEnfantsDeLigne[3];
+
+
+            //si la ligne de l'ingrédient a un bouton Retirer
+
+            if (elemBouton.childNodes[0].textContent == "RETIRER") {
+
+
+                for (var q = 0; q < elemEnfantsDeLigne[2].firstChild.firstChild.value; q++) {
+                    if (!tabIngrFinaux.includes(elemEnfantsDeLigne[1].textContent))
+                        tabIngrFinaux.push(elemEnfantsDeLigne[1].textContent, elemEnfantsDeLigne[2].firstChild.firstChild.value);
+
+
+                }
+            }
+
+
+        }
+        console.log("tab Ingrédients Finaux")
+        console.log(tabIngrFinaux); //// CE TABLEAU EST OK
+        //////////////////////
+        const tabBurger = { "prix Recette": "", "nom Recette": "", "id Recette": "", "ingrédients Finaux": tabIngrFinaux };
+        //prix
+        //nom Burger
+        //id Burger
+        //liste ingrédients finaux
+        //
+
+        /*
+                $.ajax({
+                    url: "VisuModifsBurgers/ajouterAuPanier",
+                    method: "POST",
+                    dataType: "JSON",
+                    data: { infos: tabBurger },
+                    success: function (response) {
+                        console.log("responseGOOD");
+                        console.log(response);
+        
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("Erreur lors de la requête AJAX : " + error);
+                        console.log(xhr.responseText);
+                        console.log('Objet JSON envoyé : ' + JSON.stringify(tabInfosRecup));
+                    }
+                });
+        
+        */
+    });
+})
+
+
 
 
 

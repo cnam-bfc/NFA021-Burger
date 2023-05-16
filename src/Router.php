@@ -34,6 +34,10 @@ class Router
         // Visu burger
         'visuModifsBurgers' => ["controller" => "ModifsBurgersController", "method" => "renderViewPimpBurgers"],
         'visuModifsBurgers/ingredients' => ["controller" => "ModifsBurgersController", "method" => "getIngredients"],
+        'visuModifsBurgers/ajouterAuPanier' => ["controller"=>"ModifsBurgersController", "method"=>"ajoutPanier"],
+
+        // Panier
+        'panier' =>["controller"=>"PanierController", "method" => "renderViewPanier"],
 
         // Choix entre Livraison et Click&Collect
         'collectLivraison' => ["controller" => "CollectLivraisonController", "method" => "renderViewCollectORDelivery"],
