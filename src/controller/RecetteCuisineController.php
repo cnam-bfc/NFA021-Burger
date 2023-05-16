@@ -29,7 +29,7 @@ class RecetteCuisineController extends Controller
         $json = array();
         $json['data'] = array();
         // Récupération de la recette
-        $recette = $recetteFinaleDAO->selectById($recetteId);
+
 
 
         $view = new View(BaseTemplate::JSON);

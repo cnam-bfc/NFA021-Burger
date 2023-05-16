@@ -6,8 +6,8 @@
 
 <body>
 
-<!-- Content -->
-<?php echo $templateContent ?>
+    <!-- Content -->
+    <?php echo $templateContent ?>
 
 </body>
 
