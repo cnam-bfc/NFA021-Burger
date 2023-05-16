@@ -24,6 +24,8 @@ class ModifsBurgersController extends Controller
         Je dois utiliser idIngredient pour avoire le nom de l'ingrédient & l'img éclatée
         PS ce que je dois avoire au final c'est la nom, la quantité, l'image éclaté pour chaque ingrédient*/
         $ingredientDAO = new IngredientDAO();
+        $RecetteDAO = new RecetteDAO();
+
         $tabResult = array();
 
         foreach ($IngredientsBasiques as $IngredientBasique) {
@@ -33,43 +35,64 @@ class ModifsBurgersController extends Controller
             $nom = $Ingredient->getNom();
             $quantite = $IngredientBasique->getQuantite();
             $imgEclatee = IMG . 'ingredients/' . $idIngredient . '/presentation.img';
+            $Recette = $RecetteDAO->selectById((int)$idRecette);
+            $prix = $Recette->getPrix();
             $tabResult[] = array('nom' => $nom, "quantite" => $quantite, "imgEclatee" => $imgEclatee, 'ordre' => $ordreIngredient);
         }
 
+
         // Fonction de comparaison personnalisée
-        usort($tabResult, function($a, $b) {
+        usort($tabResult, function ($a, $b) {
             if ($a['ordre'] == $b['ordre']) {
                 return 0;
             }
             return ($a['ordre'] < $b['ordre']) ? -1 : 1;
         });
-        
 
-
-
-
-
-
-
-
-        /*$jsonIngredient = array(
-            'nom' => $ingredient->getNomIngredient(),
-            'quantite' => $ingredientRecetteBasique->getQuantite(),
-            'unite' => $unite->getDiminutifUnite(),
-            'optionnel' => false
-        );*/
-
-
-
-
-
+        $tabRecette[] = array($tabResult, $prix);
 
 
         $view = new View(BaseTemplate::JSON, null);
 
-        $view->json = $tabResult;
+        $view->json = $tabRecette;
 
 
+        $view->renderView();
+    }
+
+    public function ajoutPanier()
+    {
+
+        //créer la varible de session Panier si elle n'existe pas déjà
+
+        if (!isset($_SESSION['panier'])) {
+
+            $_SESSION['panier'] = array();
+        }
+
+
+
+        $infosJSON = $_POST['burgerAjoute'];
+
+        $json_str = json_encode($infosJSON);
+        $infos = json_decode($json_str, false);
+
+        if ($infos === null) {
+            error_log('Erreur de décodage JSON : ' . json_last_error_msg(), 0);
+            $error = array('error' => 'Erreur de décodage JSON.');
+            http_response_code(400); // code de réponse HTTP pour une erreur de requête
+            echo json_encode($error);
+            return;
+        }
+
+
+
+        $_SESSION['panier'] . array_push($infos);
+        var_dump($_SESSION['panier']);
+
+
+        $view = new View(BaseTemplate::JSON, null);
+        $view->json = $infos;
         $view->renderView();
     }
 }
