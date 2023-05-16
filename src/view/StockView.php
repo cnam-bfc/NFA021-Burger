@@ -1,3 +1,6 @@
+<!-- on inclut la feuille de style -->
+<link rel="stylesheet" href="<?php echo CSS; ?>Stock.css">
+
 <!-- on inclut la feuille js -->
 <script src="<?php echo JS; ?>Stock.js"></script>
 
@@ -46,6 +49,6 @@
     </section> <!-- Fin tableau -->
 
     <div class="center_items_horizontal">
-        <button class="bouton bouton_primaire margin_bottom_top_large">Valider</button>
+        <button class="bouton bouton_primaire margin_bottom_top_large" id="bouton_mise_a_jour">Valider</button>
     </div>
 </div>

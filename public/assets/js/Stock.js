@@ -31,6 +31,22 @@ $(document).ready(function () {
         }
     }
 
+    // fonction pour la suppression d'un ingrédient dans le tableau (voir si on peut optimiser)
+    let suppressionIngredient = function () {
+        let tbody = $('#tableau_inventaire>tbody');
+
+        // on récupère la ligne concernée
+        let ligne = $(this).parent().parent().parent();
+        // on la supprime
+        ligne.remove();
+
+        // savoir si tbody est vide
+        if (tbody.children().length == 0) {
+            // on ajoute une ligne dans le tableau avec un message d'erreur
+            ligneDeTexteTBody("Vous n'avez plus d'ingrédient à mettre à jour");
+        }
+    };
+
     let ligneDeTexteTBody = function (texte) {
         let tbody = $('#tableau_inventaire > tbody');
 
@@ -51,6 +67,8 @@ $(document).ready(function () {
         // message dans la console
         console.log('Stock.js - mise à jour tableau');
 
+        console.log(idCommande);
+
         // on vide le tbody 
         $('#tableau_inventaire > tbody').empty();
 
@@ -61,7 +79,7 @@ $(document).ready(function () {
                 type: 'POST',
                 dataType: 'json',
                 data: {
-                    id_commande: idCommande
+                    data: idCommande
                 },
                 success: function (data) {
                     // message dans la console
@@ -81,6 +99,7 @@ $(document).ready(function () {
                         // Première cellule
                         let td1 = $("<td></td>");
                         let img = $("<img>").attr("src", element.photo);
+                        img.addClass("img_ingredient");
                         td1.append(img);
 
                         // Deuxième cellule
@@ -95,7 +114,7 @@ $(document).ready(function () {
                             "max": 99,
                             "step": 1,
                             "disabled": true,
-                            "value": element.stock
+                            "value": element.quantite_attendu
                         });
                         div1.append(input1);
                         let unite = $("<p></p>").text(element.unite);
@@ -148,7 +167,6 @@ $(document).ready(function () {
 
             // On remplie avec une ligne qui dit pas d'ingrédients
             ligneDeTexteTBody("Pas d'ingrédients à afficher");
-
         }
     }
 
@@ -240,7 +258,6 @@ $(document).ready(function () {
     });
 
     // on met notre valeur par défaut dans le select bdc
-    $('#select_bon_commande').val(0);
     mettreAJourFournisseur(0);
     refreshTableau(0)
 
@@ -258,4 +275,88 @@ $(document).ready(function () {
         refreshTableau(id_bdc);
     });
 
-});
+    let validationFormulaire = function () {
+        // message dans la console
+        console.log('Stock.js - validation formulaire');
+
+        // on boucle sur toutes les lignes et on prépare un json
+        let json = {} ;
+        json["id_bdc"] = $('#select_bon_commande').find(':selected').attr('id_bdc');
+        json["ingredients"] = [];
+
+        let error = false;
+        // note modifier le foreach pour mettre une autre boucle afin de l'arrêter en cas d'erreur
+        $('#tableau_inventaire>tbody>tr').each(function () {
+            let id = $(this).attr('data_id');
+            let nom = $(this).find('td:nth-child(2)').text();
+            let quantiteRecu = $(this).find('td:nth-child(4)>div>input').val();
+            // on vérifie que le quantite n'est pas vide , null ou négatif
+            if (quantiteRecu === null || quantiteRecu === "" || quantiteRecu < 0) {
+                alert("La quantité reçue de l'ingrédient " + nom + " est vide.\nVeuillez entrer une valeur ou supprimer l'ingrédient de l'inventaire");
+                // on focus l'élément pour que l'utilisateur puisse le modifier
+                $(this).find('td:nth-child(4)>div>input').focus();
+                error = true;
+                return;
+            }
+            if (quantiteRecu < 0) {
+                alert("Le quantité reçue de l'ingrédient " + nom + " est négatif.\nVeuillez entrer une valeur positive ou supprimer l'ingrédient de l'inventaire");
+                // on focus l'élément pour que l'utilisateur puisse le modifier
+                $(this).find('td:nth-child(4)>div>input').focus();
+                error = true;
+                return;
+            }
+            json["ingredients"].push({
+                id: id,
+                quantite_recu: quantiteRecu
+            });
+        });
+
+        // on transforme en json
+        json = JSON.stringify(json);
+
+        // si on a détecté une erreur, on arrête la fonction - vérification en + que le html
+        if (error == true) {
+            return;
+        }
+
+        // on envoie le json à la méthode ajax
+        $.ajax({
+            url: 'stock/validationBonCommandeAJAX',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                data: json
+            },
+            success: function (data) {
+                // message dans la console
+                console.log('Stock.js - mise à jour stock - success');
+                console.log(data);
+
+                // on vérifie si data (json) contient le boolean true ou false
+                if (!data) {
+                    alert("La prise en comtpe du bon de commande a rencontré un problème");
+                    return; 
+                }
+                // On notifie la réussite de la mise à jour
+                alert("La prise en comtpe du bon de commande est un succès");
+
+                // On retire le bon de commande du select et on met à jour le tableau
+                $('#select_bon_commande>option:selected').remove();
+                // on met le select sur l'option dont la vue id_bdc = 0
+                $("#select_bon_commande option[id_bdc='0']").attr('selected',true);
+                mettreAJourFournisseur(0);
+                refreshTableau();
+            },
+            error: function (data) {
+                // message dans la console
+                console.log('Stock.js - mise à jour stock - error');
+
+                // On notifie l'échec de la mise à jour
+                alert("La mise à jour de l'inventaire a échoué");
+            }
+        });
+
+    }
+
+    $('#bouton_mise_a_jour').on('click', validationFormulaire);
+}); 

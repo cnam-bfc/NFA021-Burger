@@ -23,6 +23,7 @@ class Router
         // Accueil client
         'accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilClient"],
         'accueil/refreshTopRecettes' => ["controller" => "AccueilController", "method" => "refreshTopRecetteAJAX"],
+        'accueil/refreshTextAccueil' => ["controller" => "AccueilController", "method" => "refreshTextAccueil"],
 
         // Carte des recettes
         'carte' => ["controller" => "CarteMenuController", "method" => "renderView"],
@@ -52,6 +53,7 @@ class Router
         'gerant/stock/getBonsCommandesAJAX' => ["controller" => "StockController", "method" => "getBonsCommandesAJAX"],
         'gerant/stock/getFournisseursAJAX' => ["controller" => "StockController", "method" => "getFournisseursAJAX"],
         'gerant/stock/refreshTableauIngredientsAJAX' => ["controller" => "StockController", "method" => "refreshTableauIngredientsAJAX"],
+        'gerant/stock/validationBonCommandeAJAX' => ["controller" => "StockController", "method" => "validationBonCommandeAJAX"],
 
         // Recettes
         'gerant/recettes' => ["controller" => "RecetteController", "method" => "renderViewRecettes"],

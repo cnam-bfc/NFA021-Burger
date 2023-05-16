@@ -1,3 +1,8 @@
+#menu_gauche
+{
+    background-color: #f1f0f0;
+}
+
 .box_graphe {
     margin : 20px 0 20px 10px;
 }
@@ -11,6 +16,16 @@
 }
 
 .selected {
-    background-color: #df9319;
+    background-color: #7e7d7a;
     color: #fff;
 }
+
+#boutons_graphe {
+    margin: auto auto 10px auto;
+}
+
+#boutons_graphe a {
+    margin: 0 5px 0 5px;
+    padding: 5px;
+}
+
