@@ -51,7 +51,8 @@
                                 <th><!-- Image --></th>
                                 <th>Nom</th>
                                 <th>Quantité</th>
-                                <th>Optionnel</th>
+                                <th>Choix multiple</th>
+                                <th>Supplément</th>
                                 <th>Prix</th>
                                 <th><!-- Bouton actions rapide --></th>
                             </tr>
@@ -62,7 +63,7 @@
                         <tfoot>
                             <tr></tr>
                             <tr>
-                                <td colspan="6">
+                                <td colspan="7">
                                     <button type="button" class="bouton" id="bouton_ajouter_new_ingredient" disabled><i class="fa-solid fa-plus"></i> Ajouter un ingrédient</button>
                                     <div id="ajouter_ingredient" hidden>
                                         <select id="select_ajouter_ingredient">

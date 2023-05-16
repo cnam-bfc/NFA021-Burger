@@ -55,6 +55,22 @@ $(function () {
         cellule.append(celluleDiv);
         ligne.append(cellule);
 
+        // Choix multiple
+        cellule = $("<td>");
+        celluleDiv = $("<div>");
+        celluleDiv.addClass("wrapper main_axe_center second_axe_center");
+        let selectChoixMultiple = $("<select>").addClass("choix_multiple_ingredient");
+        let optionNotMultiple = $("<option>").attr("value", "0").text("Non");
+        selectChoixMultiple.append(optionNotMultiple);
+        celluleDiv.append(selectChoixMultiple);
+                // Ajout de la bibliothèque select2
+                selectChoixMultiple.select2({
+                    width: 'element',
+                    placeholder: "Choix multiple",
+                });
+        cellule.append(celluleDiv);
+        ligne.append(cellule);
+
         // Optionnel
         cellule = $("<td>");
         celluleDiv = $("<div>");
@@ -153,7 +169,7 @@ $(function () {
                 tableauCompositionEmpty = true;
                 let ligne = $("<tr>");
                 let cellule = $("<td>");
-                cellule.attr("colspan", 6);
+                cellule.attr("colspan", 7);
                 cellule.html("<br>Aucun ingrédients<br><br>");
                 ligne.append(cellule);
                 bodyTableauComposition.append(ligne);
@@ -189,7 +205,7 @@ $(function () {
         // Ajout ligne de chargement
         let ligne = $("<tr>");
         let cellule = $("<td>");
-        cellule.attr("colspan", 6);
+        cellule.attr("colspan", 7);
         cellule.html("<br><i class='fa-solid fa-spinner fa-spin'></i> Chargement des recettes<br><br>");
         ligne.append(cellule);
         bodyTableauComposition.append(ligne);
@@ -211,7 +227,7 @@ $(function () {
                     tableauCompositionEmpty = true;
                     let ligne = $("<tr>");
                     let cellule = $("<td>");
-                    cellule.attr("colspan", 6);
+                    cellule.attr("colspan", 7);
                     cellule.html("<br>Aucun ingrédients<br><br>");
                     ligne.append(cellule);
                     bodyTableauComposition.append(ligne);
@@ -233,7 +249,7 @@ $(function () {
                 // Ajout ligne d'erreur
                 let ligne = $("<tr>");
                 let cellule = $("<td>");
-                cellule.attr("colspan", 6);
+                cellule.attr("colspan", 7);
                 cellule.html("<br><i class='fa-solid fa-exclamation-triangle'></i> Erreur lors du chargement des ingrédients<br><br>");
                 ligne.append(cellule);
                 bodyTableauComposition.append(ligne);
