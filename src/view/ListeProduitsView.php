@@ -1,12 +1,16 @@
 <link rel="stylesheet" href="<?php echo CSS ?>ListeProduits.css">
 <link rel="stylesheet" href="<?php echo CSS ?>GeneriqueTarek.css">
-
+<script src="<?php echo JS ?>ListeProduits.js"></script>
 
 <div class="padding_default grow">
 
     <div class="wrapper axe_colonne second_axe_center">
         <h2 class="titre_bulle">Liste des produits</h2>
     </div><br><br>
+
+    <div style="display:flex; flex-direction: row">
+        <button type="button" class='bouton' onclick="redirigerPageNouveauProduit()">Nouvel ingrédient</button>
+    </div><br>
 
     <div style="display:flex; flex-direction: row">
         <label for="recherche"><i class="loupe fa-solid fa-magnifying-glass fa-lg" style="color: #000;"></i></i></label>
@@ -57,5 +61,3 @@
         </table>
     </div>
 </div>
-
-<script src="<?php echo JS ?>ListeProduits.js"></script>

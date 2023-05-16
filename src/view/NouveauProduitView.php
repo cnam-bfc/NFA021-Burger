@@ -15,7 +15,7 @@
                 <?php if (!isset($ingredient)) { ?>
 
                     <label for="icone">Icone :</label><br>
-                    <input type="file" id="icone" name="icone"><br><br>
+                    <input type="file" id="icone" name="icone" required><br><br>
 
                     <label for="eclate">Vue éclatée : </label><br>
                     <input type="file" id="eclate" name="eclate"><br><br>

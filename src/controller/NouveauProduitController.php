@@ -36,7 +36,7 @@ class NouveauProduitController extends Controller
 
             if (!empty($_POST['nom']))
                 $nom = $_POST["nom"];
-                
+
 
             if (!empty($_POST['fournisseur']))
                 $fournisseur = $_POST['fournisseur'];
@@ -45,7 +45,7 @@ class NouveauProduitController extends Controller
                 $prix = $_POST['prix'];
 
             if (isset($_POST['stockAuto']))
-                $wizard = 2;
+                $wizard = 1;
             else
                 $wizard = 0;
 
@@ -67,9 +67,13 @@ class NouveauProduitController extends Controller
             if ($_POST['unite'])
                 $unite = $_POST['unite'];
 
+            // Récupération de l'image de la recette
+            $ingredientImage = Form::getFile('icone', true);
+            $ingredientImageEclatee = Form::getFile('eclate', false);
+
             $ingr = new Ingredient();
             $ingr->setNom($nom);
-            $ingr->setPrix($prix);
+            $ingr->setPrixFournisseur($prix);
             $ingr->setQuantiteStock($qteStock);
             $ingr->setDateDernierInventaire(date('Y-m-d H:i:s', time()));
             $ingr->setStockAuto($wizard);
@@ -78,10 +82,22 @@ class NouveauProduitController extends Controller
             $ingr->setIdFournisseur($fournisseur);
             $ingr->setIdUnite($unite);
 
+            if ($ingredientImageEclatee === null)
+                $ingr->setAfficherVueEclatee(false);
+            else
+                $ingr->setAfficherVueEclatee(true);
+
             $dao = new IngredientDAO();
 
-            // Récupération de l'image de la recette
-            $ingredientImage = Form::getFile('icone', false);
+            if (isset($id)) {
+                // Si $id existe, alors il s'agit d'une mise à jour d'ingrédient.
+                $ingr->setId($id);
+                $dao->update($ingr);
+            } else {
+                // Si $id n'existe pas, il s'agit d'une création d'ingrédient.
+                $dao->create($ingr);
+                $id = $ingr->getId();
+            }
 
             if ($ingredientImage !== null) {
                 // Déplacement de l'image dans le dossier des images de recettes
@@ -93,18 +109,19 @@ class NouveauProduitController extends Controller
                 move_uploaded_file($ingredientImage['tmp_name'], $ingredientImagePresentation);
             }
 
-            if (isset($id)) {
-                // Si $id existe, alors il s'agit d'une mise à jour d'ingrédient.
-                $ingr->setId($id);
-                $dao->update($ingr);
-            } else {
-                // Si $id n'existe pas, il s'agit d'une création d'ingrédient.
-                $dao->create($ingr);
+            if ($ingredientImageEclatee !== null) {
+                // Déplacement de l'image dans le dossier des images de recettes
+                $ingredientFolder = DATA_INGREDIENTS . $id . DIRECTORY_SEPARATOR;
+                if (!file_exists($ingredientFolder)) {
+                    mkdir($ingredientFolder, 0777, true);
+                }
+                $ingredientImagePresentation = $ingredientFolder . 'eclate.img';
+                move_uploaded_file($ingredientImage['tmp_name'], $ingredientImagePresentation);
             }
+
 
             unset($_POST);
         }
-
 
         $view->renderView();
     }

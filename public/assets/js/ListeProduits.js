@@ -1,4 +1,33 @@
 
+$(document).ready(function () {
+
+  // Obtenez tous les éléments <td> avec l'id 'bouton'
+  const boutons = document.querySelectorAll('#bouton');
+
+  // Parcourez tous les éléments <td> avec l'id 'bouton'
+  boutons.forEach(bouton => {
+    // Ajoutez un écouteur d'événements de clic à chaque bouton
+    bouton.addEventListener('click', (event) => {
+      // Trouvez la ligne parente (<tr>) de l'élément cliqué
+      const ligne = event.target.closest('tr');
+
+      // Récupérez la valeur du deuxième <td> de la ligne
+      const idIngredient = ligne.querySelector('td:nth-child(6)').textContent;
+
+      // Redirigez vers la page souhaitée avec la valeur du deuxième <td>
+      window.location.href = `nouveauproduit?idIngredient=${idIngredient}`;
+    });
+
+  });
+
+});
+
+
+function redirigerPageNouveauProduit() {
+  window.location.href = `nouveauproduit`;
+}
+
+
 function rechercher() {
   // Récupérer la valeur de l'input
   var input = document.getElementById("recherche");
@@ -29,24 +58,3 @@ function rechercher() {
     }
   }
 }
-
-
-// Obtenez tous les éléments <td> avec l'id 'bouton'
-const boutons = document.querySelectorAll('#bouton');
-
-// Parcourez tous les éléments <td> avec l'id 'bouton'
-boutons.forEach(bouton => {
-    // Ajoutez un écouteur d'événements de clic à chaque bouton
-    bouton.addEventListener('click', (event) => {
-        // Trouvez la ligne parente (<tr>) de l'élément cliqué
-        const ligne = event.target.closest('tr');
-        
-        // Récupérez la valeur du deuxième <td> de la ligne
-        const idIngredient = ligne.querySelector('td:nth-child(6)').textContent;
-        
-        // Redirigez vers la page souhaitée avec la valeur du deuxième <td>
-        window.location.href = `nouveauproduit?idIngredient=${idIngredient}`;
-    });
-});
-
-
