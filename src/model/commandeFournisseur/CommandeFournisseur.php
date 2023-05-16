@@ -13,6 +13,20 @@ class CommandeFournisseur
     private $id;
 
     /**
+     * Création automatique de la commande chez un fournisseur
+     * 
+     * @var bool
+     */
+    private $creationAutomatique;
+
+    /**
+     * Date de création d'une commande chez un fournisseur
+     * 
+     * @var string
+     */
+    private $dateCreation;
+
+    /**
      * Date d'une commande chez un fournisseur
      *
      * @var string
@@ -41,6 +55,26 @@ class CommandeFournisseur
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Méthode permettant de récupérer la création automatique d'une commande chez un fournisseur
+     * 
+     * @return bool
+     */
+    public function isCreationAutomatique()
+    {
+        return $this->creationAutomatique;
+    }
+
+    /**
+     * Méthode permettant de récupérer la date de création d'une commande chez un fournisseur
+     *
+     * @return string
+     */
+    public function getDateCreation()
+    {
+        return $this->dateCreation;
     }
 
     /**
@@ -82,6 +116,28 @@ class CommandeFournisseur
     public function setId($id)
     {
         $this->id = (int) $id;
+    }
+
+    /**
+     * Méthode permettant de modifier la création automatique d'une commande chez un fournisseur
+     * 
+     * @param bool $creationAutomatique
+     * @return void
+     */
+    public function setCreationAutomatique($creationAutomatique)
+    {
+        $this->creationAutomatique = (bool) $creationAutomatique;
+    }
+
+    /**
+     * Méthode permettant de modifier la date de création d'une commande chez un fournisseur
+     *
+     * @param string $dateCreation
+     * @return void
+     */
+    public function setDateCreation($dateCreation)
+    {
+        $this->dateCreation = $dateCreation;
     }
 
     /**

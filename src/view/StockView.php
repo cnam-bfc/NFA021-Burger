@@ -1,6 +1,3 @@
-<!-- on inclut la feuille de style -->
-<link rel="stylesheet" href="<?php echo CSS; ?>Stock.css">
-
 <!-- on inclut la feuille js -->
 <script src="<?php echo JS; ?>Stock.js"></script>
 
@@ -8,16 +5,15 @@
 
     <h1 class="titre_souligne">Réception de commande</h1>
 
-    <section class="wrapper axe_colonne second_axe_center main_axe_space_between">
-        <div> <!-- Bon commande -->
+    <section class="wrapper axe_colonne second_axe_center main_axe_space_between gap_top_bottom_moyen">
+        <div class="wrapper axe_ligne main_axe_center second_axe_center gap_left_right_moyen"> <!-- Bon commande -->
             <label for="bon_de_commande">Bon de commande</label>
-            <select name="bon_de_commande" id="bon_de_commande" required>
-                <option value="-1">Non référencé</option>
+            <select name="bon_de_commande" id="select_bon_commande" class="select" required>
             </select>
         </div>
-        <div id=""> <!-- Fournisseur -->
+        <div class="wrapper axe_ligne main_axe_center second_axe_center gap_left_right_moyen"> <!-- Fournisseur -->
             <label for="fournisseur">Fournisseur</label>
-            <select name="fournisseur" id="fournisseur">
+            <select name="fournisseur" id="select_fournisseur" class="select">
             </select>
         </div>
     </section>
@@ -25,7 +21,7 @@
     <hr class="delimitation_trait">
 
     <section class ="width_75"> <!-- début tableau -->
-        <table class="tableau" id="tableau_ingredients">
+        <table class="tableau" id="tableau_inventaire">
             <thead>
                 <tr>
                     <th><!-- Image --></th>
@@ -36,45 +32,7 @@
                 </tr>
                 <tr></tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td><img src="<?= IMG . 'ingredient/tomate.png' ?>"></td>
-                    <td>Tomate</td>
-                    <td>
-                        <div class="wrapper main_axe_center second_axe_center">
-                            <input class="input" type="number" min="0" max="99" step="1" disabled value=10>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="wrapper main_axe_center second_axe_center">
-                            <input class="input" type="number" min="0" max="99.99" step="0.01">
-                        </div>
-                    </td>
-                    <td>
-                        <div class="wrapper main_axe_center second_axe_center">
-                            <button class="bouton"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td><img src="<?= IMG . 'ingredient/salade.png' ?>"></td>
-                    <td>Salade</td>
-                    <td>
-                        <div class="wrapper main_axe_center second_axe_center">
-                            <input class="input" type="number" min="0" max="99" step="1" disabled value=5>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="wrapper main_axe_center second_axe_center">
-                            <input class="input" type="number" min="0" max="99.99" step="0.01">
-                        </div>
-                    </td>
-                    <td>
-                        <div class="wrapper main_axe_center second_axe_center">
-                            <button class="bouton"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </td>
-                </tr>
+            <tbody id = "test">
             </tbody>
             <tfoot>
                 <tr></tr>
@@ -88,6 +46,6 @@
     </section> <!-- Fin tableau -->
 
     <div class="center_items_horizontal">
-        <button class="bouton bouton_primaire margin_bottom_top_large">Exporter</button>
+        <button class="bouton bouton_primaire margin_bottom_top_large">Valider</button>
     </div>
 </div>

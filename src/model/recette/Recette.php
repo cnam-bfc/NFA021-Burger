@@ -29,7 +29,7 @@ class Recette
     /**
      * Prix de la recette
      * 
-     * @var double
+     * @var float
      */
     private $prix;
 
@@ -126,12 +126,12 @@ class Recette
     /**
      * Méthode permettant de modifier le prix de la recette
      * 
-     * @param double $prix
+     * @param float $prix
      * @return void
      */
     public function setPrix($prix)
     {
-        $this->prix = (double) $prix;
+        $this->prix = (float) $prix;
     }
 
     /**
