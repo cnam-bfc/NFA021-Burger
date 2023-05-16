@@ -91,6 +91,12 @@ $(document).ready(function () {
                     // on retire tout ce qu'il y a dans le tbody
                     tbody.empty();
 
+                    if (data.length == 0) {
+                        // On remplie avec une ligne qui dit pas d'ingrédients
+                        ligneDeTexteTBody("Aucun ingrédient n'a été trouvé dans la base de données");
+                        return;
+                    }
+
                     data.forEach(element => {
                         let tr = $("<tr></tr>").attr({
                             "data_id": element.id
