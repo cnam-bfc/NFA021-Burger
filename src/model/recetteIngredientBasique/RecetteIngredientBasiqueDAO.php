@@ -13,28 +13,28 @@ class RecetteIngredientBasiqueDAO extends DAO
      */
     public function create($recetteIngredientBasique)
     {
-        // Vérification que l'objet possède les id nécessaire à sa création
-        if ($recetteIngredientBasique->getIdRecette() === null || $recetteIngredientBasique->getIdIngredient() === null) {
-            throw new Exception("L'objet à créer doit avoir un id de recette et un id d'ingredient");
+        // Vérification que l'objet n'a pas d'id
+        if ($recetteIngredientBasique->getId() !== null) {
+            throw new Exception("L'objet à créer ne doit pas avoir d'id");
         }
 
         // Requête
         $sqlQuery = "INSERT INTO burger_recette_ingredient_basique (
-                                                id_recette_fk,
-                                                id_ingredient_fk,
+                                                ordre,
                                                 quantite,
-                                                ordre
+                                                id_ingredient_fk,
+                                                id_recette_fk
                                                 ) VALUES (
-                                                :id_recette_fk,
-                                                :id_ingredient_fk,
+                                                :ordre,
                                                 :quantite,
-                                                :ordre
+                                                :id_ingredient_fk,
+                                                :id_recette_fk
                                                 )";
         $statement = $this->pdo->prepare($sqlQuery);
-        $statement->bindValue(':id_recette_fk', $recetteIngredientBasique->getIdRecette(), PDO::PARAM_INT);
-        $statement->bindValue(':id_ingredient_fk', $recetteIngredientBasique->getIdIngredient(), PDO::PARAM_INT);
-        $statement->bindValue(':quantite', $recetteIngredientBasique->getQuantite(), PDO::PARAM_INT);
         $statement->bindValue(':ordre', $recetteIngredientBasique->getOrdre(), PDO::PARAM_INT);
+        $statement->bindValue(':quantite', $recetteIngredientBasique->getQuantite(), PDO::PARAM_INT);
+        $statement->bindValue(':id_ingredient_fk', $recetteIngredientBasique->getIdIngredient(), PDO::PARAM_INT);
+        $statement->bindValue(':id_recette_fk', $recetteIngredientBasique->getIdRecette(), PDO::PARAM_INT);
         $statement->execute();
     }
 
@@ -46,16 +46,15 @@ class RecetteIngredientBasiqueDAO extends DAO
      */
     public function delete($recetteIngredientBasique)
     {
-        // Vérification que l'objet possède les id nécessaire à sa création
-        if ($recetteIngredientBasique->getIdRecette() === null || $recetteIngredientBasique->getIdIngredient() === null) {
-            throw new Exception("L'objet à créer doit avoir un id de recette et un id d'ingredient");
+        // Vérification que l'objet a un id
+        if ($recetteIngredientBasique->getId() === null) {
+            throw new Exception("L'objet à supprimer doit avoir un id");
         }
 
         // Requête
-        $sqlQuery = "DELETE FROM burger_recette_ingredient_basique WHERE id_recette_fk = :id_recette_fk AND id_ingredient_fk = :id_ingredient_fk";
+        $sqlQuery = "DELETE FROM burger_recette_ingredient_basique WHERE id = :id";
         $statement = $this->pdo->prepare($sqlQuery);
-        $statement->bindValue(':id_recette_fk', $recetteIngredientBasique->getIdRecette(), PDO::PARAM_INT);
-        $statement->bindValue(':id_ingredient_fk', $recetteIngredientBasique->getIdIngredient(), PDO::PARAM_INT);
+        $statement->bindValue(':id', $recetteIngredientBasique->getId(), PDO::PARAM_INT);
         $statement->execute();
     }
 
@@ -87,20 +86,23 @@ class RecetteIngredientBasiqueDAO extends DAO
      */
     public function update($recetteIngredientBasique)
     {
-        // Vérification que l'objet possède les id nécessaire à sa création
-        if ($recetteIngredientBasique->getIdRecette() === null || $recetteIngredientBasique->getIdIngredient() === null) {
-            throw new Exception("L'objet à créer doit avoir un id de recette et un id d'ingredient");
+        // Vérification que l'objet a un id
+        if ($recetteIngredientBasique->getId() === null) {
+            throw new Exception("L'objet à mettre à jour doit avoir un id");
         }
 
         // Requête
-        $sqlQuery = "UPDATE burger_recette_ingredient_basique SET quantite = :quantite,
-                                            ordre = :ordre
-                                            WHERE id_recette_fk = :id_recette_fk AND id_ingredient_fk = :id_ingredient_fk";
+        $sqlQuery = "UPDATE burger_recette_ingredient_basique SET ordre = :ordre,
+                                            quantite = :quantite,
+                                            id_ingredient_fk = :id_ingredient_fk,
+                                            id_recette_fk = :id_recette_fk
+                                            WHERE id = :id";
         $statement = $this->pdo->prepare($sqlQuery);
-        $statement->bindValue(':quantite', $recetteIngredientBasique->getQuantite(), PDO::PARAM_INT);
         $statement->bindValue(':ordre', $recetteIngredientBasique->getOrdre(), PDO::PARAM_INT);
-        $statement->bindValue(':id_recette_fk', $recetteIngredientBasique->getIdRecette(), PDO::PARAM_INT);
+        $statement->bindValue(':quantite', $recetteIngredientBasique->getQuantite(), PDO::PARAM_INT);
         $statement->bindValue(':id_ingredient_fk', $recetteIngredientBasique->getIdIngredient(), PDO::PARAM_INT);
+        $statement->bindValue(':id_recette_fk', $recetteIngredientBasique->getIdRecette(), PDO::PARAM_INT);
+        $statement->bindValue(':id', $recetteIngredientBasique->getId(), PDO::PARAM_INT);
         $statement->execute();
     }
 
@@ -168,36 +170,19 @@ class RecetteIngredientBasiqueDAO extends DAO
      * Méthode permettant de récupérer un objet par son id
      * 
      * @param int $id (id de l'objet à récupérer)
-     * @throws Exception (impossible de récupérer un objet par son id)
+     * @return IngredientRecetteBasique (objet récupéré)
      */
     public function selectById($id)
     {
-        throw new Exception("Impossible de récupérer un objet par son id");
-    }
-
-    /**
-     * Méthode permettant de récupérer un objet par son id de recette et son id d'ingredient
-     * 
-     * @param int $idRecette (id de la recette de l'objet à récupérer)
-     * @param int $idIngredient (id de l'ingredient de l'objet à récupérer)
-     * @return IngredientRecetteBasique (objet récupéré)
-     */
-    public function selectByIdRecetteAndIdIngredient($idRecette, $idIngredient)
-    {
         // Requête
-        $sqlQuery = "SELECT * FROM burger_recette_ingredient_basique WHERE id_recette_fk = :id_recette_fk AND id_ingredient_fk = :id_ingredient_fk";
+        $sqlQuery = "SELECT * FROM burger_recette_ingredient_basique WHERE id = :id";
         $statement = $this->pdo->prepare($sqlQuery);
-        $statement->bindValue(':id_recette_fk', $idRecette, PDO::PARAM_INT);
-        $statement->bindValue(':id_ingredient_fk', $idIngredient, PDO::PARAM_INT);
+        $statement->bindValue(':id', $id, PDO::PARAM_INT);
         $statement->execute();
 
         // Traitement des résultats
         $row = $statement->fetch(PDO::FETCH_ASSOC);
-
-        // Création d'un nouvel objet
         $recetteIngredientBasique = new RecetteIngredientBasique();
-
-        // Remplissage de l'objet
         $this->fillObject($recetteIngredientBasique, $row);
 
         return $recetteIngredientBasique;
@@ -211,9 +196,10 @@ class RecetteIngredientBasiqueDAO extends DAO
      */
     public function fillObject($recetteIngredientBasique, $row)
     {
-        $recetteIngredientBasique->setIdRecette($row['id_recette_fk']);
-        $recetteIngredientBasique->setIdIngredient($row['id_ingredient_fk']);
-        $recetteIngredientBasique->setQuantite($row['quantite']);
+        $recetteIngredientBasique->setId($row['id']);
         $recetteIngredientBasique->setOrdre($row['ordre']);
+        $recetteIngredientBasique->setQuantite($row['quantite']);
+        $recetteIngredientBasique->setIdIngredient($row['id_ingredient_fk']);
+        $recetteIngredientBasique->setIdRecette($row['id_recette_fk']);
     }
 }

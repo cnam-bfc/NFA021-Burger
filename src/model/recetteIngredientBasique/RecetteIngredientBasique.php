@@ -6,25 +6,11 @@
 class RecetteIngredientBasique
 {
     /**
-     * Identifiant de la recette
-     * 
+     * Identifiant
+     *
      * @var int
      */
-    private $idRecette;
-
-    /**
-     * Identifiant de l'ingrédient
-     * 
-     * @var int
-     */
-    private $idIngredient;
-
-    /**
-     * Quantité de l'ingrédient
-     * 
-     * @var int
-     */
-    private $quantite;
+    private $id;
 
     /**
      * Ordre de l'ingrédient dans la recette
@@ -34,33 +20,34 @@ class RecetteIngredientBasique
     private $ordre;
 
     /**
-     * Méthode permettant de récupérer l'identifiant de la recette
+     * Quantité de l'ingrédient
      * 
-     * @return int
+     * @var int
      */
-    public function getIdRecette()
-    {
-        return $this->idRecette;
-    }
+    private $quantite;
 
     /**
-     * Méthode permettant de récupérer l'identifiant de l'ingrédient
+     * Identifiant de l'ingrédient
      * 
-     * @return int
+     * @var int
      */
-    public function getIdIngredient()
-    {
-        return $this->idIngredient;
-    }
+    private $idIngredient;
 
     /**
-     * Méthode permettant de récupérer la quantité de l'ingrédient
+     * Identifiant de la recette
+     * 
+     * @var int
+     */
+    private $idRecette;
+
+    /**
+     * Méthode permettant de récupérer l'identifiant
      * 
      * @return int
      */
-    public function getQuantite()
+    public function getId()
     {
-        return $this->quantite;
+        return $this->id;
     }
 
     /**
@@ -74,25 +61,55 @@ class RecetteIngredientBasique
     }
 
     /**
-     * Méthode permettant de modifier l'identifiant de la recette
+     * Méthode permettant de récupérer la quantité de l'ingrédient
      * 
-     * @param int $idRecette
-     * @return void
+     * @return int
      */
-    public function setIdRecette($idRecette)
+    public function getQuantite()
     {
-        $this->idRecette = (int) $idRecette;
+        return $this->quantite;
     }
 
     /**
-     * Méthode permettant de modifier l'identifiant de l'ingrédient
+     * Méthode permettant de récupérer l'identifiant de l'ingrédient
      * 
-     * @param int $idIngredient
+     * @return int
+     */
+    public function getIdIngredient()
+    {
+        return $this->idIngredient;
+    }
+
+    /**
+     * Méthode permettant de récupérer l'identifiant de la recette
+     * 
+     * @return int
+     */
+    public function getIdRecette()
+    {
+        return $this->idRecette;
+    }
+
+    /**
+     * Méthode permettant de modifier l'identifiant
+     * 
+     * @param int $id
      * @return void
      */
-    public function setIdIngredient($idIngredient)
+    public function setId($id)
     {
-        $this->idIngredient = (int) $idIngredient;
+        $this->id = (int) $id;
+    }
+
+    /**
+     * Méthode permettant de modifier l'ordre de l'ingrédient dans la recette
+     * 
+     * @param int $ordre
+     * @return void
+     */
+    public function setOrdre($ordre)
+    {
+        $this->ordre = (int) $ordre;
     }
 
     /**
@@ -107,13 +124,24 @@ class RecetteIngredientBasique
     }
 
     /**
-     * Méthode permettant de modifier l'ordre de l'ingrédient dans la recette
+     * Méthode permettant de modifier l'identifiant de l'ingrédient
      * 
-     * @param int $ordre
+     * @param int $idIngredient
      * @return void
      */
-    public function setOrdre($ordre)
+    public function setIdIngredient($idIngredient)
     {
-        $this->ordre = (int) $ordre;
+        $this->idIngredient = (int) $idIngredient;
+    }
+
+    /**
+     * Méthode permettant de modifier l'identifiant de la recette
+     * 
+     * @param int $idRecette
+     * @return void
+     */
+    public function setIdRecette($idRecette)
+    {
+        $this->idRecette = (int) $idRecette;
     }
 }
