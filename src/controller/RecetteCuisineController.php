@@ -22,11 +22,14 @@ class RecetteCuisineController extends Controller
 
         $recetteFinaleDAO = new RecetteFinaleDAO();
         $recetteFinaleIngredientDAO = new RecetteFinaleIngredientDAO();
+        $ingredientDAO = new IngredientDAO();
+        $uniteDAO = new UniteDAO();
 
+        // Création du json
         $json = array();
         $json['data'] = array();
-
-        $recettes = $recetteFinaleDAO->selectById($recetteId);
+        // Récupération de la recette
+        $recette = $recetteFinaleDAO->selectById($recetteId);
 
 
         $view = new View(BaseTemplate::JSON);
