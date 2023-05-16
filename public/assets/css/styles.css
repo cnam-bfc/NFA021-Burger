@@ -442,6 +442,7 @@ body {
     padding: 10px;
     border: 2px solid #ccc;
     border-radius: 5px;
+    background-color: white;
 }
 
 .form-input>textarea,
@@ -475,6 +476,7 @@ select:invalid {
 .textarea:disabled,
 .select:disabled {
     cursor: not-allowed;
+    background-color: #f5f5f5;
 }
 
 /* Bouton radio */
