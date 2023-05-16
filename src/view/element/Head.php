@@ -13,12 +13,13 @@
 
     <!-- Bibliothèques -->
     <!-- JQuery -->
-    <script src="<?php echo ASSETS ?>jquery/jquery-3.6.4.min.js"></script>
+    <script src="<?php echo ASSETS ?>jquery/jquery-3.7.0.min.js"></script>
     <!-- JSPDF -->
     <script src="<?php echo ASSETS ?>jspdf/jspdf.umd.min"></script>
     <!-- Select2 -->
     <link href="<?php echo ASSETS ?>select2/css/select2.min.css" rel="stylesheet">
     <script src="<?php echo ASSETS ?>select2/js/select2.min.js"></script>
+    <script src="<?php echo ASSETS ?>select2/js/i18n/fr.js"></script>
     <!-- Fontawesome -->
     <link href="<?php echo ASSETS ?>fontawesome/css/fontawesome.min.css" rel="stylesheet">
     <link href="<?php echo ASSETS ?>fontawesome/css/brands.min.css" rel="stylesheet">
