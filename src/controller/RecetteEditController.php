@@ -37,7 +37,7 @@ class RecetteEditController extends Controller
         $view->recetteNom = $recette->getNom();
         $view->recetteDescription = $recette->getDescription();
         $view->recettePrix = $recette->getPrix();
-        $view->recetteImage = IMG . 'recettes' . DIRECTORY_SEPARATOR . $recette->getId()  . DIRECTORY_SEPARATOR . 'presentation.img';
+        $view->recetteImage = IMG . 'recettes' . DIRECTORY_SEPARATOR . $recette->getId() . DIRECTORY_SEPARATOR . 'presentation.img';
 
         $view->renderView();
     }
@@ -103,7 +103,7 @@ class RecetteEditController extends Controller
             // Construction du json de l'ingrédient
             $jsonIngredient = array(
                 'id' => $ingredient->getId(),
-                'image' => IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId()  . DIRECTORY_SEPARATOR . 'presentation.img',
+                'image' => IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'presentation.img',
                 'nom' => $ingredient->getNom(),
                 'quantite' => $recetteIngredientBasique->getQuantite(),
                 'unite' => $unite->getDiminutif(),
@@ -141,12 +141,62 @@ class RecetteEditController extends Controller
             // Construction du json de l'ingrédient
             $jsonIngredient = array(
                 'id' => $ingredient->getId(),
-                'image' => IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId()  . DIRECTORY_SEPARATOR . 'presentation.img',
+                'image' => IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'presentation.img',
                 'nom' => $ingredient->getNom(),
                 'quantite' => $recetteIngredientOptionnel->getQuantite(),
                 'unite' => $unite->getDiminutif(),
                 'optionnel' => true,
                 'prix' => $recetteIngredientOptionnel->getPrix()
+            );
+
+            $json['data'][] = $jsonIngredient;
+        }
+
+        $view = new View(BaseTemplate::JSON);
+
+        $view->json = $json;
+
+        $view->renderView();
+    }
+
+    public function listeAllIngredients()
+    {
+        // Création des objets DAO
+        $ingredientDAO = new IngredientDAO();
+        $uniteDAO = new UniteDAO();
+
+        $json = array();
+        $json['data'] = array();
+
+        // Récupération des ingrédients
+        $ingredients = $ingredientDAO->selectAllNonArchive();
+
+        // Récupération des unités
+        $unites = $uniteDAO->selectAll();
+
+        // Formatage des ingrédients en json
+        foreach ($ingredients as $ingredient) {
+            /** @var Unite $unite */
+            $unite = null;
+            // Récupération de l'unité
+            foreach ($unites as $uniteTmp) {
+                if ($uniteTmp->getId() === $ingredient->getIdUnite()) {
+                    $unite = $uniteTmp;
+                    break;
+                }
+            }
+
+            // Si l'unité n'existe pas, on passe à l'ingrédient suivant
+            if ($unite === null) {
+                continue;
+            }
+
+            // Construction du json de l'ingrédient
+            $jsonIngredient = array(
+                'id' => $ingredient->getId(),
+                'image' => IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'presentation.img',
+                'nom' => $ingredient->getNom(),
+                'unite' => $unite->getDiminutif()
             );
 
             $json['data'][] = $jsonIngredient;

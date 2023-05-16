@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="<?php echo CSS ?>ListeProduits.css">
 <link rel="stylesheet" href="<?php echo CSS ?>GeneriqueTarek.css">
-
+<script src="<?php echo JS ?>ListeProduits.js"></script>
 
 <div class="padding_default grow">
 
@@ -9,12 +9,16 @@
     </div><br><br>
 
     <div style="display:flex; flex-direction: row">
+        <button type="button" class='bouton' onclick="redirigerPageNouveauProduit()">Nouvel ingrédient</button>
+    </div><br>
+
+    <div style="display:flex; flex-direction: row">
         <label for="recherche"><i class="loupe fa-solid fa-magnifying-glass fa-lg" style="color: #000;"></i></i></label>
         <input type="text" id="recherche" class='courbe' onkeyup="rechercher()" placeholder="Recherchez..." />
     </div><br>
 
     <div class="wrapper axe_colonne second_axe_center">
-        <!-- Tableau contenant les ingrédients de la recette -->
+        <!-- Tableau contenant les ingrédients enregistrés -->
         <table class="tableau">
             <thead>
                 <tr>
@@ -23,7 +27,8 @@
                     <th>Fournisseur</th>
                     <th>Stock</th>
                     <th>Stock Standard</th>
-                    <th><!-- Bouton actions rapide --></th>
+                    <th class = 'hidding'>Id</th>
+                    <th><!-- Bouton de modification --></th>
                 </tr>
                 <tr></tr>
             </thead>
@@ -35,12 +40,13 @@
                 ?>
                     <tr id='select'>
                         <td><img src=<?php echo $icone[$i]["img"]; ?> class='img'></td>
-                        <td><?php echo $donnees->getNomIngredient(); ?></td>
+                        <td><?php echo $donnees->getNom(); ?></td>
                         <td><?php foreach ($fournisseur as $data) {
-                                    if ($data->getIdFournisseur() == $donnees->getIdFournisseurFK())
-                                        echo $data->getNomFournisseur(); } ?></td>
-                        <td><?php echo $donnees->getQuantiteStockIngredient(); ?></td>
-                        <td><?php echo $donnees->getQuantiteStandard(); ?></td>
+                                    if ($data->getId() == $donnees->getIdFournisseur())
+                                        echo $data->getNom(); } ?></td>
+                        <td><?php echo $donnees->getQuantiteStock(); ?></td>
+                        <td><?php echo $donnees->getQuantiteStandardStockAuto(); ?></td>
+                        <td class = 'hidding'><?php echo $donnees->getId(); ?></td>
                         <td><img src=<?php echo $modifier[0]["img"]; ?> class='img' id='bouton'></td>
                     </tr>
                 <?php
@@ -55,5 +61,3 @@
         </table>
     </div>
 </div>
-
-<script src="<?php echo JS ?>ListeProduits.js"></script>

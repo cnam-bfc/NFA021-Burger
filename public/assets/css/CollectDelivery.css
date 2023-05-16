@@ -13,3 +13,22 @@
 #boxs>* {
     flex: 1;
 }
+
+button {
+    color: #FFD966;
+    background-color: #FF6666;
+    border: 0px;
+    border-radius: 5px;
+    width: 150px;
+    height: 30px;
+    font-weight: bold;
+    font-size: 10px;
+}
+
+#boutonSoumettre {
+    display: block;
+    width: 100%;
+    text-align: center;
+
+
+}

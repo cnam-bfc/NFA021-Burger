@@ -4,6 +4,17 @@ h2 {
   font-size: 30px;
 }
 
+button {
+  color: #FFD966;
+  background-color: #FF6666;
+  border: 0px;
+  border-radius: 5px;
+  width: 150px;
+  height: 30px;
+  font-weight: bold;
+  font-size: 10px;
+}
+
 /*-----------ID------------*/
 #titlePage {
   text-align: center;
@@ -43,7 +54,7 @@ h2 {
 
 /*à modifier le margin, j'aimerais un margin-auto qui fonctionne*/
 #affichage .txt p {
-  margin-top: 50px ;
+  margin-top: 50px;
   text-align: center;
 }
 
@@ -54,7 +65,8 @@ h2 {
 
 /*-------------------------------*/
 #modifier {
-  margin-top: 60px;
+  margin: 60px 500px 0px;
+
 }
 
 #allergenes {
@@ -70,7 +82,8 @@ h2 {
 
 #lesAllergenes {
   /*background-color: pink;*/
-  margin: auto;
+
+
 }
 
 #lesAllergenes p {
@@ -94,6 +107,13 @@ h2 {
 
 
 
+#tbodyMod tr {
+  height: 80px;
+}
+#tbodyMod input{
+  width: 9px;
+}
+
 /*---------Class------------*/
 
 
@@ -104,4 +124,24 @@ h2 {
   border-width: 1px;
   border-color: black;
   border-style: hidden;
+}
+
+.boutonRetirer {
+  width: 120px;
+}
+
+button {
+  color: #FFD966;
+  background-color: #FF6666;
+  border: 0px;
+  border-radius: 5px;
+  width: 150px;
+  height: 30px;
+  font-weight: bold;
+  font-size: 10px;
+  
+}
+
+.boutonRemettre {
+  width: 120px;
 }
