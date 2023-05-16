@@ -26,6 +26,10 @@ class ModifsBurgersController extends Controller
         $ingredientDAO = new IngredientDAO();
         $RecetteDAO = new RecetteDAO();
 
+        //Récupération du prix de la Recette
+        $Recette = $RecetteDAO->selectById((int)$idRecette);
+        $prix = $Recette->getPrix();
+
         $tabResult = array();
 
         foreach ($IngredientsBasiques as $IngredientBasique) {
@@ -35,8 +39,6 @@ class ModifsBurgersController extends Controller
             $nom = $Ingredient->getNom();
             $quantite = $IngredientBasique->getQuantite();
             $imgEclatee = IMG . 'ingredients/' . $idIngredient . '/presentation.img';
-            $Recette = $RecetteDAO->selectById((int)$idRecette);
-            $prix = $Recette->getPrix();
             $tabResult[] = array('nom' => $nom, "quantite" => $quantite, "imgEclatee" => $imgEclatee, 'ordre' => $ordreIngredient);
         }
 
