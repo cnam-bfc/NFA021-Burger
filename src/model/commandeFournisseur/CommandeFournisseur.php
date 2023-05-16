@@ -13,11 +13,18 @@ class CommandeFournisseur
     private $id;
 
     /**
-     * Date d'une commande chez un fournisseur
-     *
-     * @var int
+     * Création automatique de la commande chez un fournisseur
+     * 
+     * @var bool
      */
-    private $etat;
+    private $creationAutomatique;
+
+    /**
+     * Date de création d'une commande chez un fournisseur
+     * 
+     * @var string
+     */
+    private $dateCreation;
 
     /**
      * Date d'une commande chez un fournisseur
@@ -51,13 +58,23 @@ class CommandeFournisseur
     }
 
     /**
-     * Méthode permettant de récupérer l'identifiant d'une commande chez un fournisseur
+     * Méthode permettant de récupérer la création automatique d'une commande chez un fournisseur
      * 
-     * @return int
+     * @return bool
      */
-    public function getEtat()
+    public function isCreationAutomatique()
     {
-        return $this->etat;
+        return $this->creationAutomatique;
+    }
+
+    /**
+     * Méthode permettant de récupérer la date de création d'une commande chez un fournisseur
+     *
+     * @return string
+     */
+    public function getDateCreation()
+    {
+        return $this->dateCreation;
     }
 
     /**
@@ -102,14 +119,25 @@ class CommandeFournisseur
     }
 
     /**
-     * Méthode permettant de modifier l'identifiant d'une commande chez un fournisseur
+     * Méthode permettant de modifier la création automatique d'une commande chez un fournisseur
      * 
-     * @param int $id
+     * @param bool $creationAutomatique
      * @return void
      */
-    public function setEtat($etat)
+    public function setCreationAutomatique($creationAutomatique)
     {
-        $this->id = (int) $etat;
+        $this->creationAutomatique = (bool) $creationAutomatique;
+    }
+
+    /**
+     * Méthode permettant de modifier la date de création d'une commande chez un fournisseur
+     *
+     * @param string $dateCreation
+     * @return void
+     */
+    public function setDateCreation($dateCreation)
+    {
+        $this->dateCreation = $dateCreation;
     }
 
     /**

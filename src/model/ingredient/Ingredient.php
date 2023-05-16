@@ -20,11 +20,11 @@ class Ingredient
     private $nom;
 
     /**
-     * Prix fournisseur de l'ingredient
+     * Afficher dans la vue éclatée
      * 
-     * @var float
+     * @var bool
      */
-    private $prixFournisseur;
+    private $afficherVueEclatee;
 
     /**
      * Quantité en stock de l'ingredient
@@ -53,6 +53,13 @@ class Ingredient
      * @var int
      */
     private $quantiteMinimaleStockAuto;
+
+    /**
+     * Prix de l'ingredient auprès du fournisseur
+     * 
+     * @var float
+     */
+    private $prixFournisseur;
 
     /**
      * Date du dernier inventaire de l'ingredient
@@ -102,14 +109,14 @@ class Ingredient
         return $this->nom;
     }
 
-      /**
-     * Méthode permettant de récupérer le prix fournisseur de l'ingredient
+    /**
+     * Méthode permettant de récupérer si l'ingredient doit être affiché dans la vue éclatée
      * 
-     * @return flaot
+     * @return bool
      */
-    public function getPrix()
+    public function isAfficherVueEclatee()
     {
-        return $this->prixFournisseur;
+        return $this->afficherVueEclatee;
     }
 
     /**
@@ -150,6 +157,16 @@ class Ingredient
     public function getQuantiteMinimaleStockAuto()
     {
         return $this->quantiteMinimaleStockAuto;
+    }
+
+    /**
+     * Méthode permettant de récupérer le prix de l'ingredient auprès du fournisseur
+     * 
+     * @return float
+     */
+    public function getPrixFournisseur()
+    {
+        return $this->prixFournisseur;
     }
 
     /**
@@ -215,14 +232,14 @@ class Ingredient
     }
 
     /**
-     * Méthode permettant de modifier le prix de l'ingredient
+     * Méthode permettant de modifier si l'ingredient doit être affiché dans la vue éclatée
      * 
-     * @param float $prix
+     * @param bool $afficherVueEclatee
      * @return void
      */
-    public function setPrix($prix)
+    public function setAfficherVueEclatee($afficherVueEclatee)
     {
-        $this->prixFournisseur = $prix;
+        $this->afficherVueEclatee = (bool) $afficherVueEclatee;
     }
 
     /**
@@ -267,6 +284,17 @@ class Ingredient
     public function setQuantiteMinimaleStockAuto($quantiteMinimaleStockAuto)
     {
         $this->quantiteMinimaleStockAuto = (int) $quantiteMinimaleStockAuto;
+    }
+
+    /**
+     * Méthode permettant de modifier le prix de l'ingredient auprès du fournisseur
+     * 
+     * @param float $prixFournisseur
+     * @return void
+     */
+    public function setPrixFournisseur($prixFournisseur)
+    {
+        $this->prixFournisseur = (float) $prixFournisseur;
     }
 
     /**
