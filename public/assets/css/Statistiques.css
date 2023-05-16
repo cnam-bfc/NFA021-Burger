@@ -4,15 +4,38 @@
 }
 
 .box_graphe {
-    margin : 20px 0 20px 10px;
+    margin : 20px 25px 20px 25px;
+    display : flex;
+    flex-direction: column;
+}
+
+.box_graphe h3 {
+    margin: 0 0 10px 0;
 }
 
 .graphe_choix {
-    margin : 12px 0 12px 30px;
+    display: block;
+    margin : 2px 30px 2px 0;
+    padding : 5px 7px;
+    background-color: #f1f0f0;
+    color: black;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
 }
 
-.graphe_choix a {
-    padding: 5px;
+.graphe_choix p {
+    text-align: start;
+}
+
+.graphe_choix:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.graphe_choix:hover {
+    /* Rendre la couleur plus foncée */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1));
 }
 
 .selected {
@@ -28,4 +51,26 @@
     margin: 0 5px 0 5px;
     padding: 5px;
 }
+
+#add_graphe:hover {
+    background-color: #9fe593;
+    color: #fff;
+}
+
+#save_graphe:hover {
+    background-color: #6065f6;
+    color: #fff;
+}
+
+#cancel_graphe:hover {
+    background-color: #fb7070;
+    color: #fff;
+}
+
+#delete_graphe:hover {
+    background-color: #fb7070;
+    color: #fff;
+}
+
+
 

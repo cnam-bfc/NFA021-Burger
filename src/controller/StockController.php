@@ -115,10 +115,10 @@ class StockController extends Controller
             $uniteFormat[$unite->getId()] = $unite->getDiminutif();
         }
 
+        $result = array();
         // On vérifie qu'on a bien reçu des ingrédients
         if (!empty($ingredients)) {
             // on récupère les données pour la vue
-            $result = array();
             foreach ($ingredients as $ingredient) {
                 $result[] = array(
                     "id" => $ingredient->getId(),

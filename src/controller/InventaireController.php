@@ -16,7 +16,7 @@ class InventaireController extends Controller
     {
         // on récupère tous les ingrédients
         $ingredientDAO = new IngredientDAO();
-        $ingredients = $ingredientDAO->selectAll();
+        $ingredients = $ingredientDAO->selectAllNonArchive();
 
         // on récupère toutes les unités
         $uniteDAO = new UniteDAO();
