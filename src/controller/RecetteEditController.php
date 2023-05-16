@@ -159,6 +159,56 @@ class RecetteEditController extends Controller
         $view->renderView();
     }
 
+    public function listeAllIngredients()
+    {
+        // Création des objets DAO
+        $ingredientDAO = new IngredientDAO();
+        $uniteDAO = new UniteDAO();
+
+        $json = array();
+        $json['data'] = array();
+
+        // Récupération des ingrédients
+        $ingredients = $ingredientDAO->selectAllNonArchive();
+
+        // Récupération des unités
+        $unites = $uniteDAO->selectAll();
+
+        // Formatage des ingrédients en json
+        foreach ($ingredients as $ingredient) {
+            /** @var Unite $unite */
+            $unite = null;
+            // Récupération de l'unité
+            foreach ($unites as $uniteTmp) {
+                if ($uniteTmp->getId() === $ingredient->getIdUnite()) {
+                    $unite = $uniteTmp;
+                    break;
+                }
+            }
+
+            // Si l'unité n'existe pas, on passe à l'ingrédient suivant
+            if ($unite === null) {
+                continue;
+            }
+
+            // Construction du json de l'ingrédient
+            $jsonIngredient = array(
+                'id' => $ingredient->getId(),
+                'image' => IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'presentation.img',
+                'nom' => $ingredient->getNom(),
+                'unite' => $unite->getDiminutif()
+            );
+
+            $json['data'][] = $jsonIngredient;
+        }
+
+        $view = new View(BaseTemplate::JSON);
+
+        $view->json = $json;
+
+        $view->renderView();
+    }
+
     public function enregistrerRecette()
     {
         // Récupération des paramètres

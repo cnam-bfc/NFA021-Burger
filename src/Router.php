@@ -65,6 +65,7 @@ class Router
         'gerant/recettes/ajouter' => ["controller" => "RecetteEditController", "method" => "renderViewAjouterRecette"],
         'gerant/recettes/modifier' => ["controller" => "RecetteEditController", "method" => "renderViewModifierRecette"],
         'gerant/recettes/list/ingredients' => ["controller" => "RecetteEditController", "method" => "listeIngredients"],
+        'gerant/recettes/ingredients' => ["controller" => "RecetteEditController", "method" => "listeAllIngredients"],
         'gerant/recettes/enregistrer' => ["controller" => "RecetteEditController", "method" => "enregistrerRecette"],
 
         // BDC
