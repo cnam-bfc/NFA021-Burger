@@ -10,13 +10,21 @@
     <meta name="owner" content="CNAM">
     <meta name="author" content="CNAM">
     <meta name="copyright" content="CNAM">
-    <!-- Feuilles et bibliothèques JS générales-->
+
+    <!-- Bibliothèques -->
+    <!-- JQuery -->
     <script src="<?php echo ASSETS ?>jquery/jquery-3.6.4.min.js"></script>
-    <script src="<?php echo ASSETS ?>jspdf/jspdf.umd.min"></script> <!-- bibliothèque pour générer un pdf -->
-    <!-- Feuilles et bibliothèques CSS générales -->
+    <!-- JSPDF -->
+    <script src="<?php echo ASSETS ?>jspdf/jspdf.umd.min"></script>
+    <!-- Select2 -->
+    <link href="<?php echo ASSETS ?>select2/css/select2.min.css" rel="stylesheet">
+    <script src="<?php echo ASSETS ?>select2/js/select2.min.js"></script>
+    <!-- Fontawesome -->
     <link href="<?php echo ASSETS ?>fontawesome/css/fontawesome.min.css" rel="stylesheet">
     <link href="<?php echo ASSETS ?>fontawesome/css/brands.min.css" rel="stylesheet">
     <link href="<?php echo ASSETS ?>fontawesome/css/solid.min.css" rel="stylesheet">
+    <!-- FIN Bibliothèques -->
+
     <link rel="stylesheet" href="<?php echo CSS ?>element/Reset.css">
     <link rel="stylesheet" href="<?php echo CSS ?>element/Header.css">
     <link rel="stylesheet" href="<?php echo CSS ?>element/Footer.css">
