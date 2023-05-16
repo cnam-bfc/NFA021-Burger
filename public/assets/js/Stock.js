@@ -172,7 +172,7 @@ $(document).ready(function () {
             console.log('Stock.js - mise à jour tableau - id 0 ou -1 - success');
 
             // On remplie avec une ligne qui dit pas d'ingrédients
-            ligneDeTexteTBody("Pas d'ingrédients à afficher");
+            ligneDeTexteTBody("Pas d'ingrédient à afficher");
         }
     }
 
