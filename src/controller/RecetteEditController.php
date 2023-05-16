@@ -100,11 +100,18 @@ class RecetteEditController extends Controller
                 continue;
             }
 
+            // Récupération de l'image de l'ingrédient
+            if ($ingredient->isAfficherVueEclatee()) {
+                $imageIngredient = IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'eclate.img';
+            } else {
+                $imageIngredient = IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'presentation.img';
+            }
+
             // Construction du json de l'ingrédient
             $jsonIngredient = array(
                 'ordre' => $recetteIngredientBasique->getOrdre(),
                 'id' => $ingredient->getId(),
-                'image' => IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'presentation.img',
+                'image' => $imageIngredient,
                 'nom' => $ingredient->getNom(),
                 'quantite' => $recetteIngredientBasique->getQuantite(),
                 'unite' => $unite->getDiminutif(),
@@ -139,11 +146,18 @@ class RecetteEditController extends Controller
                 continue;
             }
 
+            // Récupération de l'image de l'ingrédient
+            if ($ingredient->isAfficherVueEclatee()) {
+                $imageIngredient = IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'eclate.img';
+            } else {
+                $imageIngredient = IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'presentation.img';
+            }
+
             // Construction du json de l'ingrédient
             $jsonIngredient = array(
                 'ordre' => $recetteIngredientOptionnel->getOrdre(),
                 'id' => $ingredient->getId(),
-                'image' => IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'presentation.img',
+                'image' => $imageIngredient,
                 'nom' => $ingredient->getNom(),
                 'quantite' => $recetteIngredientOptionnel->getQuantite(),
                 'unite' => $unite->getDiminutif(),
@@ -198,10 +212,17 @@ class RecetteEditController extends Controller
                 continue;
             }
 
+            // Récupération de l'image de l'ingrédient
+            if ($ingredient->isAfficherVueEclatee()) {
+                $imageIngredient = IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'eclate.img';
+            } else {
+                $imageIngredient = IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'presentation.img';
+            }
+
             // Construction du json de l'ingrédient
             $jsonIngredient = array(
                 'id' => $ingredient->getId(),
-                'image' => IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'presentation.img',
+                'image' => $imageIngredient,
                 'nom' => $ingredient->getNom(),
                 'unite' => $unite->getDiminutif()
             );
