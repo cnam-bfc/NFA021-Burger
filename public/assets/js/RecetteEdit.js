@@ -9,7 +9,6 @@ $(function () {
     const boutonAjouterNewIngredient = $("#bouton_ajouter_new_ingredient");
     const ajouterIngredient = $("#ajouter_ingredient");
     const selectAjouterIngredient = $("#select_ajouter_ingredient");
-    const boutonAjouterIngredient = $("#bouton_ajouter_ingredient");
     const boutonAnnulerAjouterIngredient = $("#bouton_annuler_ajouter_ingredient");
 
     let tableauCompositionEmpty = true;
@@ -139,6 +138,18 @@ $(function () {
         boutonSupprimer.click(function () {
             // Supprimer la ligne
             ligne.remove();
+
+            // Si le tableau est vide
+            if (bodyTableauComposition.children().length === 0) {
+                // Ajouter la ligne vide
+                tableauCompositionEmpty = true;
+                let ligne = $("<tr>");
+                let cellule = $("<td>");
+                cellule.attr("colspan", 6);
+                cellule.html("<br>Aucun ingrédients<br><br>");
+                ligne.append(cellule);
+                bodyTableauComposition.append(ligne);
+            }
         });
         boutonSupprimer.append($("<i>").addClass("fa-solid fa-trash"));
         celluleDiv.append(boutonSupprimer);
@@ -388,6 +399,11 @@ $(function () {
                     width: 'element',
                     placeholder: 'Choisir un ingrédient'
                 });
+
+                // Lors de la sélection d'un ingrédient
+                selectAjouterIngredient.on('select2:select', function (e) {
+                    onIngredientSelected(e.params.data);
+                });
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 if (jqXHR.status !== 0) {
@@ -412,6 +428,7 @@ $(function () {
     boutonAnnulerAjouterIngredient.click(function () {
         // Suppression de la bibliothèque select2
         selectAjouterIngredient.select2('destroy');
+        selectAjouterIngredient.off('select2:select');
 
         // Cacher le formulaire d'ajout d'ingrédient
         ajouterIngredient.hide();
@@ -423,25 +440,17 @@ $(function () {
         boutonAjouterNewIngredient.show();
     });
 
-    // Lors de l'ajout d'un nouvel ingrédient
-    boutonAjouterIngredient.click(function () {
-        // Si aucun ingrédient n'a été sélectionné
-        if (selectAjouterIngredient.val() === "") {
-            alert("Veuillez sélectionner un ingrédient");
-
-            // Ouverture du select
-            selectAjouterIngredient.select2('open');
-            return;
-        }
-
+    // Lors de la sélection d'un ingrédient
+    function onIngredientSelected(data) {
         // Récupération de l'ingrédient sélectionné
-        let ingredient = JSON.parse(selectAjouterIngredient.val());
+        let ingredient = JSON.parse(data.id);
 
         // Ajout de l'ingrédient dans la liste des ingrédients
         addIngredient(ingredient);
 
         // Suppression de la bibliothèque select2
         selectAjouterIngredient.select2('destroy');
+        selectAjouterIngredient.off('select2:select');
 
         // Cacher le formulaire d'ajout d'ingrédient
         ajouterIngredient.hide();
@@ -451,7 +460,7 @@ $(function () {
 
         // Afficher le bouton d'ajout d'ingrédient
         boutonAjouterNewIngredient.show();
-    });
+    }
 
     // Si on est sur la page de modification d'une recette (pathname de l'url si termine par /recettes/modifier)
     if (url.pathname.endsWith("/recettes/modifier")) {

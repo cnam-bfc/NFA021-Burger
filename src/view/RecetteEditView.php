@@ -68,7 +68,6 @@
                                         <select id="select_ajouter_ingredient">
                                             
                                         </select>
-                                        <button type="button" class="bouton" id="bouton_ajouter_ingredient"><i class="fa-solid fa-plus"></i></button>
                                         <button type="button" class="bouton" id="bouton_annuler_ajouter_ingredient"><i class="fa-solid fa-times"></i></button>
                                     </form>
                                 </td>
