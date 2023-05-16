@@ -6,7 +6,9 @@ $(document).ready(function () {
 
     actualiserTableau();
 
+    // Evènements
     $('#bouton_mise_a_jour').on('click', validationInventaire);
+    $('#ajouter_ingredient').on('click', remplacerAjouterIngredient);
 });
 
 
