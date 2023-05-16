@@ -4,7 +4,7 @@
 <div class="padding_default grow">
 
 <div class="wrapper axe_colonne second_axe_center">
-        <h2 class="titre">Bon de commande</h2>
+        <h2 class="titre_bulle">Bon de commande</h2>
     </div>
 
     <div class="conteneur">
@@ -29,39 +29,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td><select id="produit" name="produit" class='courbe'><br><br>
-                                        <option value="Pain Burger">Pain Burger</option>
-                                        <option value="Tomate">Tomate au KG</option>
-                                        <option value="Steak Boeuf">Steak Boeuf</option>
-                                    </select></td>
-                                <td><input type="number" name="quantite" id="quantite" class='courbe'></td>
-                                <td><input type="number" name="prix" id="prix" disabled value='1.00' class='courbe'></td>
-                                <td><button onclick="retirerLigne(this)" class='courbe'>X</button></td>
-                            </tr>
-
-                            <tr>
-                                <td><select id="produit" name="produit" class='courbe'><br><br>
-                                        <option value="Pain Burger">Pain Burger</option>
-                                        <option value="Tomate">Tomate au KG</option>
-                                        <option value="Steak Boeuf">Steak Boeuf</option>
-                                    </select></td>
-                                <td><input type="number" name="quantite" id="quantite" class='courbe'></td>
-                                <td><input type="number" name="prix" id="prix" disabled value='1.00' class='courbe'></td>
-                                <td><button onclick="retirerLigne(this)" class='courbe'>X</button></td>
-                            </tr>
-
-                            <tr>
-                                <td><select id="produit" name="produit" class='courbe'><br><br>
-                                        <option value="Pain Burger">Pain Burger</option>
-                                        <option value="Tomate">Tomate au KG</option>
-                                        <option value="Steak Boeuf">Steak Boeuf</option>
-                                    </select></td>
-                                <td><input type="number" name="quantite" id="quantite" class='courbe'></td>
-                                <td><input type="number" name="prix" id="prix" disabled value='1.00' class='courbe'></td>
-                                <td><button onclick="retirerLigne(this)" class='courbe'>X</button></td>
-                            </tr>
-
                             <tr>
                                 <td><select id="produit" name="produit" class='courbe'><br><br>
                                         <option value="Pain Burger">Pain Burger</option>
