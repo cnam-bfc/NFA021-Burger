@@ -76,6 +76,8 @@ class Router
         // Ecran de cuisine
         'cuisinier' => ["controller" => "EcranCuisineController", "method" => "renderView"],
         'cuisinier/recette' => ["controller" => "RecetteCuisineController", "method" => "renderView"],
+        'cuisinier/listeCommandes' => ["controller" => "EcranCuisineController", "method" => "listeCommandes"],
+
 
         // PARTIE LIVREUR
         // Livraison

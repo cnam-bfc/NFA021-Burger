@@ -71,3 +71,76 @@ document.addEventListener('keydown', function (event) {
     }
 });
 
+$(function () {
+    // Récupération des élements du DOM
+    const divPrincipale = $("div#wrapper_cuisine");
+    const boutonValide = $("button#boutonValide");
+
+    // Fonction permettant d'ajouter une div contenant une commande dans le tableau des recettes
+    function addCommande(data) {
+        // Création de la div contenant la commande
+        let divCommande = $("<div>").addClass("commande focus");
+        divCommande.attr("id", data.id);
+
+        //Numéro de la commande
+        let divNumCom = $("<div>").addClass("num_com");
+        let pNumCom = $("<p>").text(data.id);
+        divNumCom.append(pNumCom);
+        divCommande.append(divNumCom);
+
+        //Recettes
+        let divContenu = $("<div>").addClass("composition_com");
+        let pRecette = $("<p>");
+        data.recettes.forEach(element => {
+            let recetteText = element.nom + " x" + element.quantite;
+            pRecette.append(recetteText);
+        });
+        divContenu.append(pRecette);
+        divCommande.append(divContenu);
+
+        //Heure Livraison de la commande
+        let divHeureCom = $("<div>").addClass("temps_com");
+        divCommande.append(divHeureCom);
+        divPrincipale.append(divCommande);
+    }
+
+    function refreshCommande() {
+        $.ajax({
+            url: "cuisinier/listeCommandes",
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+                // Supprimer la ligne de chargement
+                divPrincipale.empty();
+
+
+                // Si aucune recette n'a été trouvée, afficher "Aucun résultats"
+                if (data['data'].length == 0) {
+                    let div = $("<div>").addClass("wrapper box_sans_bordure margin_large");
+                    let h2 = $("<h2>").addClass("bold");
+                    h2.text("Aucune commande n'a été trouvée");
+                    div.append(h2);
+                    divPrincipale.append(div);
+                }
+                // Sinon, ajouter chaque recette dans une nouvelle ligne
+                else {
+                    data['data'].forEach(element => {
+                        addCommande(element);
+                    });
+                }
+            },
+            error: function (data) {
+                // Supprimer la ligne de chargement
+                divPrincipale.empty();
+
+                // Ajout ligne d'erreur
+                let div = $("<div>").addClass("wrapper box_sans_bordure margin_large");
+                let h2 = $("<h2>").addClass("bold");
+                h2.html("<br><i class='fa-solid fa-exclamation-triangle'></i> Erreur lors du chargement des recettes<br><br>");
+                div.append(h2);
+                divPrincipale.append(div);
+            }
+        });
+    }
+    refreshCommande();
+});

@@ -2,7 +2,7 @@
 
 
 
-<div class="wrapper axe_ligne wrap main_axe_center second_axe_center" id="wrapper_cuisine">
+<div class="wrapper axe_ligne wrap main_axe_center second_axe_center grow" id="wrapper_cuisine">
     <div class="commande focus">
         <div class="num_com"><p>001</p></div>
         <div class="composition_com"></div>

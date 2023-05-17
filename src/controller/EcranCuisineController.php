@@ -7,7 +7,7 @@ class EcranCuisineController extends Controller
         $view->renderView();
     }
 
-    public function listeRecettes()
+    public function listeCommandes()
     {
         // Création des objets DAO
         $recetteDAO = new RecetteDAO();
@@ -82,8 +82,9 @@ class EcranCuisineController extends Controller
                 }
                 //Formatage des recettes finales en json
                 $jsonRecetteFinales[] = array(
-                    'id' => $recette->getId(),
+                    'id' => $recetteFinale->getId(),
                     'nom' => $recette->getNom(),
+                    'quantite' => $recetteFinale->getQuantite(),
                     'ingredients' => $jsonRecetteFinaleIngredients,
                 );
 
