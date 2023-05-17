@@ -2,3 +2,7 @@
     max-width: 50px;
     height: auto;
 }
+
+#tableau_inventaire tbody td input+span:not(:empty) {
+    margin-left: 10px;
+}

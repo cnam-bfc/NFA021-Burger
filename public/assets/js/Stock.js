@@ -123,7 +123,7 @@ $(document).ready(function () {
                             "value": element.quantite_attendu
                         });
                         div1.append(input1);
-                        let unite = $("<p></p>").text(element.unite);
+                        let unite = $("<span>").text(element.unite);
                         div1.append(unite);
                         td3.append(div1);
 
@@ -137,7 +137,7 @@ $(document).ready(function () {
                             "step": 0.01
                         });
                         div2.append(input2);
-                        unite = $("<p></p>").text(element.unite);
+                        unite = $("<span>").text(element.unite);
                         div2.append(unite);
                         td4.append(div2);
 
