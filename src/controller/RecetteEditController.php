@@ -100,10 +100,18 @@ class RecetteEditController extends Controller
                 continue;
             }
 
+            // Récupération de l'image de l'ingrédient
+            if ($ingredient->isAfficherVueEclatee()) {
+                $imageIngredient = IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'eclate.img';
+            } else {
+                $imageIngredient = IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'presentation.img';
+            }
+
             // Construction du json de l'ingrédient
             $jsonIngredient = array(
+                'ordre' => $recetteIngredientBasique->getOrdre(),
                 'id' => $ingredient->getId(),
-                'image' => IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'presentation.img',
+                'image' => $imageIngredient,
                 'nom' => $ingredient->getNom(),
                 'quantite' => $recetteIngredientBasique->getQuantite(),
                 'unite' => $unite->getDiminutif(),
@@ -138,10 +146,18 @@ class RecetteEditController extends Controller
                 continue;
             }
 
+            // Récupération de l'image de l'ingrédient
+            if ($ingredient->isAfficherVueEclatee()) {
+                $imageIngredient = IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'eclate.img';
+            } else {
+                $imageIngredient = IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'presentation.img';
+            }
+
             // Construction du json de l'ingrédient
             $jsonIngredient = array(
+                'ordre' => $recetteIngredientOptionnel->getOrdre(),
                 'id' => $ingredient->getId(),
-                'image' => IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'presentation.img',
+                'image' => $imageIngredient,
                 'nom' => $ingredient->getNom(),
                 'quantite' => $recetteIngredientOptionnel->getQuantite(),
                 'unite' => $unite->getDiminutif(),
@@ -151,6 +167,11 @@ class RecetteEditController extends Controller
 
             $json['data'][] = $jsonIngredient;
         }
+
+        // Tri des ingrédients par ordre
+        usort($json['data'], function ($a, $b) {
+            return $a['ordre'] - $b['ordre'];
+        });
 
         $view = new View(BaseTemplate::JSON);
 
@@ -191,10 +212,17 @@ class RecetteEditController extends Controller
                 continue;
             }
 
+            // Récupération de l'image de l'ingrédient
+            if ($ingredient->isAfficherVueEclatee()) {
+                $imageIngredient = IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'eclate.img';
+            } else {
+                $imageIngredient = IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'presentation.img';
+            }
+
             // Construction du json de l'ingrédient
             $jsonIngredient = array(
                 'id' => $ingredient->getId(),
-                'image' => IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'presentation.img',
+                'image' => $imageIngredient,
                 'nom' => $ingredient->getNom(),
                 'unite' => $unite->getDiminutif()
             );
@@ -284,10 +312,13 @@ class RecetteEditController extends Controller
         $ingredients = json_decode(Form::getParam('ingredients_recette', Form::METHOD_POST, Form::TYPE_STRING), true);
 
         // Enregistrement des ingrédients
-        foreach ($ingredients as $ingredient) {
+        $countIngredients = count($ingredients);
+        for ($i = 0; $i < $countIngredients; $i++) {
+            $ingredient = $ingredients[$i];
+
             // Récupération des paramètres
             // Vérification valeurs présentes
-            if (empty($ingredient['id_ingredient']) || empty($ingredient['quantite_ingredient']) || empty($ingredient['optionnel_ingredient'])) {
+            if (!isset($ingredient['id_ingredient']) || !isset($ingredient['quantite_ingredient']) || !isset($ingredient['optionnel_ingredient'])) {
                 continue;
             }
             $ingredientId = $ingredient['id_ingredient'];
@@ -298,9 +329,10 @@ class RecetteEditController extends Controller
             if (!$ingredientOptionnel) {
                 // Création de l'ingrédient
                 $recetteIngredientBasique = new RecetteIngredientBasique();
+                $recetteIngredientBasique->setOrdre($i + 1);
+                $recetteIngredientBasique->setQuantite($ingredientQuantite);
                 $recetteIngredientBasique->setIdRecette($recetteId);
                 $recetteIngredientBasique->setIdIngredient($ingredientId);
-                $recetteIngredientBasique->setQuantite($ingredientQuantite);
 
                 // Enregistrement de l'ingrédient
                 $recetteIngredientBasiqueDAO->create($recetteIngredientBasique);
@@ -316,10 +348,11 @@ class RecetteEditController extends Controller
 
                 // Création de l'ingrédient
                 $recetteIngredientOptionnel = new RecetteIngredientOptionnel();
-                $recetteIngredientOptionnel->setIdRecette($recetteId);
-                $recetteIngredientOptionnel->setIdIngredient($ingredientId);
+                $recetteIngredientOptionnel->setOrdre($i + 1);
                 $recetteIngredientOptionnel->setQuantite($ingredientQuantite);
                 $recetteIngredientOptionnel->setPrix($ingredientPrix);
+                $recetteIngredientOptionnel->setIdRecette($recetteId);
+                $recetteIngredientOptionnel->setIdIngredient($ingredientId);
 
                 // Enregistrement de l'ingrédient
                 $recetteIngredientOptionnelDAO->create($recetteIngredientOptionnel);
