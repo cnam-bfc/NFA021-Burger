@@ -171,6 +171,11 @@ class CommandeFournisseurIngredientDAO extends DAO
         $statement->bindValue(':id_commande_fournisseur_fk', $idCommandeFournisseur, PDO::PARAM_INT);
         $statement->execute();
 
+        // Vérification que l'on a bien un résultat
+        if ($statement->rowCount() === 0) {
+            return null;
+        }
+
         // Traitement des résultats
         $row = $statement->fetch(PDO::FETCH_ASSOC);
 

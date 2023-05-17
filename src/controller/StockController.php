@@ -158,23 +158,59 @@ class StockController extends Controller
         // on procède à une transaction pour être sur que tous les ingrédients sont bien mis à jour
         Database::getInstance()->getPDO()->beginTransaction();
 
-        // Mettre à jour les stocks
-        foreach ($data["ingredients"] as $ingredient) {
-            // On met la quantité reçu dans le bon de commande
-            $commandeFournisseurIngrdedient = $commandeFournisseurIngredientDAO->selectByIdIngredientAndIdCommandeFournisseur($data["id_bdc"], $ingredient["id"]);
-            $commandeFournisseurIngrdedient->setQuantiteRecue($ingredient["quantite_recu"]);
-            $commandeFournisseurIngredientDAO->update($commandeFournisseurIngrdedient);
+        $dateActuelle = date("Y-m-d H:i:s");
+        if ($data["id_bdc"] != -1) {
+            // Mettre à jour les stocks
+            foreach ($data["ingredients"] as $ingredient) {
+                // On met la quantité reçu dans le bon de commande
+                $commandeFournisseurIngrdedient = $commandeFournisseurIngredientDAO->selectByIdIngredientAndIdCommandeFournisseur($ingredient["id"], $data["id_bdc"]);
+                if ($commandeFournisseurIngrdedient != null) {
+                    $commandeFournisseurIngrdedient->setQuantiteRecue($ingredient["quantite_recu"]);
+                    $commandeFournisseurIngredientDAO->update($commandeFournisseurIngrdedient);
+                } else {
+                    $commandeFournisseurIngredient = new CommandeFournisseurIngredient();
+                    $commandeFournisseurIngredient->setIdCommandeFournisseur($data["id_bdc"]);
+                    $commandeFournisseurIngredient->setIdIngredient($ingredient["id"]);
+                    $commandeFournisseurIngredient->setQuantiteRecue($ingredient["quantite_recu"]);
+                    $commandeFournisseurIngredient->setQuantiteCommandee(null);
+                    $commandeFournisseurIngredientDAO->create($commandeFournisseurIngredient);
+                }
 
-            // on met à jour les stocks des ingrédients
-            $ingredientAMettreAJour = $ingredientDAO->selectById($ingredient["id"]);
-            $ingredientAMettreAJour->setQuantiteStock($ingredientAMettreAJour->getQuantiteStock() + $ingredient["quantite_recu"]);
-            $ingredientDAO->update($ingredientAMettreAJour);
+                // on met à jour les stocks des ingrédients
+                $ingredientAMettreAJour = $ingredientDAO->selectById($ingredient["id"]);
+                $ingredientAMettreAJour->setQuantiteStock($ingredientAMettreAJour->getQuantiteStock() + $ingredient["quantite_recu"]);
+                $ingredientDAO->update($ingredientAMettreAJour);
+
+                // on récupère le bon de commande
+                $commandeFournisseur = $commandeFournisseurDAO->selectById($data["id_bdc"]);
+            }
+        } else {
+            // on crée un bon de commande
+            $commandeFournisseur = new CommandeFournisseur();
+            $commandeFournisseur->setCreationAutomatique(0);
+            $commandeFournisseur->setDateCreation($dateActuelle);
+            $commandeFournisseur->setDateCommande($dateActuelle);
+            $commandeFournisseur->setIdFournisseur($data["id_fournisseur"]);
+            $commandeFournisseurDAO->create($commandeFournisseur);
+
+            // Mettre à jour les stocks
+            foreach ($data["ingredients"] as $ingredient) {
+                // On met la quantité reçu dans le bon de commande
+                $commandeFournisseurIngredient = new CommandeFournisseurIngredient();
+                $commandeFournisseurIngredient->setIdCommandeFournisseur($commandeFournisseur->getId());
+                $commandeFournisseurIngredient->setIdIngredient($ingredient["id"]);
+                $commandeFournisseurIngredient->setQuantiteRecue($ingredient["quantite_recu"]);
+                $commandeFournisseurIngredient->setQuantiteCommandee(null);
+                $commandeFournisseurIngredientDAO->create($commandeFournisseurIngredient);
+
+                // on met à jour les stocks des ingrédients
+                $ingredientAMettreAJour = $ingredientDAO->selectById($ingredient["id"]);
+                $ingredientAMettreAJour->setQuantiteStock($ingredientAMettreAJour->getQuantiteStock() + $ingredient["quantite_recu"]);
+                $ingredientDAO->update($ingredientAMettreAJour);
+            }
         }
-
-        // valider le bdc (date archive + États)
-        $commandeFournisseur = $commandeFournisseurDAO->selectById($data["id_bdc"]);
         // TODO : une fois que les États seront la il faudra le modifier
-        $commandeFournisseur->setDateArchive(date("Y-m-d H:i:s"));
+        $commandeFournisseur->setDateArchive($dateActuelle);
         $commandeFournisseurDAO->update($commandeFournisseur);
 
         // on valide la transaction

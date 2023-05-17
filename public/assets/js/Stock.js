@@ -1,5 +1,5 @@
 // variables global du fichier
-const bdcActuel = [];
+var bdcActuel = [];
 // quand le document est prêt 
 $(document).ready(function () {
     // message dans la console 
@@ -121,7 +121,7 @@ let validationFormulaire = function () {
 
     // on vérifie si un fournisseur est bien sélectionné 
     // on vérifie si le fournisseur sélectionner n'est pas le fournisseur par défaut avec id_fournisseur = 0
-    if ($('#select_fournisseur').attr('id_fournisseur') == 0) {
+    if ($('#select_fournisseur').find(':selected').attr('id_fournisseur') == 0) {
         alert("Vous devez sélectionner un fournisseur");
         return;
     }
@@ -135,6 +135,7 @@ let validationFormulaire = function () {
     // on boucle sur toutes les lignes et on prépare un json
     let json = {};
     json["id_bdc"] = $('#select_bon_commande').find(':selected').attr('id_bdc');
+    json["id_fournisseur"] = $('#select_fournisseur').find(':selected').attr('id_fournisseur');
     json["ingredients"] = [];
 
     let error = false;
@@ -194,8 +195,10 @@ let validationFormulaire = function () {
             alert("La prise en comtpe du bon de commande est un succès");
             bdcActuel = [];
 
-            // On retire le bon de commande du select et on met à jour le tableau
-            $('#select_bon_commande>option:selected').remove();
+            // On retire le bon de commande du select et on met à jour le tableau si c'est pas le -1
+            if ($('#select_bon_commande').find(':selected').attr('id_bdc') != -1) {
+                $('#select_bon_commande>option:selected').remove();
+            }
             // on met le select sur l'option dont la vue id_bdc = 0
             $("#select_bon_commande option[id_bdc='0']").attr('selected', true);
             mettreAJourFournisseur(0);
@@ -309,7 +312,7 @@ ajouterLigneTBody = function (id, nom, photo, quantite_attendu, unite) {
         "type": "number",
         "min": 0,
         "step": 1,
-        "disabled":true,
+        "disabled": true,
         "value": quantite_attendu
     });
     div1.append(input1);
@@ -333,11 +336,13 @@ ajouterLigneTBody = function (id, nom, photo, quantite_attendu, unite) {
     // Cinquième cellule
     let td5 = $("<td></td>");
     let div3 = $("<div></div>").addClass("wrapper main_axe_center second_axe_center");
-    let button = $("<button></button>").addClass("bouton");
-    let icon = $("<i></i>").addClass("fa-solid fa-trash");
-    button.append(icon);
-    button.on("click", suppressionIngredient);
-    div3.append(button);
+    if (!(typeof bdcActuel[id] !== 'undefined')) {
+        let button = $("<button></button>").addClass("bouton");
+        let icon = $("<i></i>").addClass("fa-solid fa-trash");
+        button.append(icon);
+        button.on("click", suppressionIngredient);
+        div3.append(button);
+    }
     td5.append(div3);
 
     tr.append(td1, td2, td3, td4, td5);
