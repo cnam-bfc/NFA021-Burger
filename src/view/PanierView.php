@@ -1,5 +1,11 @@
+<script src="<?php echo (JS) ?>Panier.js"></script>
+<div id="Panier">
 
-<if (?php $_SESSION['panier'] )?>
+</div>
 
-<!-- faire une methode pour créer la variable de session Panier si elle existe pas
-(faire cette methode quand on clic sur le bouton "Ajouter au panier") -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        console.log("html");
+        showData();
+    });
+</script>

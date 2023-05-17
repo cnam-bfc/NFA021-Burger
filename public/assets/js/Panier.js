@@ -1,16 +1,12 @@
-$.ajax({
-    url: "collectLivraison/valider",
-    method: "POST",
-    dataType: "JSON",
-    data: { infos: tabInfosRecup },
-    success: function (response) {
-        console.log("responseGOOD");
-        console.log(response);
+const panier = document.getElementById('Panier');
+function showData() {
 
-    },
-    error: function (xhr, status, error) {
-        console.log("Erreur lors de la requête AJAX : " + error);
-        console.log(xhr.responseText);
-        console.log('Objet JSON envoyé : ' + JSON.stringify(tabInfosRecup));
+    panier.innerHTML = $_SESSION['panier'];
+    for (let index = 0; index < <?php echo $_SESSION['panier']['ingredientsFinaux'].length?>; index + 2) {
+        let p = document.createElement("p");
+        p.textContent = <?php echo $_SESSION["panier"]['ingredientsFinaux'][index]; ?>;
+        panier.appendChild();
+
     }
-});
+
+};
