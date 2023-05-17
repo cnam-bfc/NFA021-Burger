@@ -11,7 +11,6 @@ $(document).ready(function () {
     $('#bouton_annuler_ajouter_ingredient').on('click',onAnnulerAjouterIngredient);
 });
 
-
 /*****************
  *** FONCTIONS ***
  ****************/
@@ -20,6 +19,8 @@ $(document).ready(function () {
  * @returns {void}
  */
 let validationInventaire = function () {
+    console.log('Inventaire.js - validationInventaire');
+
     // vérifier si on a des lignes dans le tableau
     if ($('#tableau_inventaire>tbody>tr[data_type]').length == 0) {
         alert("Vous n'avez aucun ingrédient à mettre à jour");

@@ -162,7 +162,7 @@ class StockController extends Controller
         foreach ($data["ingredients"] as $ingredient) {
             // On met la quantité reçu dans le bon de commande
             $commandeFournisseurIngrdedient = $commandeFournisseurIngredientDAO->selectByIdIngredientAndIdCommandeFournisseur($data["id_bdc"], $ingredient["id"]);
-            $commandeFournisseurIngrdedient -> setQuantiteRecue($ingredient["quantite_recu"]);
+            $commandeFournisseurIngrdedient->setQuantiteRecue($ingredient["quantite_recu"]);
             $commandeFournisseurIngredientDAO->update($commandeFournisseurIngrdedient);
 
             // on met à jour les stocks des ingrédients
@@ -179,6 +179,52 @@ class StockController extends Controller
 
         // on valide la transaction
         $result = Database::getInstance()->getPDO()->commit();
+
+        // envoi des données à la vue
+        $view = new View(BaseTemplate::JSON);
+
+        $view->json = $result;
+
+        $view->renderView();
+    }
+
+    public function refreshListeIngredients()
+    {
+        // On vérifie et on récupère les données du formulaire sous forme de json
+        $rawData = Form::getParam('data', Form::METHOD_POST, Form::TYPE_MIXED);
+        $data = json_decode($rawData, true);
+
+        // on récupère tous les ingrédients
+        $ingredientDAO = new IngredientDAO();
+        $ingredients = $ingredientDAO->selectAllWithoutIngredientsNonArchive($data);
+
+        // on récupère toutes les unités
+        $uniteDAO = new UniteDAO();
+        $unites = $uniteDAO->selectAll();
+        $uniteFormat = array();
+        foreach ($unites as $unite) {
+            $uniteFormat[$unite->getId()] = $unite->getDiminutif();
+        }
+
+        $result = array();
+        // On vérifie qu'on a bien reçu des ingrédients
+        if (!empty($ingredients)) {
+            // on récupère les données pour la vue
+            foreach ($ingredients as $ingredient) {
+                $result[] = array(
+                    "id" => $ingredient->getId(),
+                    "photo" => IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'presentation.img',
+                    "nom" => $ingredient->getNom(),
+                    "unite" => $uniteFormat[$ingredient->getIdUnite()]
+                );
+            }
+
+            // tri des données pour la vue, on tri le tableau result en fonction du nom de l'ingrédient
+            // note voir si on le fait sur le stock
+            usort($result, function ($a, $b) {
+                return $a['nom'] <=> $b['nom'];
+            });
+        }
 
         // envoi des données à la vue
         $view = new View(BaseTemplate::JSON);

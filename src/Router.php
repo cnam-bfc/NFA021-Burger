@@ -62,6 +62,7 @@ class Router
         'gerant/stock/getFournisseursAJAX' => ["controller" => "StockController", "method" => "getFournisseursAJAX"],
         'gerant/stock/refreshTableauIngredientsAJAX' => ["controller" => "StockController", "method" => "refreshTableauIngredientsAJAX"],
         'gerant/stock/validationBonCommandeAJAX' => ["controller" => "StockController", "method" => "validationBonCommandeAJAX"],
+        'gerant/stock/refreshListeIngredients' => ["controller" => "StockController", "method" => "refreshListeIngredients"],
 
         // Recettes
         'gerant/recettes' => ["controller" => "RecetteController", "method" => "renderViewRecettes"],

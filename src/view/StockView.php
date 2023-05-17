@@ -23,7 +23,7 @@
 
     <hr class="delimitation_trait">
 
-    <section class ="width_75"> <!-- début tableau -->
+    <section class="width_75"> <!-- début tableau -->
         <table class="tableau" id="tableau_inventaire">
             <thead>
                 <tr>
@@ -35,13 +35,17 @@
                 </tr>
                 <tr></tr>
             </thead>
-            <tbody id = "test">
+            <tbody id="test">
             </tbody>
             <tfoot>
                 <tr></tr>
                 <tr>
                     <td colspan="6">
                         <button class="bouton" id="ajouter_ingredient"><i class="fa-solid fa-plus"></i> Ajouter un ingrédient</button>
+                        <div id="ajouter_ingredient_div" hidden>
+                            <select id="select_ajouter_ingredient"></select>
+                            <button type="button" class="bouton" id="bouton_annuler_ajouter_ingredient"><i class="fa-solid fa-times"></i></button>
+                        </div>
                     </td>
                 </tr>
             </tfoot>
