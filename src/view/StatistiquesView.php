@@ -17,30 +17,33 @@
             <div data_id="ongletSelection">
                 <div class="box_graphe">
                     <h3 class="graphe_categorie bold">Ventes</h3>
-                    <button class="graphe_choix">
-                        <p>Burger</p>
+                    <button class="graphe_choix" type_stat="burger">
+                        <p>Burger <span class="font_size_petit">(total)</span></p>
                     </button>
-                    <button class="graphe_choix">
+                    <button class="graphe_choix" type_stat="burger">
+                        <p>Burger <span class="font_size_petit">(évolution dans le temps)</span></p>
+                    </button>
+                    <button class="graphe_choix" type_stat="ingredient">
                         <p>Ingedient</p>
                     </button>
                 </div>
 
                 <div class="box_graphe">
                     <h3 class="graphe_categorie bold">Achats</h3>
-                    <button class="graphe_choix">
-                        <p>Tous les produits</p>
+                    <button class="graphe_choix" type_stat="produits">
+                        <p>Produits</p>
                     </button>
-                    <button class="graphe_choix">
-                        <p>Choix d'un produit</p>
+                    <button class="graphe_choix" type_stat="fournisseurs">
+                        <p>Fournisseurs</p>
                     </button>
                 </div>
 
                 <div class="box_graphe">
                     <h3 class="graphe_categorie bold">Généralités</h3>
-                    <button class="graphe_choix">
+                    <button class="graphe_choix" type_stat="benefices">
                         <p>Bénéfices</p>
                     </button>
-                    <button class="graphe_choix">
+                    <button class="graphe_choix" type_stat="nombre_client">
                         <p>Nombre de client</p>
                     </button>
                 </div>
@@ -61,12 +64,14 @@
                         <option value="" selected>Choisissez un type de graphique</option>
                     </select>
                 </div>
+<!--
                 <div class="box_graphe">
                     <h3 class="graphe_categorie bold">Ordre</h3>
                     <select id="ordre_graphe" class="select">
                         <option value="" selected>Choisissez l'ordre de votre graphique</option>
                     </select>
                 </div>
+-->
             </div>
             <div data_id="ongletParametrage">
                 <div class="box_graphe">
@@ -75,16 +80,16 @@
                         <label for="choix_date_graphe">Date personnalisé</label>
                         <input class="input" id="choix_date_graphe" name="choix_date_graphe" type="checkbox">
                     </span>
-                    <span class="wrapper axe_ligne main_axe_space_between second_axe_center grow">
+                    <span class="wrapper axe_ligne main_axe_space_between second_axe_center grow" id="date_debut_span">
                         <label for="date_debut_graphe">Date début</label>
-                        <input type="date" id="date_debut_graphe" name="date_debut_graphe" class="input" placeholder="Nom du graphique">
+                        <input type="date" id="date_debut_graphe" name="date_debut_graphe" class="input" placeholder="Nom du graphique" required>
                     </span>
-                    <span class="wrapper axe_ligne main_axe_space_between second_axe_center grow">
+                    <span class="wrapper axe_ligne main_axe_space_between second_axe_center grow" id="date_fin_span">
                         <label for="date_fin_graphe">Date fin</label>
-                        <input type="date" id="date_fin_graphe" name="date_fin_graphe" class="input" placeholder="Nom du graphique">
+                        <input type="date" id="date_fin_graphe" name="date_fin_graphe" class="input" placeholder="Nom du graphique" required>
                     </span>
                 </div>
-                <div class="box_graphe">
+                <div class="box_graphe" id="specificite">
                     <h3 class="graphe_categorie bold" id="spécificité graphe">Spécificité</h3>
                 </div>
             </div>
@@ -101,7 +106,9 @@
             <h1>Statistiques</h1>
         </div>
 
-        <div id="graphes">Le graphe</div>
+        <div id="graphes">
+            
+        </div>
 
         <div class="center_items_horizontal">
             <button class="bouton bouton_primaire margin_bottom_top_large">Exporter</button>
