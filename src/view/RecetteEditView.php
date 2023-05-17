@@ -67,10 +67,10 @@
                                     <button type="button" class="bouton" id="bouton_ajouter_new_ingredient" disabled><i class="fa-solid fa-plus"></i> Ajouter un ingrédient</button>
                                     <div id="ajouter_ingredient" hidden>
                                         <select id="select_ajouter_ingredient">
-                                            
+
                                         </select>
                                         <button type="button" class="bouton" id="bouton_annuler_ajouter_ingredient"><i class="fa-solid fa-times"></i></button>
-                                    </form>
+                                    </div>
                                 </td>
                             </tr>
                         </tfoot>
