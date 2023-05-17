@@ -125,7 +125,7 @@ class RecetteFinaleDAO extends DAO
     public function selectById($id)
     {
         // Requête
-        $sqlQuery = "SELECT * FROM burger_recette_finale WHERE id_recette_finale = :id_recette_finale";
+        $sqlQuery = "SELECT * FROM burger_recette_finale WHERE id_commande_client_fk = :id_commande_client_fk";
         $statement = $this->pdo->prepare($sqlQuery);
         $statement->bindValue(':id_recette_finale', $id, PDO::PARAM_INT);
         $statement->execute();
@@ -145,6 +145,32 @@ class RecetteFinaleDAO extends DAO
         $this->fillObject($recetteFinale, $result);
 
         return $recetteFinale;
+    }
+
+    public function selectAllByIdCommandeClient($idCommandeClient) {
+
+        // Requête
+        $sqlQuery = "SELECT * FROM burger_recette_finale WHERE id_commande_client_fk = :id_commande_client_fk";
+        $statement = $this->pdo->prepare($sqlQuery);
+        $statement->bindValue(':id_commande_client_fk', $idCommandeClient, PDO::PARAM_INT);
+        $statement->execute();
+
+        // Traitement des résultats
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $recettesFinales = array();
+        foreach ($result as $row) {
+            // Création d'un nouvel objet
+            $recetteFinale = new RecetteFinale();
+
+            // Remplissage de l'objet
+            $this->fillObject($recetteFinale, $row);
+
+            // Ajout de l'objet dans le tableau
+            $recettesFinales[] = $recetteFinale;
+        }
+
+        return $recettesFinales;
+
     }
 
     /**

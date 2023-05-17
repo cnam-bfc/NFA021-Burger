@@ -24,11 +24,11 @@ class CarteMenuController extends Controller
         foreach ($recettes as $recette) {
 
             $jsonRecette = array(
-                'id' => $recette->getIdRecette(),
-                'nom' => $recette->getNomRecette(),
-                'description' => $recette->getDescriptionRecette(),
-                'image' => IMG . $recette->getPhotoRecette(),
-                'prix' => $recette->getPrixRecette(),
+                'id' => $recette->getId(),
+                'nom' => $recette->getNom(),
+                'description' => $recette->getDescription(),
+                'image' => IMG . 'recettes' . DIRECTORY_SEPARATOR . $recette->getId() . DIRECTORY_SEPARATOR .'presentation.img',
+                'prix' => $recette->getPrix(),
             );
             $json['data'][] = $jsonRecette;
 

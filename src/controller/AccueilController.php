@@ -47,7 +47,7 @@ class AccueilController extends Controller
             $result = array();
             $result[] = array(
                 "nom" => "cheddar lover",
-                "image" => IMG . "recette/burger/cheddar_lover.webp"
+                "image" => IMG . "recette/burger/presentation.webp"
             );
             $result[] = array(
                 "nom" => "steakhouse",

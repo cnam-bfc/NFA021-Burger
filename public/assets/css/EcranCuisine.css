@@ -2,8 +2,8 @@ body {
     background: black;
 }
 
-#wrapper {
-    width: 95%;
+#wrapper_cuisine {
+    min-width: 95%;
     height: 90%;
     margin : 10px 40px 10px 40px;
     justify-content: center;
@@ -47,7 +47,7 @@ div .temps_com p  {
     height: 80%;
     color: white;
     background: transparent;
-    align-content: center;
+    align-items: center;
     text-align: center;
     font-size: 20px;
 }
@@ -85,3 +85,18 @@ button{
     display: none;
 }
 
+.box_sans_bordure {
+    width: 700px;
+    height: 150px;
+    border: none;
+    margin-top: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+h2 {
+    color: white;
+    font-size: 30px;
+    margin: 0;
+    padding: 0;
+}
