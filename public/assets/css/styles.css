@@ -150,6 +150,14 @@ body {
     display: none;
 }
 
+.none {
+    display: none;
+}
+
+.block {
+    display: block;
+}
+
 /******************************** MARGIN - PADDING ***********************************/
 .margin_extreme_large {
     margin: var(--espacement_extreme_large);

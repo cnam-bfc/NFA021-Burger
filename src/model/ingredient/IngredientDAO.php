@@ -217,25 +217,47 @@ class IngredientDAO extends DAO
     }
 
     /**
-     * Méthode permettant de remplir un objet à partir d'un tableau (ligne issue de la base de données)
-     * 
-     * @param Ingredient $ingredient (objet à remplir)
-     * @param array $row (tableau contenant les données)
+     * On récupère tous les ingrédients exceptés ceux dans le $tableauIdIngredients
+     *
+     * @param [$id] $tableauIdIngredients
+     * @return array (tableau d'objets)
      */
-    public function fillObject($ingredient, $row)
+    public function selectAllWithoutIngredientsNonArchive($tableauIdIngredients)
     {
-        $ingredient->setId($row['id_ingredient']);
-        $ingredient->setNom($row['nom']);
-        $ingredient->setAfficherVueEclatee($row['afficher_vue_eclatee']);
-        $ingredient->setQuantiteStock($row['quantite_stock']);
-        $ingredient->setStockAuto($row['stock_auto']);
-        $ingredient->setQuantiteStandardStockAuto($row['stock_auto_quantite_standard']);
-        $ingredient->setQuantiteMinimaleStockAuto($row['stock_auto_quantite_minimum']);
-        $ingredient->setPrixFournisseur($row['prix_fournisseur']);
-        $ingredient->setDateDernierInventaire($row['date_inventaire']);
-        $ingredient->setDateArchive($row['date_archive']);
-        $ingredient->setIdUnite($row['id_unite_fk']);
-        $ingredient->setIdFournisseur($row['id_fournisseur_fk']);
+        // Requête préparée
+        $sqlQuery = "SELECT * FROM burger_ingredient WHERE (date_archive IS NULL OR date_archive > NOW())";
+        if ($tableauIdIngredients[0] != null) {
+            $sqlQuery .= "AND id_ingredient NOT IN (";
+            foreach ($tableauIdIngredients as $idIngredient) {
+                $sqlQuery .= ':IdIngredient_' . $idIngredient . ',';
+            }
+            $sqlQuery = substr($sqlQuery, 0, -1);
+            $sqlQuery .= ")";
+            $statement = $this->pdo->prepare($sqlQuery);
+        }
+        $statement = $this->pdo->prepare($sqlQuery);
+        if ($tableauIdIngredients[0] != null) {
+            foreach ($tableauIdIngredients as $idIngredient) {
+                $statement->bindValue(':IdIngredient_' . $idIngredient, $idIngredient, PDO::PARAM_INT);
+            }
+        }
+
+        $statement->execute();
+
+        // Traitement des résultats
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $ingredients = array();
+        foreach ($result as $row) {
+            // Création d'un nouvel objet
+            $ingredient = new Ingredient();
+
+            // Remplissage de l'objet
+            $this->fillObject($ingredient, $row);
+
+            // Ajout de l'objet dans le tableau
+            $ingredients[] = $ingredient;
+        }
+        return $ingredients;
     }
 
     /**
@@ -268,5 +290,27 @@ class IngredientDAO extends DAO
             $ingredients[] = $ingredient;
         }
         return $ingredients;
+    }
+
+    /**
+     * Méthode permettant de remplir un objet à partir d'un tableau (ligne issue de la base de données)
+     * 
+     * @param Ingredient $ingredient (objet à remplir)
+     * @param array $row (tableau contenant les données)
+     */
+    public function fillObject($ingredient, $row)
+    {
+        $ingredient->setId($row['id_ingredient']);
+        $ingredient->setNom($row['nom']);
+        $ingredient->setAfficherVueEclatee($row['afficher_vue_eclatee']);
+        $ingredient->setQuantiteStock($row['quantite_stock']);
+        $ingredient->setStockAuto($row['stock_auto']);
+        $ingredient->setQuantiteStandardStockAuto($row['stock_auto_quantite_standard']);
+        $ingredient->setQuantiteMinimaleStockAuto($row['stock_auto_quantite_minimum']);
+        $ingredient->setPrixFournisseur($row['prix_fournisseur']);
+        $ingredient->setDateDernierInventaire($row['date_inventaire']);
+        $ingredient->setDateArchive($row['date_archive']);
+        $ingredient->setIdUnite($row['id_unite_fk']);
+        $ingredient->setIdFournisseur($row['id_fournisseur_fk']);
     }
 }

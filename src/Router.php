@@ -47,11 +47,14 @@ class Router
         // PARTIE GÉRANT
         // Statistiques
         'gerant/statistiques' => ["controller" => "StatistiquesController", "method" => "renderViewStatistiques"],
+        'gerant/statistiques/recupererLesRecettes' => ["controller" => "StatistiquesController", "method" => "recupererLesRecettes"],
+        'gerant/statistiques/recupererRecettesPourStatistiques' => ["controller" => "StatistiquesController", "method" => "recupererRecettesPourStatistiques"],
 
         // Inventaire
         'gerant/inventaire' => ["controller" => "InventaireController", "method" => "renderViewInventaire"],
         'gerant/inventaire/refreshTableauInventaire' => ["controller" => "InventaireController", "method" => "refreshTableauInventaire"],
         'gerant/inventaire/miseAJourInventaire' => ["controller" => "InventaireController", "method" => "miseAJourInventaire"],
+        'gerant/inventaire/refreshListeIngredients' => ["controller" => "InventaireController", "method" => "refreshListeIngredients"],
 
         // Stock
         'gerant/stock' => ["controller" => "StockController", "method" => "renderViewStock"],

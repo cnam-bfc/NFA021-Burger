@@ -223,6 +223,67 @@ class RecetteDAO extends DAO
     }
 
     /**
+     * Méthodes pour récupérer les recettes les plus vendus sur une période donnée
+     *
+     * @param string $dateDebut
+     * @param string $dateFin
+     * @param array[$id] $burgers
+     * @return Recette[] (tableau d'objets)
+     */
+    public function selectAllForStats ($dateDebut = null, $dateFin = null, $recettes = null) {
+        // Requête
+        $sqlQuery = "SELECT *
+                    FROM burger_recette AS BR
+                    LEFT JOIN burger_recette_finale AS BRF ON BR.id_recette = BRF.id_recette_fk
+                    LEFT JOIN burger_commande_client AS BCC ON BRF.id_commande_client_fk = BCC.id_commande_client
+                    WHERE BCC.date_archive IS NOT NULL
+                    AND BCC.date_pret IS NOT NULL";
+        if ($dateDebut !== null) {
+            $sqlQuery .= " AND BCC.date_commande > :dateDebut";
+        }
+        if ($dateFin !== null) {
+            $sqlQuery .= " AND BCC.date_commande < :dateFin";
+        }
+        if ($recettes !== null) {
+            $sqlQuery .= " AND BR.id_recette IN (";
+            foreach ($recettes as $key => $recette) {
+                $sqlQuery .= ":id_recette_$key,";
+            }
+            $sqlQuery = substr($sqlQuery, 0, -1);
+            $sqlQuery .= ")";
+        }
+        $sqlQuery .= " ORDER BY BR.nom ASC";
+        $statement = $this->pdo->prepare($sqlQuery);
+        if ($dateDebut !== null) {
+            $statement->bindValue(':dateDebut', $dateDebut, PDO::PARAM_STR);
+        }
+        if ($dateFin !== null) {
+            $statement->bindValue(':dateFin', $dateFin, PDO::PARAM_STR);
+        }
+        if ($recettes !== null) {
+            foreach ($recettes as $key => $recette) {
+                $statement->bindValue(":id_recette_$key", $recette, PDO::PARAM_INT);
+            }
+        }
+        $statement->execute();
+
+        // Traitement des résultats
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $recettes = array();
+        foreach ($result as $row) {
+            // Création d'un nouvel objet
+            $recette = new Recette();
+
+            // Remplissage de l'objet
+            $this->fillObject($recette, $row);
+
+            // Ajout de l'objet dans le tableau
+            $recettes[] = $recette;
+        }
+        return $recettes;
+    }
+
+    /**
      * Méthode permettant de remplir un objet à partir d'un tableau (ligne issue de la base de données)
      * 
      * @param Recette $recette (objet à remplir)
