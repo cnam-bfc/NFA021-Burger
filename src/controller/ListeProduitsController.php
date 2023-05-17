@@ -13,7 +13,7 @@ class ListeProduitsController extends Controller
         $icone = array();
         foreach ($ingr as $donnees) {
             $icone[] =
-                ["img" => IMG . $donnees->getPhotoIngredient()];
+                ["img" => IMG . 'ingredients' . DIRECTORY_SEPARATOR . $donnees->getId() . DIRECTORY_SEPARATOR . 'presentation.img'];
         }
 
         $view->modifier = array(

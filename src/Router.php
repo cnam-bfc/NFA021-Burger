@@ -35,9 +35,14 @@ class Router
         // Visu burger
         'visuModifsBurgers' => ["controller" => "ModifsBurgersController", "method" => "renderViewPimpBurgers"],
         'visuModifsBurgers/ingredients' => ["controller" => "ModifsBurgersController", "method" => "getIngredients"],
+        'visuModifsBurgers/ajouterAuPanier' => ["controller"=>"ModifsBurgersController", "method"=>"ajoutPanier"],
+
+        // Panier
+        'panier' =>["controller"=>"PanierController", "method" => "renderViewPanier"],
 
         // Choix entre Livraison et Click&Collect
-        'CollectLivraison' => ["controller" => "CollectLivraisonController", "method" => "renderViewCollectORDelivery"],
+        'collectLivraison' => ["controller" => "CollectLivraisonController", "method" => "renderViewCollectORDelivery"],
+        'collectLivraison/valider' =>["controller" => "CollectLivraisonController", "method" => "validation"],
 
         // PARTIE GÉRANT
         // Statistiques
@@ -61,10 +66,13 @@ class Router
         'gerant/recettes/ajouter' => ["controller" => "RecetteEditController", "method" => "renderViewAjouterRecette"],
         'gerant/recettes/modifier' => ["controller" => "RecetteEditController", "method" => "renderViewModifierRecette"],
         'gerant/recettes/list/ingredients' => ["controller" => "RecetteEditController", "method" => "listeIngredients"],
+        'gerant/recettes/ingredients' => ["controller" => "RecetteEditController", "method" => "listeAllIngredients"],
         'gerant/recettes/enregistrer' => ["controller" => "RecetteEditController", "method" => "enregistrerRecette"],
 
         // BDC
         'gerant/listebdc' => ["controller" => "ListeBDCController", "method" => "renderView"],
+        'gerant/listebdc/donnees' => ["controller" => "ListeBDCController", "method" => "donneesBdc"],
+        'gerant/listebdc/valider' => ["controller" => "ListeBDCController", "method" => "validerBdc"],
         'gerant/nouveaubdc' => ["controller" => "NouveauBDCController", "method" => "renderView"],
 
         // Produits

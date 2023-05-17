@@ -2,25 +2,33 @@
     gap: 25px;
 }
 
-#boxs>* {
+/*#boxs>* {
     flex: 1;
-}
+}*/
 
-/*
 #boxs>#informations_generales {
     flex: 2;
 }
 
 #boxs>#composition {
-    flex: 3;
+    flex: 5;
 }
-*/
 
 #informations_generales .box_contenu .form-input img {
+    width: 100%;
+    height: 100%;
     max-width: 300px;
     max-height: 300px;
 }
 
-#tableau_composition tbody td span:not(:empty) {
+#informations_generales .box_contenu i {
+    font-size: small;
+}
+
+#tableau_composition tbody td input+span:not(:empty) {
     margin-left: 10px;
+}
+
+#select_ajouter_ingredient {
+    min-width: 200px;
 }

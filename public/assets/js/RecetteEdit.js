@@ -1,4 +1,8 @@
 $(function () {
+    /*******************************
+     ********** VARIABLES **********
+     *******************************/
+
     // Récupération des informations de la recette dans l'url
     const url = new URL(window.location.href);
 
@@ -6,7 +10,16 @@ $(function () {
     const formRecette = $("#form_recette");
     const enregistrerRecette = $("#enregistrer");
     const bodyTableauComposition = $("#tableau_composition tbody");
+    const boutonAjouterNewIngredient = $("#bouton_ajouter_new_ingredient");
     const ajouterIngredient = $("#ajouter_ingredient");
+    const selectAjouterIngredient = $("#select_ajouter_ingredient");
+    const boutonAnnulerAjouterIngredient = $("#bouton_annuler_ajouter_ingredient");
+
+    let tableauCompositionEmpty = true;
+
+    /*****************************
+     ********* FONCTIONS *********
+     *****************************/
 
     // Fonction permettant d'ajouter une ligne contenant un ingredient dans le tableau de composition de la recette
     function addIngredient(data) {
@@ -39,6 +52,19 @@ $(function () {
         celluleDiv.append(inputQuantite);
         // Ajouter l'unité
         celluleDiv.append($("<span>").text(data.unite));
+        cellule.append(celluleDiv);
+        ligne.append(cellule);
+
+        // Choix multiple
+        cellule = $("<td>");
+        celluleDiv = $("<div>");
+        celluleDiv.addClass("wrapper main_axe_center second_axe_center");
+        let selectChoixMultiple = $("<select>").addClass("choix_multiple_ingredient");
+        let optionNotMultiple = $("<option>").attr("value", "0").text("Non");
+        selectChoixMultiple.append(optionNotMultiple);
+        celluleDiv.append(selectChoixMultiple);
+        // Ajout de la bibliothèque select2
+        selectChoixMultiple.select2();
         cellule.append(celluleDiv);
         ligne.append(cellule);
 
@@ -133,6 +159,18 @@ $(function () {
         boutonSupprimer.click(function () {
             // Supprimer la ligne
             ligne.remove();
+
+            // Si le tableau est vide
+            if (bodyTableauComposition.children().length === 0) {
+                // Ajouter la ligne vide
+                tableauCompositionEmpty = true;
+                let ligne = $("<tr>");
+                let cellule = $("<td>");
+                cellule.attr("colspan", 7);
+                cellule.html("<br>Aucun ingrédients<br><br>");
+                ligne.append(cellule);
+                bodyTableauComposition.append(ligne);
+            }
         });
         boutonSupprimer.append($("<i>").addClass("fa-solid fa-trash"));
         celluleDiv.append(boutonSupprimer);
@@ -140,12 +178,21 @@ $(function () {
         cellule.append(celluleDiv);
         ligne.append(cellule);
 
+        // Supprimer la ligne vide si elle existe
+        if (tableauCompositionEmpty) {
+            bodyTableauComposition.empty();
+            tableauCompositionEmpty = false;
+        }
+
         // Ajout de la ligne au tableau
         bodyTableauComposition.append(ligne);
     }
 
     // Fonction permettant d'actualiser le tableau de composition de la recette
     function refreshIngredients() {
+        // Désactiver l'ajout d'ingrédient
+        boutonAjouterNewIngredient.prop("disabled", true);
+
         // Récupération de l'id de la recette
         let idRecette = url.searchParams.get("id");
 
@@ -155,7 +202,7 @@ $(function () {
         // Ajout ligne de chargement
         let ligne = $("<tr>");
         let cellule = $("<td>");
-        cellule.attr("colspan", 6);
+        cellule.attr("colspan", 7);
         cellule.html("<br><i class='fa-solid fa-spinner fa-spin'></i> Chargement des recettes<br><br>");
         ligne.append(cellule);
         bodyTableauComposition.append(ligne);
@@ -174,9 +221,10 @@ $(function () {
 
                 // Si aucun ingrédient n'a été trouvée, afficher "Aucun résultats"
                 if (data['data'].length == 0) {
+                    tableauCompositionEmpty = true;
                     let ligne = $("<tr>");
                     let cellule = $("<td>");
-                    cellule.attr("colspan", 6);
+                    cellule.attr("colspan", 7);
                     cellule.html("<br>Aucun ingrédients<br><br>");
                     ligne.append(cellule);
                     bodyTableauComposition.append(ligne);
@@ -187,6 +235,9 @@ $(function () {
                         addIngredient(element);
                     });
                 }
+
+                // Activer l'ajout d'ingrédient
+                boutonAjouterNewIngredient.prop("disabled", false);
             },
             error: function (data) {
                 // Supprimer la ligne de chargement
@@ -195,7 +246,7 @@ $(function () {
                 // Ajout ligne d'erreur
                 let ligne = $("<tr>");
                 let cellule = $("<td>");
-                cellule.attr("colspan", 6);
+                cellule.attr("colspan", 7);
                 cellule.html("<br><i class='fa-solid fa-exclamation-triangle'></i> Erreur lors du chargement des ingrédients<br><br>");
                 ligne.append(cellule);
                 bodyTableauComposition.append(ligne);
@@ -203,19 +254,8 @@ $(function () {
         });
     }
 
-    // Si on est sur la page de modification d'une recette (pathname de l'url si termine par /recettes/modifier)
-    if (url.pathname.endsWith("/recettes/modifier")) {
-        // On actualise la composition de la recette
-        refreshIngredients();
-    }
-
     // Lors de la soumission du formulaire
-    formRecette.submit(function (event) {
-        // On empêche le formulaire de se soumettre
-        event.preventDefault();
-
-        let formDatas = new FormData(this);
-
+    function onFormRecetteSubmit(formDatas) {
         // Si on modifie la recette
         if (url.pathname.endsWith("/recettes/modifier")) {
             // Récupération de l'id de la recette
@@ -337,5 +377,135 @@ $(function () {
                 enregistrerRecette.html(old_html);
             }
         });
+    }
+
+    // Lors de l'ajout d'un nouvel ingrédient
+    function onAjouterNewIngredient() {
+        // Ajout d'un icone et texte de chargement (fontawesome)
+        let old_html = boutonAjouterNewIngredient.html();
+        boutonAjouterNewIngredient.html('<i class="fas fa-spinner fa-spin"></i> Chargement...');
+        boutonAjouterNewIngredient.prop("disabled", true);
+
+        // Récupération des ingrédients
+        $.ajax({
+            url: "ingredients",
+            method: "GET",
+            dataType: "json",
+            success: function (data) {
+                // Cacher le bouton d'ajout d'ingrédient
+                boutonAjouterNewIngredient.hide();
+                boutonAjouterNewIngredient.html(old_html);
+                boutonAjouterNewIngredient.prop("disabled", false);
+
+                // Afficher le formulaire d'ajout d'ingrédient
+                ajouterIngredient.show();
+
+                // Suppression des options du select
+                selectAjouterIngredient.empty();
+
+                // Ajout des options dans le select
+                selectAjouterIngredient.append('<option></option>');
+                data['data'].forEach(function (ingredient) {
+                    // Ajout de l'option dans le select (dans value mettre l'ingrédient en JSON)
+                    selectAjouterIngredient.append('<option value=\'' + JSON.stringify(ingredient) + '\'>' + ingredient.nom + '</option>');
+                });
+
+                // Ajout de la bibliothèque select2
+                selectAjouterIngredient.select2({
+                    width: 'element',
+                    placeholder: 'Choisir un ingrédient'
+                });
+
+                // Lors de la sélection d'un ingrédient
+                selectAjouterIngredient.on('select2:select', function (e) {
+                    onIngredientSelected(e.params.data);
+                });
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                if (jqXHR.status !== 0) {
+                    let alertMessage = 'Erreur ' + jqXHR.status;
+                    // Si errorThrown contient des informations (est une chaîne de caractères)
+                    if (typeof errorThrown === 'string') {
+                        alertMessage += ' : ' + errorThrown.replace(/<br>/g, "\n");
+                    }
+                    alert(alertMessage);
+                } else {
+                    alert('Une erreur inconue est survenue !\nVeuillez vérifier votre connexion internet.');
+                }
+
+                // Réafficher le bouton d'ajout d'ingrédient
+                boutonAjouterNewIngredient.html(old_html);
+                boutonAjouterNewIngredient.prop("disabled", false);
+            }
+        });
+    }
+
+    // Lors de l'annulation de l'ajout d'un nouvel ingrédient
+    function onAnnulerAjouterIngredient() {
+        // Suppression de la bibliothèque select2
+        selectAjouterIngredient.select2('destroy');
+        selectAjouterIngredient.off('select2:select');
+
+        // Cacher le formulaire d'ajout d'ingrédient
+        ajouterIngredient.hide();
+
+        // Suppression des options du select
+        selectAjouterIngredient.empty();
+
+        // Afficher le bouton d'ajout d'ingrédient
+        boutonAjouterNewIngredient.show();
+    }
+
+    // Lors de la sélection d'un ingrédient
+    function onIngredientSelected(data) {
+        // Récupération de l'ingrédient sélectionné
+        let ingredient = JSON.parse(data.id);
+
+        // Ajout de l'ingrédient dans la liste des ingrédients
+        addIngredient(ingredient);
+
+        // Suppression de la bibliothèque select2
+        selectAjouterIngredient.select2('destroy');
+        selectAjouterIngredient.off('select2:select');
+
+        // Cacher le formulaire d'ajout d'ingrédient
+        ajouterIngredient.hide();
+
+        // Suppression des options du select
+        selectAjouterIngredient.empty();
+
+        // Afficher le bouton d'ajout d'ingrédient
+        boutonAjouterNewIngredient.show();
+    }
+
+    /*****************************************
+     *************** PRINCIPAL ***************
+     *****************************************/
+
+    // Lors de la soumission du formulaire
+    formRecette.submit(function (event) {
+        // On empêche le formulaire de se soumettre
+        event.preventDefault();
+
+        // Récupération des champs du formulaire
+        let formDatas = new FormData(this);
+
+        onFormRecetteSubmit(formDatas);
     });
+
+    // Lors du clic sur le bouton d'ajout d'un nouvel ingrédient
+    boutonAjouterNewIngredient.click(function () {
+        onAjouterNewIngredient();
+    });
+
+    // Lors du clic sur le bouton d'annulation de l'ajout d'un nouvel ingrédient
+    boutonAnnulerAjouterIngredient.click(function () {
+        onAnnulerAjouterIngredient();
+    });
+
+    // Si on est sur la page de modification d'une recette (pathname de l'url si termine par /recettes/modifier)
+    if (url.pathname.endsWith("/recettes/modifier")) {
+        // On actualise la composition de la recette
+        refreshIngredients();
+    }
 });

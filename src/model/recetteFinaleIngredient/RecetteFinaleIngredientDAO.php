@@ -52,9 +52,9 @@ class RecetteFinaleIngredientDAO extends DAO
         }
 
         // Requête
-        $sqlQuery = "DELETE FROM burger_recette_finale_ingredient WHERE id = :id";
+        $sqlQuery = "DELETE FROM burger_recette_finale_ingredient WHERE id_recette_finale_ingredient = :id_recette_finale_ingredient";
         $statement = $this->pdo->prepare($sqlQuery);
-        $statement->bindValue(':id', $recetteFinaleIngredient->getId(), PDO::PARAM_INT);
+        $statement->bindValue(':id_recette_finale_ingredient', $recetteFinaleIngredient->getId(), PDO::PARAM_INT);
         $statement->execute();
     }
 
@@ -76,13 +76,13 @@ class RecetteFinaleIngredientDAO extends DAO
                                             quantite = :quantite,
                                             id_recette_finale_fk = :id_recette_finale_fk,
                                             id_ingredient_fk = :id_ingredient_fk
-                                            WHERE id = :id";
+                                            WHERE id_recette_finale_ingredient = :id_recette_finale_ingredient";
         $statement = $this->pdo->prepare($sqlQuery);
         $statement->bindValue(':ordre', $recetteFinaleIngredient->getOrdre(), PDO::PARAM_INT);
         $statement->bindValue(':quantite', $recetteFinaleIngredient->getQuantite(), PDO::PARAM_INT);
         $statement->bindValue(':id_recette_finale_fk', $recetteFinaleIngredient->getIdRecetteFinale(), PDO::PARAM_INT);
         $statement->bindValue(':id_ingredient_fk', $recetteFinaleIngredient->getIdIngredient(), PDO::PARAM_INT);
-        $statement->bindValue(':id', $recetteFinaleIngredient->getId(), PDO::PARAM_INT);
+        $statement->bindValue(':id_recette_finale_ingredient', $recetteFinaleIngredient->getId(), PDO::PARAM_INT);
         $statement->execute();
     }
 
@@ -155,9 +155,9 @@ class RecetteFinaleIngredientDAO extends DAO
     public function selectById($id)
     {
         // Requête
-        $sqlQuery = "SELECT * FROM burger_recette_finale_ingredient WHERE id = :id";
+        $sqlQuery = "SELECT * FROM burger_recette_finale_ingredient WHERE id_recette_finale_ingredient = :id_recette_finale_ingredient";
         $statement = $this->pdo->prepare($sqlQuery);
-        $statement->bindValue(':id', $id, PDO::PARAM_INT);
+        $statement->bindValue(':id_recette_finale_ingredient', $id, PDO::PARAM_INT);
         $statement->execute();
 
         // Traitement des résultats
@@ -176,7 +176,7 @@ class RecetteFinaleIngredientDAO extends DAO
      */
     public function fillObject($recetteFinaleIngredient, $row)
     {
-        $recetteFinaleIngredient->setId($row['id']);
+        $recetteFinaleIngredient->setId($row['id_recette_finale_ingredient']);
         $recetteFinaleIngredient->setOrdre($row['ordre']);
         $recetteFinaleIngredient->setQuantite($row['quantite']);
         $recetteFinaleIngredient->setIdRecetteFinale($row['id_recette_finale_fk']);
