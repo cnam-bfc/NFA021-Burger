@@ -90,12 +90,14 @@ $(function () {
 
         //Recettes
         let divContenu = $("<div>").addClass("composition_com");
-        let pRecette = $("<p>");
+
         data.recettes.forEach(element => {
-            let recetteText = element.nom + " x" + element.quantite;
+            let pRecette = $("<p>");
+            let recetteText = element.quantite + "x " + element.nom;
             pRecette.append(recetteText);
+            divContenu.append(pRecette);
         });
-        divContenu.append(pRecette);
+
         divCommande.append(divContenu);
 
         //Heure Livraison de la commande

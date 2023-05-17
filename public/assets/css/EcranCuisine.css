@@ -33,6 +33,21 @@ div .composition_com {
     border-bottom: #f00 1px solid;
 }
 
+div .composition_com p{
+    color: white;
+    font-size: 20px;
+    text-align: left;
+    margin: 0 2% 5% 2%;
+}
+
+div.composition_com p:last-child {
+    margin: 0 2% 0 2%;
+}
+div.composition_com p:first-child {
+    margin: 0 2% 5% 2%;
+    padding-top: 2%;
+}
+
 div .temps_com {
     width: 100%;
     height: 9.5%;
@@ -62,6 +77,7 @@ div .num_com p {
     text-align: center;
     font-size: 20px;
 }
+
 .bouton {
     height: 30px;
     text-align: center;
