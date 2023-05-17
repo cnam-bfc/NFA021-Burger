@@ -19,12 +19,7 @@
 
 
 
-        <script type="text/javascript">
-            $(document).ready(function() {
-                console.log("html");
-                showData(1);
-            });
-        </script>
+
 
     </div><!--Affichage-->
 
@@ -90,7 +85,7 @@
 
     <div id="Paiement">
         <div id="Prix">
-            <p>Prix Total
+            <p id="Montant">
             </p>
             <p>X $</p>
         </div>
@@ -100,4 +95,11 @@
     </div>
 
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        console.log("html");
+        showData(1);
+    });
+</script>
 <!--#Wrapper-->

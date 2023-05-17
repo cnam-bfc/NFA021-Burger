@@ -115,8 +115,8 @@ class NouveauProduitController extends Controller
                 if (!file_exists($ingredientFolder)) {
                     mkdir($ingredientFolder, 0777, true);
                 }
-                $ingredientImagePresentation = $ingredientFolder . 'eclate.img';
-                move_uploaded_file($ingredientImage['tmp_name'], $ingredientImagePresentation);
+                $ingredientEclatee = $ingredientFolder . 'eclate.img';
+                move_uploaded_file($ingredientImageEclatee['tmp_name'], $ingredientEclatee);
             }
 
 

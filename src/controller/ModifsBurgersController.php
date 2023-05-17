@@ -26,10 +26,11 @@ class ModifsBurgersController extends Controller
         $ingredientDAO = new IngredientDAO();
         $RecetteDAO = new RecetteDAO();
 
+
         //Récupération du prix de la Recette
         $Recette = $RecetteDAO->selectById((int)$idRecette);
         $prix = $Recette->getPrix();
-
+        $nomRecette = $Recette->getNom();
         $tabResult = array();
 
         foreach ($IngredientsBasiques as $IngredientBasique) {
@@ -39,7 +40,7 @@ class ModifsBurgersController extends Controller
             $nom = $Ingredient->getNom();
             $quantite = $IngredientBasique->getQuantite();
             $imgEclatee = IMG . 'ingredients/' . $idIngredient . '/presentation.img';
-            $tabResult[] = array('nom' => $nom, "quantite" => $quantite, "imgEclatee" => $imgEclatee, 'ordre' => $ordreIngredient);
+            $tabResult[] = array('nom' => $nom, "quantite" => $quantite, "imgEclatee" => $imgEclatee, 'ordre' => $ordreIngredient, 'nom Recette' => $nomRecette);
         }
 
 
@@ -51,7 +52,7 @@ class ModifsBurgersController extends Controller
             return ($a['ordre'] < $b['ordre']) ? -1 : 1;
         });
 
-        $tabRecette[] = array($tabResult, $prix);
+        $tabRecette[] = array($tabResult, $prix, $nomRecette);
 
 
         $view = new View(BaseTemplate::JSON, null);
@@ -89,8 +90,9 @@ class ModifsBurgersController extends Controller
 
 
 
-        $_SESSION['panier'] . array_push($infos);
-        var_dump($_SESSION['panier']);
+        array_push($_SESSION['panier'],$infos);
+        
+        
 
 
         $view = new View(BaseTemplate::JSON, null);
