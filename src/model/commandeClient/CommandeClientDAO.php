@@ -136,6 +136,30 @@ class CommandeClientDAO extends DAO
      *
      * @return CommandeClient[] (tableau d'objets)
      */
+    public function selectAllNonArchiveNonPret()
+    {
+        // Requête
+        $sqlQuery = "SELECT * FROM burger_commande_client WHERE (date_archive IS NULL OR date_archive > NOW()) AND date_pret IS NULL";
+        $statement = $this->pdo->query($sqlQuery);
+        $statement->execute();
+
+        // Traitement des résultats
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $commandesClients = array();
+        foreach ($result as $row) {
+            // Création d'un nouvel objet
+            $commandeClient = new CommandeClient();
+
+            // Remplissage de l'objet
+            $this->fillObject($commandeClient, $row);
+
+            // Ajout de l'objet dans le tableau
+            $commandesClients[] = $commandeClient;
+        }
+
+        return $commandesClients;
+    }
+
     public function selectAllNonArchive()
     {
         // Requête

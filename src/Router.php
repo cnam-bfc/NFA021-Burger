@@ -26,6 +26,7 @@ class Router
 
         // Carte des recettes
         'carte' => ["controller" => "CarteMenuController", "method" => "renderView"],
+        'carte/listeBurgers' => ["controller" => "CarteMenuController", "method" => "listeBurgers"],
 
         // PARTIE EMPLOYÉ
         // Accueil employé
@@ -83,6 +84,8 @@ class Router
         // Ecran de cuisine
         'cuisinier' => ["controller" => "EcranCuisineController", "method" => "renderView"],
         'cuisinier/recette' => ["controller" => "RecetteCuisineController", "method" => "renderView"],
+        'cuisinier/listeCommandes' => ["controller" => "EcranCuisineController", "method" => "listeCommandes"],
+
 
         // PARTIE LIVREUR
         // Livraison
