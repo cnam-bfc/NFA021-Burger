@@ -4,31 +4,35 @@ class NouveauBDCController extends Controller
     public function renderView()
     {
         $view = new View(BaseTemplate::EMPLOYE, 'NouveauBDCView');
+        $fournisseurDao = new FournisseurDAO(); 
+
+        $view->fournisseurs = $fournisseurDao->selectAll();
+
+        if (!empty($_POST['produit'])) {
+            echo $_POST['produit'];
+        }
+
         $view->renderView();
     }
 
-    public function donneesBdc()
+    public function listeProduits()
     {
-
-        $bdcDao = new BdcDAO();
-        $bdc = $bdcDao->selectAll();
-
-        $fournisseurDao = new FournisseurDAO();
+        $dao = new IngredientDAO();
+        $ingredient = $dao->selectAll();
 
         $tableau = array();
 
-        foreach ($bdc as $donnees) {
+        foreach ($ingredient as $donnees) {
 
             $tableau[] = array(
-                "id" => $donnees->getIdBdc(),
-                "etat" => $donnees->getEtatBdc(),
-                "fournisseur" => ($fournisseurDao->selectById($donnees->getIdFournisseurFK()))->getNomFournisseur()
+                "id" => $donnees->getId(),
+                "nom" => $donnees->getNom(),
+                "prix" => $donnees->getPrixFournisseur(),
+                "idFournisseur" => $donnees->getIdFournisseur()
             );
         }
         $view = new View(BaseTemplate::JSON);
-
         $view->json = $tableau;
         $view->renderView();
     }
-    
 }
