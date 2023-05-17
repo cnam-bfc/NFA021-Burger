@@ -1,8 +1,5 @@
-/*
-Dans une première version on ne cachera pas la colonne quantité attendu, on mettra 0 quand le bon est non référencé
-Dans une deuxième version on cachera la colonne quantité attendu si bon est non référencé
-*/
-
+// variables global du fichier
+const bdcActuel = [];
 // quand le document est prêt 
 $(document).ready(function () {
     // message dans la console 
@@ -195,6 +192,7 @@ let validationFormulaire = function () {
             }
             // On notifie la réussite de la mise à jour
             alert("La prise en comtpe du bon de commande est un succès");
+            bdcActuel = [];
 
             // On retire le bon de commande du select et on met à jour le tableau
             $('#select_bon_commande>option:selected').remove();
@@ -248,7 +246,15 @@ refreshTableau = function (idCommande) {
                     return;
                 }
 
+                bdcActuel = [];
                 data.forEach(element => {
+                    bdcActuel[element.id] = {
+                        'id': element.id,
+                        'nom': element.nom,
+                        'photo': element.photo,
+                        'quantite_attendu': element.quantite_attendu,
+                        'unite': element.unite
+                    };
                     ajouterLigneTBody(element.id, element.nom, element.photo, element.quantite_attendu, element.unite);
                 });
             },
@@ -290,6 +296,12 @@ ajouterLigneTBody = function (id, nom, photo, quantite_attendu, unite) {
     // Deuxième cellule
     let td2 = $("<td></td>").text(nom);
 
+    if (quantite_attendu == null) {
+        // on vérifie si l'id de l'ingrédient est dans le tableau bdcActuel
+        if (typeof bdcActuel[id] !== 'undefined') {
+            quantite_attendu = bdcActuel[id].quantite_attendu;
+        }
+    }
     // Troisième cellule
     let td3 = $("<td></td>");
     let div1 = $("<div></div>").addClass("wrapper main_axe_center second_axe_center");
@@ -297,16 +309,9 @@ ajouterLigneTBody = function (id, nom, photo, quantite_attendu, unite) {
         "type": "number",
         "min": 0,
         "step": 1,
+        "disabled":true,
         "value": quantite_attendu
     });
-    if (quantite_attendu != null) {
-        // on désactive l'input
-        input1.attr("disabled", true);
-
-    } else {
-        // on active l'input
-        input1.attr("disabled", false);
-    }
     div1.append(input1);
     let uniteTexte = $("<span>").text(unite);
     div1.append(uniteTexte);
@@ -360,7 +365,7 @@ let suppressionIngredient = function () {
 let ligneDeTexteTBody = function (texte) {
     let tbody = $('#tableau_inventaire > tbody');
 
-    let tr = $("<tr></tr>");
+    let tr = $("<tr></tr>").addClass("ligne_texte");
     let td = $("<td></td>");
     td = $("<td></td>").attr("colspan", 5);
     let div = $("<div></div>").addClass("wrapper main_axe_center second_axe_center");
