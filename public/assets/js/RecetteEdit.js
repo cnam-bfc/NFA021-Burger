@@ -63,11 +63,8 @@ $(function () {
         let optionNotMultiple = $("<option>").attr("value", "0").text("Non");
         selectChoixMultiple.append(optionNotMultiple);
         celluleDiv.append(selectChoixMultiple);
-                // Ajout de la bibliothèque select2
-                selectChoixMultiple.select2({
-                    width: 'element',
-                    placeholder: "Choix multiple",
-                });
+        // Ajout de la bibliothèque select2
+        selectChoixMultiple.select2();
         cellule.append(celluleDiv);
         ligne.append(cellule);
 
