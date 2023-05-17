@@ -19,6 +19,7 @@
     height: 100%;
     max-width: 300px;
     max-height: 300px;
+    margin: 0 10px 10px 10px;
 }
 
 #informations_generales .box_contenu i {

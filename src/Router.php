@@ -19,6 +19,15 @@ class Router
         'install/install_fournisseurs' => ["controller" => "InstallController", "method" => "installFournisseurs"],
         'install/finish' => ["controller" => "InstallController", "method" => "finish"],
 
+        // Authentification
+        'connexion' => ["controller" => "AuthentificationController", "method" => "renderViewConnexion"],
+        'connexion/connexion' => ["controller" => "AuthentificationController", "method" => "connexion"],
+        'mot_de_passe_oublie' => ["controller" => "AuthentificationController", "method" => "renderViewMotDePasseOublie"],
+        'mot_de_passe_oublie/envoi_mail' => ["controller" => "AuthentificationController", "method" => "envoiMailMotDePasseOublie"],
+        'deconnexion' => ["controller" => "AuthentificationController", "method" => "deconnexion"],
+        'inscription' => ["controller" => "AuthentificationController", "method" => "renderViewInscription"],
+        'inscription/inscription' => ["controller" => "AuthentificationController", "method" => "inscription"],
+
         // PARTIE CLIENT
         // Accueil client
         'accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilClient"],
@@ -34,14 +43,14 @@ class Router
         // Visu burger
         'visuModifsBurgers' => ["controller" => "ModifsBurgersController", "method" => "renderViewPimpBurgers"],
         'visuModifsBurgers/ingredients' => ["controller" => "ModifsBurgersController", "method" => "getIngredients"],
-        'visuModifsBurgers/ajouterAuPanier' => ["controller"=>"ModifsBurgersController", "method"=>"ajoutPanier"],
+        'visuModifsBurgers/ajouterAuPanier' => ["controller" => "ModifsBurgersController", "method" => "ajoutPanier"],
 
         // Panier
-        'panier' =>["controller"=>"PanierController", "method" => "renderViewPanier"],
+        'panier' => ["controller" => "PanierController", "method" => "renderViewPanier"],
 
         // Choix entre Livraison et Click&Collect
         'collectLivraison' => ["controller" => "CollectLivraisonController", "method" => "renderViewCollectORDelivery"],
-        'collectLivraison/valider' =>["controller" => "CollectLivraisonController", "method" => "validation"],
+        'collectLivraison/valider' => ["controller" => "CollectLivraisonController", "method" => "validation"],
 
         // PARTIE GÉRANT
         // Statistiques
