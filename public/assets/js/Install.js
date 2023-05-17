@@ -653,7 +653,7 @@ $(function () {
 
                     // On redirige vers la page de connexion
                     setTimeout(function () {
-                        window.location.href = 'login';
+                        window.location.href = 'connexion';
                     }, 1000);
                 }
                 // Si l'installation finale à échouée
