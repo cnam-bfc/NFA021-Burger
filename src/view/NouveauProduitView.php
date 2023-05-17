@@ -93,7 +93,7 @@
                     </select><br><br>
 
                     <label for="prix">Prix :</label><br>
-                    <input id="prix" name="prix" class="courbe remplir" value=<?php echo $ingredient->getPrix(); ?> required><br><br>
+                    <input id="prix" name="prix" class="courbe remplir" value=<?php echo $ingredient->getPrixFournisseur(); ?> required><br><br>
 
                     <label for="qteStock">Stock :</label><br>
                     <input id="qteStock" name="qteStock" class="courbe remplir" value=<?php echo $ingredient->getQuantiteStock(); ?> required><br><br>
