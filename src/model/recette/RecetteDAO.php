@@ -189,7 +189,7 @@ class RecetteDAO extends DAO
     public function selectTop3Recette()
     {
         // Requête
-        $sqlQuery = "SELECT * 
+        $sqlQuery = "SELECT br.* 
                     FROM burger_recette AS br
                     LEFT JOIN burger_recette_finale AS brf ON br.id_recette = brf.id_recette_fk
                     LEFT JOIN burger_commande_client AS bcc ON brf.id_commande_client_fk = bcc.id_commande_client

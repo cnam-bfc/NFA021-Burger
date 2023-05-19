@@ -34,7 +34,7 @@ class AccueilController extends Controller
             foreach ($topRecettes as $recette) {
                 $result[] = array(
                     "nom" => $recette->getNom(),
-                    "image" => IMG
+                    "image" => IMG . 'recettes' . DIRECTORY_SEPARATOR . $recette->getId() . DIRECTORY_SEPARATOR . 'presentation.img',
                 );
             }
         } else {
