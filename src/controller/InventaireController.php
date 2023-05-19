@@ -71,9 +71,11 @@ class InventaireController extends Controller
             // on traite les données et on actualise la base de données
             $ingredientDAO = new IngredientDAO();
             $result = array();
+            $dateArchive = date('Y-m-d H:i:s');
             foreach ($data as $ingredient) {
                 $ingredientAUpdate = $ingredientDAO->selectById($ingredient['id']);
                 $ingredientAUpdate->setQuantiteStock($ingredient['stock']);
+                $ingredientAUpdate->setDateDernierInventaire($dateArchive);
                 $ingredientDAO->update($ingredientAUpdate);
             }
 

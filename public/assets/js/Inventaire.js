@@ -22,7 +22,7 @@ let validationInventaire = function () {
     console.log('Inventaire.js - validationInventaire');
 
     // vérifier si on a des lignes dans le tableau
-    if ($('#tableau_inventaire>tbody>tr[data_type]').length == 0) {
+    if ($('#tableau_inventaire>tbody>tr[data_id]').length == 0) {
         alert("Vous n'avez aucun ingrédient à mettre à jour");
         return;
     }
@@ -31,7 +31,7 @@ let validationInventaire = function () {
     let error = false;
     // TODO : modifier le foreach pour mettre une autre boucle afin de l'arrêter en cas d'erreur
     // on boucle pour récupérer les données et ainsi préparer le json à envoyer à la méthode ajax pour la mise à jour
-    $('#tableau_inventaire>tbody>tr[data_type]').each(function () {
+    $('#tableau_inventaire>tbody>tr[data_id]').each(function () {
         let id = $(this).attr('data_id');
         let nom = $(this).find('td:nth-child(2)').text();
         let stock = $(this).find('td:nth-child(4)>div>input').val();
