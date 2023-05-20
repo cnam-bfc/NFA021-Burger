@@ -22,8 +22,7 @@
     <script src="<?php echo ASSETS ?>select2/js/i18n/fr.js"></script>
     <!-- Fontawesome -->
     <link href="<?php echo ASSETS ?>fontawesome/css/fontawesome.min.css" rel="stylesheet">
-    <link href="<?php echo ASSETS ?>fontawesome/css/brands.min.css" rel="stylesheet">
-    <link href="<?php echo ASSETS ?>fontawesome/css/solid.min.css" rel="stylesheet">
+    <link href="<?php echo ASSETS ?>fontawesome/css/all.min.css" rel="stylesheet">
     <!-- FIN Bibliothèques -->
 
     <link rel="stylesheet" href="<?php echo CSS ?>element/Reset.css">

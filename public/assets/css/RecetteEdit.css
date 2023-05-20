@@ -30,6 +30,16 @@
     margin-left: 10px;
 }
 
+#tableau_composition tfoot td>div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#tableau_composition tfoot td>div>div {
+    flex: 1;
+}
+
 #select_ajouter_ingredient {
     min-width: 200px;
 }
