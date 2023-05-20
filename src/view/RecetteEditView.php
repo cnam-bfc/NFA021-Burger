@@ -58,20 +58,25 @@
                             <tr></tr>
                         </thead>
                         <tbody>
+                            <tr>
+                                <td colspan="6">
+                                    <br>Aucun ingrédients<br><br>
+                                </td>
+                            </tr>
                         </tbody>
                         <tfoot>
                             <tr></tr>
                             <tr>
                                 <td colspan="6">
                                     <div>
-                                        <!-- Retour à la liste des ingrédients -->
                                         <div>
-                                            <button type="button" class="bouton" id="bouton_retour_liste_ingredients" hidden><i class="fa-solid fa-arrow-left"></i> Retour à la liste des ingrédients</button>
+                                            <!-- Annuler la sélection multiple -->
+                                            <button type="button" class="bouton" id="bouton_annuler_selection_multiple" hidden><i class="fa-solid fa-times"></i> Annuler la sélection multiple</button>
                                         </div>
 
                                         <!-- Ajout d'un ingrédient -->
                                         <div>
-                                            <button type="button" class="bouton" id="bouton_ajouter_new_ingredient" disabled><i class="fa-solid fa-carrot"></i> Ajouter un ingrédient</button>
+                                            <button type="button" class="bouton" id="bouton_ajouter_new_ingredient"><i class="fa-solid fa-carrot"></i> Ajouter un ingrédient</button>
                                             <div id="ajouter_ingredient" hidden>
                                                 <select id="select_ajouter_ingredient">
 
@@ -80,9 +85,11 @@
                                             </div>
                                         </div>
 
-                                        <!-- Ajout d'une sélection multiple -->
                                         <div>
-                                            <button type="button" class="bouton" id="bouton_ajouter_new_selection_multiple" disabled><i class="fa-solid fa-rectangle-list"></i> Ajouter une sélection multiple</button>
+                                            <!-- Ajout d'une sélection multiple -->
+                                            <button type="button" class="bouton" id="bouton_ajouter_new_selection_multiple"><i class="fa-solid fa-rectangle-list"></i> Ajouter une sélection multiple</button>
+                                            <!-- Enregistrer la sélection multiple -->
+                                            <button type="button" class="bouton" id="bouton_enregistrer_selection_multiple" hidden><i class="fa-solid fa-check"></i> Enregistrer la sélection multiple</button>
                                         </div>
                                     </div>
                                 </td>

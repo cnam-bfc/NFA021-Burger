@@ -14,169 +14,206 @@ $(function () {
     const ajouterIngredient = $("#ajouter_ingredient");
     const selectAjouterIngredient = $("#select_ajouter_ingredient");
     const boutonAnnulerAjouterIngredient = $("#bouton_annuler_ajouter_ingredient");
+    const boutonAjouterSelectionMultiple = $("#bouton_ajouter_new_selection_multiple");
+    const boutonAnnulerSelectionMultiple = $("#bouton_annuler_selection_multiple");
+    const boutonEnregistrerSelectionMultiple = $("#bouton_enregistrer_selection_multiple");
 
-    let tableauCompositionEmpty = true;
+    let ingredients = [];
 
     /*****************************
      ********* FONCTIONS *********
      *****************************/
 
-    // Fonction permettant d'ajouter une ligne contenant un ingredient dans le tableau de composition de la recette
-    function addIngredient(data) {
-        let ligne = $("<tr>");
-        ligne.attr("data-id", data.id);
+    // Fonction permettant d'actualiser l'affichage du tableau de composition de la recette
+    function refreshIngredients() {
+        // Supprimer toutes les lignes du tableau
+        bodyTableauComposition.empty();
 
-        // Image
-        let cellule = $("<td>");
-        cellule.append($("<img>").attr("src", data.image));
-        ligne.append(cellule);
-
-        // Nom
-        cellule = $("<td>");
-        cellule.text(data.nom);
-        ligne.append(cellule);
-
-        // Quantité
-        cellule = $("<td>");
-        let celluleDiv = $("<div>");
-        celluleDiv.addClass("wrapper main_axe_center second_axe_center");
-        let inputQuantite = $("<input>").attr({
-            type: "number",
-            min: 0,
-            minlenght: 1,
-            max: 999999,
-            step: 1,
-            value: data.quantite,
-            required: true
-        }).addClass("input quantite_ingredient");
-        celluleDiv.append(inputQuantite);
-        // Ajouter l'unité
-        celluleDiv.append($("<span>").text(data.unite));
-        cellule.append(celluleDiv);
-        ligne.append(cellule);
-
-        // Optionnel
-        cellule = $("<td>");
-        celluleDiv = $("<div>");
-        celluleDiv.addClass("wrapper main_axe_center second_axe_center");
-        let inputOptionnel = $("<input>").attr({
-            type: "checkbox",
-            checked: data.optionnel
-        }).addClass("input optionnel_ingredient");
-        celluleDiv.append(inputOptionnel);
-        cellule.append(celluleDiv);
-        ligne.append(cellule);
-
-        // Prix
-        cellule = $("<td>");
-        celluleDiv = $("<div>");
-        celluleDiv.addClass("wrapper main_axe_center second_axe_center");
-        let inputPrix = $("<input>").attr({
-            type: "number",
-            min: 0,
-            max: 99.99,
-            step: 0.01,
-            value: data.prix,
-            required: true
-        }).addClass("input prix_ingredient");
-        celluleDiv.append(inputPrix);
-        celluleDiv.append($("<span>").text("€"));
-        cellule.append(celluleDiv);
-        ligne.append(cellule);
-
-        // Désactiver le champ prix si l'ingrédient est obligatoire
-        // A chaque changement de valeur du champ optionnel
-        inputOptionnel.change(function () {
-            if (inputOptionnel.prop("checked")) {
-                inputPrix.prop("disabled", false);
-                // Si le champ prix possède un attribut data, le stocker dans le champ
-                if (inputPrix.attr("data-value") !== undefined) {
-                    inputPrix.val(inputPrix.attr("data-value"));
-                    inputPrix.removeAttr("data-value");
-                }
-            } else {
-                inputPrix.prop("disabled", true);
-                // Si le champ prix possède une valeur, la stocker un attribut data
-                if (inputPrix.val() !== "") {
-                    inputPrix.attr("data-value", inputPrix.val());
-                    inputPrix.val("");
-                }
-            }
-        });
-        // Initialiser la valeur
-        if (!data.optionnel) {
-            inputPrix.prop("disabled", true);
+        // Si aucun ingrédient n'est présent, afficher "Aucun résultats"
+        if (ingredients.length == 0) {
+            let ligne = $("<tr>");
+            let cellule = $("<td>");
+            cellule.attr("colspan", 6);
+            cellule.html("<br>Aucun ingrédients<br><br>");
+            ligne.append(cellule);
+            bodyTableauComposition.append(ligne);
         }
-
-        // Boutons d'action rapide
-        cellule = $("<td>");
-        celluleDiv = $("<div>");
-        celluleDiv.addClass("wrapper main_axe_center second_axe_center");
-
-        // Bouton monter
-        let boutonMonter = $("<button>").attr("type", "button").addClass("bouton");
-        boutonMonter.click(function () {
-            // Récupérer la ligne précédente
-            let lignePrecedente = ligne.prev();
-            // Si la ligne précédente existe
-            if (lignePrecedente.length > 0) {
-                // Déplacer la ligne actuelle avant la ligne précédente
-                ligne.insertBefore(lignePrecedente);
-            }
-        });
-        boutonMonter.append($("<i>").addClass("fa-solid fa-arrow-up"));
-        celluleDiv.append(boutonMonter);
-
-        // Bouton descendre
-        let boutonDescendre = $("<button>").attr("type", "button").addClass("bouton");
-        boutonDescendre.click(function () {
-            // Récupérer la ligne suivante
-            let ligneSuivante = ligne.next();
-            // Si la ligne suivante existe
-            if (ligneSuivante.length > 0) {
-                // Déplacer la ligne actuelle après la ligne suivante
-                ligne.insertAfter(ligneSuivante);
-            }
-        });
-        boutonDescendre.append($("<i>").addClass("fa-solid fa-arrow-down"));
-        celluleDiv.append(boutonDescendre);
-
-        // Bouton supprimer
-        let boutonSupprimer = $("<button>").attr("type", "button").addClass("bouton");
-        boutonSupprimer.click(function () {
-            // Supprimer la ligne
-            ligne.remove();
-
-            // Si le tableau est vide
-            if (bodyTableauComposition.children().length === 0) {
-                // Ajouter la ligne vide
-                tableauCompositionEmpty = true;
+        // Sinon, ajouter chaque ingrédient dans une nouvelle ligne
+        else {
+            ingredients.forEach(element => {
                 let ligne = $("<tr>");
+                ligne.attr("data-id", element.id);
+
+                // Image
                 let cellule = $("<td>");
-                cellule.attr("colspan", 6);
-                cellule.html("<br>Aucun ingrédients<br><br>");
+                cellule.append($("<img>").attr("src", element.image));
                 ligne.append(cellule);
+
+                // Nom
+                cellule = $("<td>");
+                cellule.text(element.nom);
+                ligne.append(cellule);
+
+                // Quantité
+                cellule = $("<td>");
+                let celluleDiv = $("<div>");
+                celluleDiv.addClass("wrapper main_axe_center second_axe_center");
+                let inputQuantite = $("<input>").attr({
+                    type: "number",
+                    min: 0,
+                    minlenght: 1,
+                    max: 999999,
+                    step: 1,
+                    value: element.quantite,
+                    required: true
+                }).addClass("input");
+                celluleDiv.append(inputQuantite);
+                // Ajouter l'unité
+                celluleDiv.append($("<span>").text(element.unite));
+                cellule.append(celluleDiv);
+                ligne.append(cellule);
+
+                // Actualiser la quantité de l'ingrédient dans le tableau javascript
+                inputQuantite.change(function () {
+                    element.quantite = inputQuantite.val();
+                });
+
+                // Optionnel
+                cellule = $("<td>");
+                celluleDiv = $("<div>");
+                celluleDiv.addClass("wrapper main_axe_center second_axe_center");
+                let inputOptionnel = $("<input>").attr({
+                    type: "checkbox",
+                    checked: element.optionnel
+                }).addClass("input");
+                celluleDiv.append(inputOptionnel);
+                cellule.append(celluleDiv);
+                ligne.append(cellule);
+
+                // Prix
+                cellule = $("<td>");
+                celluleDiv = $("<div>");
+                celluleDiv.addClass("wrapper main_axe_center second_axe_center");
+                let inputPrix = $("<input>").attr({
+                    type: "number",
+                    min: 0,
+                    max: 99.99,
+                    step: 0.01,
+                    value: element.prix,
+                    required: true
+                }).addClass("input");
+                celluleDiv.append(inputPrix);
+                celluleDiv.append($("<span>").text("€"));
+                cellule.append(celluleDiv);
+                ligne.append(cellule);
+
+                // A chaque changement de valeur du champ optionnel
+                inputOptionnel.change(function () {
+                    if (inputOptionnel.prop("checked")) {
+                        element.optionnel = true;
+                        inputPrix.prop("disabled", false);
+                        // Si l'ingrédient possède un prix, l'afficher
+                        if (element.prix !== undefined) {
+                            inputPrix.val(element.prix);
+                        }
+                    } else {
+                        element.optionnel = false;
+                        inputPrix.prop("disabled", true);
+                        // Si le champ prix possède une valeur, l'effacer dans le champ
+                        if (inputPrix.val() !== "") {
+                            inputPrix.val("");
+                        }
+                    }
+                });
+
+                // A chaque changement de valeur du champ prix
+                inputPrix.change(function () {
+                    element.prix = inputPrix.val();
+                });
+
+                // Désactiver le champ prix si l'ingrédient est obligatoire
+                if (!element.optionnel) {
+                    inputPrix.prop("disabled", true);
+                }
+
+                // Boutons d'action rapide
+                cellule = $("<td>");
+                celluleDiv = $("<div>");
+                celluleDiv.addClass("wrapper main_axe_center second_axe_center");
+
+                // Bouton monter
+                let boutonMonter = $("<button>").attr("type", "button").addClass("bouton");
+                boutonMonter.click(function () {
+                    // Récupérer la ligne précédente
+                    let lignePrecedente = ligne.prev();
+                    // Si la ligne précédente existe
+                    if (lignePrecedente.length > 0) {
+                        // Déplacer la ligne actuelle avant la ligne précédente
+                        // Dans la vue (HTML)
+                        ligne.insertBefore(lignePrecedente);
+                        // Dans le modèle (Javascript)
+                        let index = ingredients.indexOf(element);
+                        ingredients.splice(index, 1);
+                        ingredients.splice(index - 1, 0, element);
+                    }
+                });
+                boutonMonter.append($("<i>").addClass("fa-solid fa-arrow-up"));
+                celluleDiv.append(boutonMonter);
+
+                // Bouton descendre
+                let boutonDescendre = $("<button>").attr("type", "button").addClass("bouton");
+                boutonDescendre.click(function () {
+                    // Récupérer la ligne suivante
+                    let ligneSuivante = ligne.next();
+                    // Si la ligne suivante existe
+                    if (ligneSuivante.length > 0) {
+                        // Déplacer la ligne actuelle après la ligne suivante
+                        // Dans la vue (HTML)
+                        ligne.insertAfter(ligneSuivante);
+                        // Dans le modèle (Javascript)
+                        let index = ingredients.indexOf(element);
+                        ingredients.splice(index, 1);
+                        ingredients.splice(index + 1, 0, element);
+                    }
+                });
+                boutonDescendre.append($("<i>").addClass("fa-solid fa-arrow-down"));
+                celluleDiv.append(boutonDescendre);
+
+                // Bouton supprimer
+                let boutonSupprimer = $("<button>").attr("type", "button").addClass("bouton");
+                boutonSupprimer.click(function () {
+                    // Supprimer la ligne
+                    // Dans la vue (HTML)
+                    ligne.remove();
+                    // Dans le modèle (Javascript)
+                    let index = ingredients.indexOf(element);
+                    ingredients.splice(index, 1);
+
+                    // Si le tableau est vide
+                    if (bodyTableauComposition.children().length === 0) {
+                        // Ajouter la ligne vide
+                        let ligne = $("<tr>");
+                        let cellule = $("<td>");
+                        cellule.attr("colspan", 6);
+                        cellule.html("<br>Aucun ingrédients<br><br>");
+                        ligne.append(cellule);
+                        bodyTableauComposition.append(ligne);
+                    }
+                });
+                boutonSupprimer.append($("<i>").addClass("fa-solid fa-trash"));
+                celluleDiv.append(boutonSupprimer);
+
+                cellule.append(celluleDiv);
+                ligne.append(cellule);
+
+                // Ajout de la ligne au tableau
                 bodyTableauComposition.append(ligne);
-            }
-        });
-        boutonSupprimer.append($("<i>").addClass("fa-solid fa-trash"));
-        celluleDiv.append(boutonSupprimer);
-
-        cellule.append(celluleDiv);
-        ligne.append(cellule);
-
-        // Supprimer la ligne vide si elle existe
-        if (tableauCompositionEmpty) {
-            bodyTableauComposition.empty();
-            tableauCompositionEmpty = false;
+            });
         }
-
-        // Ajout de la ligne au tableau
-        bodyTableauComposition.append(ligne);
     }
 
     // Fonction permettant d'actualiser le tableau de composition de la recette
-    function refreshIngredients() {
+    function refreshDataIngredients() {
         // Désactiver l'ajout d'ingrédient
         boutonAjouterNewIngredient.prop("disabled", true);
 
@@ -203,25 +240,9 @@ $(function () {
             },
             dataType: "json",
             success: function (data) {
-                // Supprimer la ligne de chargement
-                bodyTableauComposition.empty();
-
-                // Si aucun ingrédient n'a été trouvée, afficher "Aucun résultats"
-                if (data['data'].length == 0) {
-                    tableauCompositionEmpty = true;
-                    let ligne = $("<tr>");
-                    let cellule = $("<td>");
-                    cellule.attr("colspan", 6);
-                    cellule.html("<br>Aucun ingrédients<br><br>");
-                    ligne.append(cellule);
-                    bodyTableauComposition.append(ligne);
-                }
-                // Sinon, ajouter chaque ingrédient dans une nouvelle ligne
-                else {
-                    data['data'].forEach(element => {
-                        addIngredient(element);
-                    });
-                }
+                // Actualisation des ingrédients
+                ingredients = data['data'];
+                refreshIngredients();
 
                 // Activer l'ajout d'ingrédient
                 boutonAjouterNewIngredient.prop("disabled", false);
@@ -250,20 +271,14 @@ $(function () {
             formDatas.append("id_recette", idRecette);
         }
 
-        // Récupération des ingrédients
-        let ingredients_recette = [];
-        bodyTableauComposition.children().each(function () {
-            let ingredient_recette = {};
-            // Récupération de l'id de l'ingrédient
-            ingredient_recette.id_ingredient = $(this).attr("data-id");
-            ingredient_recette.quantite_ingredient = $(this).find("input[class~='quantite_ingredient']").val();
-            ingredient_recette.optionnel_ingredient = $(this).find("input[class~='optionnel_ingredient']").prop("checked");
-            if (ingredient_recette.optionnel_ingredient) {
-                ingredient_recette.prix_ingredient = $(this).find("input[class~='prix_ingredient']").val();
-            }
-            ingredients_recette.push(ingredient_recette);
+        // Construction de l'ordre des ingrédients
+        let ordre = 1;
+        ingredients.forEach(function (element) {
+            element.ordre = ordre;
+            ordre++;
         });
-        formDatas.append("ingredients_recette", JSON.stringify(ingredients_recette));
+        // Ajout des ingrédients au formulaire
+        formDatas.append("ingredients_recette", JSON.stringify(ingredients));
 
         // Désactivation des champs du formulaire
         let disabledElements = [];
@@ -321,7 +336,7 @@ $(function () {
                             enregistrerRecette.css('background-color', '');
 
                             // On actualise la composition de la recette
-                            refreshIngredients();
+                            refreshDataIngredients();
                         }
                         // Sinon si on ajoute une recette, on redirige vers la page de modification de la recette
                         else {
@@ -449,7 +464,10 @@ $(function () {
         let ingredient = JSON.parse(data.id);
 
         // Ajout de l'ingrédient dans la liste des ingrédients
-        addIngredient(ingredient);
+        ingredients.push(ingredient);
+
+        // Actualisation de la liste des ingrédients
+        refreshIngredients();
 
         // Suppression de la bibliothèque select2
         selectAjouterIngredient.select2('destroy');
@@ -493,6 +511,6 @@ $(function () {
     // Si on est sur la page de modification d'une recette (pathname de l'url si termine par /recettes/modifier)
     if (url.pathname.endsWith("/recettes/modifier")) {
         // On actualise la composition de la recette
-        refreshIngredients();
+        refreshDataIngredients();
     }
 });

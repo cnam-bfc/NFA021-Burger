@@ -62,6 +62,20 @@ class RecetteSelectionMultipleDAO extends DAO
     }
 
     /**
+     * Méthode permettant de supprimer tous les objets liés à une recette
+     * 
+     * @param int $idRecette (id de la recette)
+     */
+    public function deleteAllByIdRecette($idRecette)
+    {
+        // Requête
+        $sqlQuery = "DELETE FROM burger_recette_selection_multiple WHERE id_recette_fk = :id_recette_fk";
+        $statement = $this->pdo->prepare($sqlQuery);
+        $statement->bindValue(':id_recette_fk', $idRecette, PDO::PARAM_INT);
+        $statement->execute();
+    }
+
+    /**
      * Méthode permettant de mettre à jour un objet
      * 
      * @param RecetteSelectionMultiple $recetteSelectionMultiple (objet à mettre à jour)
