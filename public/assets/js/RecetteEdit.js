@@ -14,11 +14,12 @@ $(function () {
     const ajouterIngredient = $("#ajouter_ingredient");
     const selectAjouterIngredient = $("#select_ajouter_ingredient");
     const boutonAnnulerAjouterIngredient = $("#bouton_annuler_ajouter_ingredient");
-    const boutonAjouterSelectionMultiple = $("#bouton_ajouter_new_selection_multiple");
+    const boutonAjouterNewSelectionMultiple = $("#bouton_ajouter_new_selection_multiple");
     const boutonAnnulerSelectionMultiple = $("#bouton_annuler_selection_multiple");
     const boutonEnregistrerSelectionMultiple = $("#bouton_enregistrer_selection_multiple");
 
     let ingredients = [];
+    let ingredientSelectionMultiple = null;
     let ingredientsSelectionMultiple = null;
 
     /*****************************
@@ -30,10 +31,13 @@ $(function () {
         // Supprimer toutes les lignes du tableau
         bodyTableauComposition.empty();
 
+        let selectionMultiple;
         let composition;
         if (ingredientsSelectionMultiple !== null) {
+            selectionMultiple = true;
             composition = ingredientsSelectionMultiple;
         } else {
+            selectionMultiple = false;
             composition = ingredients;
         }
 
@@ -59,7 +63,14 @@ $(function () {
 
                 // Nom
                 cellule = $("<td>");
-                cellule.text(element.nom);
+                if (element.ingredients !== undefined) {
+                    cellule.append("Sélection multiple : ");
+                    element.ingredients.forEach(element => {
+                        cellule.append($("<li>").text(element.quantite + element.unite + " " + element.nom));
+                    });
+                } else {
+                    cellule.text(element.nom);
+                }
                 ligne.append(cellule);
 
                 // Quantité
@@ -97,6 +108,16 @@ $(function () {
                 celluleDiv.append(inputOptionnel);
                 cellule.append(celluleDiv);
                 ligne.append(cellule);
+
+                // Si on est en sélection multiple, cacher le champ optionnel
+                if (selectionMultiple) {
+                    inputOptionnel.parent().hide();
+                }
+
+                // Si l'élément est une sélection multiple, cacher le champ optionnel
+                if (element.ingredients !== undefined) {
+                    inputOptionnel.parent().hide();
+                }
 
                 // Prix
                 cellule = $("<td>");
@@ -144,6 +165,16 @@ $(function () {
                     inputPrix.prop("disabled", true);
                 }
 
+                // Cacher le champ prix on est en sélection multiple
+                if (selectionMultiple) {
+                    inputPrix.parent().hide();
+                }
+
+                // Cacher le champ prix si l'ingrédient est une sélection multiple
+                if (element.ingredients !== undefined) {
+                    inputPrix.parent().hide();
+                }
+
                 // Boutons d'action rapide
                 cellule = $("<td>");
                 celluleDiv = $("<div>");
@@ -168,6 +199,11 @@ $(function () {
                 boutonMonter.append($("<i>").addClass("fa-solid fa-arrow-up"));
                 celluleDiv.append(boutonMonter);
 
+                // Cacher le bouton monter si on est en sélection multiple
+                if (selectionMultiple) {
+                    boutonMonter.hide();
+                }
+
                 // Bouton descendre
                 let boutonDescendre = $("<button>").attr("type", "button").addClass("bouton");
                 boutonDescendre.click(function () {
@@ -186,6 +222,24 @@ $(function () {
                 });
                 boutonDescendre.append($("<i>").addClass("fa-solid fa-arrow-down"));
                 celluleDiv.append(boutonDescendre);
+
+                // Cacher le bouton descendre si on est en sélection multiple
+                if (selectionMultiple) {
+                    boutonDescendre.hide();
+                }
+
+                // Bouton modifier
+                let boutonModifier = $("<button>").attr("type", "button").addClass("bouton");
+                boutonModifier.click(function () {
+                    onModifierSelectionMultiple(element);
+                });
+                boutonModifier.append($("<i>").addClass("fa-solid fa-edit"));
+                celluleDiv.append(boutonModifier);
+
+                // Cacher le bouton modifier si l'élément n'est pas une sélection multiple
+                if (element.ingredients === undefined) {
+                    boutonModifier.hide();
+                }
 
                 // Bouton supprimer
                 let boutonSupprimer = $("<button>").attr("type", "button").addClass("bouton");
@@ -224,7 +278,7 @@ $(function () {
     function refreshDataIngredients() {
         // Désactiver les boutons
         boutonAjouterNewIngredient.prop("disabled", true);
-        boutonAjouterSelectionMultiple.prop("disabled", true);
+        boutonAjouterNewSelectionMultiple.prop("disabled", true);
 
         // Récupération de l'id de la recette
         let idRecette = url.searchParams.get("id");
@@ -255,7 +309,7 @@ $(function () {
 
                 // Activer les boutons
                 boutonAjouterNewIngredient.prop("disabled", false);
-                boutonAjouterSelectionMultiple.prop("disabled", false);
+                boutonAjouterNewSelectionMultiple.prop("disabled", false);
             },
             error: function (data) {
                 // Supprimer la ligne de chargement
@@ -474,7 +528,11 @@ $(function () {
         let ingredient = JSON.parse(data.id);
 
         // Ajout de l'ingrédient dans la liste des ingrédients
-        ingredients.push(ingredient);
+        if (ingredientsSelectionMultiple !== null) {
+            ingredientsSelectionMultiple.push(ingredient);
+        } else {
+            ingredients.push(ingredient);
+        }
 
         // Actualisation de la liste des ingrédients
         refreshIngredients();
@@ -491,6 +549,85 @@ $(function () {
 
         // Afficher le bouton d'ajout d'ingrédient
         boutonAjouterNewIngredient.show();
+    }
+
+    // Lors de l'ajout d'une sélection multiple d'ingrédients
+    function onAjouterNewSelectionMultiple() {
+        // Création de la liste des ingrédients
+        ingredientsSelectionMultiple = [];
+
+        // Actualisation de la liste des ingrédients
+        refreshIngredients();
+
+        // Cache le bouton d'ajout d'une sélection multiple d'ingrédients
+        boutonAjouterNewSelectionMultiple.hide();
+
+        // Afficher les boutons d'annulation et de validation de la sélection multiple d'ingrédients
+        boutonAnnulerSelectionMultiple.show();
+        boutonEnregistrerSelectionMultiple.show();
+    }
+
+    // Lors de la modification d'une sélection multiple d'ingrédients
+    function onModifierSelectionMultiple(element) {
+        // Création de la liste des ingrédients
+        ingredientSelectionMultiple = element;
+        // Duplication de la liste des ingrédients
+        ingredientsSelectionMultiple = element.ingredients.slice();
+
+        // Actualisation de la liste des ingrédients
+        refreshIngredients();
+
+        // Cache le bouton de modification d'une sélection multiple d'ingrédients
+        boutonAjouterNewSelectionMultiple.hide();
+
+        // Afficher les boutons d'annulation et de validation de la sélection multiple d'ingrédients
+        boutonAnnulerSelectionMultiple.show();
+        boutonEnregistrerSelectionMultiple.show();
+    }
+
+    // Lors de l'annulation de l'ajout d'une sélection multiple d'ingrédients
+    function onAnnulerSelectionMultiple() {
+        // Suppression de la liste des ingrédients
+        ingredientsSelectionMultiple = null;
+
+        // Actualisation de la liste des ingrédients
+        refreshIngredients();
+
+        // Cache les boutons d'annulation et de validation de la sélection multiple d'ingrédients
+        boutonAnnulerSelectionMultiple.hide();
+        boutonEnregistrerSelectionMultiple.hide();
+
+        // Afficher le bouton d'ajout d'une sélection multiple d'ingrédients
+        boutonAjouterNewSelectionMultiple.show();
+    }
+
+    // Lors de l'enregistrement de la sélection multiple d'ingrédients
+    function onEnregistrerSelectionMultiple() {
+        // Si il s'agit d'un ajout d'une sélection multiple d'ingrédients
+        if (ingredientSelectionMultiple === null) {
+            // Ajout de la sélection multiple d'ingrédients dans la liste des ingrédients
+            ingredients.push({
+                ingredients: ingredientsSelectionMultiple
+            });
+        }
+        // Si il s'agit d'une modification d'une sélection multiple d'ingrédients
+        else {
+            // Modification de la sélection multiple d'ingrédients dans la liste des ingrédients
+            ingredientSelectionMultiple.ingredients = ingredientsSelectionMultiple;
+        }
+
+        // Suppression de la liste des ingrédients
+        ingredientsSelectionMultiple = null;
+
+        // Actualisation de la liste des ingrédients
+        refreshIngredients();
+
+        // Cache les boutons d'annulation et de validation de la sélection multiple d'ingrédients
+        boutonAnnulerSelectionMultiple.hide();
+        boutonEnregistrerSelectionMultiple.hide();
+
+        // Afficher le bouton d'ajout d'une sélection multiple d'ingrédients
+        boutonAjouterNewSelectionMultiple.show();
     }
 
     /*****************************************
@@ -516,6 +653,21 @@ $(function () {
     // Lors du clic sur le bouton d'annulation de l'ajout d'un nouvel ingrédient
     boutonAnnulerAjouterIngredient.click(function () {
         onAnnulerAjouterIngredient();
+    });
+
+    // Lors du clic sur le bouton d'ajout d'une sélection multiple d'ingrédients
+    boutonAjouterNewSelectionMultiple.click(function () {
+        onAjouterNewSelectionMultiple();
+    });
+
+    // Lors du clic sur le bouton d'annulation de la sélection multiple d'ingrédients
+    boutonAnnulerSelectionMultiple.click(function () {
+        onAnnulerSelectionMultiple();
+    });
+
+    // Lors du clic sur le bouton d'enregistrement de la sélection multiple d'ingrédients
+    boutonEnregistrerSelectionMultiple.click(function () {
+        onEnregistrerSelectionMultiple();
     });
 
     // Si on est sur la page de modification d'une recette (pathname de l'url si termine par /recettes/modifier)

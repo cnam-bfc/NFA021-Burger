@@ -26,6 +26,11 @@
     font-size: small;
 }
 
+#tableau_composition tbody tr td li {
+    text-align: start;
+    white-space: nowrap;
+}
+
 #tableau_composition tbody td input+span:not(:empty) {
     margin-left: 10px;
 }
