@@ -588,6 +588,7 @@ $(function () {
     // Lors de l'annulation de l'ajout d'une sélection multiple d'ingrédients
     function onAnnulerSelectionMultiple() {
         // Suppression de la liste des ingrédients
+        ingredientSelectionMultiple = null;
         ingredientsSelectionMultiple = null;
 
         // Actualisation de la liste des ingrédients
@@ -617,6 +618,7 @@ $(function () {
         }
 
         // Suppression de la liste des ingrédients
+        ingredientSelectionMultiple = null;
         ingredientsSelectionMultiple = null;
 
         // Actualisation de la liste des ingrédients
