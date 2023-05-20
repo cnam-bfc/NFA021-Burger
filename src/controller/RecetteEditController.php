@@ -226,7 +226,6 @@ class RecetteEditController extends Controller
 
             // Construction du json de la sélection multiple
             $jsonSelectionMultiple = array(
-                'id_selection_multiple' => $recetteSelectionMultiple->getId(),
                 'ordre' => $recetteSelectionMultiple->getOrdre(),
                 'quantite' => $recetteSelectionMultiple->getQuantite(),
                 'ingredients' => $jsonSelectionMultipleIngredients
@@ -406,7 +405,7 @@ class RecetteEditController extends Controller
             if (isset($ingredient['id'])) {
                 // Récupération des paramètres
                 // Vérification valeurs présentes
-                if (!isset($ingredient['quantite']) || !isset($ingredient['optionnel'])) {
+                if (!isset($ingredient['id']) || !isset($ingredient['quantite']) || !isset($ingredient['optionnel'])) {
                     continue;
                 }
                 $ingredientId = $ingredient['id'];
@@ -447,7 +446,7 @@ class RecetteEditController extends Controller
                 }
             }
             // CAS - Sélection multiple
-            elseif (isset($ingredient['id_selection_multiple'])) {
+            elseif (isset($ingredient['ingredients'])) {
                 // Récupération des paramètres
                 // Vérification valeurs présentes
                 if (!isset($ingredient['quantite']) || !isset($ingredient['ingredients'])) {

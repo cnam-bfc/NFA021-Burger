@@ -19,6 +19,7 @@ $(function () {
     const boutonEnregistrerSelectionMultiple = $("#bouton_enregistrer_selection_multiple");
 
     let ingredients = [];
+    let ingredientsSelectionMultiple = null;
 
     /*****************************
      ********* FONCTIONS *********
@@ -29,8 +30,15 @@ $(function () {
         // Supprimer toutes les lignes du tableau
         bodyTableauComposition.empty();
 
+        let composition;
+        if (ingredientsSelectionMultiple !== null) {
+            composition = ingredientsSelectionMultiple;
+        } else {
+            composition = ingredients;
+        }
+
         // Si aucun ingrédient n'est présent, afficher "Aucun résultats"
-        if (ingredients.length == 0) {
+        if (composition.length == 0) {
             let ligne = $("<tr>");
             let cellule = $("<td>");
             cellule.attr("colspan", 6);
@@ -40,7 +48,7 @@ $(function () {
         }
         // Sinon, ajouter chaque ingrédient dans une nouvelle ligne
         else {
-            ingredients.forEach(element => {
+            composition.forEach(element => {
                 let ligne = $("<tr>");
                 ligne.attr("data-id", element.id);
 
@@ -152,9 +160,9 @@ $(function () {
                         // Dans la vue (HTML)
                         ligne.insertBefore(lignePrecedente);
                         // Dans le modèle (Javascript)
-                        let index = ingredients.indexOf(element);
-                        ingredients.splice(index, 1);
-                        ingredients.splice(index - 1, 0, element);
+                        let index = composition.indexOf(element);
+                        composition.splice(index, 1);
+                        composition.splice(index - 1, 0, element);
                     }
                 });
                 boutonMonter.append($("<i>").addClass("fa-solid fa-arrow-up"));
@@ -171,9 +179,9 @@ $(function () {
                         // Dans la vue (HTML)
                         ligne.insertAfter(ligneSuivante);
                         // Dans le modèle (Javascript)
-                        let index = ingredients.indexOf(element);
-                        ingredients.splice(index, 1);
-                        ingredients.splice(index + 1, 0, element);
+                        let index = composition.indexOf(element);
+                        composition.splice(index, 1);
+                        composition.splice(index + 1, 0, element);
                     }
                 });
                 boutonDescendre.append($("<i>").addClass("fa-solid fa-arrow-down"));
@@ -186,8 +194,8 @@ $(function () {
                     // Dans la vue (HTML)
                     ligne.remove();
                     // Dans le modèle (Javascript)
-                    let index = ingredients.indexOf(element);
-                    ingredients.splice(index, 1);
+                    let index = composition.indexOf(element);
+                    composition.splice(index, 1);
 
                     // Si le tableau est vide
                     if (bodyTableauComposition.children().length === 0) {
@@ -214,8 +222,9 @@ $(function () {
 
     // Fonction permettant d'actualiser le tableau de composition de la recette
     function refreshDataIngredients() {
-        // Désactiver l'ajout d'ingrédient
+        // Désactiver les boutons
         boutonAjouterNewIngredient.prop("disabled", true);
+        boutonAjouterSelectionMultiple.prop("disabled", true);
 
         // Récupération de l'id de la recette
         let idRecette = url.searchParams.get("id");
@@ -244,8 +253,9 @@ $(function () {
                 ingredients = data['data'];
                 refreshIngredients();
 
-                // Activer l'ajout d'ingrédient
+                // Activer les boutons
                 boutonAjouterNewIngredient.prop("disabled", false);
+                boutonAjouterSelectionMultiple.prop("disabled", false);
             },
             error: function (data) {
                 // Supprimer la ligne de chargement
