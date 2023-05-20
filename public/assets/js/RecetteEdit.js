@@ -615,6 +615,13 @@ $(function () {
 
     // Lors de l'enregistrement de la sélection multiple d'ingrédients
     function onEnregistrerSelectionMultiple() {
+        // Vérification que les champs sont valides (vérification HTML5)
+        if (!formRecette[0].checkValidity()) {
+            // Affichage des erreurs HTML5
+            formRecette[0].reportValidity();
+            return;
+        }
+
         // Si il s'agit d'un ajout d'une sélection multiple d'ingrédients
         if (ingredientSelectionMultiple === null) {
             // Ajout de la sélection multiple d'ingrédients dans la liste des ingrédients
