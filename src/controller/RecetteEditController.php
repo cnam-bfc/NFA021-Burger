@@ -53,6 +53,8 @@ class RecetteEditController extends Controller
         $uniteDAO = new UniteDAO();
         $recetteIngredientBasiqueDAO = new RecetteIngredientBasiqueDAO();
         $recetteIngredientOptionnelDAO = new RecetteIngredientOptionnelDAO();
+        $recetteSelectionMultipleDAO = new RecetteSelectionMultipleDAO();
+        $ingredientRecetteSelectionMultipleDAO = new IngredientRecetteSelectionMultipleDAO();
 
         $json = array();
         $json['data'] = array();
@@ -74,6 +76,9 @@ class RecetteEditController extends Controller
 
         // Récupération des ingrédients optionnels de la recette
         $recetteIngredientOptionnels = $recetteIngredientOptionnelDAO->selectAllByIdRecette($recette->getId());
+
+        // Récupération des ingrédients des sélections multiples de la recette
+        $recetteSelectionMultiples = $recetteSelectionMultipleDAO->selectAllByIdRecette($recette->getId());
 
         // Formatage des ingrédients basiques en json
         foreach ($recetteIngredientBasiques as $recetteIngredientBasique) {
@@ -109,8 +114,8 @@ class RecetteEditController extends Controller
 
             // Construction du json de l'ingrédient
             $jsonIngredient = array(
-                'ordre' => $recetteIngredientBasique->getOrdre(),
                 'id' => $ingredient->getId(),
+                'ordre' => $recetteIngredientBasique->getOrdre(),
                 'image' => $imageIngredient,
                 'nom' => $ingredient->getNom(),
                 'quantite' => $recetteIngredientBasique->getQuantite(),
@@ -155,8 +160,8 @@ class RecetteEditController extends Controller
 
             // Construction du json de l'ingrédient
             $jsonIngredient = array(
-                'ordre' => $recetteIngredientOptionnel->getOrdre(),
                 'id' => $ingredient->getId(),
+                'ordre' => $recetteIngredientOptionnel->getOrdre(),
                 'image' => $imageIngredient,
                 'nom' => $ingredient->getNom(),
                 'quantite' => $recetteIngredientOptionnel->getQuantite(),
@@ -166,6 +171,68 @@ class RecetteEditController extends Controller
             );
 
             $json['data'][] = $jsonIngredient;
+        }
+
+        // Formatage des ingrédients en "sélection multiple" en json
+        foreach ($recetteSelectionMultiples as $recetteSelectionMultiple) {
+            // Récupération des ingrédients de la sélection multiple
+            $selectionMultipleIngredients = $ingredientRecetteSelectionMultipleDAO->selectAllByIdSelectionMultipleRecette($recetteSelectionMultiple->getId());
+
+            // Formatage des ingrédients en json
+            $jsonSelectionMultipleIngredients = array();
+
+            foreach ($selectionMultipleIngredients as $selectionMultipleIngredient) {
+                // Récupération de l'ingrédient
+                $ingredient = $ingredientDAO->selectById($selectionMultipleIngredient->getIdIngredient());
+
+                // Si l'ingrédient n'existe pas, on passe à l'ingrédient de la recette suivant
+                if ($ingredient === null) {
+                    continue;
+                }
+
+                /** @var Unite $unite */
+                $unite = null;
+                // Récupération de l'unité
+                foreach ($unites as $uniteTmp) {
+                    if ($uniteTmp->getId() === $ingredient->getIdUnite()) {
+                        $unite = $uniteTmp;
+                        break;
+                    }
+                }
+
+                // Si l'unité n'existe pas, on passe à l'ingrédient de la recette suivant
+                if ($unite === null) {
+                    continue;
+                }
+
+                // Récupération de l'image de l'ingrédient
+                if ($ingredient->isAfficherVueEclatee()) {
+                    $imageIngredient = IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'eclate.img';
+                } else {
+                    $imageIngredient = IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'presentation.img';
+                }
+
+                // Construction du json de l'ingrédient
+                $jsonIngredient = array(
+                    'id' => $ingredient->getId(),
+                    'image' => $imageIngredient,
+                    'nom' => $ingredient->getNom(),
+                    'quantite' => $selectionMultipleIngredient->getQuantite(),
+                    'unite' => $unite->getDiminutif()
+                );
+
+                $jsonSelectionMultipleIngredients[] = $jsonIngredient;
+            }
+
+            // Construction du json de la sélection multiple
+            $jsonSelectionMultiple = array(
+                'id_selection_multiple' => $recetteSelectionMultiple->getId(),
+                'ordre' => $recetteSelectionMultiple->getOrdre(),
+                'quantite' => $recetteSelectionMultiple->getQuantite(),
+                'ingredients' => $jsonSelectionMultipleIngredients
+            );
+
+            $json['data'][] = $jsonSelectionMultiple;
         }
 
         // Tri des ingrédients par ordre
