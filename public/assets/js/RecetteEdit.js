@@ -452,10 +452,21 @@ $(function () {
         boutonAjouterNewIngredient.html('<i class="fas fa-spinner fa-spin"></i> Chargement...');
         boutonAjouterNewIngredient.prop("disabled", true);
 
+        let ingredientIgnorer = [];
+        // Si on est en mode sélection multiple, on ignore les ingrédients déjà présents
+        if (ingredientsSelectionMultiple !== null) {
+            ingredientsSelectionMultiple.forEach(function (element) {
+                ingredientIgnorer.push(element.id);
+            });
+        }
+
         // Récupération des ingrédients
         $.ajax({
             url: "ingredients",
-            method: "GET",
+            method: "POST",
+            data: {
+                ignorer: ingredientIgnorer
+            },
             dataType: "json",
             success: function (data) {
                 // Cacher le bouton d'ajout d'ingrédient

@@ -248,6 +248,15 @@ class RecetteEditController extends Controller
 
     public function listeAllIngredients()
     {
+        // Récupération des ingrédients à ignorer
+        $ignorer = Form::getParam('ignorer', Form::METHOD_POST, Form::TYPE_ARRAY, false);
+        $ingredientsIgnorer = array();
+        if ($ignorer !== null) {
+            foreach ($ignorer as $idIngredient) {
+                $ingredientsIgnorer[] = intval($idIngredient);
+            }
+        }
+
         // Création des objets DAO
         $ingredientDAO = new IngredientDAO();
         $uniteDAO = new UniteDAO();
@@ -263,6 +272,11 @@ class RecetteEditController extends Controller
 
         // Formatage des ingrédients en json
         foreach ($ingredients as $ingredient) {
+            // Si l'ingrédient est à ignorer, on passe à l'ingrédient suivant
+            if (in_array($ingredient->getId(), $ingredientsIgnorer)) {
+                continue;
+            }
+
             /** @var Unite $unite */
             $unite = null;
             // Récupération de l'unité
