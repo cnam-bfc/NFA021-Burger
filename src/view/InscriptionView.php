@@ -36,7 +36,7 @@
                     <a href="<?php echo PUBLIC_FOLDER ?>connexion" class="bouton">J'ai déjà un compte</a>
 
                     <!-- Bouton pour se créer un compte -->
-                    <button type="submit" class="bouton" id="bouton_inscription">Créer un compte</button>
+                    <button type="submit" class="bouton" id="bouton_inscription">S'inscrire</button>
                 </div>
             </form>
         </div>
