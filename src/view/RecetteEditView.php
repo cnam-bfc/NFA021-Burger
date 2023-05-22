@@ -51,7 +51,6 @@
                                 <th><!-- Image --></th>
                                 <th>Nom</th>
                                 <th>Quantité</th>
-                                <th>Choix multiple</th>
                                 <th>Supplément</th>
                                 <th>Prix</th>
                                 <th><!-- Bouton actions rapide --></th>
@@ -59,17 +58,39 @@
                             <tr></tr>
                         </thead>
                         <tbody>
+                            <tr>
+                                <td colspan="6">
+                                    <br>Aucun ingrédients<br><br>
+                                </td>
+                            </tr>
                         </tbody>
                         <tfoot>
                             <tr></tr>
                             <tr>
-                                <td colspan="7">
-                                    <button type="button" class="bouton" id="bouton_ajouter_new_ingredient" disabled><i class="fa-solid fa-plus"></i> Ajouter un ingrédient</button>
-                                    <div id="ajouter_ingredient" hidden>
-                                        <select id="select_ajouter_ingredient">
+                                <td colspan="6">
+                                    <div>
+                                        <div>
+                                            <!-- Annuler la sélection multiple -->
+                                            <button type="button" class="bouton" id="bouton_annuler_selection_multiple" hidden><i class="fa-solid fa-times"></i> Annuler la sélection multiple</button>
+                                        </div>
 
-                                        </select>
-                                        <button type="button" class="bouton" id="bouton_annuler_ajouter_ingredient"><i class="fa-solid fa-times"></i></button>
+                                        <!-- Ajout d'un ingrédient -->
+                                        <div>
+                                            <button type="button" class="bouton" id="bouton_ajouter_new_ingredient"><i class="fa-solid fa-carrot"></i> Ajouter un ingrédient</button>
+                                            <div id="ajouter_ingredient" hidden>
+                                                <select id="select_ajouter_ingredient">
+
+                                                </select>
+                                                <button type="button" class="bouton" id="bouton_annuler_ajouter_ingredient"><i class="fa-solid fa-times"></i></button>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <!-- Ajout d'une sélection multiple -->
+                                            <button type="button" class="bouton" id="bouton_ajouter_new_selection_multiple"><i class="fa-solid fa-rectangle-list"></i> Ajouter une sélection multiple</button>
+                                            <!-- Enregistrer la sélection multiple -->
+                                            <button type="button" class="bouton" id="bouton_enregistrer_selection_multiple" hidden><i class="fa-solid fa-check"></i> Enregistrer la sélection multiple</button>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
