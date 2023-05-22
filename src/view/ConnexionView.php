@@ -22,13 +22,13 @@
                     <label for="mot_de_passe">Mot de passe</label>
                     <input type="password" id="mot_de_passe" name="mot_de_passe" placeholder="Mot de passe" required>
                     <!-- Lien pour réinitialiser le mot de passe -->
-                    <a href="<?php echo PUBLIC_FOLDER ?>mot_de_passe_oublie" class="lien">Mot de passe oublié ?</a>
+                    <a href="mot_de_passe_oublie" class="lien">Mot de passe oublié ?</a>
                 </div>
 
                 <!-- Boutons pour se créer un compte ou se connecter -->
                 <div class="form-action">
                     <!-- Bouton pour se créer un compte -->
-                    <a href="<?php echo PUBLIC_FOLDER ?>inscription" class="bouton">Créer un compte</a>
+                    <a href="inscription" class="bouton">Créer un compte</a>
 
                     <!-- Bouton pour se connecter -->
                     <button type="submit" class="bouton" id="bouton_connexion">Se connecter</button>

@@ -33,7 +33,7 @@
                 <!-- Boutons pour se connecter ou se créer un compte -->
                 <div class="form-action">
                     <!-- Bouton pour se connecter -->
-                    <a href="<?php echo PUBLIC_FOLDER ?>connexion" class="bouton">J'ai déjà un compte</a>
+                    <a href="connexion" class="bouton">J'ai déjà un compte</a>
 
                     <!-- Bouton pour se créer un compte -->
                     <button type="submit" class="bouton" id="bouton_inscription">S'inscrire</button>
