@@ -10,11 +10,20 @@ class App
      */
     public static function getGitVersion()
     {
-        $lastCommit = __DIR__ . "/../.git/ORIG_HEAD";
-        $lastCommit = realpath($lastCommit);
-        if (!file_exists($lastCommit)) {
+        $gitFolder = __DIR__ . "/../.git";
+        $gitFolder = realpath($gitFolder);
+        if (!file_exists($gitFolder)) {
             return "";
         }
+
+        $gitBranchFile = $gitFolder . "/HEAD";
+        $gitBranchFile = realpath($gitBranchFile);
+
+        $gitBranch = trim(file_get_contents($gitBranchFile));
+        $gitBranch = substr($gitBranch, 5);
+
+        $lastCommit = $gitFolder . "/" . $gitBranch;
+        $lastCommit = realpath($lastCommit);
 
         $hash = file_get_contents($lastCommit);
         $hash = substr($hash, 0, 7);
