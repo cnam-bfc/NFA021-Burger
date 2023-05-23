@@ -12,7 +12,11 @@
             <h2 class="titre_bulle">Bon de commande</h2>
         </div>
 
-        <div class="wrapper axe_ligne second_axe_center wrap" id ='bdc'>
+        <div style="display:flex; flex-direction: row">
+            <button type="button" class='bouton' onclick="redirigerPageNouveauBdc()">Nouveau Bon de commande</button>
+        </div><br>
+
+        <div class="wrapper axe_ligne second_axe_center wrap" id='bdc'>
         </div>
 
     </div>

@@ -125,6 +125,28 @@ class IngredientDAO extends DAO
         $statement->bindValue(':id_fournisseur_fk', $ingredient->getIdFournisseur(), PDO::PARAM_INT);
         $statement->bindValue(':id_ingredient', $ingredient->getId(), PDO::PARAM_INT);
         $statement->execute();
+
+        //On vérifie après la mise à jour si le stock n'est pas passé en-dessous du stock mini
+        if($ingredient->isStockAuto() && $ingredient->getQuantiteStock() < $ingredient->getQuantiteMinimaleStockAuto()) {
+            $daoBdc = new CommandeFournisseurDAO();
+
+            $bdc = new CommandeFournisseur();
+            $bdc->setCreationAutomatique(1);
+            $bdc->setDateCreation(date('Y-m-d H:i:s'));
+            $bdc->setIdFournisseur($ingredient->getIdFournisseur());
+
+            $daoBdc->create($bdc);
+
+            $daoIngredientBdc = new CommandeFournisseurIngredientDAO();
+
+            $ingredientBdc = new CommandeFournisseurIngredient();
+            $ingredientBdc->setIdCommandeFournisseur($bdc->getId());
+            $ingredientBdc->setIdIngredient($ingredient->getId());
+            $ingredientBdc->setQuantiteCommandee($ingredient->getQuantiteStandardStockAuto() - $ingredient->getQuantiteStock());
+
+            $daoIngredientBdc->create($ingredientBdc);
+
+        }
     }
 
     /**

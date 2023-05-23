@@ -2,11 +2,8 @@ $(document).ready(function () {
     afficherBDC();
 });
 
-
 let creerElements = function (data) {
     $i = 1;
-
-    console.log(0);
 
     data.forEach(element => {
 
@@ -87,29 +84,31 @@ let creerElements = function (data) {
     });
 }
 
+
+function redirigerPageNouveauBdc() {
+
+    window.location.href = `nouveaubdc`;
+
+}
+
 // requête AJAX pour récupérer les commandes en bdd
 let afficherBDC = function () {
-    console.log("salut");
     $("#bdc").empty();
     $.ajax({
         url: 'listebdc/donnees',
         type: 'POST',
         dataType: 'json',
         success: function (data) {
-            // message dans la console
-            console.log('Bdc.js - BDC - success');
             creerElements(data);
         },
 
         error: function (data) {
-            // message dans la console
-            console.log('Bdc.js - BDC - error');
+            console.log('ListeBdc.js - error');
         }
     })
 }
 
 let validerBDC = function ($id) {
-    console.log("abc");
     let json = ({
         id: $id,
     });
@@ -124,16 +123,11 @@ let validerBDC = function ($id) {
             data: json
         },
         success: function (data) {
-            // message dans la console
-            console.log("leciel est bleu");
-            console.log(data);
-
-            $("#bdc #conteneur"+data.id).remove();
+            $("#bdc #conteneur" + data.id).remove();
         },
 
         error: function (data) {
-            // message dans la console
-            console.log('Inventaire.js - refreshTableauInventaire - error');
+            console.log('ListeBdc.js - error');
         }
     })
 
