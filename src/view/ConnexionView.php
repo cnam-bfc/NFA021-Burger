@@ -19,8 +19,8 @@
                 </div>
                 <!-- Champ pour le mot de passe de l'utilisateur -->
                 <div class="form-input">
-                    <label for="mot_de_passe">Mot de passe</label>
-                    <input type="password" id="mot_de_passe" name="mot_de_passe" placeholder="Mot de passe" required>
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" name="password" placeholder="Mot de passe" required>
                     <!-- Lien pour réinitialiser le mot de passe -->
                     <a href="mot_de_passe_oublie" class="lien">Mot de passe oublié ?</a>
                 </div>
@@ -28,7 +28,7 @@
                 <!-- Boutons pour se créer un compte ou se connecter -->
                 <div class="form-action">
                     <!-- Bouton pour se créer un compte -->
-                    <a href="inscription" class="bouton">Créer un compte</a>
+                    <button type="button" class="bouton" id="bouton_redirection_inscription">Créer un compte</button>
 
                     <!-- Bouton pour se connecter -->
                     <button type="submit" class="bouton" id="bouton_connexion">Se connecter</button>

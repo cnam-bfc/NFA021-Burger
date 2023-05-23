@@ -118,9 +118,9 @@ class Router
         // Si la route demandée est vide, on charge la page d'accueil appropriée
         if ($route == "" || $route == "employe") {
             // Si l'utilisateur est connecté, on le redirige vers la page d'accueil de son profil
-            if (UserSession::isLogged()) {
-                $userSession = UserSession::getUserSession();
+            $userSession = UserSession::getUserSession();
 
+            if ($userSession->isLogged()) {
                 // Si l'utilisateur est un cuisinier, on le redirige vers la page de cuisine
                 if ($userSession->isCuisinier()) {
                     Router::redirect('cuisinier');

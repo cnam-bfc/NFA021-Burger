@@ -9,10 +9,20 @@
         <div class="box_contenu">
             <!-- Formulaire d'inscription -->
             <form id="form_inscription">
+                <!-- Champ pour le nom de l'utilisateur -->
+                <div class="form-input">
+                    <label for="nom">Nom</label>
+                    <input type="text" id="nom" name="nom" placeholder="Nom" required>
+                </div>
+                <!-- Champ pour le prénom de l'utilisateur -->
+                <div class="form-input">
+                    <label for="prenom">Prénom</label>
+                    <input type="text" id="prenom" name="prenom" placeholder="Prénom" required>
+                </div>
                 <!-- Champ pour le nom d'utilisateur de l'utilisateur -->
                 <div class="form-input">
-                    <label for="nom_utilisateur">Nom d'utilisateur</label>
-                    <input type="text" id="nom_utilisateur" name="nom_utilisateur" placeholder="Nom d'utilisateur" required>
+                    <label for="username">Nom d'utilisateur</label>
+                    <input type="text" pattern="^[a-zA-Z0-9_]{3,20}$" id="username" name="username" placeholder="Nom d'utilisateur" required>
                 </div>
                 <!-- Champ pour l'adresse email de l'utilisateur -->
                 <div class="form-input">
@@ -21,19 +31,19 @@
                 </div>
                 <!-- Champ pour le mot de passe de l'utilisateur -->
                 <div class="form-input">
-                    <label for="mot_de_passe">Mot de passe</label>
-                    <input type="password" id="mot_de_passe" name="mot_de_passe" placeholder="Mot de passe" required>
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" name="password" placeholder="Mot de passe" required>
                 </div>
                 <!-- Champ pour la confirmation du mot de passe de l'utilisateur -->
                 <div class="form-input">
-                    <label for="confirmation_mot_de_passe">Confirmation du mot de passe</label>
-                    <input type="password" id="confirmation_mot_de_passe" name="confirmation_mot_de_passe" placeholder="Confirmation du mot de passe" required>
+                    <label for="password_confirm">Confirmation du mot de passe</label>
+                    <input type="password" id="password_confirm" name="password_confirm" placeholder="Confirmation du mot de passe" required>
                 </div>
 
                 <!-- Boutons pour se connecter ou se créer un compte -->
                 <div class="form-action">
                     <!-- Bouton pour se connecter -->
-                    <a href="connexion" class="bouton">J'ai déjà un compte</a>
+                    <button type="button" class="bouton" id="bouton_redirection_connexion">J'ai déjà un compte</button>
 
                     <!-- Bouton pour se créer un compte -->
                     <button type="submit" class="bouton" id="bouton_inscription">S'inscrire</button>

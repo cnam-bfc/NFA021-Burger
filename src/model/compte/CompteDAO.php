@@ -182,6 +182,68 @@ class CompteDAO extends DAO
     }
 
     /**
+     * Méthode permettant de récupérer un objet par son nom d'utilisateur
+     * 
+     * @param string $login (nom d'utilisateur de l'objet à récupérer)
+     * @return Compte|null (objet ou null si aucun objet trouvé)
+     */
+    public function selectByLogin($login)
+    {
+        // Requête
+        $sqlQuery = "SELECT * FROM burger_compte WHERE login = :login";
+        $statement = $this->pdo->prepare($sqlQuery);
+        $statement->bindValue(':login', $login, PDO::PARAM_STR);
+        $statement->execute();
+
+        // Vérification que l'on a bien un résultat
+        if ($statement->rowCount() === 0) {
+            return null;
+        }
+
+        // Traitement du résultat
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        // Création d'un nouvel objet
+        $compte = new Compte();
+
+        // Remplissage de l'objet
+        $this->fillObject($compte, $result);
+
+        return $compte;
+    }
+
+    /**
+     * Méthode permettant de récupérer un objet par son email
+     *
+     * @param string $email (email de l'objet à récupérer)
+     * @return Compte|null (objet ou null si aucun objet trouvé)
+     */
+    public function selectByEmail($email)
+    {
+        // Requête
+        $sqlQuery = "SELECT * FROM burger_compte WHERE email = :email";
+        $statement = $this->pdo->prepare($sqlQuery);
+        $statement->bindValue(':email', $email, PDO::PARAM_STR);
+        $statement->execute();
+
+        // Vérification que l'on a bien un résultat
+        if ($statement->rowCount() === 0) {
+            return null;
+        }
+
+        // Traitement du résultat
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        // Création d'un nouvel objet
+        $compte = new Compte();
+
+        // Remplissage de l'objet
+        $this->fillObject($compte, $result);
+
+        return $compte;
+    }
+
+    /**
      * Méthode permettant de remplir un objet à partir d'un tableau (ligne issue de la base de données)
      * 
      * @param Compte $compte (objet à remplir)
