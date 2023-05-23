@@ -8,22 +8,17 @@
 class UserSession
 {
     /**
-     * Méthode permettant de savoir si un utilisateur est connecté
-     * 
-     * @return boolean
-     */
-    public static function isLogged(): bool
-    {
-        return Session::exists('user');
-    }
-
-    /**
      * Méthode permettant de récupérer l'utilisateur connecté
      * 
      * @return UserSession
      */
     public static function getUserSession(): UserSession
     {
+        // Si la session n'existe pas, on la crée
+        if (!Session::exists('user')) {
+            self::setUserSession(new UserSession());
+        }
+
         return Session::get('user');
     }
 
@@ -40,16 +35,47 @@ class UserSession
     /**
      * Méthode permettant de déconnecter un utilisateur
      */
-    public static function logout()
+    public static function destroy()
     {
         Session::delete('user');
     }
 
-    private ClientUser $clientUser;
-    private EmployeUser $employeUser;
-    private GerantUser $gerantUser;
-    private CuisinierUser $cuisinierUser;
-    private LivreurUser $livreurUser;
+    private $compte;
+
+    /**
+     * Méthode permettant de récupérer le compte de l'utilisateur connecté
+     * 
+     * @return Compte
+     * @throws Exception Si l'utilisateur connecté n'a pas de compte
+     */
+    public function getCompte(): Compte
+    {
+        if ($this->compte === null) {
+            throw new Exception('L\'utilisateur connecté n\'a pas de compte');
+        }
+
+        return $this->compte;
+    }
+
+    /**
+     * Méthode permettant de définir le compte de l'utilisateur connecté
+     * 
+     * @param Compte $compte
+     */
+    public function setCompte(Compte $compte)
+    {
+        $this->compte = $compte;
+    }
+
+    /**
+     * Méthode permettant de savoir si un utilisateur est connecté
+     * 
+     * @return boolean
+     */
+    public function isLogged(): bool
+    {
+        return $this->compte !== null;
+    }
 
     /**
      * Méthode permettant de savoir si l'utilisateur connecté est un client
@@ -58,7 +84,7 @@ class UserSession
      */
     public function isClient(): bool
     {
-        return $this->clientUser !== null;
+        return $this->compte instanceof Client;
     }
 
     /**
@@ -68,7 +94,7 @@ class UserSession
      */
     public function isEmploye(): bool
     {
-        return $this->employeUser !== null;
+        return $this->compte instanceof Employe;
     }
 
     /**
@@ -78,7 +104,7 @@ class UserSession
      */
     public function isGerant(): bool
     {
-        return $this->gerantUser !== null;
+        return $this->compte instanceof Gerant;
     }
 
     /**
@@ -88,7 +114,7 @@ class UserSession
      */
     public function isCuisinier(): bool
     {
-        return $this->cuisinierUser !== null;
+        return $this->compte instanceof Cuisinier;
     }
 
     /**
@@ -98,56 +124,81 @@ class UserSession
      */
     public function isLivreur(): bool
     {
-        return $this->livreurUser !== null;
+        return $this->compte instanceof Livreur;
     }
 
     /**
      * Méthode permettant de récupérer l'utilisateur connecté en tant que client
      * 
-     * @return ClientUser
+     * @return Client
+     * @throws Exception Si l'utilisateur connecté n'est pas un client
      */
-    public function getClientUser(): ClientUser
+    public function getClientUser(): Client
     {
-        return $this->clientUser;
+        if ($this->isClient() === false) {
+            throw new Exception('L\'utilisateur connecté n\'est pas un client');
+        }
+
+        return $this->compte;
     }
 
     /**
      * Méthode permettant de récupérer l'utilisateur connecté en tant qu'employé
      * 
-     * @return EmployeUser
+     * @return Employe
+     * @throws Exception Si l'utilisateur connecté n'est pas un employé
      */
-    public function getEmployeUser(): EmployeUser
+    public function getEmployeUser(): Employe
     {
-        return $this->employeUser;
+        if ($this->isEmploye() === false) {
+            throw new Exception('L\'utilisateur connecté n\'est pas un employé');
+        }
+
+        return $this->compte;
     }
 
     /**
      * Méthode permettant de récupérer l'utilisateur connecté en tant que gérant
      * 
-     * @return GerantUser
+     * @return Gerant
+     * @throws Exception Si l'utilisateur connecté n'est pas un gérant
      */
-    public function getGerantUser(): GerantUser
+    public function getGerantUser(): Gerant
     {
-        return $this->gerantUser;
+        if ($this->isGerant() === false) {
+            throw new Exception('L\'utilisateur connecté n\'est pas un gérant');
+        }
+
+        return $this->compte;
     }
 
     /**
      * Méthode permettant de récupérer l'utilisateur connecté en tant que cuisinier
      * 
-     * @return CuisinierUser
+     * @return Cuisinier
+     * @throws Exception Si l'utilisateur connecté n'est pas un cuisinier
      */
-    public function getCuisinierUser(): CuisinierUser
+    public function getCuisinierUser(): Cuisinier
     {
-        return $this->cuisinierUser;
+        if ($this->isCuisinier() === false) {
+            throw new Exception('L\'utilisateur connecté n\'est pas un cuisinier');
+        }
+
+        return $this->compte;
     }
 
     /**
      * Méthode permettant de récupérer l'utilisateur connecté en tant que livreur
      * 
-     * @return LivreurUser
+     * @return Livreur
+     * @throws Exception Si l'utilisateur connecté n'est pas un livreur
      */
-    public function getLivreurUser(): LivreurUser
+    public function getLivreurUser(): Livreur
     {
-        return $this->livreurUser;
+        if ($this->isLivreur() === false) {
+            throw new Exception('L\'utilisateur connecté n\'est pas un livreur');
+        }
+
+        return $this->compte;
     }
 }

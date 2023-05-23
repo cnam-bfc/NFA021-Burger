@@ -489,6 +489,13 @@ input[type="checkbox"].input {
     cursor: pointer;
 }
 
+.form-input>input[type="radio"]:disabled,
+.form-input>input[type="checkbox"]:disabled,
+input[type="radio"].input:disabled,
+input[type="checkbox"].input:disabled {
+    cursor: not-allowed;
+}
+
 .form-input+.form-input {
     margin-top: 15px;
 }

@@ -62,6 +62,20 @@ class RecetteSelectionMultipleDAO extends DAO
     }
 
     /**
+     * Méthode permettant de supprimer tous les objets liés à une recette
+     * 
+     * @param int $idRecette (id de la recette)
+     */
+    public function deleteAllByIdRecette($idRecette)
+    {
+        // Requête
+        $sqlQuery = "DELETE FROM burger_recette_selection_multiple WHERE id_recette_fk = :id_recette_fk";
+        $statement = $this->pdo->prepare($sqlQuery);
+        $statement->bindValue(':id_recette_fk', $idRecette, PDO::PARAM_INT);
+        $statement->execute();
+    }
+
+    /**
      * Méthode permettant de mettre à jour un objet
      * 
      * @param RecetteSelectionMultiple $recetteSelectionMultiple (objet à mettre à jour)
@@ -97,6 +111,37 @@ class RecetteSelectionMultipleDAO extends DAO
         // Requête
         $sqlQuery = "SELECT * FROM burger_recette_selection_multiple";
         $statement = $this->pdo->query($sqlQuery);
+        $statement->execute();
+
+        // Traitement des résultats
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $recettesSelectionsMultiples = array();
+        foreach ($result as $row) {
+            // Création d'un nouvel objet
+            $recetteSelectionMultiple = new RecetteSelectionMultiple();
+
+            // Remplissage de l'objet
+            $this->fillObject($recetteSelectionMultiple, $row);
+
+            // Ajout de l'objet dans le tableau
+            $recettesSelectionsMultiples[] = $recetteSelectionMultiple;
+        }
+
+        return $recettesSelectionsMultiples;
+    }
+
+    /**
+     * Méthode permettant de récupérer tous les objets d'une recette
+     * 
+     * @param int $idRecette (id de la recette)
+     * @return RecetteSelectionMultiple[] (tableau d'objets)
+     */
+    public function selectAllByIdRecette($idRecette)
+    {
+        // Requête
+        $sqlQuery = "SELECT * FROM burger_recette_selection_multiple WHERE id_recette_fk = :id_recette_fk";
+        $statement = $this->pdo->prepare($sqlQuery);
+        $statement->bindValue(':id_recette_fk', $idRecette, PDO::PARAM_INT);
         $statement->execute();
 
         // Traitement des résultats
