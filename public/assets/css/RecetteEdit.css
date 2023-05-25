@@ -45,6 +45,14 @@
     flex: 1;
 }
 
+#tableau_composition tfoot td>div>div:first-child {
+    text-align: left;
+}
+
+#tableau_composition tfoot td>div>div:last-child {
+    text-align: right;
+}
+
 #select_ajouter_ingredient {
     min-width: 200px;
 }
