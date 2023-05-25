@@ -31,7 +31,7 @@ $(function () {
                 let ingredientText = element.quantite + element.unite + " " + element.nom;
                 // CAS - Particulier - Optionnel
                 if (element.optionnel) {
-                    ingredientText += " (optionnel)";
+                    ingredientText += " (supplément)";
                 }
                 cellule.append($("<li>").text(ingredientText));
             }
