@@ -45,7 +45,7 @@ $(function () {
 
 
                 // Si aucune recette n'a été trouvée, afficher "Aucun résultats"
-                if (data['data'].length == 0) {
+                if (data['data'].length === 0) {
                     let div = $("<div>").addClass("wrapper box_sans_bordure margin_large");
                     let h2 = $("<h2>").addClass("bold");
                     h2.text("Aucune recette n'a été trouvée");

@@ -1,5 +1,7 @@
 <link rel="stylesheet" href="<?php echo CSS ?>AccueilEmploye.css">
 
+<script src="<?php echo JS ?>AccueilEmploye.js"></script>
+
 <div class="wrapper axe_colonne main_axe_space_around margin_auto grow" id="wrapper_accueil">
 
     <div id="espace_gerant" class="wrapper axe_ligne wrap width_auto height_50 main_axe_space_around margin_bottom_top_large main_axe_center">
@@ -75,3 +77,4 @@
     </div>
 
 </div>
+
