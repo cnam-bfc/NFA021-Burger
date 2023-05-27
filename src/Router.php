@@ -48,6 +48,8 @@ class Router
 
         // Panier
         'panier' => ["controller" => "PanierController", "method" => "renderViewPanier"],
+        'panier/getSessionPanier' => ["controller" => "PanierController", "method" => "getSessionPanier"],
+        'panier/SupprimerElemPanier' => ["controller" => "PanierController", "method" => "suppElemPanier"],
 
         // Choix entre Livraison et Click&Collect
         'collectLivraison' => ["controller" => "CollectLivraisonController", "method" => "renderViewCollectORDelivery"],
