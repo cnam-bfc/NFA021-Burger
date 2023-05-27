@@ -90,4 +90,39 @@ class AccueilController extends Controller
 
         $view->renderView();
     }
+
+    public function afficherEspaceAccueilEmploye() {
+        // Récupération la "session" de l'utilisateur
+        $userSession = UserSession::getUserSession();
+
+        $json = array();
+        $json['data'] = array();
+        // Vérification que l'utilisateur est connecté
+        if ($userSession->isLogged()) {
+            // CAS SPÉCIFIQUES POUR CHAQUE RÔLE
+            // Si l'utilisateur est un cuisinier
+            if ($userSession->isCuisinier()) {
+                $json['data'] = array(
+                    'id' => 0,
+                );
+            }
+            // Si l'utilisateur est un livreur
+            elseif ($userSession->isLivreur()) {
+                $json['data'] = array(
+                    'id' => 1,
+                );
+            }
+            // Si l'utilisateur est un gérant
+            elseif ($userSession->isGerant()) {
+                $json['data'] = array(
+                    'id' => 2,
+                );
+            }
+
+            $view = new View(BaseTemplate::JSON);
+            $view->json = $json;
+
+            $view->renderView();
+        }
+    }
 }

@@ -52,7 +52,7 @@ boutonValide.addEventListener('click', function () {
          }*/
     }
     // Fait disparaître la commande validée en lui rajoutant la classe "hidding"
-    commandeFocus.style.display = 'none';
+    commandeFocus.remove();
     // Décale les commandes suivantes
     const commandes = document.querySelectorAll('.commande');
     for (let i = 0; i < commandes.length; i++) {
@@ -93,6 +93,7 @@ $(function () {
 
         data.recettes.forEach(element => {
             let pRecette = $("<p>");
+            pRecette.attr("id", element.id);
             let recetteText = element.quantite + "x " + element.nom;
             pRecette.append(recetteText);
             divContenu.append(pRecette);
@@ -107,6 +108,14 @@ $(function () {
     }
 
     function refreshCommande() {
+
+        let div = $("<div>").addClass("wrapper box_sans_bordure margin_large");
+
+        let h2 = $("<h2>").addClass("bold").text("<i class='fa-spinner'></i> Chargement des recettes...");
+
+        div.append(h2);
+        divPrincipale.append(div);
+
         $.ajax({
             url: "cuisinier/listeCommandes",
             method: "GET",
@@ -117,7 +126,7 @@ $(function () {
 
 
                 // Si aucune recette n'a été trouvée, afficher "Aucun résultats"
-                if (data['data'].length == 0) {
+                if (data['data'].length === 0) {
                     let div = $("<div>").addClass("wrapper box_sans_bordure margin_large");
                     let h2 = $("<h2>").addClass("bold");
                     h2.text("Aucune commande n'a été trouvée");

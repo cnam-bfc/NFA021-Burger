@@ -40,6 +40,7 @@ class Router
         // PARTIE EMPLOYÉ
         // Accueil employé
         'employe/accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilEmploye"],
+        'employe/accueil/refreshCompte' => ["controller" => "AccueilController", "method" => "afficherEspaceAccueilEmploye"],
 
         // Visu burger
         'visuModifsBurgers' => ["controller" => "ModifsBurgersController", "method" => "renderViewPimpBurgers"],
