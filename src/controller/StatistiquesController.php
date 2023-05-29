@@ -42,9 +42,24 @@ class StatistiquesController extends Controller
     }
 
     public function recupererRecettesPourStatistiques() {
+        $rawData = Form::getParam('data', Form::METHOD_POST, Form::TYPE_MIXED);
+        $data = json_decode($rawData, true);
+        $dateDebut = null;
+        $dateFin = null;
+        $recettes = null;
+
+        if ($data["recettes_all"] == false) {
+            $recettes = $data["recettes"];
+        }
+
+        if ($data["date_all"] == true) {
+            $dateDebut = $data["date_debut"];
+            $dateFin = $data["date_fin"];
+        }
+
          // On récupère toutes les recettes
          $recetteDAO = new RecetteDAO();
-         $recettes = $recetteDAO->selectAllForStats();
+         $recettes = $recetteDAO->selectAllForStats($dateDebut, $dateFin, $recettes);
  
          // on récupère les données pour la vue
          $result = array();

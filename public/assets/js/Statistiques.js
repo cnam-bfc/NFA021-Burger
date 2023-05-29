@@ -248,11 +248,11 @@ let recupererRecettesPourStatistiques = function () {
     // listes des burgers
     if ($('#choix_recette_checkbox').is(':checked')) {
         data = {
-            'recettes_all': true,
+            'recette_all': true,
         };
     } else {
         data = {
-            'all': false,
+            'recette_all': false,
             'recettes': $('#select_choix_recette').val(),
         };
     }
@@ -270,7 +270,9 @@ let recupererRecettesPourStatistiques = function () {
         url: "statistiques/recupererRecettesPourStatistiques",
         method: "POST",
         dataType: "json",
-        data: data,
+        data: {
+            data: data
+        },
         success: function (data) {
             console.log("Statistiques.js - recupererRecettesPourStatistiques - success");
             
