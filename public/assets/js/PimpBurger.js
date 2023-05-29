@@ -1,5 +1,20 @@
+/* Variable Prix :  
+je déclare cette varibale ici pour la définir dans la function showData(BurgerID) et qu'elle soit accessible dans tout le code
+car je l'utilise dans la fonction showData et dans un Event Listener qui n'est pas dans cette fonction (pour le bouton Ajout au Panier)*/
+var prix;
+/*
+Variable dataBurger : 
+je déclare cette variable pour lui donné une valeur qui provient d'une requête Ajax
+dans la fonction showData et la réutiliser dans l'eventListener de cet élément "document.getElementById("Ajouter");"/
+*/
+var dataBurger;
+
+
+var idRecette;
+
 
 function showData(BurgerID) {
+    idRecette = BurgerID;
     console.log(BurgerID + " = BurgerID");
     $.ajax({
         url: "visuModifsBurgers/ingredients",
@@ -11,19 +26,25 @@ function showData(BurgerID) {
             var affichageDiv = document.getElementById("affichage");
             affichageDiv.innerHTML = "";
             console.log("succes");
+            dataBurger = response;
+
 
             /* Boucle qui parcourt le tableau résultat (tableau qui contient les ingrédients à afficher) */
             console.log(response);
+            console.log(response[0][1]);
+            prix = response[0][1];
+            console.log(prix);
             for (var i = 0; i < response[0][0].length; i++) {
                 for (var q = 0; q < response[0][0][i]['quantite']; q++) {
 
                     afficherCompoBurger(response[0][0][i]);
-
-
                 }
                 afficherTabModifBurger(response[0][0][i], response[0][0]);
             }
+            //afficher le prix ici : 
 
+            var montant = document.getElementById("Montant");
+            montant.innerHTML = prix;
             // jusque ici OK
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -39,6 +60,9 @@ function showData(BurgerID) {
 
     //document.getElementById("affichage").removeChild(decompositionBurger.childNodes[4]);
 }
+
+
+
 
 
 
@@ -316,15 +340,7 @@ function afficherTabModifBurger(ingredient, response) {
     });
     tdBouton.appendChild(boutonRetirer);//
 
-
-
-
-
-
-
     /*<input class="input" type="number" min="0" max="99" step="1"> */
-
-
 
     //ajout de toute les cellules <td> décrites auparavant, à la ligne <tr> du tableau
     tr.appendChild(tdImage);
@@ -382,39 +398,40 @@ $(document).ready(function () {
 
 
         }
+        console.log(dataBurger);
         console.log("tab Ingrédients Finaux")
         console.log(tabIngrFinaux); //// CE TABLEAU EST OK
-        //////////////////////
-        const tabBurger = { "prix Recette": "", "nom Recette": "", "id Recette": "", "ingrédients Finaux": tabIngrFinaux };
-        //prix
-        //nom Burger
-        //id Burger
-        //liste ingrédients finaux
-        //
+        ///////////////////////////////
+        const tabBurger = { "prixRecette": prix, "nomRecette": dataBurger[0][2], "idRecette": idRecette, "ingredientsFinaux": tabIngrFinaux };
+        console.log("prix est = " + prix);
+        console.log(dataBurger[0][2]);
 
-        /*
-                $.ajax({
-                    url: "VisuModifsBurgers/ajouterAuPanier",
-                    method: "POST",
-                    dataType: "JSON",
-                    data: { infos: tabBurger },
-                    success: function (response) {
-                        console.log("responseGOOD");
-                        console.log(response);
-        
-                    },
-                    error: function (xhr, status, error) {
-                        console.log("Erreur lors de la requête AJAX : " + error);
-                        console.log(xhr.responseText);
-                        console.log('Objet JSON envoyé : ' + JSON.stringify(tabInfosRecup));
-                    }
-                });
-        
-        */
+        //Le tableau tabBurger est plein
+        //Je l'envoie dans une requête Ajax pour qu'il soit incrémente la variable de session "Panier" (qui est un tableau)
+
+
+        $.ajax({
+            url: "visuModifsBurgers/ajouterAuPanier",
+            method: "POST",
+            dataType: "JSON",
+            data: { burgerAjoute: tabBurger },
+            success: function (response) {
+                console.log("responseGOOD");
+                console.log(response);
+
+            },
+            error: function (xhr, status, error) {
+                console.log("Erreur lors de la requête AJAX : " + error);
+                console.log(xhr.responseText);
+
+            }
+        });
+
+
     });
 })
 
-
+// ctrl + f "ingredientsFinaux"
 
 
 

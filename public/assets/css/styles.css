@@ -501,6 +501,13 @@ input[type="checkbox"].input {
     cursor: pointer;
 }
 
+.form-input>input[type="radio"]:disabled,
+.form-input>input[type="checkbox"]:disabled,
+input[type="radio"].input:disabled,
+input[type="checkbox"].input:disabled {
+    cursor: not-allowed;
+}
+
 .form-input+.form-input {
     margin-top: 15px;
 }
@@ -511,6 +518,7 @@ input[type="checkbox"].input {
     justify-content: space-around;
     align-items: center;
     margin-top: 15px;
+    gap: 15px;
 }
 
 /****************************** Bibliothèque : Select2 ******************************/

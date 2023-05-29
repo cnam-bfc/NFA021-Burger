@@ -1,0 +1,49 @@
+#Panier {
+    /*background-color: red;*/
+    height: auto;
+    width: 1000px;
+    float: left;
+    text-align: left;
+}
+#Panier h2{
+    width: 100%;
+    text-align: center;
+    
+}
+
+#Panier thead button{
+    width: auto;
+}
+
+#Ingredient {
+    background-color: aliceblue;
+    margin: 10px;
+    width: fit-content;
+}
+
+#Prix {
+    background-color: aliceblue;
+    float: right;
+    margin: 10px;
+}
+
+#Burger {
+    margin-bottom: 30px;
+
+}
+
+#Total {
+    text-align: center;
+}
+
+button {
+    color: #FFD966;
+    background-color: #FF6666;
+    border: 0px;
+    border-radius: 5px;
+    width: 150px;
+    height: 30px;
+    font-weight: bold;
+    font-size: 15px;
+    width: 1000px;
+}

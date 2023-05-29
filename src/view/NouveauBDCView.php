@@ -3,20 +3,26 @@
 
 <div class="padding_default grow">
 
-<div class="wrapper axe_colonne second_axe_center">
+    <div class="wrapper axe_colonne second_axe_center">
         <h2 class="titre_bulle">Bon de commande</h2>
     </div>
 
     <div class="conteneur">
         <div class="boxBDC">
             <h2 class='courbe titre_fenetre'>Bon de commande No 47</h2><br>
-            <form>
+            <form action="nouveaubdc" method="post">
 
                 <label for="fournisseur" class='bold'>Fournisseur :</label><br>
-                <select class='courbe'><br><br>
-                    <option value="Bio Maraichage">Bio Maraichage</option>
-                    <option value="Le Royaume des Sauces">Le Royaume des Sauces</option>
-                    <option value="La Boulangerie Bleue">La Boulangerie Bleue</option>
+                <select class='courbe' name='fournisseur' id='fournisseur' ><br><br>
+
+                    <?php
+                    foreach ($fournisseurs as $donnees) {
+                    ?>
+                        <option value=<?php echo $donnees->getId(); ?>><?php echo $donnees->getNom(); ?></option>
+                    <?php
+                    }
+                    ?>
+
                 </select><br><br>
 
                 <div class="conteneur">
@@ -30,30 +36,22 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td><select id="produit" name="produit" class='courbe'><br><br>
-                                        <option value="Pain Burger">Pain Burger</option>
-                                        <option value="Tomate">Tomate au KG</option>
-                                        <option value="Steak Boeuf">Steak Boeuf</option>
-                                    </select></td>
-                                <td><input type="number" name="quantite" id="quantite" class='courbe'></td>
-                                <td><input type="number" name="prix" id="prix" disabled value='1.00' class='courbe'></td>
-                                <td><button onclick="retirerLigne(this)" class='courbe'>X</button></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <button onclick="ajouterLigne()" class='courbe'>+</button><br><br>
+                <br>
+                <button type="button" onclick="recupererProduits(false)" class='courbe bouton'>Nouvelle ligne</button><br><br>
 
                 <div id='montant' class='bold'>
                     <p>Montant TTC :
                     <p>
                 </div>
 
+                <br><br>
                 <div class="wrapper axe_colonne second_axe_center">
-                    <button class="bouton">Sauvegarder</button>
+                    <input type="submit" class="bouton form-action" value ="Enregistrer">
                 </div>
-
-                <script src="<?php echo JS ?>NouveauBDC.js"></script>
 
             </form>
         </div>

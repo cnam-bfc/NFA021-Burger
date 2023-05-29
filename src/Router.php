@@ -19,6 +19,15 @@ class Router
         'install/install_fournisseurs' => ["controller" => "InstallController", "method" => "installFournisseurs"],
         'install/finish' => ["controller" => "InstallController", "method" => "finish"],
 
+        // Authentification
+        'connexion' => ["controller" => "AuthentificationController", "method" => "renderViewConnexion"],
+        'connexion/connexion' => ["controller" => "AuthentificationController", "method" => "connexion"],
+        'mot_de_passe_oublie' => ["controller" => "AuthentificationController", "method" => "renderViewMotDePasseOublie"],
+        'mot_de_passe_oublie/envoi_mail' => ["controller" => "AuthentificationController", "method" => "envoiMailMotDePasseOublie"],
+        'deconnexion' => ["controller" => "AuthentificationController", "method" => "deconnexion"],
+        'inscription' => ["controller" => "AuthentificationController", "method" => "renderViewInscription"],
+        'inscription/inscription' => ["controller" => "AuthentificationController", "method" => "inscription"],
+
         // PARTIE CLIENT
         // Accueil client
         'accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilClient"],
@@ -27,22 +36,26 @@ class Router
 
         // Carte des recettes
         'carte' => ["controller" => "CarteMenuController", "method" => "renderView"],
+        'carte/listeBurgers' => ["controller" => "CarteMenuController", "method" => "listeBurgers"],
 
         // PARTIE EMPLOYÉ
         // Accueil employé
         'employe/accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilEmploye"],
+        'employe/accueil/refreshCompte' => ["controller" => "AccueilController", "method" => "afficherEspaceAccueilEmploye"],
 
         // Visu burger
         'visuModifsBurgers' => ["controller" => "ModifsBurgersController", "method" => "renderViewPimpBurgers"],
         'visuModifsBurgers/ingredients' => ["controller" => "ModifsBurgersController", "method" => "getIngredients"],
-        'visuModifsBurgers/ajouterAuPanier' => ["controller"=>"ModifsBurgersController", "method"=>"ajoutPanier"],
+        'visuModifsBurgers/ajouterAuPanier' => ["controller" => "ModifsBurgersController", "method" => "ajoutPanier"],
 
         // Panier
-        'panier' =>["controller"=>"PanierController", "method" => "renderViewPanier"],
+        'panier' => ["controller" => "PanierController", "method" => "renderViewPanier"],
+        'panier/getSessionPanier' => ["controller" => "PanierController", "method" => "getSessionPanier"],
+        'panier/SupprimerElemPanier' => ["controller" => "PanierController", "method" => "suppElemPanier"],
 
         // Choix entre Livraison et Click&Collect
         'collectLivraison' => ["controller" => "CollectLivraisonController", "method" => "renderViewCollectORDelivery"],
-        'collectLivraison/valider' =>["controller" => "CollectLivraisonController", "method" => "validation"],
+        'collectLivraison/valider' => ["controller" => "CollectLivraisonController", "method" => "validation"],
 
         // PARTIE GÉRANT
         // Statistiques
@@ -79,6 +92,7 @@ class Router
         'gerant/listebdc/donnees' => ["controller" => "ListeBDCController", "method" => "donneesBdc"],
         'gerant/listebdc/valider' => ["controller" => "ListeBDCController", "method" => "validerBdc"],
         'gerant/nouveaubdc' => ["controller" => "NouveauBDCController", "method" => "renderView"],
+        'gerant/nouveaubdc/listeProduits' => ["controller" => "NouveauBDCController", "method" => "listeProduits"],
 
         // Produits
         'gerant/nouveauproduit' => ["controller" => "NouveauProduitController", "method" => "renderView"],
@@ -89,6 +103,8 @@ class Router
         // Ecran de cuisine
         'cuisinier' => ["controller" => "EcranCuisineController", "method" => "renderView"],
         'cuisinier/recette' => ["controller" => "RecetteCuisineController", "method" => "renderView"],
+        'cuisinier/listeCommandes' => ["controller" => "EcranCuisineController", "method" => "listeCommandes"],
+
 
         // PARTIE LIVREUR
         // Livraison
@@ -111,9 +127,9 @@ class Router
         // Si la route demandée est vide, on charge la page d'accueil appropriée
         if ($route == "" || $route == "employe") {
             // Si l'utilisateur est connecté, on le redirige vers la page d'accueil de son profil
-            if (UserSession::isLogged()) {
-                $userSession = UserSession::getUserSession();
+            $userSession = UserSession::getUserSession();
 
+            if ($userSession->isLogged()) {
                 // Si l'utilisateur est un cuisinier, on le redirige vers la page de cuisine
                 if ($userSession->isCuisinier()) {
                     Router::redirect('cuisinier');

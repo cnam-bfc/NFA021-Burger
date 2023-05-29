@@ -76,32 +76,30 @@ header li a {
 }
 
 #header_logo {
-    width: 75px;
+    width: 100px;
     height: auto;
     position: relative;
-    transform: translateY(20%);
-    /* Pour l'effet de logo qui déborde du header */
+    /* Effet de logo qui déborde du header */
+    transform: translateY(33%);
+    margin-top: -30px;
 }
 
-
-
-
 .navbar {
-  position: absolute;
-  padding: 50px;
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  box-sizing: border-box;
-  align-items: center;
+    position: absolute;
+    padding: 50px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    box-sizing: border-box;
+    align-items: center;
 }
 
 .navbar a {
-    color :aliceblue;
+    color: aliceblue;
 }
 
 .navbar .nav-links ul {
-  display: flex;
+    display: flex;
 }
 
 .navbar .nav-links ul li {
@@ -115,7 +113,7 @@ header li a {
 
 @media screen and (max-width: 800px) {
     .nav-links {
-        display:none;
+        display: none;
     }
 
     .header_nav_background_anim {
@@ -125,8 +123,10 @@ header li a {
 
 @media screen and (max-width: 600px) {
     #header_logo {
-        width: 45px;
-        height: auto;
+        width: 50px;
+        /* Effet de logo qui déborde du header */
+        transform: translateY(43%);
+        margin-top: -20px;
     }
 
     .header_icone {

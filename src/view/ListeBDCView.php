@@ -12,7 +12,7 @@
             <h2 class="titre_bulle">Bon de commande</h2>
         </div>
 
-        <div class="wrapper axe_ligne second_axe_center wrap">
+        <div class="wrapper axe_ligne second_axe_center wrap" id ='bdc'>
         </div>
 
     </div>

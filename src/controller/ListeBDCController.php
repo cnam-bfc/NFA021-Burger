@@ -5,12 +5,10 @@ class ListeBDCController extends Controller
     {
         $view = new View(BaseTemplate::EMPLOYE, 'ListeBDCView');
         $view->renderView();
-        //$this->donneesBdc();
     }
 
     public function donneesBdc()
     {
-
         $bdcDao = new CommandeFournisseurDAO();
         $bdc = $bdcDao->selectAll();
 
@@ -22,7 +20,9 @@ class ListeBDCController extends Controller
 
             $tableau[] = array(
                 "id" => $donnees->getId(),
-                "etat" => $donnees->getEtat(),
+                "creation" => $donnees->getDateCreation(),
+                "validation" => $donnees->getDateCommande(),
+                "archive" => $donnees->getDateArchive(),
                 "fournisseur" => ($fournisseurDao->selectById($donnees->getIdFournisseur()))->getNom()
             );
         }
@@ -36,23 +36,24 @@ class ListeBDCController extends Controller
     {
         $view = new View(BaseTemplate::JSON);
 
+
         if (isset($_POST['data'])) {
 
-            $jsonString = $_POST['data'];
-            $jsonData = json_decode($jsonString);
+            $rawData = Form::getParam('data', Form::METHOD_POST, Form::TYPE_MIXED);
+            $data = json_decode($rawData, true);
     
-            $idBdc = $jsonData[0];
+            $idBdc = $data['id'];
 
             $dao = new CommandeFournisseurDAO();
             $bdc = $dao->selectById($idBdc);
 
-            $bdc->setEtat(1);
+            $bdc->setDateCommande(date("Y-m-d H:i:s"));
             $dao->update($bdc);
 
             unset($_POST['data']);
         }
 
-        $view->json = array("result" => "success");
+        $view->json = array ("id" => $idBdc);
         $view->renderView();
     }
 }

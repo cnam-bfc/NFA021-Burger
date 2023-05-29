@@ -15,18 +15,34 @@
 }
 
 #informations_generales .box_contenu .form-input img {
-    width: 100%;
+    width: 100% - 20px;
     height: 100%;
     max-width: 300px;
     max-height: 300px;
+    margin: 0 10px 10px 10px;
 }
 
 #informations_generales .box_contenu i {
     font-size: small;
 }
 
+#tableau_composition tbody tr td li {
+    text-align: start;
+    white-space: nowrap;
+}
+
 #tableau_composition tbody td input+span:not(:empty) {
     margin-left: 10px;
+}
+
+#tableau_composition tfoot td>div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#tableau_composition tfoot td>div>div {
+    flex: 1;
 }
 
 #select_ajouter_ingredient {

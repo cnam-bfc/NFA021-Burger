@@ -1,5 +1,24 @@
+<link rel="stylesheet" href="<?php echo CSS; ?>Panier.css">
+<script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+<script src="<?php echo (JS) ?>Panier.js"></script>
 
-<if (?php $_SESSION['panier'] )?>
 
-<!-- faire une methode pour créer la variable de session Panier si elle existe pas
-(faire cette methode quand on clic sur le bouton "Ajouter au panier") -->
+<div class="wrapper axe_colonne text-center">
+    <h2>Panier</h2>
+    <div id="Panier">
+
+
+
+
+
+    </div>
+    <button onclick="commander()">Commander</button>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        console.log("html");
+        showData();
+    });
+</script>

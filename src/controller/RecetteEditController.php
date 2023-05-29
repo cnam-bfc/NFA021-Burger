@@ -53,6 +53,8 @@ class RecetteEditController extends Controller
         $uniteDAO = new UniteDAO();
         $recetteIngredientBasiqueDAO = new RecetteIngredientBasiqueDAO();
         $recetteIngredientOptionnelDAO = new RecetteIngredientOptionnelDAO();
+        $recetteSelectionMultipleDAO = new RecetteSelectionMultipleDAO();
+        $ingredientRecetteSelectionMultipleDAO = new IngredientRecetteSelectionMultipleDAO();
 
         $json = array();
         $json['data'] = array();
@@ -74,6 +76,9 @@ class RecetteEditController extends Controller
 
         // Récupération des ingrédients optionnels de la recette
         $recetteIngredientOptionnels = $recetteIngredientOptionnelDAO->selectAllByIdRecette($recette->getId());
+
+        // Récupération des ingrédients des sélections multiples de la recette
+        $recetteSelectionMultiples = $recetteSelectionMultipleDAO->selectAllByIdRecette($recette->getId());
 
         // Formatage des ingrédients basiques en json
         foreach ($recetteIngredientBasiques as $recetteIngredientBasique) {
@@ -109,8 +114,8 @@ class RecetteEditController extends Controller
 
             // Construction du json de l'ingrédient
             $jsonIngredient = array(
-                'ordre' => $recetteIngredientBasique->getOrdre(),
                 'id' => $ingredient->getId(),
+                'ordre' => $recetteIngredientBasique->getOrdre(),
                 'image' => $imageIngredient,
                 'nom' => $ingredient->getNom(),
                 'quantite' => $recetteIngredientBasique->getQuantite(),
@@ -155,8 +160,8 @@ class RecetteEditController extends Controller
 
             // Construction du json de l'ingrédient
             $jsonIngredient = array(
-                'ordre' => $recetteIngredientOptionnel->getOrdre(),
                 'id' => $ingredient->getId(),
+                'ordre' => $recetteIngredientOptionnel->getOrdre(),
                 'image' => $imageIngredient,
                 'nom' => $ingredient->getNom(),
                 'quantite' => $recetteIngredientOptionnel->getQuantite(),
@@ -166,6 +171,67 @@ class RecetteEditController extends Controller
             );
 
             $json['data'][] = $jsonIngredient;
+        }
+
+        // Formatage des ingrédients en "sélection multiple" en json
+        foreach ($recetteSelectionMultiples as $recetteSelectionMultiple) {
+            // Récupération des ingrédients de la sélection multiple
+            $selectionMultipleIngredients = $ingredientRecetteSelectionMultipleDAO->selectAllByIdSelectionMultipleRecette($recetteSelectionMultiple->getId());
+
+            // Formatage des ingrédients en json
+            $jsonSelectionMultipleIngredients = array();
+
+            foreach ($selectionMultipleIngredients as $selectionMultipleIngredient) {
+                // Récupération de l'ingrédient
+                $ingredient = $ingredientDAO->selectById($selectionMultipleIngredient->getIdIngredient());
+
+                // Si l'ingrédient n'existe pas, on passe à l'ingrédient de la recette suivant
+                if ($ingredient === null) {
+                    continue;
+                }
+
+                /** @var Unite $unite */
+                $unite = null;
+                // Récupération de l'unité
+                foreach ($unites as $uniteTmp) {
+                    if ($uniteTmp->getId() === $ingredient->getIdUnite()) {
+                        $unite = $uniteTmp;
+                        break;
+                    }
+                }
+
+                // Si l'unité n'existe pas, on passe à l'ingrédient de la recette suivant
+                if ($unite === null) {
+                    continue;
+                }
+
+                // Récupération de l'image de l'ingrédient
+                if ($ingredient->isAfficherVueEclatee()) {
+                    $imageIngredient = IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'eclate.img';
+                } else {
+                    $imageIngredient = IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'presentation.img';
+                }
+
+                // Construction du json de l'ingrédient
+                $jsonIngredient = array(
+                    'id' => $ingredient->getId(),
+                    'image' => $imageIngredient,
+                    'nom' => $ingredient->getNom(),
+                    'quantite' => $selectionMultipleIngredient->getQuantite(),
+                    'unite' => $unite->getDiminutif()
+                );
+
+                $jsonSelectionMultipleIngredients[] = $jsonIngredient;
+            }
+
+            // Construction du json de la sélection multiple
+            $jsonSelectionMultiple = array(
+                'ordre' => $recetteSelectionMultiple->getOrdre(),
+                'quantite' => $recetteSelectionMultiple->getQuantite(),
+                'ingredients' => $jsonSelectionMultipleIngredients
+            );
+
+            $json['data'][] = $jsonSelectionMultiple;
         }
 
         // Tri des ingrédients par ordre
@@ -182,6 +248,15 @@ class RecetteEditController extends Controller
 
     public function listeAllIngredients()
     {
+        // Récupération des ingrédients à ignorer
+        $ignorer = Form::getParam('ignorer', Form::METHOD_POST, Form::TYPE_ARRAY, false);
+        $ingredientsIgnorer = array();
+        if ($ignorer !== null) {
+            foreach ($ignorer as $idIngredient) {
+                $ingredientsIgnorer[] = intval($idIngredient);
+            }
+        }
+
         // Création des objets DAO
         $ingredientDAO = new IngredientDAO();
         $uniteDAO = new UniteDAO();
@@ -197,6 +272,11 @@ class RecetteEditController extends Controller
 
         // Formatage des ingrédients en json
         foreach ($ingredients as $ingredient) {
+            // Si l'ingrédient est à ignorer, on passe à l'ingrédient suivant
+            if (in_array($ingredient->getId(), $ingredientsIgnorer)) {
+                continue;
+            }
+
             /** @var Unite $unite */
             $unite = null;
             // Récupération de l'unité
@@ -224,7 +304,8 @@ class RecetteEditController extends Controller
                 'id' => $ingredient->getId(),
                 'image' => $imageIngredient,
                 'nom' => $ingredient->getNom(),
-                'unite' => $unite->getDiminutif()
+                'unite' => $unite->getDiminutif(),
+                'optionnel' => false
             );
 
             $json['data'][] = $jsonIngredient;
@@ -251,6 +332,8 @@ class RecetteEditController extends Controller
         $recetteDAO = new RecetteDAO();
         $recetteIngredientBasiqueDAO = new RecetteIngredientBasiqueDAO();
         $recetteIngredientOptionnelDAO = new RecetteIngredientOptionnelDAO();
+        $recetteSelectionMultipleDAO = new RecetteSelectionMultipleDAO();
+        $ingredientRecetteSelectionMultipleDAO = new IngredientRecetteSelectionMultipleDAO();
 
         // CAS - Création d'une nouvelle recette
         if ($recetteId === null) {
@@ -295,6 +378,17 @@ class RecetteEditController extends Controller
 
             // Suppression des ingrédients optionnels de la recette
             $recetteIngredientOptionnelDAO->deleteAllByIdRecette($recetteId);
+
+            // Suppression des ingrédients des sélections multiples de la recette
+            $recetteSelectionsMultiples = $recetteSelectionMultipleDAO->selectAllByIdRecette($recetteId);
+            foreach ($recetteSelectionsMultiples as $recetteSelectionMultiple) {
+                $ingredientsRecetteSelectionMultiple = $ingredientRecetteSelectionMultipleDAO->selectAllByIdSelectionMultipleRecette($recetteSelectionMultiple->getId());
+                foreach ($ingredientsRecetteSelectionMultiple as $ingredientRecetteSelectionMultiple) {
+                    $ingredientRecetteSelectionMultipleDAO->delete($ingredientRecetteSelectionMultiple);
+                }
+
+                $recetteSelectionMultipleDAO->delete($recetteSelectionMultiple);
+            }
         }
 
         // Si une image est présente, on l'enregistre dans le bon dossier
@@ -311,51 +405,101 @@ class RecetteEditController extends Controller
         // Récupération des ingrédients
         $ingredients = json_decode(Form::getParam('ingredients_recette', Form::METHOD_POST, Form::TYPE_STRING), true);
 
+        // Tri des ingrédients par ordre (Remarque : le tri est fait par le javascript, mais on le refait ici pour être sûr. Puis l'ordre sera recalculé dans la boucle suivante)
+        usort($ingredients, function ($a, $b) {
+            return $a['ordre'] - $b['ordre'];
+        });
+
         // Enregistrement des ingrédients
         $countIngredients = count($ingredients);
         for ($i = 0; $i < $countIngredients; $i++) {
             $ingredient = $ingredients[$i];
 
-            // Récupération des paramètres
-            // Vérification valeurs présentes
-            if (!isset($ingredient['id_ingredient']) || !isset($ingredient['quantite_ingredient']) || !isset($ingredient['optionnel_ingredient'])) {
-                continue;
-            }
-            $ingredientId = $ingredient['id_ingredient'];
-            $ingredientQuantite = $ingredient['quantite_ingredient'];
-            $ingredientOptionnel = $ingredient['optionnel_ingredient'];
-
-            // CAS - Ingrédient basique
-            if (!$ingredientOptionnel) {
-                // Création de l'ingrédient
-                $recetteIngredientBasique = new RecetteIngredientBasique();
-                $recetteIngredientBasique->setOrdre($i + 1);
-                $recetteIngredientBasique->setQuantite($ingredientQuantite);
-                $recetteIngredientBasique->setIdRecette($recetteId);
-                $recetteIngredientBasique->setIdIngredient($ingredientId);
-
-                // Enregistrement de l'ingrédient
-                $recetteIngredientBasiqueDAO->create($recetteIngredientBasique);
-            }
-            // CAS - Ingrédient optionnel
-            else {
-                // Récupération du prix
-                // Vérification valeur présente
-                if (empty($ingredient['prix_ingredient'])) {
+            // CAS - Ingrédient
+            if (isset($ingredient['id'])) {
+                // Récupération des paramètres
+                // Vérification valeurs présentes
+                if (!isset($ingredient['id']) || !isset($ingredient['quantite']) || !isset($ingredient['optionnel'])) {
                     continue;
                 }
-                $ingredientPrix = $ingredient['prix_ingredient'];
+                $ingredientId = $ingredient['id'];
+                $ingredientQuantite = $ingredient['quantite'];
+                $ingredientOptionnel = $ingredient['optionnel'];
 
-                // Création de l'ingrédient
-                $recetteIngredientOptionnel = new RecetteIngredientOptionnel();
-                $recetteIngredientOptionnel->setOrdre($i + 1);
-                $recetteIngredientOptionnel->setQuantite($ingredientQuantite);
-                $recetteIngredientOptionnel->setPrix($ingredientPrix);
-                $recetteIngredientOptionnel->setIdRecette($recetteId);
-                $recetteIngredientOptionnel->setIdIngredient($ingredientId);
+                // CAS - Ingrédient basique
+                if (!$ingredientOptionnel) {
+                    // Création de l'ingrédient
+                    $recetteIngredientBasique = new RecetteIngredientBasique();
+                    $recetteIngredientBasique->setOrdre($i + 1);
+                    $recetteIngredientBasique->setQuantite($ingredientQuantite);
+                    $recetteIngredientBasique->setIdRecette($recetteId);
+                    $recetteIngredientBasique->setIdIngredient($ingredientId);
 
-                // Enregistrement de l'ingrédient
-                $recetteIngredientOptionnelDAO->create($recetteIngredientOptionnel);
+                    // Enregistrement de l'ingrédient
+                    $recetteIngredientBasiqueDAO->create($recetteIngredientBasique);
+                }
+                // CAS - Ingrédient optionnel
+                else {
+                    // Récupération du prix
+                    // Vérification valeur présente
+                    if (empty($ingredient['prix'])) {
+                        continue;
+                    }
+                    $ingredientPrix = $ingredient['prix'];
+
+                    // Création de l'ingrédient
+                    $recetteIngredientOptionnel = new RecetteIngredientOptionnel();
+                    $recetteIngredientOptionnel->setOrdre($i + 1);
+                    $recetteIngredientOptionnel->setQuantite($ingredientQuantite);
+                    $recetteIngredientOptionnel->setPrix($ingredientPrix);
+                    $recetteIngredientOptionnel->setIdRecette($recetteId);
+                    $recetteIngredientOptionnel->setIdIngredient($ingredientId);
+
+                    // Enregistrement de l'ingrédient
+                    $recetteIngredientOptionnelDAO->create($recetteIngredientOptionnel);
+                }
+            }
+            // CAS - Sélection multiple
+            elseif (isset($ingredient['ingredients'])) {
+                // Récupération des paramètres
+                // Vérification valeurs présentes
+                if (!isset($ingredient['quantite']) || !isset($ingredient['ingredients'])) {
+                    continue;
+                }
+                $selectionMultipleQuantite = $ingredient['quantite'];
+                $selectionMultipleIngredients = $ingredient['ingredients'];
+
+                // Création de la sélection multiple
+                $recetteSelectionMultiple = new RecetteSelectionMultiple();
+                $recetteSelectionMultiple->setOrdre($i + 1);
+                $recetteSelectionMultiple->setQuantite($selectionMultipleQuantite);
+                $recetteSelectionMultiple->setIdRecette($recetteId);
+
+                // Enregistrement de la sélection multiple
+                $recetteSelectionMultipleDAO->create($recetteSelectionMultiple);
+
+                // Récupération de l'id de la sélection multiple
+                $selectionMultipleId = $recetteSelectionMultiple->getId();
+
+                // Enregistrement des ingrédients de la sélection multiple
+                foreach ($selectionMultipleIngredients as $selectionMultipleIngredient) {
+                    // Récupération des paramètres
+                    // Vérification valeurs présentes
+                    if (!isset($selectionMultipleIngredient['id']) || !isset($selectionMultipleIngredient['quantite'])) {
+                        continue;
+                    }
+                    $selectionMultipleIngredientId = $selectionMultipleIngredient['id'];
+                    $selectionMultipleIngredientQuantite = $selectionMultipleIngredient['quantite'];
+
+                    // Création de l'ingrédient de la sélection multiple
+                    $ingredientRecetteSelectionMultiple = new IngredientRecetteSelectionMultiple();
+                    $ingredientRecetteSelectionMultiple->setQuantite($selectionMultipleIngredientQuantite);
+                    $ingredientRecetteSelectionMultiple->setIdSelectionMultipleRecette($selectionMultipleId);
+                    $ingredientRecetteSelectionMultiple->setIdIngredient($selectionMultipleIngredientId);
+
+                    // Enregistrement de l'ingrédient de la sélection multiple
+                    $ingredientRecetteSelectionMultipleDAO->create($ingredientRecetteSelectionMultiple);
+                }
             }
         }
 
