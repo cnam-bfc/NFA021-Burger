@@ -1,16 +1,16 @@
 <!-- Leaflet : Bibliothèque pour intégrer une carte -->
+<!-- Bibliothèque Leaflet -->
 <link rel="stylesheet" href="<?php echo ASSETS ?>leaflet/leaflet.css">
 <script src="<?php echo ASSETS ?>leaflet/leaflet.js"></script>
+
+<!-- Bibliothèque Leaflet EasyButton -->
+<link rel="stylesheet" href="<?php echo ASSETS ?>leaflet-easybutton/easy-button.min.css">
+<script src="<?php echo ASSETS ?>leaflet-easybutton/easy-button.min.js"></script>
+
+<!-- On ajoute la feuille de style associé à la page -->
 <link rel="stylesheet" href="<?php echo CSS ?>Itineraire.css">
+<!-- On ajoute le script associé à la page -->
 <script src="<?php echo JS ?>Itineraire.js"></script>
 
 <!-- Wrapper (contenu de la page) -->
-<div class="padding_default grow">
-    <h1 class="titre_bulle">Itinéraire</h1>
-
-    <div id="map" class="margin_bottom_top_large"></div>
-
-    <div class="wrapper main_axe_space_around">
-        <button id="livraisons" class="bouton bouton_primaire margin_left_right_auto">Voir les livraisons</button>
-    </div>
-</div>
+<div id="map"></div>
