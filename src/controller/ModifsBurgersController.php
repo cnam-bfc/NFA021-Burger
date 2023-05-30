@@ -88,15 +88,12 @@ class ModifsBurgersController extends Controller
             return;
         }
 
-
-
-        array_push($_SESSION['panier'],$infos);
-        
-        
+        array_push($_SESSION['panier'], $infos);
 
 
         $view = new View(BaseTemplate::JSON, null);
-        $view->json = $infos;
+        $view->json = $_SESSION['panier'];
         $view->renderView();
     }
 }
+
