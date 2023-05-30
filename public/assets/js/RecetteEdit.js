@@ -8,6 +8,7 @@ $(function () {
 
     // Récupération des élements du DOM
     const formRecette = $("#form_recette");
+    const annulerRecette = $("#annuler");
     const enregistrerRecette = $("#enregistrer");
     const bodyTableauComposition = $("#tableau_composition tbody");
     const boutonAjouterNewIngredient = $("#bouton_ajouter_new_ingredient");
@@ -324,6 +325,12 @@ $(function () {
                 bodyTableauComposition.append(ligne);
             }
         });
+    }
+
+    // Lors de l'annulation des modifications
+    function onAnnuler() {
+        // On recharge la page
+        window.location.reload();
     }
 
     // Lors de la soumission du formulaire
@@ -653,6 +660,11 @@ $(function () {
     /*****************************************
      *************** PRINCIPAL ***************
      *****************************************/
+
+    // Lors de l'annulation des changements
+    annulerRecette.click(function () {
+        onAnnuler();
+    });
 
     // Lors de la soumission du formulaire
     formRecette.submit(function (event) {
