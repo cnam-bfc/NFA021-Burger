@@ -7,7 +7,7 @@
         </ul>
         <a href="<?php echo PUBLIC_FOLDER ?>"><img id="header_logo" src="<?= IMG ?>logo/logo.png"></a>
         <ul>
-            <li><a href=""><i class="fa-solid fa-user fa-2x header_icone"></i></a></li>
+            <li><a href="<?php echo PUBLIC_FOLDER ?>connexion"><i class="fa-solid fa-user fa-2x header_icone"></i></a></li>
             <li><a href="<?php echo PUBLIC_FOLDER ?>panier"><i class="fa-solid fa-basket-shopping fa-2x header_icone"></i><span id="panier_indicateur"></span></a></li>
 
         </ul>
