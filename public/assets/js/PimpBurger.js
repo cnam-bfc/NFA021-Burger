@@ -416,8 +416,10 @@ $(document).ready(function () {
             dataType: "JSON",
             data: { burgerAjoute: tabBurger },
             success: function (response) {
-                console.log("responseGOOD");
+                console.log("responseGOOD : élément ajouté au panier");
                 console.log(response);
+                //modification de l'indicateur du nombre d'éléments dans le panier
+                document.getElementById('panier_indicateur').textContent = response.length;
 
             },
             error: function (xhr, status, error) {
@@ -431,7 +433,23 @@ $(document).ready(function () {
     });
 })
 
-// ctrl + f "ingredientsFinaux"
+//requête pour mettre à jour l'indicateur du bouton panier concernant le nombre d'éléments dans le panier
+$.ajax({
+    url: "panier/getSessionPanier",
+    method: "POST",
+    dataType: "JSON",
+    success: function (response) {
+        console.log("responseGOOD");
+        // Appeler la fonction de traitement du panier
+        document.getElementById('panier_indicateur').textContent = response.length;
+    },
+    error: function (xhr, status, error) {
+        console.log("Erreur lors de la requête AJAX : " + error);
+        console.log(xhr.responseText);
+    }
+});
+
+
 
 
 
