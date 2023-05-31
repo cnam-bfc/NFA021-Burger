@@ -107,6 +107,10 @@ let selectionnerGraphe = function (event) {
     let type = graphe.attr('type_stat');
     console.log("Type de statistiques : " + type);
 
+    // on vide la div
+    $('#specificite').empty();
+
+    // switch permettant l'initialisation d'une statistique particulière 
     switch (type) {
         case 'burger':
             addDivChart();
@@ -117,7 +121,7 @@ let selectionnerGraphe = function (event) {
             actualiserTitre();
             actualiserDescription();
             recupererLesRecettes();
-            recupererRecettesPourStatistiques();
+            recupererRecettesPourStatistiquesTotal();
             break;
         case 'ingredient':
             break;
@@ -184,7 +188,6 @@ let recupererLesRecettes = function () {
     // compléter pour préparer la checkbox
     let div = $('<div>');
     $.ajax({
-
         url: "statistiques/recupererLesRecettes",
         method: "POST",
         dataType: "json",
@@ -201,11 +204,13 @@ let recupererLesRecettes = function () {
             span.append(label);
             span.append(input);
             div.append(span);
+            input.prop('checked', true);
             input.on('change', function () {
                 if ($(this).is(':checked')) {
                     $('#select_choix_recette').prop('disabled', true);
                     $('#select_choix_recette').select2('destroy');
                     $('#select_choix_recette').addClass("hidding");
+                    recupererRecettesPourStatistiquesTotal();
                 } else {
                     $('#select_choix_recette').prop('disabled', false);
                     $('#select_choix_recette').select2({
@@ -227,10 +232,7 @@ let recupererLesRecettes = function () {
 
             // on ajoute le select dans la div puis on l'initialise avec select2
             div.append(select);
-            select.select2({
-                width: 'element',
-                placeholder: 'Sélectionnez une recette',
-            });
+            $('#select_choix_recette').addClass("hidding");
         },
         error: function (data) {
             console.log("Statistiques.js - recupererLesRecettes - error");
@@ -241,7 +243,7 @@ let recupererLesRecettes = function () {
     $('#specificite').append(div);
 }
 
-let recupererRecettesPourStatistiques = function () {
+let recupererRecettesPourStatistiquesTotal = function () {
     console.log("Statistiques.js - makeStatBurger");
     // on prépare les données à envoyer
     let data;
@@ -267,18 +269,62 @@ let recupererRecettesPourStatistiques = function () {
     data = JSON.stringify(data);
 
     $.ajax({
-        url: "statistiques/recupererRecettesPourStatistiques",
+        url: "statistiques/recupererRecettesPourStatistiquesTotal",
         method: "POST",
         dataType: "json",
         data: {
             data: data
         },
         success: function (data) {
-            console.log("Statistiques.js - recupererRecettesPourStatistiques - success");
-            
+            console.log("Statistiques.js - recupererRecettesPourStatistiquesTotal - success");
+
+            // on récupère les données
+            console.log(data);
+
+            // on créer une div
+            let div = $('<div>').addClass('wrapper axe_ligne main_axe_space_between second_axe_center grow');
+            // on créer un canvas qu'on ajoute à la div
+            let canvas = $('<canvas>');
+            div.append(canvas);
+
+            // on boucle sur data avec un foreach
+            let labels = [];
+            let quantities = [];
+            data.forEach(element => {
+                labels.push(element.nom);
+                quantities.push(element.quantite);
+            });
+            console.log(labels);
+            console.log(quantities);
+
+            // Configuration du graphe
+            let chartConfig = {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Quantités',
+                        data: quantities,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            };
+
+            // Création du graphe
+            $('#graphes').append(div);
+            let myChart = new Chart(canvas, chartConfig);
         },
         error: function (data) {
-            console.log("Statistiques.js - recupererRecettesPourStatistiques - error");
+            console.log("Statistiques.js - recupererRecettesPourStatistiquesTotal - error");
             alert("Une erreur est survenue lors de la récupération des recettes.");
         },
     });

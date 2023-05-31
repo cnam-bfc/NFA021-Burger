@@ -61,7 +61,7 @@ class Router
         // Statistiques
         'gerant/statistiques' => ["controller" => "StatistiquesController", "method" => "renderViewStatistiques"],
         'gerant/statistiques/recupererLesRecettes' => ["controller" => "StatistiquesController", "method" => "recupererLesRecettes"],
-        'gerant/statistiques/recupererRecettesPourStatistiques' => ["controller" => "StatistiquesController", "method" => "recupererRecettesPourStatistiques"],
+        'gerant/statistiques/recupererRecettesPourStatistiquesTotal' => ["controller" => "StatistiquesController", "method" => "recupererRecettesPourStatistiquesTotal"],
 
         // Inventaire
         'gerant/inventaire' => ["controller" => "InventaireController", "method" => "renderViewInventaire"],

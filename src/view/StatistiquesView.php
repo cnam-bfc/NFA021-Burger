@@ -1,7 +1,7 @@
 <!-- on inclut la feuille de style -->
 <link rel="stylesheet" href="<?php echo CSS; ?>Statistiques.css">
 <!-- bibliothèque pour générer un graphique -->
-<script src="<?php ASSETS ?>chartjs/chart.min.js"></script>
+<script src="<?php echo ASSETS; ?>chartjs/chart.umd.min.js"></script>
 <!-- on inclut la feuille js -->
 <script src="<?php echo JS; ?>statistiques.js"></script>
 
@@ -64,7 +64,7 @@
                         <option value="" selected>Choisissez un type de graphique</option>
                     </select>
                 </div>
-<!--
+                <!--
                 <div class="box_graphe">
                     <h3 class="graphe_categorie bold">Ordre</h3>
                     <select id="ordre_graphe" class="select">
@@ -107,7 +107,7 @@
         </div>
 
         <div id="graphes">
-            
+
         </div>
 
         <div class="center_items_horizontal">
