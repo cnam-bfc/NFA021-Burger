@@ -33,33 +33,33 @@
             <div id="ongletSelectionGraphe" class="menu_graphe_content wrapper axe_colonne gap_top_bottom_moyen" >
                 <div class="box_graphe">
                     <h3 class="graphe_categorie bold">Ventes</h3>
-                    <button class="graphe_choix" type_stat="burger">
+                    <button id="burger_vente_total" class="graphe_choix" type_stat="burger">
                         <p>Burger <span class="font_size_petit">(total)</span></p>
                     </button>
-                    <button class="graphe_choix" type_stat="burger">
+                    <button id="burger_vente_temps" class="graphe_choix" type_stat="burger">
                         <p>Burger <span class="font_size_petit">(évolution dans le temps)</span></p>
                     </button>
-                    <button class="graphe_choix" type_stat="ingredient">
+                    <button id="ingredient_achat_total"class="graphe_choix" type_stat="ingredient">
                         <p>Ingedient</p>
                     </button>
                 </div>
 
                 <div class="box_graphe">
                     <h3 class="graphe_categorie bold">Achats</h3>
-                    <button class="graphe_choix" type_stat="produits">
+                    <button id="produit_achat_total"class="graphe_choix" type_stat="produits">
                         <p>Produits</p>
                     </button>
-                    <button class="graphe_choix" type_stat="fournisseurs">
+                    <button id="fournisseur_achat_total" class="graphe_choix" type_stat="fournisseurs">
                         <p>Fournisseurs</p>
                     </button>
                 </div>
 
                 <div class="box_graphe">
                     <h3 class="graphe_categorie bold">Généralités</h3>
-                    <button class="graphe_choix" type_stat="benefices">
+                    <button id="benefice_temps" class="graphe_choix" type_stat="benefices">
                         <p>Bénéfices</p>
                     </button>
-                    <button class="graphe_choix" type_stat="nombre_client">
+                    <button id="nombre_client_temps" class="graphe_choix" type_stat="nombre_client">
                         <p>Nombre de client</p>
                     </button>
                 </div>

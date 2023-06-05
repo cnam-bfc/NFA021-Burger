@@ -69,6 +69,7 @@ $(document).ready(function () {
 
     // On initialise la page
     initButtons();
+    initButtonsSelectionGraphe();
     globalStates(state.DEFAULT);
     $('.menu_graphe_content').hide();
     refreshMenuGauche(false);
@@ -117,8 +118,6 @@ function globalStates(currentState) {
             button.SAVE_GRAPHE.show();
             button.INFORMATION.show();
             button.SELECTION_GRAPHE.prop('disabled', false);
-            button.PARAMETRAGE_GRAPHE.prop('disabled', false);
-            button.CONFIGURATION_GRAPHE.prop('disabled', false);
             button.CANCEL_GRAPHE.prop('disabled', false);
             button.SAVE_GRAPHE.prop('disabled', false);
             button.INFORMATION.prop('disabled', false);
@@ -207,6 +206,30 @@ function initButtons() {
         refreshMenuGauche(false);
         buttonSelectEffect(null, null);
     });
+}
+
+function initButtonsSelectionGraphe() {
+    $('#burger_vente_total').click(function () {
+        $('#burger_vente_total').addClass('selected');
+    });
+
+    $('#burger_vente_temps').click(function () {
+    });
+
+    $('#ingredient_achat_total').click(function () {
+    });
+
+    $('#produit_achat_total').click(function () {
+    });
+
+    $('#fournisseur_achat_total').click(function () {
+    });
+
+    $('#benefice_temps').click(function () {
+    });  
+
+    $('#nombre_client_temps').click(function () {
+    });  
 }
 
 /**
