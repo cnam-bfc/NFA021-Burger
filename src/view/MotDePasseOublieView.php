@@ -41,7 +41,7 @@
         </p>
         <hr>
         <!-- Bouton retour -->
-        <button class="bouton" id="retour_connexion" onclick="history.back();" style="font-size: 1.5rem;">
+        <button class="bouton" onclick="history.back();" style="font-size: 1.5rem;">
             <i class="fa-solid fa-arrow-left"></i>
             Retour
         </button>
