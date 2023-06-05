@@ -9,10 +9,16 @@
     padding-left: 2em;
 }
 
+#tableau_recettes tbody tr td:first-child,
+#tableau_recettes tbody tr td:last-child {
+    width: 0;
+    white-space: nowrap;
+}
+
 #tableau_recettes tbody .description {
     text-align: justify;
 }
 
-#Ingredient{
+#Ingredient {
     background-color: aliceblue;
 }
