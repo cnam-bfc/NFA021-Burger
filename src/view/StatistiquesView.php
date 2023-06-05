@@ -6,15 +6,31 @@
 <script src="<?php echo JS; ?>statistiques.js"></script>
 
 <!-- content -->
-<div class="wrapper axe_ligne grow ">
-    <section id="menu_gauche" class="wrapper axe_colonne width_25"> <!-- peut se plier -->
-        <div class="onglets"> <!-- permet de choisir la div à afficher -->
-            <a class="onglet" id="ongletSelection">Selection</a>
-            <a class="onglet" id="ongletConfiguration">Configuration</a>
-            <a class="onglet" id="ongletParametrage">Parametrage</a>
+<div class="wrapper axe_ligne grow">
+    <section id="menu_gauche" class="wrapper axe_ligne">
+        <!-- Menu des actions rapide (ne se ferme pas) -->
+        <div id="menu_action_rapide" class="wrapper axe_colonne main_axe_space_between second_axe_center gap_top_bottom_moyen">
+            <div id="boutons_personnalisation" class="wrapper axe_colonne gap_top_bottom_petit"> <!-- permet de choisir la div à afficher -->
+                <button title="Ajouter un graphe" id="button_stat_add_graphe" class="bouton boutonStats"><i class="fa-solid fa-plus fa-lg"></i></button>
+                <button title="Selection" id="button_stat_selection_graphe" class="bouton boutonStats"><i class="fa-solid fa-chart-simple fa-lg"></i></button>
+                <button title="Configuration" id="button_stat_configuration_graphe" class="bouton boutonStats"><i class="fa-solid fa-hammer fa-lg"></i></button>
+                <button title="Paramétrages" id="button_stat_parametrage_graphe" class="bouton boutonStats"><i class="fa-solid fa-gear fa-lg"></i></button>
+            </div>
+            <div id="boutons_graphe" class="wrapper axe_colonne gap_top_bottom_petit">
+                <button title="Sauvegarder les changements" id="button_stat_save_graphe" class="bouton boutonStats"><i class="fa-solid fa-floppy-disk fa-lg"></i></button>
+                <button title="Annuler les changements" id="button_stat_cancel_graphe" class="bouton boutonStats"><i class="fa-solid fa-backward fa-lg"></i></button>
+                <button title="Supprimer le graphe" id="button_stat_delete_graphe" class="bouton boutonStats"><i class="fa-solid fa-trash fa-lg"></i></button>
+                <button title="Exporter en PDF" id="button_stat_export_pdf" class="bouton boutonStats"><i class="fa-solid fa-file-pdf fa-lg"></i></button>
+                <button title="Informations" id="button_stat_information" class="bouton boutonStats"><i class="fa-solid fa-circle-info fa-lg"></i></button>
+            </div>
         </div>
-        <div id="menu_graphe">
-            <div data_id="ongletSelection">
+
+        <!-- Menu de configuration (se ferme) -->
+        <div id="menu_graphe" class="wrapper axe_colonne">
+            <button title="Fermer menu" id="button_stat_close_menu_config" class="bouton"><i class="fa-solid fa-xmark fa-xs"></i></button>
+            <h3 id='titre_onglet' class="text-center bold"></h3>
+            <!-- Menu de choix du type de graphe -->
+            <div id="ongletSelectionGraphe" class="menu_graphe_content wrapper axe_colonne gap_top_bottom_moyen" >
                 <div class="box_graphe">
                     <h3 class="graphe_categorie bold">Ventes</h3>
                     <button class="graphe_choix" type_stat="burger">
@@ -49,7 +65,8 @@
                 </div>
             </div>
 
-            <div data_id="ongletConfiguration">
+            <!-- Menu de configuration d'un graphe -->
+            <div id="ongletConfigurationGraphe" class="menu_graphe_content">
                 <div class="box_graphe">
                     <h3 class="graphe_categorie bold">Nom</h3>
                     <input type="text" id="nom_graphe" name="nom_graphe" class="input" placeholder="Nom du graphique">
@@ -64,16 +81,10 @@
                         <option value="" selected>Choisissez un type de graphique</option>
                     </select>
                 </div>
-                <!--
-                <div class="box_graphe">
-                    <h3 class="graphe_categorie bold">Ordre</h3>
-                    <select id="ordre_graphe" class="select">
-                        <option value="" selected>Choisissez l'ordre de votre graphique</option>
-                    </select>
-                </div>
--->
             </div>
-            <div data_id="ongletParametrage">
+
+            <!-- Menu de paramétrage d'un graphe -->
+            <div id="ongletParametrageGraphe" class="menu_graphe_content">
                 <div class="box_graphe">
                     <h3 class="graphe_categorie bold">Date</h3>
                     <span class="wrapper axe_ligne main_axe_space_between second_axe_center grow">
@@ -93,26 +104,34 @@
                     <h3 class="graphe_categorie bold" id="spécificité graphe">Spécificité</h3>
                 </div>
             </div>
-        </div>
-        <div id="boutons_graphe" class="wrapper axe_ligne gap_left_right_moyen">
-            <button title="Ajouter le graphe" id="add_graphe" class="bouton"><i class="fa-solid fa-plus fa-lg"></i></button>
-            <button title="Sauvegarder les changements" id="save_graphe" class="bouton"><i class="fa-solid fa-floppy-disk fa-lg"></i></button>
-            <button title="Annuler les changements" id="cancel_graphe" class="bouton"><i class="fa-solid fa-xmark fa-lg"></i></button>
-            <button title="Supprimer le graphe" id="delete_graphe" class="bouton"><i class="fa-solid fa-trash fa-lg"></i></button>
+
+            <!-- Menu de confirmation de l'exportation -->
+            <div id="ongletConfirmationExport" class="menu_graphe_content">
+                <div class="box_graphe">
+                    <h3 class="graphe_categorie bold">Nom du fichier</h3>
+                    <input type="text" id="nom_fichier_export" name="nom_fichier_export" class="input" placeholder="Nom du fichier">
+                </div>
+                <button id="button_stat_confirmation_export" class="bouton">Exporter</button>
+            </div>
+
+            <!-- Menu de confirmation lambda -->
+            <div id="ongletConfirmationLambda" class="menu_graphe_content">
+                <div class="box_graphe">
+                    <h3 class="graphe_categorie bold"></h3>
+                    <p id="texte_confirmation"></p>
+                </div>
+                <button id="button_stat_confirmation_lambda" class="bouton">Confirmer</button>
+            </div>
         </div>
     </section>
-    <section class="wrapper axe_colonne second_axe_center width_100 main_axe_space_between" id="contenu">
+
+
+    <section class="wrapper axe_colonne second_axe_center width_100 gap_top_bottom_moyen" id="contenu">
         <div class="titre_souligne">
             <h1>Statistiques</h1>
         </div>
 
-        <div id="graphes">
-
-        </div>
-
-        <div class="center_items_horizontal">
-            <button class="bouton bouton_primaire margin_bottom_top_large">Exporter</button>
-        </div>
+        <div id="graphes"></div> <!-- div pour contenir les graphes -->
     </section>
 </div>
 </div>

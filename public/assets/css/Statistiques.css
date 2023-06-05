@@ -1,16 +1,59 @@
-#menu_gauche
-{
-    background-color: #f1f0f0;
+.dont_show_menu_graphe {
+    width: 10%;
+}
+
+.show_menu_graphe {
+    width: 35%;
+}
+
+#menu_graphe {
+    width: 100%;
+    padding-left : 5px;
+    background-color: #e6e6e6;
+}
+
+/*
+CSS pour la partie Menu
+*/
+
+#menu_action_rapide{
+    width: 60px;
+    background-color: rgb(247, 247, 247);
+    padding-right: 1px;
+}
+
+#boutons_graphe {
+    width: auto;
+}
+
+#button_stat_close_menu_config {
+    padding: 5px 10px;
+    margin-left: auto;
+    margin-right: 5px;
+}
+
+#titre_onglet {
+    font-size: 20px;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #000000;
+}
+
+/*
+CSS pour la partie Selection d'un graphe
+*/
+
+.menu_graphe_content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin : 0 10px 0 5px;
 }
 
 .box_graphe {
-    margin : 20px 25px 20px 25px;
     display : flex;
     flex-direction: column;
-}
-
-.box_graphe h3 {
-    margin: 0 0 10px 0;
+    gap : 5px
 }
 
 .graphe_choix {
@@ -42,35 +85,3 @@
     background-color: #7e7d7a;
     color: #fff;
 }
-
-#boutons_graphe {
-    margin: auto auto 10px auto;
-}
-
-#boutons_graphe a {
-    margin: 0 5px 0 5px;
-    padding: 5px;
-}
-
-#add_graphe:hover {
-    background-color: #9fe593;
-    color: #fff;
-}
-
-#save_graphe:hover {
-    background-color: #6065f6;
-    color: #fff;
-}
-
-#cancel_graphe:hover {
-    background-color: #fb7070;
-    color: #fff;
-}
-
-#delete_graphe:hover {
-    background-color: #fb7070;
-    color: #fff;
-}
-
-
-

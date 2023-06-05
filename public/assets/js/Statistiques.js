@@ -1,353 +1,255 @@
-// ******************
-// *** CONSTANTES ***
-// ******************
-const charts = {};
-const temporyChart = {};
-const chartType = {
-    1: {
-        'name': 'Barre',
-        'nameType': 'bar',
-        'value': 1
-    },
-    2: {
-        'name': 'Ligne',
-        'nameType': 'line',
-        'value': 2
-    },
-    3: {
-        'name': 'Secteur',
-        'nameType': 'pie',
-        'value': 3
-    },
-    4: {
-        'name': 'Donut',
-        'nameType': 'doughnut',
-        'value': 4
-    }
+// CONSTANTES
+// Les boutons 
+const button = {
+    ADD_GRAPHE: null,
+    SELECTION_GRAPHE: null,
+    CONFIGURATION_GRAPHE: null,
+    PARAMETRAGE_GRAPHE: null,
+    SAVE_GRAPHE: null,
+    CANCEL_GRAPHE: null,
+    DELETE_GRAPHE: null,
+    EXPORT_PDF: null,
+    INFORMATION: null,
+    CLOSE_MENU: null
 };
 
-// *********************************
-// *** QUAND LA PAGE EST CHARGÉE ***
-// *********************************
+const menuGaucheContent = {
+    SELECTION_GRAPHE: null,
+    CONFIGURATION_GRAPHE: null,
+    PARAMETRAGE_GRAPHE: null,
+    EXPORT: null,
+    LAMBDA: null
+};
+
+
+const actual = {
+    BUTTON: null,
+    MENU_GAUCHE_CONTENT: null,
+}
+
+// Les états
+const state = {
+    DEFAULT: 1,
+    ADD_GRAPHE: 2,
+    MODIFY_GRAPHE: 3,
+};
+
+// Constantes pour les graphiques
+const chartType = {
+    bar: 'bar',
+    line: 'line',
+    pie: 'pie',
+    doughnut: 'doughnut',
+};
+
+const charts = [];
+let temporyChart = {
+};
+
+// INITIALISATION
 $(document).ready(function () {
-    // message dans la console 
-    console.log('Statistiques.js');
+    // On initialise les boutons
+    button.ADD_GRAPHE = $('#button_stat_add_graphe');
+    button.SELECTION_GRAPHE = $('#button_stat_selection_graphe');
+    button.CONFIGURATION_GRAPHE = $('#button_stat_configuration_graphe');
+    button.PARAMETRAGE_GRAPHE = $('#button_stat_parametrage_graphe');
+    button.SAVE_GRAPHE = $('#button_stat_save_graphe');
+    button.CANCEL_GRAPHE = $('#button_stat_cancel_graphe');
+    button.DELETE_GRAPHE = $('#button_stat_delete_graphe');
+    button.EXPORT_PDF = $('#button_stat_export_pdf');
+    button.INFORMATION = $('#button_stat_information');
+    button.CLOSE_MENU = $('#button_stat_close_menu_config');
 
-    // Evènements
-    $('.onglet').on('click', selectionOnglet);
-    $('#choix_date_graphe').on('change', afficherDate);
-    $('.graphe_choix').on('click', selectionnerGraphe);
-    $('#nom_graphe').on('input', actualiserTitre);
-    $('#description_graphe').on('input', actualiserDescription);
+    // On initialise les contenus du menu de gauche
+    menuGaucheContent.SELECTION_GRAPHE = $('#ongletSelectionGraphe');
+    menuGaucheContent.CONFIGURATION_GRAPHE = $('#ongletConfigurationGraphe');
+    menuGaucheContent.PARAMETRAGE_GRAPHE = $('#ongletParametrageGraphe');
+    menuGaucheContent.EXPORT = $('#ongletConfirmationExport');
+    menuGaucheContent.LAMBDA = $('#ongletConfirmationLambda');
 
-    // Initialisation de la page
-    $('#ongletSelection').click();
-    $('#choix_date_graphe').change();
-
-    // Initialisation du select des types (type_graphe)
-    for (let type in chartType) {
-        $('#type_graphe').append('<option value="' + chartType[type].value + '">' + chartType[type].name + '</option>');
-    }
+    // On initialise la page
+    initButtons();
+    globalStates(state.DEFAULT);
+    $('.menu_graphe_content').hide();
+    refreshMenuGauche(false);
 });
 
-// *****************
-// *** FONCTIONS ***
-// *****************
-let selectionOnglet = function (event) {
-    console.log("Statistiques.js - selectionOnglet");
-    // on récupère l'onglet
-    let onglet;
-    if (event.target) {
-        onglet = $(event.target);
-    } else {
-        onglet = $(this);
-    }
+// FONCTIONS PRIMAIRES
+/**
+ * Méthode qui permet de changer l'état de la page.
+ * Facilite la gestion des boutons et du développement.
+ * 
+ * @param {} currentState 
+ */
+function globalStates(currentState) {
+    console.log('globalStates(' + currentState + ')');
+    // On désactive tous les boutons qui ont la classe boutonStats et on les cache
+    $('.boutonStats').prop('disabled', true);
+    $('.boutonStats').hide();
+    // on supprime le contenu de la div des graphes et de temporaryChart
+    $('#graphes').empty();
+    temporyChart = {};
 
-    // on retire la classe selected à tous les autres onglets et on l'ajoute à l'onglet sélectionné
-    $('.onglet').removeClass('selected');
-    onglet.addClass('selected');
-
-    // on cache toutes les div de selection_graphe
-    $('#menu_graphe > div').addClass('hidding');
-
-    // on affiche la div correspondant à l'onglet sélectionné
-    let id = onglet.attr('id');
-    console.log(id);
-    $('#menu_graphe div[data_id=' + id + ']').removeClass('hidding');
-}
-
-let afficherDate = function (event) {
-    console.log("Statistiques.js - afficherDate");
-    // si la case est coché on affiche le champ date et on réactive le bouton
-    if ($(this).is(':checked')) {
-        $('#date_debut_span').removeClass('hidding');
-        $('#date_fin_span').removeClass('hidding');
-        $('#date_debut_graphe').prop('disabled', false);
-        $('#date_fin_graphe').prop('disabled', false);
-    }
-    // sinon on le cache et on désactive le bouton
-    else {
-        $('#date_debut_span').addClass('hidding');
-        $('#date_fin_span').addClass('hidding');
-        $('#date_debut_graphe').prop('disabled', true);
-        $('#date_fin_graphe').prop('disabled', true);
-    }
-}
-
-let selectionnerGraphe = function (event) {
-    console.log("Statistiques.js - selectionnerGraphe");
-    // on récupère le graphe
-    let graphe = $(this);
-
-    // on retire la classe selected à tous les autres onglets et on l'ajoute à l'onglet sélectionné
-    $('.graphe_choix').removeClass('selected');
-    graphe.addClass('selected');
-
-    // on regarde le type de graphe sélectionné
-    let type = graphe.attr('type_stat');
-    console.log("Type de statistiques : " + type);
-
-    // on vide la div
-    $('#specificite').empty();
-
-    // switch permettant l'initialisation d'une statistique particulière 
-    switch (type) {
-        case 'burger':
-            addDivChart();
-            $('#nom_graphe').val('Graphique des burgers vendus');
-            $('#description_graphe').val('Ce graphique représente le nombre de burgers vendus depuis l\'ouverture du restaurant.');
-            temporyChart["type"] = 3;
-            $("#type_graphe").val(temporyChart["type"]);
-            actualiserTitre();
-            actualiserDescription();
-            recupererLesRecettes();
-            recupererRecettesPourStatistiquesTotal();
+    switch (currentState) {
+        case state.DEFAULT: // On est dans l'état par défaut ou l'on affiche les graphes s'ils existent
+            console.log('state.BASIC_WITHOUT_GRAPHE');
+            // On affiche le bouton pour ajouter un graphe et celui d'information et on les active.
+            button.ADD_GRAPHE.show();
+            button.INFORMATION.show();
+            button.ADD_GRAPHE.prop('disabled', false);
+            button.INFORMATION.prop('disabled', false);
+            if (charts.length < 1) {
+                // On ajoute à la div des graphes un message d'information
+                $('#graphes').append('<p class="text-center">Aucun graphe à afficher, veuillez en créer un.</p>');
+            } else {
+                button.EXPORT_PDF.show();
+                button.EXPORT_PDF.prop('disabled', false);
+                drawCharts();
+            }
             break;
-        case 'ingredient':
+        case state.ADD_GRAPHE:
+            console.log('state.ADD_GRAPHE');
+            // On affiche les boutons de sélection de type de graphe, de paramétrage de graphe, d'annulation et de sauvegarde de graphe et on les active.
+            button.SELECTION_GRAPHE.show();
+            button.PARAMETRAGE_GRAPHE.show();
+            button.CONFIGURATION_GRAPHE.show();
+            button.CANCEL_GRAPHE.show();
+            button.SAVE_GRAPHE.show();
+            button.INFORMATION.show();
+            button.SELECTION_GRAPHE.prop('disabled', false);
+            button.PARAMETRAGE_GRAPHE.prop('disabled', false);
+            button.CONFIGURATION_GRAPHE.prop('disabled', false);
+            button.CANCEL_GRAPHE.prop('disabled', false);
+            button.SAVE_GRAPHE.prop('disabled', false);
+            button.INFORMATION.prop('disabled', false);
+            // On ajoute un message pour dire qu'on est en mode création d'un graphe
+            $('#graphes').append('<p class="text-center">Mode création d\'un graphe</p>');
+            button.SELECTION_GRAPHE.click();
             break;
-        case 'produits':
-            break;
-        case 'fournisseurs':
-            break;
-        case 'benefices':
-            break;
-        case 'nombre_client':
-            break;
-        default:
-            console.log("Statistiques.js - selectionnerGraphe - default");
-            break;
+        case state.MODIFY_GRAPHE:
+            console.log('state.MODIFY_GRAPHE');
+            button.SELECTION_GRAPHE.show();
+            button.PARAMETRAGE_GRAPHE.show();
+            button.CONFIGURATION_GRAPHE.show();
+            button.INFORMATION.show();
+            button.CANCEL_GRAPHE.show();
+            button.DELETE_GRAPHE.show();
+            button.SAVE_GRAPHE.show();
+            button.SELECTION_GRAPHE.prop('disabled', false);
+            button.PARAMETRAGE_GRAPHE.prop('disabled', false);
+            button.CONFIGURATION_GRAPHE.prop('disabled', false);
+            button.INFORMATION.prop('disabled', false);
+            button.CANCEL_GRAPHE.prop('disabled', false);
+            button.DELETE_GRAPHE.prop('disabled', false);
+            button.SAVE_GRAPHE.prop('disabled', false);
+            // On ajoute un message pour dire qu'on est en mode édition d'un graphe
+            $('#graphes').append('<p class="text-center">Mode édition d\'un graphe</p>');
+        case state.EXPORT_PDF:
+            console.log('state.EXPORT_PDF');
+            // On affiche le boutons d'information
+            button.INFORMATION.show();
+            button.INFORMATION.prop('disabled', false);
+            // On ajoute un message pour dire qu'on est en mode exportation d'un graphe
+            $('#graphes').append('<p class="text-center">Mode export PDF</p>');
     }
 }
 
-let addDivChart = function () {
-    console.log("Statistiques.js - addChart");
-    // on créer une div pour le graphe
-    let div = $('<div>').addClass('div_graphe');
-    // on créer un canvas pour le graphe ainsi qu'un h3 pour le titre et un p pour la description
-    let canvas = $('<canvas>');
-    let titre = $('<h3>');
-    let description = $('<p>');
-    div.append(titre), div.append(canvas), div.append(description);
-
-    // on ajoute la div dans le tableau temporaryChart
-    temporyChart["order"] = charts.length;
-    temporyChart["element"] = div;
-}
-
-let actualiserTitre = function () {
-    console.log("Statistiques.js - actualiserTitre");
-    if (temporyChart["element"] == undefined) {
-        console.log("Statistiques.js - actualiserDescription - aucun graphe sélectionné");
-        return;
-    }
-    // on récupère le titre
-    let titre = $('#nom_graphe').val();
-    // on l'ajoute à l'élément Titre de la div dans le tableau temporaryChart
-    temporyChart["element"].find('h3').text(titre);
-}
-
-let actualiserDescription = function () {
-    console.log("Statistiques.js - actualiserDescription");
-    if (temporyChart["element"] == undefined) {
-        console.log("Statistiques.js - actualiserDescription - aucun graphe sélectionné");
-        return;
-    }
-    // on récupère la description
-    let description = $('#description_graphe').val();
-    // on l'ajoute à l'élément Titre de la div dans le tableau temporaryChart
-    temporyChart["element"].find('p').text(description);
-}
-
-// *******************
-// *** APPELS AJAX ***
-// *******************
-
-// *** APPELS AJAX - BURGER ***
-let recupererLesRecettes = function () {
-    console.log("Statistiques.js - recupererLesRecettes");
-    // compléter pour préparer la checkbox
-    let div = $('<div>');
-    $.ajax({
-        url: "statistiques/recupererLesRecettes",
-        method: "POST",
-        dataType: "json",
-        success: function (data) {
-            console.log("Statistiques.js - recupererLesRecettes - success");
-            // CHECKBOX
-            let span = $('<span>').addClass('wrapper axe_ligne main_axe_space_between second_axe_center grow');
-            let label = $('<label>').attr('for', 'choix_recette_checkbox').text('Tous les burgers');
-            let input = $('<input>').addClass('input').attr({
-                'id': 'choix_recette_checkbox',
-                'name': 'choix_recette_checkbox',
-                'type': 'checkbox',
-            });
-            span.append(label);
-            span.append(input);
-            div.append(span);
-            input.prop('checked', true);
-            input.on('change', function () {
-                if ($(this).is(':checked')) {
-                    $('#select_choix_recette').prop('disabled', true);
-                    $('#select_choix_recette').select2('destroy');
-                    $('#select_choix_recette').addClass("hidding");
-                    recupererRecettesPourStatistiquesTotal();
-                } else {
-                    $('#select_choix_recette').prop('disabled', false);
-                    $('#select_choix_recette').select2({
-                        width: 'element',
-                        placeholder: 'Sélectionnez une recette',
-                    });
-                }
-            });
-
-            // SELECT2
-            // on ajoute comme attr id et multiple
-            let select = $('<select>');
-            select.attr('id', 'select_choix_recette');
-            select.attr('multiple', 'multiple');
-            // on ajoute toutes les autres options
-            data.forEach(element => {
-                select.append('<option value="' + element.id + '">' + element.nom + '</option>');
-            });
-
-            // on ajoute le select dans la div puis on l'initialise avec select2
-            div.append(select);
-            $('#select_choix_recette').addClass("hidding");
-        },
-        error: function (data) {
-            console.log("Statistiques.js - recupererLesRecettes - error");
-            alert("Une erreur est survenue lors de la récupération des recettes.");
-            div.append('<p>Une erreur est survenue lors de la récupération des recettes.</p>');
-        },
+/**
+ * Méthode qui permet d'intialiser les boutons de la page.
+ */
+function initButtons() {
+    // Bouton d'ajout de graphe
+    $('#button_stat_add_graphe').click(function () {
+        console.log('button_stat_add_graphe clicked');
+        globalStates(state.ADD_GRAPHE);
     });
-    $('#specificite').append(div);
-}
 
-let recupererRecettesPourStatistiquesTotal = function () {
-    console.log("Statistiques.js - makeStatBurger");
-    // on prépare les données à envoyer
-    let data;
-    // listes des burgers
-    if ($('#choix_recette_checkbox').is(':checked')) {
-        data = {
-            'recette_all': true,
-        };
-    } else {
-        data = {
-            'recette_all': false,
-            'recettes': $('#select_choix_recette').val(),
-        };
-    }
-    // dates
-    if ($('#choix_date_graphe').is(':checked')) {
-        data['date_all'] = false;
-        data['date_debut'] = $('#date_debut_graphe').val();
-        data['date_fin'] = $('#date_fin_graphe').val();
-    } else {
-        data['date_all'] = true;
-    }
-    data = JSON.stringify(data);
+    // bouton de selection de type de graphe
+    $('#button_stat_selection_graphe').click(function () {
+        console.log('button_stat_selection_graphe clicked');
+        buttonSelectEffect(button.SELECTION_GRAPHE, 'fbe272');
+        selectMenuGaucheContent(menuGaucheContent.SELECTION_GRAPHE);
+        $("#titre_onglet").html("Sélection");
+    });
 
-    $.ajax({
-        url: "statistiques/recupererRecettesPourStatistiquesTotal",
-        method: "POST",
-        dataType: "json",
-        data: {
-            data: data
-        },
-        success: function (data) {
-            console.log("Statistiques.js - recupererRecettesPourStatistiquesTotal - success");
+    // Bouton de modification de graphe
+    $('#button_stat_modify_graphe').click(function () {
+    });
 
-            // on récupère les données
-            console.log(data);
+    // Bouton de paramétrage de graphe
+    $('#button_stat_configuration_graphe').click(function () {
+    });
 
-            // on créer une div
-            let div = $('<div>').addClass('wrapper axe_ligne main_axe_space_between second_axe_center grow');
-            // on créer un canvas qu'on ajoute à la div
-            let canvas = $('<canvas>');
-            div.append(canvas);
+    // Bouton d'information
+    $('#button_stat_information').click(function () {
+        // si on clique sur le bouton on envoie sur google
+        window.open('https://media.licdn.com/dms/image/C5603AQGe_mt1Iw1mJQ/profile-displayphoto-shrink_800_800/0/1517398409444?e=2147483647&v=beta&t=UBekPWfLXStE58ZGnuqGEREfl-3UqcMH0ggi4_9zDOY');
+    });
 
-            // on boucle sur data avec un foreach
-            let labels = [];
-            let quantities = [];
-            data.forEach(element => {
-                labels.push(element.nom);
-                quantities.push(element.quantite);
-            });
-            console.log(labels);
-            console.log(quantities);
+    // Bouton de sauvegarde de graphe
+    $('#button_stat_save_graphe').click(function () {
+    });
 
-            // Configuration du graphe
-            let chartConfig = {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Quantités',
-                        data: quantities,
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            };
+    // bouton d'annulation
+    $('#button_stat_cancel_graphe').click(function () {
+    });
 
-            // Création du graphe
-            $('#graphes').append(div);
-            let myChart = new Chart(canvas, chartConfig);
-        },
-        error: function (data) {
-            console.log("Statistiques.js - recupererRecettesPourStatistiquesTotal - error");
-            alert("Une erreur est survenue lors de la récupération des recettes.");
-        },
+    // Bouton de suppression de graphe
+    $('#button_stat_delete_graphe').click(function () {
+    });
+
+    // Bouton d'export du document
+    $('#button_stat_export_pdf').click(function () {
+    });
+
+    // Bouton pour fermer le menu gauche
+    button.CLOSE_MENU.click(function () {
+        refreshMenuGauche(false);
+        buttonSelectEffect(null, null);
     });
 }
 
-// *** APPELS AJAX - INGREDIENT ***
+/**
+ * Méthode permettant de mettre en surbrillance le bouton passé en paramètre et de désélectionner le précédent.
+ * Actualise la variable actual.BUTTON avec le bouton passé en paramètre.
+ * 
+ * @param {} button bouton à mettre en surbrillance
+ * @param {} color couleur en hexa
+ */
+function buttonSelectEffect(button, color) {
+    // on s'occupe de l'ancien bouton
+    if (actual.BUTTON != null) {
+        actual.BUTTON.removeClass('button_select');
+        actual.BUTTON.css('background-color', '');
+    }
+    // on s'occupe du nouveau bouton
+    if (button != null) {
+    actual.BUTTON = button;
+    button.addClass('button_select');
+    button.css('background-color', '#'+color);
+    }
+}
 
+function selectMenuGaucheContent (content) {
+    // On active le menu gauche
+    refreshMenuGauche(true);
+    // On s'occupe de l'ancien contenu
+    if (actual.MENU_GAUCHE_CONTENT != null) {
+        actual.MENU_GAUCHE_CONTENT.hide();
+    }
+    // On s'occupe du nouveau contenu
+    actual.MENU_GAUCHE_CONTENT = content;
+    content.show();
+}
 
-// ********************
-// *** EXPLICATIONS ***
-// ********************
-
-/*
---- DOCUMENTATION DES STATISTIQUES ---
-
-
-
-
-
-
-
-
-
-
-
-*/
+function refreshMenuGauche(boolean) {
+    if (boolean) {
+        $('#menu_gauche').addClass('show_menu_graphe');
+        $('#menu_gauche').removeClass('dont_show_menu_graphe');
+        $('#menu_graphe').show();
+    } else {
+        $('#menu_graphe').hide();
+        $('#menu_gauche').addClass('dont_show_menu_graphe');
+        $('#menu_gauche').removeClass('show_menu_graphe');
+    }
+}
