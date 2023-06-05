@@ -157,6 +157,35 @@ class CommandeClientRetraitDAO extends DAO
     }
 
     /**
+     * Méthode permettant de récupérer tous les objets non archivés
+     *
+     * @return CommandeClientRetrait[] (tableau d'objets)
+     */
+    public function selectAllNonArchiveNonPret()
+    {
+        // Requête
+        $sqlQuery = "SELECT * FROM burger_commande_client, burger_commande_client_retrait WHERE burger_commande_client.id_commande_client = burger_commande_client_retrait.id_commande_client AND (burger_commande_client.date_archive IS NULL OR burger_commande_client.date_archive > NOW()) AND burger_commande_client.date_pret IS NULL";
+        $statement = $this->pdo->query($sqlQuery);
+        $statement->execute();
+
+        // Traitement des résultats
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $commandesClientsRetraits = array();
+        foreach ($result as $row) {
+            // Création d'un nouvel objet
+            $commandeClientRetrait = new CommandeClientRetrait();
+
+            // Remplissage de l'objet
+            $this->fillObject($commandeClientRetrait, $row);
+
+            // Ajout de l'objet dans le tableau
+            $commandesClientsRetraits[] = $commandeClientRetrait;
+        }
+
+        return $commandesClientsRetraits;
+    }
+
+    /**
      * Méthode permettant de récupérer un objet par son id
      * 
      * @param int $id (id de l'objet à récupérer)
