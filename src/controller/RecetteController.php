@@ -18,6 +18,8 @@ class RecetteController extends Controller
         $uniteDAO = new UniteDAO();
         $recetteIngredientBasiqueDAO = new RecetteIngredientBasiqueDAO();
         $recetteIngredientOptionnelDAO = new RecetteIngredientOptionnelDAO();
+        $recetteSelectionMultipleDAO = new RecetteSelectionMultipleDAO();
+        $ingredientRecetteSelectionMultipleDAO = new IngredientRecetteSelectionMultipleDAO();
 
         $json = array();
         $json['data'] = array();
@@ -75,6 +77,7 @@ class RecetteController extends Controller
 
                 // Construction du json de l'ingrédient
                 $jsonIngredient = array(
+                    'ordre' => $ingredientRecetteBasique->getOrdre(),
                     'nom' => $ingredient->getNom(),
                     'quantite' => $ingredientRecetteBasique->getQuantite(),
                     'unite' => $unite->getDiminutif(),
@@ -118,6 +121,7 @@ class RecetteController extends Controller
 
                 // Construction du json de l'ingrédient
                 $jsonIngredient = array(
+                    'ordre' => $ingredientRecetteOptionnel->getOrdre(),
                     'nom' => $ingredient->getNom(),
                     'quantite' => $ingredientRecetteOptionnel->getQuantite(),
                     'unite' => $unite->getDiminutif(),
@@ -126,6 +130,69 @@ class RecetteController extends Controller
 
                 $jsonRecetteIngredients[] = $jsonIngredient;
             }
+
+            // Récupération des sélections multiples de la recette
+            $recetteSelectionMultiples = $recetteSelectionMultipleDAO->selectAllByIdRecette($recette->getId());
+            foreach ($recetteSelectionMultiples as $recetteSelectionMultiple) {
+                // Récupération des ingrédients de la sélection multiple
+                $ingredientRecetteSelectionMultiples = $ingredientRecetteSelectionMultipleDAO->selectAllByIdSelectionMultipleRecette($recetteSelectionMultiple->getId());
+
+                // Construction du json de la sélection multiple
+                $jsonSelectionMultiple = array(
+                    'ordre' => $recetteSelectionMultiple->getOrdre(),
+                    'quantite' => $recetteSelectionMultiple->getQuantite(),
+                    'ingredients' => array()
+                );
+
+                // Formatage des ingrédients de la sélection multiple en json
+                foreach ($ingredientRecetteSelectionMultiples as $ingredientRecetteSelectionMultiple) {
+                    /** @var Ingredient $ingredient */
+                    $ingredient = null;
+                    // Récupération de l'ingrédient
+                    foreach ($ingredients as $ingredientTmp) {
+                        if ($ingredientTmp->getId() === $ingredientRecetteSelectionMultiple->getIdIngredient()) {
+                            $ingredient = $ingredientTmp;
+                            break;
+                        }
+                    }
+
+                    // Si l'ingrédient n'existe pas, on passe à l'ingrédient de la recette suivant
+                    if ($ingredient === null) {
+                        continue;
+                    }
+
+                    /** @var Unite $unite */
+                    $unite = null;
+                    // Récupération de l'unité
+                    foreach ($unites as $uniteTmp) {
+                        if ($uniteTmp->getId() === $ingredient->getIdUnite()) {
+                            $unite = $uniteTmp;
+                            break;
+                        }
+                    }
+
+                    // Si l'unité n'existe pas, on passe à l'ingrédient de la recette suivant
+                    if ($unite === null) {
+                        continue;
+                    }
+
+                    // Construction du json de l'ingrédient
+                    $jsonIngredient = array(
+                        'nom' => $ingredient->getNom(),
+                        'quantite' => $ingredientRecetteSelectionMultiple->getQuantite(),
+                        'unite' => $unite->getDiminutif(),
+                    );
+
+                    $jsonSelectionMultiple['ingredients'][] = $jsonIngredient;
+                }
+
+                $jsonRecetteIngredients[] = $jsonSelectionMultiple;
+            }
+
+            // Tri des ingrédients par ordre
+            usort($jsonRecetteIngredients, function ($a, $b) {
+                return $a['ordre'] - $b['ordre'];
+            });
 
             // Formatage de la recette en json
             $jsonRecette = array(

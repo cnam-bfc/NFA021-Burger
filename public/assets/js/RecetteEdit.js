@@ -8,6 +8,7 @@ $(function () {
 
     // Récupération des élements du DOM
     const formRecette = $("#form_recette");
+    const annulerRecette = $("#annuler");
     const enregistrerRecette = $("#enregistrer");
     const bodyTableauComposition = $("#tableau_composition tbody");
     const boutonAjouterNewIngredient = $("#bouton_ajouter_new_ingredient");
@@ -111,12 +112,12 @@ $(function () {
 
                 // Si on est en sélection multiple, cacher le champ optionnel
                 if (selectionMultiple) {
-                    inputOptionnel.parent().hide();
+                    inputOptionnel.parent().attr('hidden', true);
                 }
 
                 // Si l'élément est une sélection multiple, cacher le champ optionnel
                 if (element.ingredients !== undefined) {
-                    inputOptionnel.parent().hide();
+                    inputOptionnel.parent().attr('hidden', true);
                 }
 
                 // Prix
@@ -167,12 +168,12 @@ $(function () {
 
                 // Cacher le champ prix on est en sélection multiple
                 if (selectionMultiple) {
-                    inputPrix.parent().hide();
+                    inputPrix.parent().attr('hidden', true);
                 }
 
                 // Cacher le champ prix si l'ingrédient est une sélection multiple
                 if (element.ingredients !== undefined) {
-                    inputPrix.parent().hide();
+                    inputPrix.parent().attr('hidden', true);
                 }
 
                 // Boutons d'action rapide
@@ -201,7 +202,7 @@ $(function () {
 
                 // Cacher le bouton monter si on est en sélection multiple
                 if (selectionMultiple) {
-                    boutonMonter.hide();
+                    boutonMonter.attr('hidden', true);
                 }
 
                 // Bouton descendre
@@ -225,7 +226,7 @@ $(function () {
 
                 // Cacher le bouton descendre si on est en sélection multiple
                 if (selectionMultiple) {
-                    boutonDescendre.hide();
+                    boutonDescendre.attr('hidden', true);
                 }
 
                 // Bouton modifier
@@ -238,7 +239,7 @@ $(function () {
 
                 // Cacher le bouton modifier si l'élément n'est pas une sélection multiple
                 if (element.ingredients === undefined) {
-                    boutonModifier.hide();
+                    boutonModifier.attr('hidden', true);
                 }
 
                 // Bouton supprimer
@@ -324,6 +325,12 @@ $(function () {
                 bodyTableauComposition.append(ligne);
             }
         });
+    }
+
+    // Lors de l'annulation des modifications
+    function onAnnuler() {
+        // On recharge la page
+        window.location.reload();
     }
 
     // Lors de la soumission du formulaire
@@ -470,12 +477,12 @@ $(function () {
             dataType: "json",
             success: function (data) {
                 // Cacher le bouton d'ajout d'ingrédient
-                boutonAjouterNewIngredient.hide();
+                boutonAjouterNewIngredient.attr('hidden', true);
                 boutonAjouterNewIngredient.html(old_html);
                 boutonAjouterNewIngredient.prop("disabled", false);
 
                 // Afficher le formulaire d'ajout d'ingrédient
-                ajouterIngredient.show();
+                ajouterIngredient.attr('hidden', false);
 
                 // Suppression des options du select
                 selectAjouterIngredient.empty();
@@ -524,13 +531,13 @@ $(function () {
         selectAjouterIngredient.off('select2:select');
 
         // Cacher le formulaire d'ajout d'ingrédient
-        ajouterIngredient.hide();
+        ajouterIngredient.attr('hidden', true);
 
         // Suppression des options du select
         selectAjouterIngredient.empty();
 
         // Afficher le bouton d'ajout d'ingrédient
-        boutonAjouterNewIngredient.show();
+        boutonAjouterNewIngredient.attr('hidden', false);
     }
 
     // Lors de la sélection d'un ingrédient
@@ -553,13 +560,13 @@ $(function () {
         selectAjouterIngredient.off('select2:select');
 
         // Cacher le formulaire d'ajout d'ingrédient
-        ajouterIngredient.hide();
+        ajouterIngredient.attr('hidden', true);
 
         // Suppression des options du select
         selectAjouterIngredient.empty();
 
         // Afficher le bouton d'ajout d'ingrédient
-        boutonAjouterNewIngredient.show();
+        boutonAjouterNewIngredient.attr('hidden', false);
     }
 
     // Lors de l'ajout d'une sélection multiple d'ingrédients
@@ -571,11 +578,11 @@ $(function () {
         refreshIngredients();
 
         // Cache le bouton d'ajout d'une sélection multiple d'ingrédients
-        boutonAjouterNewSelectionMultiple.hide();
+        boutonAjouterNewSelectionMultiple.attr('hidden', true);
 
         // Afficher les boutons d'annulation et de validation de la sélection multiple d'ingrédients
-        boutonAnnulerSelectionMultiple.show();
-        boutonEnregistrerSelectionMultiple.show();
+        boutonAnnulerSelectionMultiple.attr('hidden', false);
+        boutonEnregistrerSelectionMultiple.attr('hidden', false);
     }
 
     // Lors de la modification d'une sélection multiple d'ingrédients
@@ -589,11 +596,11 @@ $(function () {
         refreshIngredients();
 
         // Cache le bouton de modification d'une sélection multiple d'ingrédients
-        boutonAjouterNewSelectionMultiple.hide();
+        boutonAjouterNewSelectionMultiple.attr('hidden', true);
 
         // Afficher les boutons d'annulation et de validation de la sélection multiple d'ingrédients
-        boutonAnnulerSelectionMultiple.show();
-        boutonEnregistrerSelectionMultiple.show();
+        boutonAnnulerSelectionMultiple.attr('hidden', false);
+        boutonEnregistrerSelectionMultiple.attr('hidden', false);
     }
 
     // Lors de l'annulation de l'ajout d'une sélection multiple d'ingrédients
@@ -606,11 +613,11 @@ $(function () {
         refreshIngredients();
 
         // Cache les boutons d'annulation et de validation de la sélection multiple d'ingrédients
-        boutonAnnulerSelectionMultiple.hide();
-        boutonEnregistrerSelectionMultiple.hide();
+        boutonAnnulerSelectionMultiple.attr('hidden', true);
+        boutonEnregistrerSelectionMultiple.attr('hidden', true);
 
         // Afficher le bouton d'ajout d'une sélection multiple d'ingrédients
-        boutonAjouterNewSelectionMultiple.show();
+        boutonAjouterNewSelectionMultiple.attr('hidden', false);
     }
 
     // Lors de l'enregistrement de la sélection multiple d'ingrédients
@@ -643,16 +650,21 @@ $(function () {
         refreshIngredients();
 
         // Cache les boutons d'annulation et de validation de la sélection multiple d'ingrédients
-        boutonAnnulerSelectionMultiple.hide();
-        boutonEnregistrerSelectionMultiple.hide();
+        boutonAnnulerSelectionMultiple.attr('hidden', true);
+        boutonEnregistrerSelectionMultiple.attr('hidden', true);
 
         // Afficher le bouton d'ajout d'une sélection multiple d'ingrédients
-        boutonAjouterNewSelectionMultiple.show();
+        boutonAjouterNewSelectionMultiple.attr('hidden', false);
     }
 
     /*****************************************
      *************** PRINCIPAL ***************
      *****************************************/
+
+    // Lors de l'annulation des changements
+    annulerRecette.click(function () {
+        onAnnuler();
+    });
 
     // Lors de la soumission du formulaire
     formRecette.submit(function (event) {

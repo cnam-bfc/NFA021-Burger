@@ -26,11 +26,25 @@ $(function () {
         // Ingrédients
         cellule = $("<td>");
         data.ingredients.forEach(element => {
-            let ingredientText = element.quantite + element.unite + " " + element.nom;
-            if (element.optionnel) {
-                ingredientText += " (optionnel)";
+            // CAS - Général
+            if (element.ingredients === undefined) {
+                let ingredientText = element.quantite + element.unite + " " + element.nom;
+                // CAS - Particulier - Optionnel
+                if (element.optionnel) {
+                    ingredientText += " (supplément)";
+                }
+                cellule.append($("<li>").text(ingredientText));
             }
-            cellule.append($("<li>").text(ingredientText));
+            // CAS - Particulier - Sélection multiple
+            else {
+                let ingredientText = "Sélection multiple : " + element.quantite + " parmi";
+                let ingredient = $("<li>").text(ingredientText);
+                element.ingredients.forEach(element2 => {
+                    let ingredientText = element2.quantite + element2.unite + " " + element2.nom;
+                    ingredient.append($("<li>").text(ingredientText));
+                });
+                cellule.append(ingredient);
+            }
         });
         ligne.append(cellule);
 
