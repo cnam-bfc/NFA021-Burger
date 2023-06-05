@@ -28,6 +28,9 @@ class Router
         'inscription' => ["controller" => "AuthentificationController", "method" => "renderViewInscription"],
         'inscription/inscription' => ["controller" => "AuthentificationController", "method" => "inscription"],
 
+        // Profil
+        'profil' => ["controller" => "ProfilController", "method" => "renderView"],
+
         // PARTIE CLIENT
         // Accueil client
         'accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilClient"],
@@ -103,6 +106,8 @@ class Router
         // PARTIE LIVREUR
         // Livraison
         'livreur/livraisons' => ["controller" => "LivraisonController", "method" => "renderViewLivraison"],
+        'livreur/livraisons/list' => ["controller" => "LivraisonController", "method" => "listeLivraisons"],
+        'livreur/livraisons/prendre' => ["controller" => "LivraisonController", "method" => "prendreLivraison"],
         'livreur/itineraire' => ["controller" => "LivraisonController", "method" => "renderViewItineraire"],
 
         // Exemples
@@ -119,7 +124,7 @@ class Router
     public static function route($route)
     {
         // Si la route demandée est vide, on charge la page d'accueil appropriée
-        if ($route == "" || $route == "employe") {
+        if ($route == "" || $route == "employe" || $route == "livreur" || $route == "gerant") {
             // Si l'utilisateur est connecté, on le redirige vers la page d'accueil de son profil
             $userSession = UserSession::getUserSession();
 
@@ -131,7 +136,7 @@ class Router
                 }
                 // Si l'utilisateur est un livreur, on le redirige vers la page de livraison
                 elseif ($userSession->isLivreur()) {
-                    Router::redirect('livreur');
+                    Router::redirect('livreur/livraisons');
                     return;
                 }
                 // Si l'utilisateur est un employé, on le redirige vers la page d'accueil de l'employé
