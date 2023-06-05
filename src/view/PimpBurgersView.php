@@ -84,10 +84,10 @@
     // Récupération des informations de la recette dans l'url
     const url = new URL(window.location.href);
     // Récupération de l'id de la recette
-    let idRecette = url.searchParams.get("id");
+    let idBurger = url.searchParams.get("id");
     $(document).ready(function() {
         console.log("html");
-        showData(idRecette);
+        showData(idBurger);
     });
 </script>
 <!--#Wrapper-->
