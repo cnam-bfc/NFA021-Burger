@@ -38,6 +38,7 @@
 
 #tableau_composition tbody td input+span {
     margin-left: 10px;
+    text-align: left;
 }
 
 #tableau_composition tfoot td>div {

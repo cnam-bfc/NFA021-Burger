@@ -92,7 +92,9 @@ $(function () {
                 }).addClass("input");
                 celluleDiv.append(inputQuantite);
                 // Ajouter l'unité
-                celluleDiv.append($("<span>").text(element.unite));
+                let spanUnite = $("<span>").text(element.unite);
+                spanUnite.addClass("span_unite");
+                celluleDiv.append(spanUnite);
                 cellule.append(celluleDiv);
                 ligne.append(cellule);
 
@@ -274,6 +276,20 @@ $(function () {
 
                 // Ajout de la ligne au tableau
                 bodyTableauComposition.append(ligne);
+            });
+
+            // Calculer la longueur des <span> des unités
+            let spansUnites = bodyTableauComposition.find(".span_unite");
+            let spanUniteMaxWidth = 0;
+            spansUnites.each((index, element) => {
+                let spanUniteWidth = $(element).width();
+                if (spanUniteWidth > spanUniteMaxWidth) {
+                    spanUniteMaxWidth = spanUniteWidth;
+                }
+            });
+
+            spansUnites.each((index, element) => {
+                $(element).width(spanUniteMaxWidth);
             });
         }
     }
