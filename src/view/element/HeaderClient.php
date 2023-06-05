@@ -25,7 +25,7 @@
                     ?>
                     <a href="<?php echo PUBLIC_FOLDER ?>deconnexion"><i class="fa-solid fa-right-from-bracket fa-2x header_icone"></i></a>
                 <?php } else { ?>
-                    <a href="<?php echo PUBLIC_FOLDER ?>connexion"><i class="fa-solid fa-user fa-2x header_icone"></i></a>;
+                    <a href="<?php echo PUBLIC_FOLDER ?>connexion"><i class="fa-solid fa-user fa-2x header_icone"></i></a>
                 <?php } ?>
             </li>
             <li><a href="<?php echo PUBLIC_FOLDER ?>panier"><i class="fa-solid fa-basket-shopping fa-2x header_icone"></i><span id="panier_indicateur"></span></a></li>

@@ -23,7 +23,7 @@
                     ?>
                     <a href="<?php echo PUBLIC_FOLDER ?>deconnexion"><i class="fa-solid fa-right-from-bracket fa-2x header_icone"></i></a>
                 <?php } else { ?>
-                    <a href="<?php echo PUBLIC_FOLDER ?>connexion"><i class="fa-solid fa-user fa-2x header_icone"></i></a>;
+                    <a href="<?php echo PUBLIC_FOLDER ?>connexion"><i class="fa-solid fa-user fa-2x header_icone"></i></a>
                 <?php } ?>
             </li>
         </ul>
