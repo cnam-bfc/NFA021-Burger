@@ -8,11 +8,8 @@
     <div id="Panier">
 
 
-
-
-
     </div>
-    <button onclick="commander()">Commander</button>
+    <button onclick="commander()" class="animation-grow">Commander</button>
 </div>
 
 

@@ -1,3 +1,5 @@
 #map {
-    height: 512px;
+    flex: 1;
+    /* Logo par dessus la map */
+    z-index: 0;
 }

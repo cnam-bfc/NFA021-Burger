@@ -3,6 +3,12 @@
     white-space: nowrap;
 }
 
+#tableau_recettes tbody tr td li>li {
+    text-align: start;
+    white-space: nowrap;
+    padding-left: 2em;
+}
+
 #tableau_recettes tbody .description {
     text-align: justify;
 }

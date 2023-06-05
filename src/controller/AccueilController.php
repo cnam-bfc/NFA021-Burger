@@ -22,12 +22,6 @@ class AccueilController extends Controller
         // image de l'emplacement du restaurant
         $view->carte = IMG . "carte_with_ping_name.png";
 
-        // voir si on fait défiler différentes news (mettre des news en bdd ou dans un fichier json ??)
-        $view->news = array(
-            "title" => "Notre histoire",
-            "message" => "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)."
-        );
-
         $view->renderView();
     }
 
@@ -40,7 +34,7 @@ class AccueilController extends Controller
             foreach ($topRecettes as $recette) {
                 $result[] = array(
                     "nom" => $recette->getNom(),
-                    "image" => IMG
+                    "image" => IMG . 'recettes' . DIRECTORY_SEPARATOR . $recette->getId() . DIRECTORY_SEPARATOR . 'presentation.img',
                 );
             }
         } else {
@@ -58,6 +52,29 @@ class AccueilController extends Controller
                 "image" => IMG . "recette/burger/triple_cheese.webp"
             );
         }
+        $view = new View(BaseTemplate::JSON);
+
+        $view->json = $result;
+
+        $view->renderView();
+    }
+
+    public function refreshTextAccueil() {
+
+        $accueilTextDAO = new AccueilTextDAO();
+        $accueilText = $accueilTextDAO->selectRandomText();
+        if ($accueilText !== null) {
+            $result = array(
+                "title" => $accueilText->getTitle(),
+                "text" => $accueilText->getText()
+            );
+        } else {
+            $result = array(
+                "title" => "Bienvenue chez Burger Code !" ,
+                "text" => "Venez comme vous êtes dans notre restaurant. Nous vous accueillons tous les jours de la semaine, de 11h à 23h."
+            );
+        }
+
         $view = new View(BaseTemplate::JSON);
 
         $view->json = $result;

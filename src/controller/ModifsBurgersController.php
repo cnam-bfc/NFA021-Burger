@@ -25,6 +25,7 @@ class ModifsBurgersController extends Controller
         PS ce que je dois avoire au final c'est la nom, la quantité, l'image éclaté pour chaque ingrédient*/
         $ingredientDAO = new IngredientDAO();
         $RecetteDAO = new RecetteDAO();
+        $uniteDao = new UniteDAO();
 
 
         //Récupération du prix de la Recette
@@ -39,8 +40,12 @@ class ModifsBurgersController extends Controller
             $Ingredient = $ingredientDAO->selectById((int) $idIngredient);
             $nom = $Ingredient->getNom();
             $quantite = $IngredientBasique->getQuantite();
+            $idUnite = $Ingredient->getIdUnite();
+            $uniteSelect = $uniteDao->selectById($idUnite);
+            $unite = $uniteSelect->getNom();
             $imgEclatee = IMG . 'ingredients/' . $idIngredient . '/presentation.img';
-            $tabResult[] = array('nom' => $nom, "quantite" => $quantite, "imgEclatee" => $imgEclatee, 'ordre' => $ordreIngredient, 'nom Recette' => $nomRecette);
+
+            $tabResult[] = array('nom' => $nom, "quantite" => $quantite, "unite" =>  $unite, "imgEclatee" => $imgEclatee, 'ordre' => $ordreIngredient, 'nom Recette' => $nomRecette);
         }
 
 
@@ -88,15 +93,11 @@ class ModifsBurgersController extends Controller
             return;
         }
 
-
-
-        array_push($_SESSION['panier'],$infos);
-        
-        
+        array_push($_SESSION['panier'], $infos);
 
 
         $view = new View(BaseTemplate::JSON, null);
-        $view->json = $infos;
+        $view->json = $_SESSION['panier'];
         $view->renderView();
     }
 }

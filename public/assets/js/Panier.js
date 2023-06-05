@@ -71,11 +71,6 @@ function processPanier(panier) {
 
         tr1.appendChild(buttonSupprimer);
 
-
-
-
-
-
         //2ème Partie du tableau
         const tbodyBurger = document.createElement("tbody");
 
@@ -89,7 +84,7 @@ function processPanier(panier) {
         //Prix
         const divPrix = document.createElement("div");
         divPrix.setAttribute('id', 'Prix');
-        divPrix.textContent = panier[i]["prixRecette"];
+        divPrix.textContent = panier[i]["prixRecette"] + "€";
 
         //PrixTotal
         prixTotal = parseFloat(prixTotal);
@@ -135,7 +130,7 @@ function processPanier(panier) {
     }
     const divTotal = document.createElement("div");
     divTotal.setAttribute("id", "Total");
-    divTotal.textContent = prixTotal;
+    divTotal.textContent = "Prix Total : " + prixTotal + " €";
     PanierDiv.appendChild(divTotal);
     console.log("divTotal OK");
 }
@@ -179,6 +174,9 @@ function supprimer(idElem) {
 function commander() {
     //je vérifie si le panier est vide ou non
     if (!document.getElementById('Panier').length) {
+        // écrire les recettes finals en bdd
+        // créer une commande en Bdd
+        // amener à la page choix Livraison/Click & Collect
         console.log("div pas vide");
     }
     else {

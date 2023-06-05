@@ -13,27 +13,11 @@
 
     </div>
 
-
-
     <div id="affichage">
-
-
-
-
 
     </div><!--Affichage-->
 
-    <div id="allergenes">
-        <h2 class="zoneTxtGris">Allergènes</h2>
 
-    </div><!--#allergenes-->
-
-    <div id="lesAllergenes">
-        <p class="zoneTxtGris">Soja</p>
-        <p class="zoneTxtGris">Sésame</p>
-        <p class="zoneTxtGris">Oeufs</p>
-
-    </div><!--#lesAllergenes-->
 
     <div id="ModifsBurgers">
 
@@ -91,15 +75,19 @@
         </div>
 
 
-        <button id="Ajouter"> Ajouter au panier</button>
+        <button id="Ajouter" class="animation-grow"> Ajouter au panier</button>
     </div>
 
 </div>
 
 <script type="text/javascript">
+    // Récupération des informations de la recette dans l'url
+    const url = new URL(window.location.href);
+    // Récupération de l'id de la recette
+    let idBurger = url.searchParams.get("id");
     $(document).ready(function() {
         console.log("html");
-        showData(1);
+        showData(idBurger);
     });
 </script>
 <!--#Wrapper-->

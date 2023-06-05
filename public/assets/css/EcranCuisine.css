@@ -33,26 +33,31 @@ div .composition_com {
     border-bottom: #f00 1px solid;
 }
 
-div .composition_com p{
+div .composition_com button {
+    width: 100%;
+    background: transparent;
     color: white;
+    border: none;
     font-size: 20px;
     text-align: left;
-    margin: 0 2% 5% 2%;
+    margin: 0 0 5% 0;
 }
 
-div.composition_com p:last-child {
-    margin: 0 2% 0 2%;
+div.composition_com button:last-child {
+    margin: 0 0 5% 0;
 }
-div.composition_com p:first-child {
-    margin: 0 2% 5% 2%;
+div.composition_com button:first-child {
+    margin: 0 0 5% 0;
     padding-top: 2%;
 }
 
 div .temps_com {
+    color: white;
     width: 100%;
     height: 9.5%;
     background: dimgray;
-    text-align: right;
+    justify-content: center;
+    text-align: center;
 }
 
 div .temps_com p  {
@@ -84,7 +89,15 @@ div .num_com p {
     background-color: transparent;
 }
 
-button{
+boutonRecette {
+    width: 100%;
+    height: 30px;
+    text-align: center;
+    background-color: transparent;
+    border: none;
+}
+
+.boutonsPrincipaux{
     width: 10%;
     height: 30px;
     margin: 0 2%;
@@ -116,3 +129,4 @@ h2 {
     margin: 0;
     padding: 0;
 }
+

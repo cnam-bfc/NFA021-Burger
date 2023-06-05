@@ -1,53 +1,36 @@
-// Sélectionner tous les éléments <select> ayant l'ID 'produit'
-var selectElements = document.querySelectorAll("#produit");
+// Variable qui contiendra toutes les balises ayant le nom 'produit'
+var selectTousLesProduits = document.querySelectorAll('select[name="produit"]');
 
-var selectElement = document.getElementById("fournisseur");
-var idFournisseur = 1;
+// Variable qui contiendra toutes les balises ayant le nom 'quantite'
+var selectTouteslesQuantites = document.querySelectorAll('input[name="quantite"]');
+
+// Variable qui contiendra toutes les balises ayant le nom 'prix'
+var selectTouslesPrix = document.querySelectorAll('input[name="prix"]');
+
+// Variable qui contiendra toutes les balises ayant le nom 'id'
+var selectTouslesId = document.querySelectorAll('input[name="id"]');
+
+// Variable qui contient la balise <select> des fournisseurs
+var selectMenuDeroulantFournisseur = document.querySelector('select[name="fournisseur"]');
+
+//idFournisseur au lancement de la page
+var fournisseur = document.querySelector('select[name="fournisseur"]');
+var idFournisseur = fournisseur.selectedOptions[0].value;
+
+// Variable qui contiendra le prix total du bdc
+var montantBdc;
 
 // Ajout de l'event listener pour l'événement "change"
-selectElement.addEventListener("change", function () {
+selectMenuDeroulantFournisseur.addEventListener("change", function () {
     // Code à exécuter lorsque l'événement "change" se produit
-    idFournisseur = selectElement.value;
+    idFournisseur = selectMenuDeroulantFournisseur.value;
 
+    //Appel méthode pour récupérer la liste des produits du fournisseur sélectionné
     recupererProduits(true);
-
-    // Sélectionner tous les éléments <select> ayant l'ID 'produit'
-    var selectElements = document.querySelectorAll("#produit");
-
-    // Ajouter un écouteur d'événement à chaque élément <select>
-    selectElements.forEach(function (selectElement) {
-        console.log(1);
-        var td1 = selectElement.parentNode;
-        var td3 = td1.nextElementSibling.nextElementSibling;
-        var prix = td3.querySelector("input");
-        prix.value = selectElement.value;
-    });
 });
 
-
-//****************************************************************************************************************/
-//****************************************************************************************************************/
-
-
-var selectQuantite = document.querySelectorAll("#quantite");
-
-
-//****************************************************************************************************************/
-//****************************************************************************************************************/
-
-
-// Calcul du prix au lancement de la page
-const inputsPrix = document.querySelectorAll('#prix');
-
-// Calcul de la somme des prix
-let total = 0;
-inputsPrix.forEach(input => {
-    total += parseFloat(input.value);
-});
-
-// Affichage du résultat dans la div d'id 'montant'
-const montantDiv = document.getElementById('montant');
-montantDiv.textContent = 'Montant TTC : ' + total.toFixed(2) + '€';
+//Calcul du prix au lancement de la page
+calculerPrixTotalBdc();
 
 
 //****************************************************************************************************************/
@@ -55,67 +38,40 @@ montantDiv.textContent = 'Montant TTC : ' + total.toFixed(2) + '€';
 
 
 function majProduits(data) {
-    // Récupérer les balises <select> avec name = 'produit'
-    var selectElements = document.querySelectorAll("select[name='produit']");
+    // On sélectionne toutes les balises <select> ayant le nom 'produit'
+    selectTousLesProduits = document.querySelectorAll('select[name="produit"]');
 
-    // Modifier les options des balises <select>
-    selectElements.forEach(function (selectElement) {
+    // On modifie les options de chaque balise <select>
+    selectTousLesProduits.forEach(function (selectElement) {
         // Ajouter des options à chaque balise <select>
 
         selectElement.innerHTML = "";
 
-        var id = [];
-        var nom = [];
-        var prix = [];
+        var idProduit = [];
+        var nomProduit = [];
+        var uniteProduit = [];
+        var prixUnitaireProduit = [];
 
         for (var i = 0; i < data.length; i++) {
             var item = data[i];
             if (item.idFournisseur == idFournisseur) {
-                id.push(item.id);
-                nom.push(item.nom);
-                prix.push(item.prix);
+                idProduit.push(item.id);
+                nomProduit.push(item.nom);
+                uniteProduit.push(item.unite);
+                prixUnitaireProduit.push(item.prix);
             }
         }
 
-        for (var i = 0; i < nom.length; i++) {
+        for (var i = 0; i < nomProduit.length; i++) {
 
-            selectElement.innerHTML += '<option value="' + prix[i] + '">' + nom[i] + '</option>';
+            selectElement.innerHTML += '<option name ="' + uniteProduit[i] + '" value="' + prixUnitaireProduit[i] + '" id = "' + idProduit[i] + '">' + nomProduit[i] + '</option>';
         }
     });
+    ajusterPrixEtIdChaqueProduit();
 
-    // sélectionner tous les éléments <select> ayant l'id 'produit'
-    var selectElements = document.querySelectorAll("#produit");
+    //Màj du prix total
+    calculerPrixTotalBdc();
 
-    // // Ajouter un écouteur d'événement à chaque élément <select>
-    selectElements.forEach(function (selectElement) {
-        console.log(1);
-        var td1 = selectElement.parentNode;
-        var td3 = td1.nextElementSibling.nextElementSibling;
-        var prix = td3.querySelector("input");
-        prix.value = selectElement.value;
-    });
-
-    selectQuantite = document.querySelectorAll("#quantite");
-
-    // Ajouter un écouteur d'événement à chaque élément <select>
-    selectQuantite.forEach(function (selectElement) {
-
-        //Màj du prix après le retrait
-        const inputsPrix = document.querySelectorAll('#prix');
-
-        // Calcul de la somme des prix
-        let total = 0;
-        inputsPrix.forEach(input => {
-            var qte = input.parentNode.previousElementSibling.querySelector('input').value;
-            total += parseFloat(input.value) * qte;
-        });
-
-        // Affichage du résultat dans la div d'id 'montant'
-        const montantDiv = document.getElementById('montant');
-        montantDiv.textContent = 'Montant TTC : ' + total.toFixed(2) + '€';
-    });
-
-    selectQuantite = document.querySelectorAll("#quantite");
 }
 
 
@@ -125,16 +81,18 @@ function majProduits(data) {
 
 function ajouterLigne(data) {
 
-    var id = [];
-    var nom = [];
-    var pu = [];
+    var idProduit = [];
+    var nomProduit = [];
+    var uniteProduit = [];
+    var prixUnitaireProduit = [];
 
     for (var i = 0; i < data.length; i++) {
         var item = data[i];
         if (item.idFournisseur == idFournisseur) {
-            id.push(item.id);
-            nom.push(item.nom);
-            pu.push(item.prix);
+            idProduit.push(item.id);
+            nomProduit.push(item.nom);
+            uniteProduit.push(item.unite);
+            prixUnitaireProduit.push(item.prix);
         }
     }
 
@@ -142,108 +100,75 @@ function ajouterLigne(data) {
     var ligne = table.insertRow(-1);
     var produit = ligne.insertCell(0);
     var quantite = ligne.insertCell(1);
-    var prix = ligne.insertCell(2);
-    var suppression = ligne.insertCell(3);
+    var unite = ligne.insertCell(2);
+    var prix = ligne.insertCell(3);
+    var idLigne = ligne.insertCell(4);
+    var suppression = ligne.insertCell(5);
 
-    var selectHtml = '<select id="produit" name="produit" class="courbe">';
-    for (var i = 0; i < nom.length; i++) {
-        selectHtml += '<option value="' + pu[i] + '">' + nom[i] + '</option>';
+    var idProduitParDefaut;
+    var prixProduitParDefaut;
+    var uniteProduitParDefaut;
+
+    var selectHtml = '<select name="produit" class="courbe espace">';
+    for (var i = 0; i < nomProduit.length; i++) {
+        if (i == 0) {
+            idProduitParDefaut = idProduit[i];
+            prixProduitParDefaut = prixUnitaireProduit[i];
+            uniteProduitParDefaut = uniteProduit[i];
+        }
+        selectHtml += '<option name ="' + uniteProduit[i] + '" value="' + prixUnitaireProduit[i] + '" id = "' + idProduit[i] + '">' + nomProduit[i] + '</option>';
     }
 
     selectHtml += '</select>';
     produit.innerHTML = selectHtml;
 
-    var selectElement = document.getElementById('produit');
+    quantite.innerHTML = '<input type="number" name="quantite" class="courbe espace" value=1>';
+    unite.innerHTML = '<input type="text" name="unite" disabled class="courbe espace" value="' + uniteProduitParDefaut + '">';
+    prix.innerHTML = '<input type="number" name="prix" disabled value ="' + prixProduitParDefaut + '" class="courbe espace">';
+    idLigne.innerHTML = '<input type="hidden" name="id" value="' + idProduitParDefaut + '">';
+    suppression.innerHTML = '<button onclick="retirerLigne(this)" class="courbe bouton">X</button>';
 
-    // Obtenez la valeur par défaut
-    var pu2 = selectElement.value;
-
-    quantite.innerHTML = '<input type="number" name="quantite" id="quantite" class="courbe" value=1>';
-    prix.innerHTML = '<input type="number" name="prix" id="prix" disabled value ="' + pu2 + '" class="courbe">';
-    suppression.innerHTML = '<button onclick="retirerLigne(this)" class="courbe">X</button>';
-
-    //Màj du prix après le retrait
-    const inputsPrix = document.querySelectorAll('#prix');
-
-    // Calcul de la somme des prix
-    let total = 0;
-    inputsPrix.forEach(input => {
-        total += parseFloat(input.value);
-    });
-
-    // Affichage du résultat dans la div d'id 'montant'
-    const montantDiv = document.getElementById('montant');
-    montantDiv.textContent = 'Montant TTC : ' + total.toFixed(2) + '€';
+    //Màj du prix total
+    calculerPrixTotalBdc();
 
     // Sélectionner tous les éléments <select> ayant l'ID 'produit'
-    var selectElements = document.querySelectorAll("#produit");
+    selectTousLesProduits = document.querySelectorAll('select[name="produit"]');
 
-    // Ajouter un écouteur d'événement à chaque élément <select>
-    selectElements.forEach(function (selectElement) {
+    // Ajouter un écouteur d'événement à chaque élément sélectionné
+    selectTousLesProduits.forEach(function (selectElement) {
         selectElement.addEventListener("change", function () {
-            console.log(1);
             var td1 = selectElement.parentNode;
-            var td3 = td1.nextElementSibling.nextElementSibling;
+            var td2 = td1.nextElementSibling.nextElementSibling;
+            var unite = td2.querySelector("input");
+            unite.value = selectElement.selectedOptions[0].getAttribute('name');;
+            
+            var td1 = selectElement.parentNode;
+            var td3 = td1.nextElementSibling.nextElementSibling.nextElementSibling;
             var prix = td3.querySelector("input");
             prix.value = selectElement.value;
 
-            //Màj du prix après le retrait
-            const inputsPrix = document.querySelectorAll('#prix');
+            var td4 = td3.nextElementSibling;
+            var id = td4.querySelector("input");
+            id.value = selectElement.selectedOptions[0].id;
 
-            // Calcul de la somme des prix
-            let total = 0;
-            inputsPrix.forEach(input => {
-                total += parseFloat(input.value);
-            });
-
-            // Affichage du résultat dans la div d'id 'montant'
-            const montantDiv = document.getElementById('montant');
-            montantDiv.textContent = 'Montant TTC : ' + total.toFixed(2) + '€';
+            //Màj du prix total
+            calculerPrixTotalBdc();
         });
     });
 
-    selectQuantite = document.querySelectorAll("#quantite");
+    selectTouteslesQuantites = document.querySelectorAll('input[name="quantite"]');
 
     // Ajouter un écouteur d'événement à chaque élément <select>
-    selectQuantite.forEach(function (selectElement) {
+    selectTouteslesQuantites.forEach(function (selectElement) {
         selectElement.addEventListener("input", function () {
-            console.log(25);
 
-            //Màj du prix après le retrait
-            const inputsPrix = document.querySelectorAll('#prix');
-
-            let total = 0;
-            inputsPrix.forEach(input => {
-                var qte = input.parentNode.previousElementSibling.querySelector('input').value;
-                total += parseFloat(input.value) * qte;
-            });
-
-            // Affichage du résultat dans la div d'id 'montant'
-            const montantDiv = document.getElementById('montant');
-            montantDiv.textContent = 'Montant TTC : ' + total.toFixed(2) + '€';
+            //Màj du prix total
+            calculerPrixTotalBdc();
         });
     });
 
-
-
-    // Ajouter un écouteur d'événement à chaque élément <select>
-    selectQuantite.forEach(function () {
-
-        //Màj du prix après le retrait
-        const inputsPrix = document.querySelectorAll('#prix');
-
-        // Calcul de la somme des prix
-        let total = 0;
-        inputsPrix.forEach(input => {
-            var qte = input.parentNode.previousElementSibling.querySelector('input').value;
-            total += parseFloat(input.value) * qte;
-        });
-
-        // Affichage du résultat dans la div d'id 'montant'
-        const montantDiv = document.getElementById('montant');
-        montantDiv.textContent = 'Montant TTC : ' + total.toFixed(2) + '€';
-    });
-
+    //Màj du prix total
+    calculerPrixTotalBdc();
 
 }
 
@@ -256,46 +181,14 @@ function retirerLigne(btn) {
     var ligne = btn.parentNode.parentNode;
     ligne.parentNode.removeChild(ligne);
 
-    selectQuantite = document.querySelectorAll("#quantite");
+    //Màj du prix total
+    calculerPrixTotalBdc();
 
-    // Ajouter un écouteur d'événement à chaque élément <select>
-    selectQuantite.forEach(function (selectElement) {
+    selectTouteslesQuantites = document.querySelectorAll('input[name="quantite"]');
 
-        //Màj du prix après le retrait
-        const inputsPrix = document.querySelectorAll('#prix');
-
-        // Calcul de la somme des prix
-        let total = 0;
-        inputsPrix.forEach(input => {
-            var qte = input.parentNode.previousElementSibling.querySelector('input').value;
-            total += parseFloat(input.value) * qte;
-        });
-
-        // Affichage du résultat dans la div d'id 'montant'
-        const montantDiv = document.getElementById('montant');
-        montantDiv.textContent = 'Montant TTC : ' + total.toFixed(2) + '€';
-    });
-
-
-
-    // Sélectionner tous les éléments <select> ayant l'ID 'produit'
-    var selectElements = document.querySelectorAll("#produit");
-
-    // Ajouter un écouteur d'événement à chaque élément <select>
-    selectElements.forEach(function (selectElement) {
-        console.log(1);
-        var td1 = selectElement.parentNode;
-        var td3 = td1.nextElementSibling.nextElementSibling;
-        var prix = td3.querySelector("input");
-        prix.value = selectElement.value;
-    });
-
-    selectQuantite = document.querySelectorAll("#quantite");
-
-    if(selectQuantite.length == 0) {
-        const montantDiv = document.getElementById('montant');
-        montantDiv.textContent = 'Montant TTC : '+ 0 + '€';
-
+    if (selectTouteslesQuantites.length == 0) {
+        montantBdc = document.getElementById('montant');
+        montantBdc.textContent = 'Montant TTC : ' + 0 + '€';
     }
 }
 
@@ -303,26 +196,193 @@ function retirerLigne(btn) {
 //****************************************************************************************************************/
 //****************************************************************************************************************/
 
+//Avant de valider le formulaire, on renomme tous les attributs "name" des balise html pour garantir leur transfert en POST
 
-let recupererProduits = function (cas) {
-    console.log("salut");
-    //$("#bdc").empty();
+// Sélectionner l'élément <input> avec l'ID "submit"
+var boutonSubmit = document.getElementById("submit");
+
+// Ajouter un écouteur d'événements
+boutonSubmit.addEventListener("click", function () {
+
+    // Sélectionner tous les éléments <select> avec name="produit"
+    selectTousLesProduits = document.querySelectorAll('select[name="produit"]');
+    // Parcourir les éléments et modifier le nom
+    for (var i = 0; i < selectTousLesProduits.length; i++) {
+        selectTousLesProduits[i].name = "prix" + (i + 1);
+    }
+
+    selectTouteslesQuantites = document.querySelectorAll('input[name="quantite"]');
+    // Parcourir les éléments et modifier le nom
+    for (var i = 0; i < selectTouteslesQuantites.length; i++) {
+        selectTouteslesQuantites[i].name = "quantite" + (i + 1);
+    }
+
+    selectTouslesId = document.querySelectorAll('input[name="id"]');
+    // Parcourir les éléments et modifier le nom
+    for (var i = 0; i < selectTouslesId.length; i++) {
+        selectTouslesId[i].name = "id" + (i + 1);
+    }
+});
+
+
+//****************************************************************************************************************/
+//****************************************************************************************************************/
+
+
+function genererPdf() {
+
+    var divExport = document.querySelector('#boxBdc');
+
+    var dimensionsDiv = divExport.getBoundingClientRect();
+    var divWidth = dimensionsDiv.width;
+    var divHeight = dimensionsDiv.height;
+
+    //On capture le contenu HTML dans une image
+    html2canvas(divExport).then(function (canvas) {
+        var imgData = canvas.toDataURL('image/png');
+
+        var pdf = new jsPDF();
+
+        //On juste la taille de l'image
+        var imageWidth = divWidth * 0.3;
+        var imageHeight = divHeight * 0.3;
+
+        //On centre l'image
+        var pageWidth = pdf.internal.pageSize.getWidth();
+        var pageHeight = pdf.internal.pageSize.getHeight();
+        var xPos = (pageWidth - imageWidth) / 2;
+        var yPos = (pageHeight - imageHeight) / 2;
+
+        // Ajoute l'image capturée au document PDF en utilisant les coordonnées centrées
+        pdf.addImage(imgData, 'PNG', xPos, yPos, imageWidth, imageHeight);
+
+        // Enregistre le fichier PDF
+        pdf.save('export' + new Date().toLocaleString() + '.pdf');
+    });
+}
+
+
+//****************************************************************************************************************/
+//****************************************************************************************************************/
+
+
+function ajusterPrixEtIdChaqueProduit() {
+
+    // Sélectionner toutes les balises <select> ayant le nom 'produit'
+    selectTousLesProduits = document.querySelectorAll('select[name="produit"]');
+
+    // Ajouter le bon prix, unite et id à chaque ligne de produit lorsqu'on modifie l'option
+    selectTousLesProduits.forEach(function (selectElement) {
+        var td1 = selectElement.parentNode;
+        var td2 = td1.nextElementSibling.nextElementSibling;
+        var unite = td2.querySelector("input");
+        unite.value = selectElement.selectedOptions[0].getAttribute('name');;
+        
+        var td1 = selectElement.parentNode;
+        var td3 = td1.nextElementSibling.nextElementSibling.nextElementSibling;
+        var prix = td3.querySelector("input");
+        prix.value = selectElement.value;
+
+        var td4 = td3.nextElementSibling;
+        var id = td4.querySelector("input");
+        id.value = selectElement.selectedOptions[0].id;
+    });
+}
+
+
+//****************************************************************************************************************/
+//****************************************************************************************************************/
+
+function calculerPrixTotalBdc() {
+    //Màj du prix
+    selectTouslesPrix = document.querySelectorAll('input[name="prix"]');
+
+    let total = 0;
+    selectTouslesPrix.forEach(prix => {
+        var qte = prix.parentNode.previousElementSibling.previousElementSibling.querySelector('input').value;
+        total += parseFloat(prix.value) * qte;
+    });
+
+    // Affichage du résultat dans la div d'id 'montant'
+    montantBdc = document.getElementById('montant');
+    montantBdc.textContent = 'Montant TTC : ' + total.toFixed(2) + '€';
+}
+
+
+//****************************************************************************************************************/
+//****************************************************************************************************************/
+
+
+function placerEcouteursProduitsExistants() {
+
+    // Sélectionner tous les éléments <select> ayant l'ID 'produit'
+    selectTousLesProduits = document.querySelectorAll('select[name="produit"]');
+
+    // Ajouter un écouteur d'événement à chaque élément sélectionné
+    selectTousLesProduits.forEach(function (selectElement) {
+        selectElement.addEventListener("change", function () {
+            var td1 = selectElement.parentNode;
+            var td2 = td1.nextElementSibling.nextElementSibling;
+            var unite = td2.querySelector("input");
+            unite.value = selectElement.selectedOptions[0].getAttribute('name');;
+            
+            var td1 = selectElement.parentNode;
+            var td3 = td1.nextElementSibling.nextElementSibling.nextElementSibling;
+            var prix = td3.querySelector("input");
+            prix.value = selectElement.value;
+    
+            var td4 = td3.nextElementSibling;
+            var id = td4.querySelector("input");
+            id.value = selectElement.selectedOptions[0].id;
+
+            //Màj du prix total
+            calculerPrixTotalBdc();
+        });
+    });
+
+    selectTouteslesQuantites = document.querySelectorAll('input[name="quantite"]');
+
+    // Ajouter un écouteur d'événement à chaque élément <select>
+    selectTouteslesQuantites.forEach(function (selectElement) {
+        selectElement.addEventListener("input", function () {
+
+            //Màj du prix total
+            calculerPrixTotalBdc();
+        });
+
+    });
+}
+
+
+//****************************************************************************************************************/
+//****************************************************************************************************************/
+
+
+function redirigerPageListeBdc() {
+
+    window.location.href = `listebdc`;
+
+}
+
+
+//****************************************************************************************************************/
+//****************************************************************************************************************/
+
+
+function recupererProduits(booleen) {
     $.ajax({
         url: 'nouveaubdc/listeProduits',
         type: 'POST',
         dataType: 'json',
         success: function (data) {
-            // message dans la console
-            console.log("salut 2");
-            if (cas)
+            if (booleen)
                 majProduits(data);
             else
                 ajouterLigne(data);
         },
 
         error: function (data) {
-            // message dans la console
             console.log('Bdc.js - BDC - error');
         }
-    })
+    });
 }

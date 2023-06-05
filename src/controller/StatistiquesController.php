@@ -8,5 +8,4 @@ class StatistiquesController extends Controller
 
         $view->renderView();
     }
-
 }

@@ -12,6 +12,7 @@ $(function () {
         // Création de la balise de navigation
         let a = $("<a>")
             .addClass("wrapper axe_colonne main_axe_space_evenly main_axe_center second_axe_center grow");
+        a.attr("href", "visuModifsBurgers?id=" + data.id);
 
         // Création de la balise contenant l'image
         let img = $("<img>").attr("src", data.image);
@@ -19,6 +20,8 @@ $(function () {
         // Création de la balise contenant le nom
         let h2 = $("<h2>").addClass("bold").text(data.nom);
 
+        //Création du bouton pour ajouter au panier
+        let bouton = $("<button>").addClass("");
         // Ajout des balises dans la div
         a.append(img, h2);
         div.append(a);
@@ -30,7 +33,7 @@ $(function () {
 
         let div = $("<div>").addClass("wrapper box_sans_bordure margin_large");
 
-        let h2 = $("<h2>").addClass("bold").text("<i class='fa-solid fa-spinner fa-spin'></i> Chargement des données");
+        let h2 = $("<h2>").addClass("bold").html("<i class='fa-solid fa-spinner fa-spin'></i> Chargement des données");
 
         div.append(h2);
         divPrincipale.append(div);
@@ -46,7 +49,7 @@ $(function () {
 
                 // Si aucune recette n'a été trouvée, afficher "Aucun résultats"
                 if (data['data'].length === 0) {
-                    let div = $("<div>").addClass("wrapper box_sans_bordure margin_large");
+                    let div = $("<div>").addClass("boutonRecette wrapper box_sans_bordure margin_large");
                     let h2 = $("<h2>").addClass("bold");
                     h2.text("Aucune recette n'a été trouvée");
                     div.append(h2);

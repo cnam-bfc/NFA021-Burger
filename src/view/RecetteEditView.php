@@ -100,7 +100,11 @@
             </div>
         </div>
 
-        <div class="wrapper main_axe_space_around">
+        <div id="boutons" class="wrapper main_axe_center">
+            <!-- Bouton pour annuler les modifications -->
+            <button type="button" id="annuler" class="bouton bouton_secondaire">Annuler</button>
+
+            <!-- Bouton pour enregistrer les modifications -->
             <button type="submit" id="enregistrer" class="bouton bouton_primaire">Enregistrer</button>
         </div>
     </form>

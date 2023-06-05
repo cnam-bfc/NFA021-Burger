@@ -28,10 +28,14 @@ class Router
         'inscription' => ["controller" => "AuthentificationController", "method" => "renderViewInscription"],
         'inscription/inscription' => ["controller" => "AuthentificationController", "method" => "inscription"],
 
+        // Profil
+        'profil' => ["controller" => "ProfilController", "method" => "renderView"],
+
         // PARTIE CLIENT
         // Accueil client
         'accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilClient"],
         'accueil/refreshTopRecettes' => ["controller" => "AccueilController", "method" => "refreshTopRecetteAJAX"],
+        'accueil/refreshTextAccueil' => ["controller" => "AccueilController", "method" => "refreshTextAccueil"],
 
         // Carte des recettes
         'carte' => ["controller" => "CarteMenuController", "method" => "renderView"],
@@ -52,6 +56,10 @@ class Router
         'panier/getSessionPanier' => ["controller" => "PanierController", "method" => "getSessionPanier"],
         'panier/SupprimerElemPanier' => ["controller" => "PanierController", "method" => "suppElemPanier"],
 
+        //Recap Commande
+        'recap' => ["controller" => "RecapController", "method" => "renderViewRecap"],
+        'recap/getInfos' => ["controller" => "RecapController", "method" => "getRecapInfos"],
+
         // Choix entre Livraison et Click&Collect
         'collectLivraison' => ["controller" => "CollectLivraisonController", "method" => "renderViewCollectORDelivery"],
         'collectLivraison/valider' => ["controller" => "CollectLivraisonController", "method" => "validation"],
@@ -59,17 +67,22 @@ class Router
         // PARTIE GÉRANT
         // Statistiques
         'gerant/statistiques' => ["controller" => "StatistiquesController", "method" => "renderViewStatistiques"],
+        'gerant/statistiques/recupererLesRecettes' => ["controller" => "StatistiquesController", "method" => "recupererLesRecettes"],
+        'gerant/statistiques/recupererRecettesPourStatistiquesTotal' => ["controller" => "StatistiquesController", "method" => "recupererRecettesPourStatistiquesTotal"],
 
         // Inventaire
         'gerant/inventaire' => ["controller" => "InventaireController", "method" => "renderViewInventaire"],
         'gerant/inventaire/refreshTableauInventaire' => ["controller" => "InventaireController", "method" => "refreshTableauInventaire"],
         'gerant/inventaire/miseAJourInventaire' => ["controller" => "InventaireController", "method" => "miseAJourInventaire"],
+        'gerant/inventaire/refreshListeIngredients' => ["controller" => "InventaireController", "method" => "refreshListeIngredients"],
 
         // Stock
         'gerant/stock' => ["controller" => "StockController", "method" => "renderViewStock"],
         'gerant/stock/getBonsCommandesAJAX' => ["controller" => "StockController", "method" => "getBonsCommandesAJAX"],
         'gerant/stock/getFournisseursAJAX' => ["controller" => "StockController", "method" => "getFournisseursAJAX"],
         'gerant/stock/refreshTableauIngredientsAJAX' => ["controller" => "StockController", "method" => "refreshTableauIngredientsAJAX"],
+        'gerant/stock/validationBonCommandeAJAX' => ["controller" => "StockController", "method" => "validationBonCommandeAJAX"],
+        'gerant/stock/refreshListeIngredients' => ["controller" => "StockController", "method" => "refreshListeIngredients"],
 
         // Recettes
         'gerant/recettes' => ["controller" => "RecetteController", "method" => "renderViewRecettes"],
@@ -103,6 +116,8 @@ class Router
         // PARTIE LIVREUR
         // Livraison
         'livreur/livraisons' => ["controller" => "LivraisonController", "method" => "renderViewLivraison"],
+        'livreur/livraisons/list' => ["controller" => "LivraisonController", "method" => "listeLivraisons"],
+        'livreur/livraisons/prendre' => ["controller" => "LivraisonController", "method" => "prendreLivraison"],
         'livreur/itineraire' => ["controller" => "LivraisonController", "method" => "renderViewItineraire"],
 
         // Exemples
@@ -119,7 +134,7 @@ class Router
     public static function route($route)
     {
         // Si la route demandée est vide, on charge la page d'accueil appropriée
-        if ($route == "" || $route == "employe") {
+        if ($route == "" || $route == "employe" || $route == "livreur" || $route == "gerant") {
             // Si l'utilisateur est connecté, on le redirige vers la page d'accueil de son profil
             $userSession = UserSession::getUserSession();
 
@@ -131,7 +146,7 @@ class Router
                 }
                 // Si l'utilisateur est un livreur, on le redirige vers la page de livraison
                 elseif ($userSession->isLivreur()) {
-                    Router::redirect('livreur');
+                    Router::redirect('livreur/livraisons');
                     return;
                 }
                 // Si l'utilisateur est un employé, on le redirige vers la page d'accueil de l'employé

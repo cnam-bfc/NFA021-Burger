@@ -43,6 +43,7 @@ $browserPath = strstr($browserPathToIndex, 'index.php', true);
 define("CONTROLLER", SRC_FOLDER . "controller/"); // Dossier des contrôleurs
 define("MODEL", SRC_FOLDER . "model/"); // Dossier des modèles
 define("VIEW", SRC_FOLDER . "view/"); // Dossier des vues
+define("SRC_DATA_FOLDER", SRC_FOLDER . "data/"); // Dossier des templates
 
 // Accessible côté client
 define("PUBLIC_FOLDER", $browserPath); // Dossier public

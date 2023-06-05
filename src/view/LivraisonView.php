@@ -1,3 +1,9 @@
+<!-- On ajoute la feuille de style associé à la page -->
+<link rel="stylesheet" href="<?php echo CSS ?>Livraison.css">
+
+<!-- On ajoute le script associé à la page -->
+<script src="<?php echo JS ?>Livraison.js"></script>
+
 <!-- Wrapper (contenu de la page) -->
 <div class="padding_default grow">
     <h1 class="titre_bulle">Livraisons</h1>
@@ -17,30 +23,6 @@
                 <tr></tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>230327-001</td>
-                    <td>1 rue de la paix, 75000 Paris <button class="bouton"><i class="fa-solid fa-map-location"></i></button></td>
-                    <td>1 rue de la paix, 75000 Paris <button class="bouton"><i class="fa-solid fa-map-location"></i></button></td>
-                    <td>1.5 km</td>
-                    <td>12h00</td>
-                    <td>
-                        <div class="wrapper main_axe_center second_axe_center">
-                            <button class="bouton"><i class="fa-solid fa-truck"></i></button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>230327-002</td>
-                    <td>1 rue de la paix, 75000 Paris <button class="bouton"><i class="fa-solid fa-map-location"></i></button></td>
-                    <td>1 rue de la paix, 75000 Paris <button class="bouton"><i class="fa-solid fa-map-location"></i></button></td>
-                    <td>1.5 km</td>
-                    <td>12h00</td>
-                    <td>
-                        <div class="wrapper main_axe_center second_axe_center">
-                            <button class="bouton"><i class="fa-solid fa-truck"></i></button>
-                        </div>
-                    </td>
-                </tr>
             </tbody>
         </table>
     </div>

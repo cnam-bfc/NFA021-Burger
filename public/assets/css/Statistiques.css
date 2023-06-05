@@ -1,16 +1,90 @@
+.dont_show_menu_graphe {
+    width: 10%;
+}
+
+.show_menu_graphe {
+    width: 35%;
+}
+
+#menu_graphe {
+    width: 100%;
+    padding-left : 5px;
+    background-color: #e6e6e6;
+}
+
+/*
+CSS pour la partie Menu
+*/
+
+#menu_action_rapide{
+    width: 60px;
+    background-color: rgb(247, 247, 247);
+    padding-right: 1px;
+}
+
+#boutons_graphe {
+    width: auto;
+}
+
+#button_stat_close_menu_config {
+    padding: 5px 10px;
+    margin-left: auto;
+    margin-right: 5px;
+}
+
+#titre_onglet {
+    font-size: 20px;
+    margin-bottom: 10px;
+    text-align: center;
+    color: #000000;
+}
+
+/*
+CSS pour la partie Selection d'un graphe
+*/
+
+.menu_graphe_content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin : 0 10px 0 5px;
+}
+
 .box_graphe {
-    margin : 20px 0 20px 10px;
+    display : flex;
+    flex-direction: column;
+    gap : 5px
 }
 
 .graphe_choix {
-    margin : 12px 0 12px 30px;
+    display: block;
+    margin : 2px 0;
+    padding : 5px 7px;
+    background-color: #f1f0f0;
+    color: black;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
 }
 
-.graphe_choix a {
-    padding: 5px;
+.graphe_choix p {
+    text-align: start;
 }
 
+.graphe_choix:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.graphe_choix:hover {
+    /* Rendre la couleur plus foncée */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(34, 33, 33, 0.2));
+}
+
+/**
+CSS - Autre
+*/
 .selected {
-    background-color: #df9319;
+    background-color: #6b6b6b;
     color: #fff;
 }

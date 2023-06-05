@@ -24,8 +24,8 @@
         <h2 class="color_secondaire bold">Nos restaurants</h2>
         <img src="<?php echo $carte; ?>" id="accueil_map">
     </div>
-    <article class="wrapper axe_colonne second_axe_center accueil_margin">
-        <h2 class="color_secondaire bold"><?php echo $news["title"]; ?></h2>
-        <p class="text-justify"><?php echo $news["message"]; ?></p>
+    <article class="wrapper axe_colonne second_axe_center accueil_margin" id="texte_accueil">
+        <h2 class="color_secondaire bold"></h2>
+        <p class="text-justify"></p>
     </article>
 </div>

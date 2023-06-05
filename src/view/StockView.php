@@ -1,3 +1,6 @@
+<!-- on inclut la feuille de style -->
+<link rel="stylesheet" href="<?php echo CSS; ?>Stock.css">
+
 <!-- on inclut la feuille js -->
 <script src="<?php echo JS; ?>Stock.js"></script>
 
@@ -20,7 +23,7 @@
 
     <hr class="delimitation_trait">
 
-    <section class ="width_75"> <!-- début tableau -->
+    <section class="width_75"> <!-- début tableau -->
         <table class="tableau" id="tableau_inventaire">
             <thead>
                 <tr>
@@ -32,13 +35,17 @@
                 </tr>
                 <tr></tr>
             </thead>
-            <tbody id = "test">
+            <tbody id="test">
             </tbody>
             <tfoot>
                 <tr></tr>
                 <tr>
                     <td colspan="6">
                         <button class="bouton" id="ajouter_ingredient"><i class="fa-solid fa-plus"></i> Ajouter un ingrédient</button>
+                        <div id="ajouter_ingredient_div" hidden>
+                            <select id="select_ajouter_ingredient"></select>
+                            <button type="button" class="bouton" id="bouton_annuler_ajouter_ingredient"><i class="fa-solid fa-times"></i></button>
+                        </div>
                     </td>
                 </tr>
             </tfoot>
@@ -46,6 +53,6 @@
     </section> <!-- Fin tableau -->
 
     <div class="center_items_horizontal">
-        <button class="bouton bouton_primaire margin_bottom_top_large">Valider</button>
+        <button class="bouton bouton_primaire margin_bottom_top_large" id="bouton_mise_a_jour">Valider</button>
     </div>
 </div>

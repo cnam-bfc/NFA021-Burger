@@ -125,6 +125,28 @@ class IngredientDAO extends DAO
         $statement->bindValue(':id_fournisseur_fk', $ingredient->getIdFournisseur(), PDO::PARAM_INT);
         $statement->bindValue(':id_ingredient', $ingredient->getId(), PDO::PARAM_INT);
         $statement->execute();
+
+        //On vérifie après la mise à jour si le stock n'est pas passé en-dessous du stock mini
+        if($ingredient->isStockAuto() && $ingredient->getQuantiteStock() < $ingredient->getQuantiteMinimaleStockAuto()) {
+            $daoBdc = new CommandeFournisseurDAO();
+
+            $bdc = new CommandeFournisseur();
+            $bdc->setCreationAutomatique(1);
+            $bdc->setDateCreation(date('Y-m-d H:i:s'));
+            $bdc->setIdFournisseur($ingredient->getIdFournisseur());
+
+            $daoBdc->create($bdc);
+
+            $daoIngredientBdc = new CommandeFournisseurIngredientDAO();
+
+            $ingredientBdc = new CommandeFournisseurIngredient();
+            $ingredientBdc->setIdCommandeFournisseur($bdc->getId());
+            $ingredientBdc->setIdIngredient($ingredient->getId());
+            $ingredientBdc->setQuantiteCommandee($ingredient->getQuantiteStandardStockAuto() - $ingredient->getQuantiteStock());
+
+            $daoIngredientBdc->create($ingredientBdc);
+
+        }
     }
 
     /**
@@ -217,6 +239,82 @@ class IngredientDAO extends DAO
     }
 
     /**
+     * On récupère tous les ingrédients exceptés ceux dans le $tableauIdIngredients
+     *
+     * @param [$id] $tableauIdIngredients
+     * @return array (tableau d'objets)
+     */
+    public function selectAllWithoutIngredientsNonArchive($tableauIdIngredients)
+    {
+        // Requête préparée
+        $sqlQuery = "SELECT * FROM burger_ingredient WHERE (date_archive IS NULL OR date_archive > NOW())";
+        if ($tableauIdIngredients[0] != null) {
+            $sqlQuery .= "AND id_ingredient NOT IN (";
+            foreach ($tableauIdIngredients as $idIngredient) {
+                $sqlQuery .= ':IdIngredient_' . $idIngredient . ',';
+            }
+            $sqlQuery = substr($sqlQuery, 0, -1);
+            $sqlQuery .= ")";
+            $statement = $this->pdo->prepare($sqlQuery);
+        }
+        $statement = $this->pdo->prepare($sqlQuery);
+        if ($tableauIdIngredients[0] != null) {
+            foreach ($tableauIdIngredients as $idIngredient) {
+                $statement->bindValue(':IdIngredient_' . $idIngredient, $idIngredient, PDO::PARAM_INT);
+            }
+        }
+
+        $statement->execute();
+
+        // Traitement des résultats
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $ingredients = array();
+        foreach ($result as $row) {
+            // Création d'un nouvel objet
+            $ingredient = new Ingredient();
+
+            // Remplissage de l'objet
+            $this->fillObject($ingredient, $row);
+
+            // Ajout de l'objet dans le tableau
+            $ingredients[] = $ingredient;
+        }
+        return $ingredients;
+    }
+
+    /**
+     * Méthode permettant de récupérer tous les IngredientCommandeFournisseur d'une commande en fonction de l'id de la commande
+     * 
+     * @param int $idCommande (id de la commande)
+     * @return array (tableau d'objets)
+     */
+    public function selectByIdCommandeForStock($idCommande)
+    {
+        // Requête
+        $sqlQuery = "SELECT * FROM burger_ingredient 
+        LEFT JOIN burger_commande_fournisseur_ingredient ON burger_ingredient.id_ingredient = burger_commande_fournisseur_ingredient.id_ingredient_fk
+        WHERE burger_commande_fournisseur_ingredient.id_commande_fournisseur_fk = :id_commande";
+        $statement = $this->pdo->prepare($sqlQuery);
+        $statement->bindValue(':id_commande', $idCommande, PDO::PARAM_INT);
+        $statement->execute();
+
+        // Traitement des résultats
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $ingredients = array();
+        foreach ($result as $row) {
+            // Création d'un nouvel objet
+            $ingredient = new Ingredient();
+
+            // Remplissage de l'objet
+            $this->fillObject($ingredient, $row);
+
+            // Ajout de l'objet dans le tableau
+            $ingredients[] = $ingredient;
+        }
+        return $ingredients;
+    }
+
+    /**
      * Méthode permettant de remplir un objet à partir d'un tableau (ligne issue de la base de données)
      * 
      * @param Ingredient $ingredient (objet à remplir)
@@ -236,26 +334,5 @@ class IngredientDAO extends DAO
         $ingredient->setDateArchive($row['date_archive']);
         $ingredient->setIdUnite($row['id_unite_fk']);
         $ingredient->setIdFournisseur($row['id_fournisseur_fk']);
-    }
-
-    /**
-     * Méthode permettant de récupérer tous les IngredientCommandeFournisseur d'une commande en fonction de l'id de la commande
-     * 
-     * @param int $idCommande (id de la commande)
-     * @return array (tableau d'objets)
-     */
-    public function selectByIdCommandeForStock($idCommande)
-    {
-        // Requête
-        $sqlQuery = "SELECT * FROM burger_ingredient 
-        LEFT JOIN burger_unite ON burger_ingredient.id_unite_fk = burger_unite.id_unite
-        LEFT JOIN burger_constituer ON burger_ingredient.id_ingredient = burger_constituer.id_ingredient_fk
-        WHERE burger_constituer.id_commande = :id_commande";
-        $statement = $this->pdo->prepare($sqlQuery);
-        $statement->bindValue(':id_commande', $idCommande, PDO::PARAM_INT);
-        $statement->execute();
-
-        // Traitement des résultats
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 }
