@@ -13,6 +13,7 @@ button {
   height: 30px;
   font-weight: bold;
   font-size: 10px;
+  cursor: pointer;
 }
 
 /*-----------ID------------*/
@@ -110,8 +111,9 @@ button {
 #tbodyMod tr {
   height: 80px;
 }
-#tbodyMod input{
-  width: 9px;
+
+#tbodyMod input {
+  width: auto;
 }
 
 /*---------Class------------*/
@@ -126,10 +128,6 @@ button {
   border-style: hidden;
 }
 
-.boutonRetirer {
-  width: 120px;
-}
-
 button {
   color: #FFD966;
   background-color: #FF6666;
@@ -139,9 +137,17 @@ button {
   height: 30px;
   font-weight: bold;
   font-size: 10px;
-  
+
+}
+
+.boutonRetirer {
+  width: 120px;
 }
 
 .boutonRemettre {
   width: 120px;
+}
+
+.animation-grow:hover {
+  transform: scale(1.1);
 }

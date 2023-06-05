@@ -52,6 +52,10 @@ class Router
         'panier/getSessionPanier' => ["controller" => "PanierController", "method" => "getSessionPanier"],
         'panier/SupprimerElemPanier' => ["controller" => "PanierController", "method" => "suppElemPanier"],
 
+        //Recap Commande
+        'recap' => ["controller" => "RecapController", "method" => "renderViewRecap"],
+        'recap/getInfos' => ["controller" => "RecapController", "method" => "getRecapInfos"],
+
         // Choix entre Livraison et Click&Collect
         'collectLivraison' => ["controller" => "CollectLivraisonController", "method" => "renderViewCollectORDelivery"],
         'collectLivraison/valider' => ["controller" => "CollectLivraisonController", "method" => "validation"],

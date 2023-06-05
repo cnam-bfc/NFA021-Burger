@@ -15,7 +15,7 @@ var idRecette;
 
 function showData(BurgerID) {
     idRecette = BurgerID;
-    console.log(BurgerID + " = BurgerID");
+    //console.log(BurgerID + " = BurgerID");
     $.ajax({
         url: "visuModifsBurgers/ingredients",
         method: "POST",
@@ -29,16 +29,18 @@ function showData(BurgerID) {
             dataBurger = response;
 
 
+
             /* Boucle qui parcourt le tableau résultat (tableau qui contient les ingrédients à afficher) */
+            console.log("response Ajax");
             console.log(response);
             console.log(response[0][1]);
             prix = response[0][1];
             console.log(prix);
             for (var i = 0; i < response[0][0].length; i++) {
-                for (var q = 0; q < response[0][0][i]['quantite']; q++) {
 
-                    afficherCompoBurger(response[0][0][i]);
-                }
+
+                afficherCompoBurger(response[0][0][i]);
+
                 afficherTabModifBurger(response[0][0][i], response[0][0]);
             }
             //afficher le prix ici : 
@@ -77,7 +79,7 @@ function afficherCompoBurger(ingredient) {
     divTxt.className = "txt";
     const p = document.createElement("p");
     divTxt.appendChild(p);
-    p.textContent = ingredient["nom"];
+    p.textContent = ingredient["quantite"] + " " + ingredient['unite'] + " " + ingredient["nom"];
 
 
 
@@ -181,7 +183,8 @@ function afficherTabModifBurger(ingredient, response) {
     inputQuantIngr.setAttribute('id', 'inputQuantite' + ingredient["nom"]);
     inputQuantIngr.setAttribute('type', 'text');
     inputQuantIngr.setAttribute('readonly', 'readonly');
-    inputQuantIngr.setAttribute('value', quantiteIngrdient);
+    inputQuantIngr.setAttribute('value', quantiteIngrdient + " " + ingredient['unite']);
+    inputQuantIngr.setAttribute('class', 'inputQ');
     divQuantIngr.appendChild(inputQuantIngr);// ici on insert les éléments les uns dans les autres, en partant de la fin
     tdQuantiteIngr.appendChild(divQuantIngr);
 
@@ -261,29 +264,26 @@ function afficherTabModifBurger(ingredient, response) {
 
 
             //rempli la div affichage avec les nouvelles données
+            console.log("response ligne 265");
+            console.log(response);
             for (var i = 0; i < response.length; i++) {
 
+                //if (tabNomIngrARemettre.includes(response[i]["nom"])) {
                 if (tabNomIngrARemettre.includes(response[i]["nom"])) {
 
 
-                    for (var q = 0; q < response[i]['quantite']; q++) {
-
-
-                        afficherCompoBurger(response[i]);
-
-                    }
-
-
+                    afficherCompoBurger(response[i]);
                 }
 
 
             }
         }
         else {
-            document.getElementById('inputQuantite' + ingredient['nom']).setAttribute("value", ingredient['quantite']);
+
+            document.getElementById('inputQuantite' + ingredient['nom']).setAttribute("value", ingredient['quantite'] + " " + ingredient['unite']);
             this.className = "boutonRetirer";
             this.textContent = "RETIRER";
-            document.getElementsByClassName('boutonRemettre');
+
 
             //je vide ala div affichage pour ensuite la re-remplir avec les ingredient qui ont une quantité !=0 
             $("affichage").empty();
@@ -326,9 +326,9 @@ function afficherTabModifBurger(ingredient, response) {
             //rempli la div affichage avec les nouvelles données
             for (var i = 0; i < response.length; i++) {
                 if (tabNomIngrARemettre.includes(response[i]["nom"])) {
-                    for (var q = 0; q < response[i]['quantite']; q++) {
-                        afficherCompoBurger(response[i]);
-                    }
+
+                    afficherCompoBurger(response[i]);
+
                 }
 
 
@@ -388,12 +388,12 @@ $(document).ready(function () {
             if (elemBouton.childNodes[0].textContent == "RETIRER") {
 
 
-                for (var q = 0; q < elemEnfantsDeLigne[2].firstChild.firstChild.value; q++) {
-                    if (!tabIngrFinaux.includes(elemEnfantsDeLigne[1].textContent))
-                        tabIngrFinaux.push(elemEnfantsDeLigne[1].textContent, elemEnfantsDeLigne[2].firstChild.firstChild.value);
+
+                if (!tabIngrFinaux.includes(elemEnfantsDeLigne[1].textContent))
+                    tabIngrFinaux.push(elemEnfantsDeLigne[1].textContent, elemEnfantsDeLigne[2].firstChild.firstChild.value);
 
 
-                }
+
             }
 
 

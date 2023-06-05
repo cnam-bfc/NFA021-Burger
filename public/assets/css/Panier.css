@@ -46,4 +46,9 @@ button {
     font-weight: bold;
     font-size: 15px;
     width: 1000px;
+    cursor: pointer;
 }
+
+.animation-grow:hover {
+    transform: scale(1.1);
+  }

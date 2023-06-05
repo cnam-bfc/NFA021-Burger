@@ -1,4 +1,5 @@
 var panier;
+var infosLivraison;
 
 //cette fonction doit lire la variable de session Panier
 function showData() {
@@ -6,6 +7,28 @@ function showData() {
     //panierDiv.innerHTML = sessionStorage.getItem('panier');
 
     //je créer la variable qui stock la composition du panier
+
+
+    //ici je récupère la variable de session concernant les infos sur la livraison
+    $.ajax({
+        url: "recap/getInfos",
+        method: "POST",
+        dataType: "JSON",
+        success: function (response) {
+            console.log("responseGOODPanierInfos");
+            console.log(response);
+            infosLivraison = response;
+            processLivraison(infosLivraison);
+
+            // Appeler la fonction de traitement du panier
+
+        },
+        error: function (xhr, status, error) {
+            console.log("Erreur lors de la requête AJAX : " + error);
+            console.log(xhr.responseText);
+        }
+    });
+
 
 
     //ici je récupère la variable de session panier en faisant une requête ajax;
@@ -28,8 +51,8 @@ function showData() {
             console.log(xhr.responseText);
         }
     });
-}
 
+}
 
 
 // Fonction de traitement du panier
@@ -38,8 +61,8 @@ function processPanier(panier) {
     var prixTotal = 0;
 
     //je créer les élément html qui vont constituer mon panier
-    const PanierDiv = document.getElementById("Panier");
-    PanierDiv.innerHTML = "";
+    const PanierDiv = document.getElementById("Commande");
+
 
 
     // Parcourir le panier pour afficher son contenu
@@ -53,23 +76,19 @@ function processPanier(panier) {
         //ici il faut créer un tableau
         //1ère Partie du tableau
 
-        // à coté du th1, mettre un bouton supprimer
+
         const theadBurger = document.createElement("thead");
         const tr1 = document.createElement("tr");
         const th1 = document.createElement("th");
         th1.setAttribute("colspan", 2);
         th1.textContent = panier[i]["nomRecette"];
         tr1.appendChild(th1);
-        //le bouton pour supprimer un élément du panier (avec i qui correspond à l'indice de l'élément dans la variable de session['panier'])
-        const buttonSupprimer = document.createElement("button");
-        buttonSupprimer.setAttribute("id", "SupprimerPanieri" + i);
-        buttonSupprimer.setAttribute("onClick", "supprimer('" + "SupprimerPanieri" + i + "')");
-        buttonSupprimer.textContent = "Supprimer";
+
         theadBurger.appendChild(tr1);
 
 
 
-        tr1.appendChild(buttonSupprimer);
+
 
         //2ème Partie du tableau
         const tbodyBurger = document.createElement("tbody");
@@ -84,7 +103,7 @@ function processPanier(panier) {
         //Prix
         const divPrix = document.createElement("div");
         divPrix.setAttribute('id', 'Prix');
-        divPrix.textContent = panier[i]["prixRecette"] + "€";
+        divPrix.textContent = panier[i]["prixRecette"] + " €";
 
         //PrixTotal
         prixTotal = parseFloat(prixTotal);
@@ -135,54 +154,49 @@ function processPanier(panier) {
     console.log("divTotal OK");
 }
 
+function processLivraison(infosLivraison) {
+    const divRecupInfos = document.getElementById('RecupCommande');
 
 
 
-function supprimer(idElem) {
+    var div = document.createElement('div');
+    var cle;
+    var valeur;
 
-    // je dois récupèrer le dernier caractere de la chaine
 
-    id = idElem.charAt(idElem.length - 1);
-    console.log(id);
+    //je convertie l'objet infosLivraison en tableau
+    const infosLivraisonTab = Object.keys(infosLivraison).map(key => infosLivraison[key]);
 
-    //maintenant, dans la variable de session['panier'], supprimer $_SESSION['panier'][id];
-    //pour ça il faut faire une requête ajax
-
-    $.ajax({
-        url: 'panier/SupprimerElemPanier',
-        method: 'POST',
-        data: {
-            idElem: id
-        },
-        success: function (response) {
-            // La requête a réussi, la variable de session a été modifiée côté serveur
-            console.log('Variable de session modifiée avec succès');
-
-            panier = JSON.parse(response);
-            console.log(panier);
-            processPanier(panier);
-
-        },
-        error: function (xhr, status, error) {
-            // Une erreur s'est produite lors de la requête
-            console.error('Erreur lors de la modification de la variable de session :', error);
-        }
+    infosLivraisonTab.forEach((value, index) => {
+        const key = Object.keys(infosLivraison)[index];
+        console.log("Clé:", key);
+        console.log("Valeur:", value);
+        const div = document.createElement("div"); // Créer un nouvel élément <div>
+        cle = key;
+        valeur = value;
+        div.textContent = cle + " : " + valeur;
+        divRecupInfos.appendChild(div);
     });
 
+
+
+
+
+
+
+
+
+
+
 }
 
-function commander() {
-    //je vérifie si le panier est vide ou non
-    if (!document.getElementById('Panier').length) {
-        // écrire les recettes finals en bdd
-        // créer une commande en Bdd
-        // amener à la page choix Livraison/Click & Collect
-        console.log("div pas vide");
-    }
-    else {
 
-        console.log("div vide");
-    }
-}
+
+
+
+
+
+
+
 
 
