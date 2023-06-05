@@ -13,12 +13,16 @@ class ListeBDCController extends Controller
         $bdc = $bdcDao->selectAll();
 
         $fournisseurDao = new FournisseurDAO();
+        $ingredientBdcDao = new CommandeFournisseurIngredientDAO();
 
-        $tableau = array();
+        //$ingredientBdcDao->selectAllByIdCommandeFournisseur();
+
+        $tableauBdc = array();
+        $tableauMontants = array();
 
         foreach ($bdc as $donnees) {
 
-            $tableau[] = array(
+            $tableauBdc[] = array(
                 "id" => $donnees->getId(),
                 "creation" => $donnees->getDateCreation(),
                 "validation" => $donnees->getDateCommande(),
@@ -26,9 +30,10 @@ class ListeBDCController extends Controller
                 "fournisseur" => ($fournisseurDao->selectById($donnees->getIdFournisseur()))->getNom()
             );
         }
+
         $view = new View(BaseTemplate::JSON);
 
-        $view->json = $tableau;
+        $view->json = $tableauBdc;
         $view->renderView();
     }
 

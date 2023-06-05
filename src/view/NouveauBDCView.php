@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="<?php echo CSS ?>GeneriqueTarek.css">
+<link rel="stylesheet" href="<?php echo CSS ?>styles.css">
 <link rel="stylesheet" href="<?php echo CSS ?>NouveauBDC.css">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
@@ -42,6 +43,7 @@
                                 <tr>
                                     <th>Produit</th>
                                     <th>Quantité</th>
+                                    <th>Unite</th>
                                     <th>Prix unitaire</th>
                                     <th hidden>Id</th>
                                 </tr>
@@ -83,6 +85,7 @@
                                     <tr>
                                         <th>Produit</th>
                                         <th>Quantité</th>
+                                        <th>Unite</th>
                                         <th>Prix unitaire</th>
                                         <th hidden>Id</th>
                                     </tr>
@@ -94,7 +97,7 @@
                                     ?>
 
                                         <tr>
-                                            <td><select name="produit" class="input">
+                                            <td><select name="produit" class="courbe espace">
                                                     <?php
                                                     foreach ($listeIngredients as $donnees) {
                                                         if ($donnees->getIdFournisseur() == $bdc->getIdFournisseur()) {
@@ -106,14 +109,25 @@
                                                     }
                                                     ?>
                                                 </select></td>
-                                            <td><input type="number" name="quantite" class="input" value=<?php echo $donneesBdc->getQuantiteCommandee(); ?>></td>
+                                            <td><input type="number" name="quantite" class="courbe espace" value=<?php echo $donneesBdc->getQuantiteCommandee(); ?>></td>
 
-                                            <td><input type="number" name="prix" disabled="" value=<?php
-                                                                                                    foreach ($listeIngredients as $donnees) {
-                                                                                                        if ($donnees->getId() == $donneesBdc->getIdIngredient()) {
-                                                                                                            echo $donnees->getPrixFournisseur();
-                                                                                                        }
-                                                                                                    } ?> class="input"></td>
+                                            <td><input type="text" name="unite" disabled="" class="courbe espace" value=<?php
+                                                                                                            foreach ($listeIngredients as $donnees) {
+                                                                                                                if ($donnees->getId() == $donneesBdc->getIdIngredient()) {
+                                                                                                                    foreach ($listeUnites as $unite) {
+                                                                                                                        if ($unite->getId() == $donnees->getIdUnite()) {
+                                                                                                                            echo $unite->getNom();
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            } ?>></td>
+
+                                            <td><input type="number" name="prix" disabled="" class="courbe espace" value=<?php
+                                                                                                                            foreach ($listeIngredients as $donnees) {
+                                                                                                                                if ($donnees->getId() == $donneesBdc->getIdIngredient()) {
+                                                                                                                                    echo $donnees->getPrixFournisseur();
+                                                                                                                                }
+                                                                                                                            } ?>></td>
 
                                             <td><input type="hidden" name="id" value=<?php echo $donneesBdc->getIdIngredient(); ?>></td>
                                             <td><button onclick="retirerLigne(this)" class="courbe bouton">X</button></td>

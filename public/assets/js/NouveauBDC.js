@@ -1,23 +1,24 @@
 // Variable qui contiendra toutes les balises ayant le nom 'produit'
-var selectTousLesProduits;
+var selectTousLesProduits = document.querySelectorAll('select[name="produit"]');
 
 // Variable qui contiendra toutes les balises ayant le nom 'quantite'
-var selectTouteslesQuantites;
+var selectTouteslesQuantites = document.querySelectorAll('input[name="quantite"]');
 
 // Variable qui contiendra toutes les balises ayant le nom 'prix'
-var selectTouslesPrix;
+var selectTouslesPrix = document.querySelectorAll('input[name="prix"]');
 
 // Variable qui contiendra toutes les balises ayant le nom 'id'
-var selectTouslesId;
-
-// Variable qui contiendra le prix total du bdc
-var montantBdc;
+var selectTouslesId = document.querySelectorAll('input[name="id"]');
 
 // Variable qui contient la balise <select> des fournisseurs
 var selectMenuDeroulantFournisseur = document.querySelector('select[name="fournisseur"]');
 
 //idFournisseur au lancement de la page
-var idFournisseur = 1;
+var fournisseur = document.querySelector('select[name="fournisseur"]');
+var idFournisseur = fournisseur.selectedOptions[0].value;
+
+// Variable qui contiendra le prix total du bdc
+var montantBdc;
 
 // Ajout de l'event listener pour l'événement "change"
 selectMenuDeroulantFournisseur.addEventListener("change", function () {
@@ -48,6 +49,7 @@ function majProduits(data) {
 
         var idProduit = [];
         var nomProduit = [];
+        var uniteProduit = [];
         var prixUnitaireProduit = [];
 
         for (var i = 0; i < data.length; i++) {
@@ -55,13 +57,14 @@ function majProduits(data) {
             if (item.idFournisseur == idFournisseur) {
                 idProduit.push(item.id);
                 nomProduit.push(item.nom);
+                uniteProduit.push(item.unite);
                 prixUnitaireProduit.push(item.prix);
             }
         }
 
         for (var i = 0; i < nomProduit.length; i++) {
 
-            selectElement.innerHTML += '<option value="' + prixUnitaireProduit[i] + '" id = "' + idProduit[i] + '">' + nomProduit[i] + '</option>';
+            selectElement.innerHTML += '<option name ="' + uniteProduit[i] + '" value="' + prixUnitaireProduit[i] + '" id = "' + idProduit[i] + '">' + nomProduit[i] + '</option>';
         }
     });
     ajusterPrixEtIdChaqueProduit();
@@ -80,6 +83,7 @@ function ajouterLigne(data) {
 
     var idProduit = [];
     var nomProduit = [];
+    var uniteProduit = [];
     var prixUnitaireProduit = [];
 
     for (var i = 0; i < data.length; i++) {
@@ -87,6 +91,7 @@ function ajouterLigne(data) {
         if (item.idFournisseur == idFournisseur) {
             idProduit.push(item.id);
             nomProduit.push(item.nom);
+            uniteProduit.push(item.unite);
             prixUnitaireProduit.push(item.prix);
         }
     }
@@ -95,27 +100,31 @@ function ajouterLigne(data) {
     var ligne = table.insertRow(-1);
     var produit = ligne.insertCell(0);
     var quantite = ligne.insertCell(1);
-    var prix = ligne.insertCell(2);
-    var idLigne = ligne.insertCell(3);
-    var suppression = ligne.insertCell(4);
+    var unite = ligne.insertCell(2);
+    var prix = ligne.insertCell(3);
+    var idLigne = ligne.insertCell(4);
+    var suppression = ligne.insertCell(5);
 
     var idProduitParDefaut;
-    var prixOptionParDefaut;
+    var prixProduitParDefaut;
+    var uniteProduitParDefaut;
 
-    var selectHtml = '<select name="produit" class="input">';
+    var selectHtml = '<select name="produit" class="courbe espace">';
     for (var i = 0; i < nomProduit.length; i++) {
         if (i == 0) {
             idProduitParDefaut = idProduit[i];
-            prixOptionParDefaut = prixUnitaireProduit[i];
+            prixProduitParDefaut = prixUnitaireProduit[i];
+            uniteProduitParDefaut = uniteProduit[i];
         }
-        selectHtml += '<option value="' + prixUnitaireProduit[i] + '" id = "' + idProduit[i] + '">' + nomProduit[i] + '</option>';
+        selectHtml += '<option name ="' + uniteProduit[i] + '" value="' + prixUnitaireProduit[i] + '" id = "' + idProduit[i] + '">' + nomProduit[i] + '</option>';
     }
 
     selectHtml += '</select>';
     produit.innerHTML = selectHtml;
 
-    quantite.innerHTML = '<input type="number" name="quantite" class="input" value=1>';
-    prix.innerHTML = '<input type="number" name="prix" disabled value ="' + prixOptionParDefaut + '" class="input">';
+    quantite.innerHTML = '<input type="number" name="quantite" class="courbe espace" value=1>';
+    unite.innerHTML = '<input type="text" name="unite" disabled class="courbe espace" value="' + uniteProduitParDefaut + '">';
+    prix.innerHTML = '<input type="number" name="prix" disabled value ="' + prixProduitParDefaut + '" class="courbe espace">';
     idLigne.innerHTML = '<input type="hidden" name="id" value="' + idProduitParDefaut + '">';
     suppression.innerHTML = '<button onclick="retirerLigne(this)" class="courbe bouton">X</button>';
 
@@ -129,7 +138,12 @@ function ajouterLigne(data) {
     selectTousLesProduits.forEach(function (selectElement) {
         selectElement.addEventListener("change", function () {
             var td1 = selectElement.parentNode;
-            var td3 = td1.nextElementSibling.nextElementSibling;
+            var td2 = td1.nextElementSibling.nextElementSibling;
+            var unite = td2.querySelector("input");
+            unite.value = selectElement.selectedOptions[0].getAttribute('name');;
+            
+            var td1 = selectElement.parentNode;
+            var td3 = td1.nextElementSibling.nextElementSibling.nextElementSibling;
             var prix = td3.querySelector("input");
             prix.value = selectElement.value;
 
@@ -257,10 +271,15 @@ function ajusterPrixEtIdChaqueProduit() {
     // Sélectionner toutes les balises <select> ayant le nom 'produit'
     selectTousLesProduits = document.querySelectorAll('select[name="produit"]');
 
-    // Ajouter le bon prix à chaque ligne de produit
+    // Ajouter le bon prix, unite et id à chaque ligne de produit lorsqu'on modifie l'option
     selectTousLesProduits.forEach(function (selectElement) {
         var td1 = selectElement.parentNode;
-        var td3 = td1.nextElementSibling.nextElementSibling;
+        var td2 = td1.nextElementSibling.nextElementSibling;
+        var unite = td2.querySelector("input");
+        unite.value = selectElement.selectedOptions[0].getAttribute('name');;
+        
+        var td1 = selectElement.parentNode;
+        var td3 = td1.nextElementSibling.nextElementSibling.nextElementSibling;
         var prix = td3.querySelector("input");
         prix.value = selectElement.value;
 
@@ -280,7 +299,7 @@ function calculerPrixTotalBdc() {
 
     let total = 0;
     selectTouslesPrix.forEach(prix => {
-        var qte = prix.parentNode.previousElementSibling.querySelector('input').value;
+        var qte = prix.parentNode.previousElementSibling.previousElementSibling.querySelector('input').value;
         total += parseFloat(prix.value) * qte;
     });
 
@@ -303,10 +322,15 @@ function placerEcouteursProduitsExistants() {
     selectTousLesProduits.forEach(function (selectElement) {
         selectElement.addEventListener("change", function () {
             var td1 = selectElement.parentNode;
-            var td3 = td1.nextElementSibling.nextElementSibling;
+            var td2 = td1.nextElementSibling.nextElementSibling;
+            var unite = td2.querySelector("input");
+            unite.value = selectElement.selectedOptions[0].getAttribute('name');;
+            
+            var td1 = selectElement.parentNode;
+            var td3 = td1.nextElementSibling.nextElementSibling.nextElementSibling;
             var prix = td3.querySelector("input");
             prix.value = selectElement.value;
-
+    
             var td4 = td3.nextElementSibling;
             var id = td4.querySelector("input");
             id.value = selectElement.selectedOptions[0].id;
@@ -332,7 +356,6 @@ function placerEcouteursProduitsExistants() {
 
 //****************************************************************************************************************/
 //****************************************************************************************************************/
-
 
 
 function redirigerPageListeBdc() {

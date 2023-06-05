@@ -19,6 +19,9 @@ class NouveauBDCController extends Controller
 
             $daoIngredients = new IngredientDAO();
             $view->listeIngredients = $daoIngredients->selectAll();
+
+            $daoUnite = new UniteDAO();
+            $view->listeUnites = $daoUnite->selectAll();
         }
 
         //Si le tableau $_POST existe alors le formulaire a bien été envoyé et le bdc a été validé.
@@ -62,7 +65,6 @@ class NouveauBDCController extends Controller
                         $idIngredient = $_POST[$clefs[$i]];
                     $i++;
 
-
                     $ingredientNouveau->setIdIngredient($idIngredient);
                     $ingredientNouveau->setQuantiteCommandee($quantiteIngredient);
                     $ingredientNouveau->setIdCommandeFournisseur($bdc->getId());
@@ -85,7 +87,6 @@ class NouveauBDCController extends Controller
                 //Creation des ingrédients du bdc
                 $clefs = array_keys($_POST);
                 for ($i = 2; $i < count($clefs);) {
-                    $i++;
 
                     if (!empty($_POST[$clefs[$i]]))
                         $quantiteIngredient = $_POST[$clefs[$i]];
@@ -93,7 +94,7 @@ class NouveauBDCController extends Controller
 
                     if (!empty($_POST[$clefs[$i]]))
                         $idIngredient = $_POST[$clefs[$i]];
-                    $i++;
+                    $i+=2;
 
                     $ingredientNouveau->setIdIngredient($idIngredient);
                     $ingredientNouveau->setQuantiteCommandee($quantiteIngredient);
@@ -113,6 +114,7 @@ class NouveauBDCController extends Controller
     {
         $dao = new IngredientDAO();
         $ingredient = $dao->selectAll();
+        $daoUnite = new UniteDAO();
 
         $tableau = array();
 
@@ -121,6 +123,7 @@ class NouveauBDCController extends Controller
             $tableau[] = array(
                 "id" => $donnees->getId(),
                 "nom" => $donnees->getNom(),
+                "unite" => $daoUnite->selectById($donnees->getIdUnite())->getNom(),
                 "prix" => $donnees->getPrixFournisseur(),
                 "idFournisseur" => $donnees->getIdFournisseur()
             );

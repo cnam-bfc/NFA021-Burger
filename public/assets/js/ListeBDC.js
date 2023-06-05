@@ -1,8 +1,24 @@
-$(document).ready(function () {
-    afficherBDC();
-});
+//On commence par récupérer les données en bdd
+afficherBDC();
 
-let creerElements = function (data) {
+// requête AJAX pour récupérer les commandes en bdd
+function afficherBDC() {
+    $("#bdc").empty();
+    $.ajax({
+        url: 'listebdc/donnees',
+        type: 'POST',
+        dataType: 'json',
+        success: function (data) {
+            creerElements(data);
+        },
+
+        error: function (data) {
+            console.log('ListeBdc.js - error');
+        }
+    })
+}
+
+function creerElements(data) {
     $i = 1;
 
     data.forEach(element => {
@@ -57,58 +73,32 @@ let creerElements = function (data) {
         $i++;
     });
 
-    // Obtenez tous les éléments <td> avec l'id 'bouton'
+    //On récupère tous les boutons "détails"
     const boutonsDet = document.querySelectorAll('.btn_details');
 
-    // Parcourez tous les éléments <td> avec l'id 'bouton'
+    //On parcourt les boutons
     boutonsDet.forEach(bouton => {
-        // Ajoutez un écouteur d'événements de clic à chaque bouton
+        //On place un écouteur sur chaque bouton
         bouton.addEventListener('click', (event) => {
-
             const idBdc = bouton.value;
             window.location.href = `nouveaubdc?idBdc=${idBdc}`;
         });
     });
 
 
-    // Obtenez tous les éléments <td> avec l'id 'bouton'
+    //On récupère tous les boutons "valider"
     const boutonsVal = document.querySelectorAll('.btn_valider');
 
-    // Parcourez tous les éléments <td> avec l'id 'bouton'
+    //On parcourt les boutons
     boutonsVal.forEach(bouton => {
-        // Ajoutez un écouteur d'événements de clic à chaque bouton
+        //On place un écouteur sur chaque bouton
         bouton.addEventListener('click', (event) => {
-
             validerBDC(bouton.value);
         });
     });
 }
 
-
-function redirigerPageNouveauBdc() {
-
-    window.location.href = `nouveaubdc`;
-
-}
-
-// requête AJAX pour récupérer les commandes en bdd
-let afficherBDC = function () {
-    $("#bdc").empty();
-    $.ajax({
-        url: 'listebdc/donnees',
-        type: 'POST',
-        dataType: 'json',
-        success: function (data) {
-            creerElements(data);
-        },
-
-        error: function (data) {
-            console.log('ListeBdc.js - error');
-        }
-    })
-}
-
-let validerBDC = function ($id) {
+function validerBDC($id) {
     let json = ({
         id: $id,
     });
@@ -130,7 +120,10 @@ let validerBDC = function ($id) {
             console.log('ListeBdc.js - error');
         }
     })
+}
 
+function redirigerPageNouveauBdc() {
+    window.location.href = `nouveaubdc`;
 }
 
 
