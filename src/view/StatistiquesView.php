@@ -13,8 +13,8 @@
             <div id="boutons_personnalisation" class="wrapper axe_colonne gap_top_bottom_petit"> <!-- permet de choisir la div à afficher -->
                 <button title="Ajouter un graphe" id="button_stat_add_graphe" class="bouton boutonStats"><i class="fa-solid fa-plus fa-lg"></i></button>
                 <button title="Selection" id="button_stat_selection_graphe" class="bouton boutonStats"><i class="fa-solid fa-chart-simple fa-lg"></i></button>
-                <button title="Configuration" id="button_stat_configuration_graphe" class="bouton boutonStats"><i class="fa-solid fa-hammer fa-lg"></i></button>
-                <button title="Paramétrages" id="button_stat_parametrage_graphe" class="bouton boutonStats"><i class="fa-solid fa-gear fa-lg"></i></button>
+                <button title="Personnalisation" id="button_stat_personnalisation_graphe" class="bouton boutonStats"><i class="fa-solid fa-hammer fa-lg"></i></button>
+                <button title="Configuration" id="button_stat_configuration_graphe" class="bouton boutonStats"><i class="fa-solid fa-gear fa-lg"></i></button>
             </div>
             <div id="boutons_graphe" class="wrapper axe_colonne gap_top_bottom_petit">
                 <button title="Sauvegarder les changements" id="button_stat_save_graphe" class="bouton boutonStats"><i class="fa-solid fa-floppy-disk fa-lg"></i></button>
@@ -30,7 +30,7 @@
             <button title="Fermer menu" id="button_stat_close_menu_config" class="bouton"><i class="fa-solid fa-xmark fa-xs"></i></button>
             <h3 id='titre_onglet' class="text-center bold"></h3>
             <!-- Menu de choix du type de graphe -->
-            <div id="ongletSelectionGraphe" class="menu_graphe_content wrapper axe_colonne gap_top_bottom_moyen" >
+            <div id="onglet_selection_graphe" class="menu_graphe_content wrapper axe_colonne gap_top_bottom_moyen">
                 <div class="box_graphe">
                     <h3 class="graphe_categorie bold">Ventes</h3>
                     <button id="burger_vente_total" class="graphe_choix" type_stat="burger">
@@ -39,14 +39,14 @@
                     <button id="burger_vente_temps" class="graphe_choix" type_stat="burger">
                         <p>Burger <span class="font_size_petit">(évolution dans le temps)</span></p>
                     </button>
-                    <button id="ingredient_achat_total"class="graphe_choix" type_stat="ingredient">
+                    <button id="ingredient_achat_total" class="graphe_choix" type_stat="ingredient">
                         <p>Ingedient</p>
                     </button>
                 </div>
 
                 <div class="box_graphe">
                     <h3 class="graphe_categorie bold">Achats</h3>
-                    <button id="produit_achat_total"class="graphe_choix" type_stat="produits">
+                    <button id="produit_achat_total" class="graphe_choix" type_stat="produits">
                         <p>Produits</p>
                     </button>
                     <button id="fournisseur_achat_total" class="graphe_choix" type_stat="fournisseurs">
@@ -65,39 +65,39 @@
                 </div>
             </div>
 
-            <!-- Menu de configuration d'un graphe -->
-            <div id="ongletConfigurationGraphe" class="menu_graphe_content">
+            <!-- Menu de personnalisation d'un graphe -->
+            <div id="onglet_personnalisation_graphe" class="menu_graphe_content">
                 <div class="box_graphe">
                     <h3 class="graphe_categorie bold">Nom</h3>
-                    <input type="text" id="nom_graphe" name="nom_graphe" class="input" placeholder="Nom du graphique">
+                    <input type="text" id="graphe_nom" name="nom_graphe" class="input" placeholder="Nom du graphique">
                 </div>
                 <div class="box_graphe">
                     <h3 class="graphe_categorie bold">Description</h3>
-                    <textarea id="description_graphe" name="description_graphe" class="textarea" placeholder="Description du graphique" minlength=0 maxlength=250></textarea>
+                    <textarea id="graphe_description" name="description_graphe" class="textarea" placeholder="Description du graphique" minlength=0 maxlength=250></textarea>
                 </div>
                 <div class="box_graphe">
                     <h3 class="graphe_categorie bold">Type de graphe</h3>
-                    <select id="type_graphe" class="select">
+                    <select id="graphe_type" class="select">
                         <option value="" selected>Choisissez un type de graphique</option>
                     </select>
                 </div>
             </div>
 
-            <!-- Menu de paramétrage d'un graphe -->
-            <div id="ongletParametrageGraphe" class="menu_graphe_content">
+            <!-- Menu de configuration d'un graphe -->
+            <div id="onglet_configuration_graphe" class="menu_graphe_content">
                 <div class="box_graphe">
                     <h3 class="graphe_categorie bold">Date</h3>
                     <span class="wrapper axe_ligne main_axe_space_between second_axe_center grow">
-                        <label for="choix_date_graphe">Date personnalisé</label>
-                        <input class="input" id="choix_date_graphe" name="choix_date_graphe" type="checkbox">
+                        <label for="graphe_date_personnalise">Date personnalisé</label>
+                        <input class="input" id="graphe_date_personnalise" name="graphe_date_personnalise" type="checkbox">
                     </span>
-                    <span class="wrapper axe_ligne main_axe_space_between second_axe_center grow" id="date_debut_span">
-                        <label for="date_debut_graphe">Date début</label>
-                        <input type="date" id="date_debut_graphe" name="date_debut_graphe" class="input" placeholder="Nom du graphique" required>
+                    <span class="wrapper axe_colonne main_axe_space_between grow" id="date_debut_span">
+                        <label for="graphe_date_debut">Date de début</label>
+                        <input type="date" id="graphe_date_debut" name="graphe_date_debut" class="input" placeholder="Nom du graphique" required>
                     </span>
-                    <span class="wrapper axe_ligne main_axe_space_between second_axe_center grow" id="date_fin_span">
-                        <label for="date_fin_graphe">Date fin</label>
-                        <input type="date" id="date_fin_graphe" name="date_fin_graphe" class="input" placeholder="Nom du graphique" required>
+                    <span class="wrapper axe_colonne main_axe_space_between grow" id="date_fin_span">
+                        <label for="graphe_date_fin">Date de fin</label>
+                        <input type="date" id="graphe_date_fin" name="graphe_date_fin" class="input" placeholder="Nom du graphique" required>
                     </span>
                 </div>
                 <div class="box_graphe" id="specificite">
@@ -106,7 +106,7 @@
             </div>
 
             <!-- Menu de confirmation de l'exportation -->
-            <div id="ongletConfirmationExport" class="menu_graphe_content">
+            <div id="onglet_export" class="menu_graphe_content">
                 <div class="box_graphe">
                     <h3 class="graphe_categorie bold">Nom du fichier</h3>
                     <input type="text" id="nom_fichier_export" name="nom_fichier_export" class="input" placeholder="Nom du fichier">
@@ -115,7 +115,7 @@
             </div>
 
             <!-- Menu de confirmation lambda -->
-            <div id="ongletConfirmationLambda" class="menu_graphe_content">
+            <div id="onglet_lambda" class="menu_graphe_content">
                 <div class="box_graphe">
                     <h3 class="graphe_categorie bold"></h3>
                     <p id="texte_confirmation"></p>
@@ -131,7 +131,21 @@
             <h1>Statistiques</h1>
         </div>
 
-        <div id="graphes"></div> <!-- div pour contenir les graphes -->
+        <div id="graphes">
+            
+            <!--
+        <div>
+            <div>
+                <btn></btn>
+                <btn></btn>
+            </div>
+            <h3></h3>
+            <canvas></canvas>
+            <p></p>
+        </div>
+            -->
+
+        </div> <!-- div pour contenir les graphes -->
     </section>
 </div>
 </div>
