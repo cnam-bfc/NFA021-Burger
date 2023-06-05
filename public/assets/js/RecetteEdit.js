@@ -59,7 +59,10 @@ $(function () {
 
                 // Image
                 let cellule = $("<td>");
-                cellule.append($("<img>").attr("src", element.image));
+                let celluleDiv = $("<div>");
+                celluleDiv.addClass("wrapper axe_ligne main_axe_flex_start second_axe_center");
+                celluleDiv.append($("<img>").attr("src", element.image));
+                cellule.append(celluleDiv);
                 ligne.append(cellule);
 
                 // Nom
@@ -76,8 +79,8 @@ $(function () {
 
                 // Quantité
                 cellule = $("<td>");
-                let celluleDiv = $("<div>");
-                celluleDiv.addClass("wrapper main_axe_center second_axe_center");
+                celluleDiv = $("<div>");
+                celluleDiv.addClass("wrapper axe_ligne main_axe_center second_axe_center");
                 let inputQuantite = $("<input>").attr({
                     type: "number",
                     min: 0,
@@ -101,7 +104,7 @@ $(function () {
                 // Optionnel
                 cellule = $("<td>");
                 celluleDiv = $("<div>");
-                celluleDiv.addClass("wrapper main_axe_center second_axe_center");
+                celluleDiv.addClass("wrapper axe_ligne main_axe_center second_axe_center");
                 let inputOptionnel = $("<input>").attr({
                     type: "checkbox",
                     checked: element.optionnel
@@ -123,7 +126,7 @@ $(function () {
                 // Prix
                 cellule = $("<td>");
                 celluleDiv = $("<div>");
-                celluleDiv.addClass("wrapper main_axe_center second_axe_center");
+                celluleDiv.addClass("wrapper axe_ligne main_axe_center second_axe_center");
                 let inputPrix = $("<input>").attr({
                     type: "number",
                     min: 0,
