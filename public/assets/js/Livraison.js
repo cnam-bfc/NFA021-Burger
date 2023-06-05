@@ -21,7 +21,8 @@ $(function () {
         adresse += data.adresse_depart.rue + ", " + data.adresse_depart.code_postal + " " + data.adresse_depart.ville;
         cellule.text(adresse);
         // Ajout du lien vers l'itinéraire
-        let adresseDepartItineraire = $("<button>").addClass("bouton");
+        let adresseDepartItineraire = $("<button>").addClass("bouton bouton_itineraire");
+        adresseDepartItineraire.attr("title", "Voir l'itinéraire jusqu'au restaurant");
         adresseDepartItineraire.append($("<i>").addClass("fa-solid fa-map-location"));
         adresseDepartItineraire.click(function () {
             // Redirection vers l'itinéraire
@@ -39,7 +40,8 @@ $(function () {
         adresse += data.adresse_arrivee.rue + ", " + data.adresse_arrivee.code_postal + " " + data.adresse_arrivee.ville;
         cellule.text(adresse);
         // Ajout du lien vers l'itinéraire
-        let adresseArriveeItineraire = $("<button>").addClass("bouton");
+        let adresseArriveeItineraire = $("<button>").addClass("bouton bouton_itineraire");
+        adresseArriveeItineraire.attr("title", "Voir l'itinéraire jusqu'à la livraison");
         adresseArriveeItineraire.append($("<i>").addClass("fa-solid fa-map-location"));
         adresseArriveeItineraire.click(function () {
             // Redirection vers l'itinéraire
@@ -91,9 +93,9 @@ $(function () {
                         boutonPrendreLivraison.prop("disabled", false);
                         // Remplacer le spinner par l'icône
                         boutonPrendreLivraison.empty();
-                        boutonPrendreLivraison.append($("<i>").addClass("fa-solid fa-truck"));
+                        boutonPrendreLivraison.html(oldBoutonPrendreLivraisonHTML);
                         // Avertir l'utilisateur
-                        alert("Erreur lors de la prise de la livraison");
+                        alert("Erreur lors de la prise de la livraison :\n" + data.message);
                     }
                 },
                 error: function (data) {
