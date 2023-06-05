@@ -31,6 +31,12 @@
     white-space: nowrap;
 }
 
+#tableau_composition tbody tr td:first-child,
+#tableau_composition tbody tr td:last-child {
+    width: 0;
+    white-space: nowrap;
+}
+
 #tableau_composition tbody td input+span:not(:empty) {
     margin-left: 10px;
 }
