@@ -67,7 +67,7 @@ class CommandeClientLivraisonDAO extends DAO
         $statement->bindValue(':adresse_ville', $commandeClientLivraison->getAdresseVille(), PDO::PARAM_STR);
         $statement->bindValue(':adresse_rue', $commandeClientLivraison->getAdresseRue(), PDO::PARAM_STR);
         $statement->bindValue(':adresse_numero', $commandeClientLivraison->getAdresseNumero(), PDO::PARAM_STR);
-        $statement->bindValue(':id_compte_fk', $commandeClientLivraison->getId(), PDO::PARAM_INT);
+        $statement->bindValue(':id_compte_fk', $commandeClientLivraison->getIdLivreur(), PDO::PARAM_INT);
         $statement->execute();
     }
 
@@ -125,7 +125,7 @@ class CommandeClientLivraisonDAO extends DAO
         $statement->bindValue(':adresse_ville', $commandeClientLivraison->getAdresseVille(), PDO::PARAM_STR);
         $statement->bindValue(':adresse_rue', $commandeClientLivraison->getAdresseRue(), PDO::PARAM_STR);
         $statement->bindValue(':adresse_numero', $commandeClientLivraison->getAdresseNumero(), PDO::PARAM_STR);
-        $statement->bindValue(':id_compte_fk', $commandeClientLivraison->getId(), PDO::PARAM_INT);
+        $statement->bindValue(':id_compte_fk', $commandeClientLivraison->getIdLivreur(), PDO::PARAM_INT);
         $statement->bindValue(':id_commande_client', $commandeClientLivraison->getId(), PDO::PARAM_INT);
         $statement->execute();
 
