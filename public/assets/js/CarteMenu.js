@@ -30,7 +30,7 @@ $(function () {
 
         let div = $("<div>").addClass("wrapper box_sans_bordure margin_large");
 
-        let h2 = $("<h2>").addClass("bold").text("<i class='fa-solid fa-spinner fa-spin'></i> Chargement des données");
+        let h2 = $("<h2>").addClass("bold").html("<i class='fa-solid fa-spinner fa-spin'></i> Chargement des données");
 
         div.append(h2);
         divPrincipale.append(div);
@@ -46,7 +46,7 @@ $(function () {
 
                 // Si aucune recette n'a été trouvée, afficher "Aucun résultats"
                 if (data['data'].length === 0) {
-                    let div = $("<div>").addClass("wrapper box_sans_bordure margin_large");
+                    let div = $("<div>").addClass("boutonRecette wrapper box_sans_bordure margin_large");
                     let h2 = $("<h2>").addClass("bold");
                     h2.text("Aucune recette n'a été trouvée");
                     div.append(h2);

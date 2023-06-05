@@ -3,6 +3,7 @@ const wrapper = document.getElementById('wrapper_cuisine');
 const boutonPrev = document.getElementById('boutonPrev');
 const boutonNext = document.getElementById('boutonNext');
 const boutonValide = document.getElementById('boutonValide');
+const boutonRecette = document.getElementById('bout');
 
 // Ajout des écouteurs d'événement sur les boutons "Préc." et "Suiv."
 boutonPrev.addEventListener('click', () => {
@@ -20,7 +21,8 @@ boutonPrev.addEventListener('click', () => {
         commandes[focusIndex - 1].classList.add('focus');
     }
 });
-$('.commande:visible:first')
+
+
 // Fonction pour ajouter la classe "focus" à la div suivante
 boutonNext.addEventListener('click', () => {
     const commandes = document.querySelectorAll('.commande');
@@ -64,6 +66,7 @@ boutonValide.addEventListener('click', function () {
     }
 });
 
+
 // Ajoute un événement à la pression de la touche "Enter" pour le bouton valider
 document.addEventListener('keydown', function (event) {
     if (event.key === 'Enter') {
@@ -78,6 +81,11 @@ $(function () {
 
     // Fonction permettant d'ajouter une div contenant une commande dans le tableau des recettes
     function addCommande(data) {
+        let numeroCommande = 1;
+
+        if (numeroCommande > 1000) {
+            numeroCommande = 1;
+        }
         // Création de la div contenant la commande
         let divCommande = $("<div>").addClass("commande focus");
         divCommande.attr("id", data.id);
@@ -85,6 +93,17 @@ $(function () {
         //Numéro de la commande
         let divNumCom = $("<div>").addClass("num_com");
         let pNumCom = $("<p>").text(data.id);
+        /*if (numeroCommande <= 10) {
+            pNumCom.text("00" + numeroCommande);
+            numeroCommande++;
+        } else if (numeroCommande <= 100) {
+            pNumCom.text("0" + numeroCommande);
+            numeroCommande++;
+        } else if (numeroCommande <= 1000){
+            pNumCom.text(numeroCommande);
+            numeroCommande++;
+        }*/
+
         divNumCom.append(pNumCom);
         divCommande.append(divNumCom);
 
@@ -92,26 +111,32 @@ $(function () {
         let divContenu = $("<div>").addClass("composition_com");
 
         data.recettes.forEach(element => {
-            let pRecette = $("<p>");
-            pRecette.attr("id", element.id);
+            let boutonRecette = $("<button>");
+            boutonRecette.attr("id", element.id);
             let recetteText = element.quantite + "x " + element.nom;
-            pRecette.append(recetteText);
-            divContenu.append(pRecette);
+            boutonRecette.append(recetteText);
+            divContenu.append(boutonRecette);
         });
 
         divCommande.append(divContenu);
 
+        let champDateHeure = data.date_remise;
+        let parties = champDateHeure.split(" ");
+        let heure = parties[1];
         //Heure Livraison de la commande
         let divHeureCom = $("<div>").addClass("temps_com");
+        divHeureCom.text(heure);
         divCommande.append(divHeureCom);
         divPrincipale.append(divCommande);
+
+
     }
 
     function refreshCommande() {
 
         let div = $("<div>").addClass("wrapper box_sans_bordure margin_large");
 
-        let h2 = $("<h2>").addClass("bold").text("<i class='fa-spinner'></i> Chargement des recettes...");
+        let h2 = $("<h2>").addClass("bold").html("<i class='fa-spinner'></i> Chargement des recettes...");
 
         div.append(h2);
         divPrincipale.append(div);
@@ -153,5 +178,6 @@ $(function () {
             }
         });
     }
+
     refreshCommande();
 });
