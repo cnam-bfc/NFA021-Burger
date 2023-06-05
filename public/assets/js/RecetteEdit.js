@@ -179,7 +179,44 @@ $(function () {
                 // Boutons d'action rapide
                 cellule = $("<td>");
                 celluleDiv = $("<div>");
-                celluleDiv.addClass("wrapper main_axe_center second_axe_center");
+                celluleDiv.addClass("wrapper axe_ligne main_axe_flex_end second_axe_center");
+
+                // Bouton modifier
+                let boutonModifier = $("<button>").attr("type", "button").addClass("bouton");
+                boutonModifier.click(function () {
+                    onModifierSelectionMultiple(element);
+                });
+                boutonModifier.append($("<i>").addClass("fa-solid fa-edit"));
+                celluleDiv.append(boutonModifier);
+
+                // Cacher le bouton modifier si l'élément n'est pas une sélection multiple
+                if (element.ingredients === undefined) {
+                    boutonModifier.attr('hidden', true);
+                }
+
+                // Bouton supprimer
+                let boutonSupprimer = $("<button>").attr("type", "button").addClass("bouton");
+                boutonSupprimer.click(function () {
+                    // Supprimer la ligne
+                    // Dans la vue (HTML)
+                    ligne.remove();
+                    // Dans le modèle (Javascript)
+                    let index = composition.indexOf(element);
+                    composition.splice(index, 1);
+
+                    // Si le tableau est vide
+                    if (bodyTableauComposition.children().length === 0) {
+                        // Ajouter la ligne vide
+                        let ligne = $("<tr>");
+                        let cellule = $("<td>");
+                        cellule.attr("colspan", 6);
+                        cellule.html("<br>Aucun ingrédients<br><br>");
+                        ligne.append(cellule);
+                        bodyTableauComposition.append(ligne);
+                    }
+                });
+                boutonSupprimer.append($("<i>").addClass("fa-solid fa-trash"));
+                celluleDiv.append(boutonSupprimer);
 
                 // Bouton monter
                 let boutonMonter = $("<button>").attr("type", "button").addClass("bouton");
@@ -228,43 +265,6 @@ $(function () {
                 if (selectionMultiple) {
                     boutonDescendre.attr('hidden', true);
                 }
-
-                // Bouton modifier
-                let boutonModifier = $("<button>").attr("type", "button").addClass("bouton");
-                boutonModifier.click(function () {
-                    onModifierSelectionMultiple(element);
-                });
-                boutonModifier.append($("<i>").addClass("fa-solid fa-edit"));
-                celluleDiv.append(boutonModifier);
-
-                // Cacher le bouton modifier si l'élément n'est pas une sélection multiple
-                if (element.ingredients === undefined) {
-                    boutonModifier.attr('hidden', true);
-                }
-
-                // Bouton supprimer
-                let boutonSupprimer = $("<button>").attr("type", "button").addClass("bouton");
-                boutonSupprimer.click(function () {
-                    // Supprimer la ligne
-                    // Dans la vue (HTML)
-                    ligne.remove();
-                    // Dans le modèle (Javascript)
-                    let index = composition.indexOf(element);
-                    composition.splice(index, 1);
-
-                    // Si le tableau est vide
-                    if (bodyTableauComposition.children().length === 0) {
-                        // Ajouter la ligne vide
-                        let ligne = $("<tr>");
-                        let cellule = $("<td>");
-                        cellule.attr("colspan", 6);
-                        cellule.html("<br>Aucun ingrédients<br><br>");
-                        ligne.append(cellule);
-                        bodyTableauComposition.append(ligne);
-                    }
-                });
-                boutonSupprimer.append($("<i>").addClass("fa-solid fa-trash"));
-                celluleDiv.append(boutonSupprimer);
 
                 cellule.append(celluleDiv);
                 ligne.append(cellule);
