@@ -60,4 +60,24 @@ $(document).ready(function () {
         }
     });
 
+    let actualiserTexte = function () {
+        $.ajax({
+            url: 'accueil/refreshTextAccueil',
+            type: 'POST',
+            dataType: 'json',
+            success: function (data) {
+                // message dans la console
+                console.log('AccueilClient.js - refreshTextAccueil - success');
+    
+                // On modifie le DOM pour mettre le titre et le texte
+                $('#texte_accueil>h2').text(data.title);
+                $('#texte_accueil>p').text(data.text);
+            },
+            error : function (data) {
+                // message dans la console
+                console.log('AccueilClient.js - refreshTextAccueil - error');
+            }
+        });
+    }
+    actualiserTexte();
 });

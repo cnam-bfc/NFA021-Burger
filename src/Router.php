@@ -35,6 +35,7 @@ class Router
         // Accueil client
         'accueil' => ["controller" => "AccueilController", "method" => "renderViewAccueilClient"],
         'accueil/refreshTopRecettes' => ["controller" => "AccueilController", "method" => "refreshTopRecetteAJAX"],
+        'accueil/refreshTextAccueil' => ["controller" => "AccueilController", "method" => "refreshTextAccueil"],
 
         // Carte des recettes
         'carte' => ["controller" => "CarteMenuController", "method" => "renderView"],
@@ -66,17 +67,22 @@ class Router
         // PARTIE GÉRANT
         // Statistiques
         'gerant/statistiques' => ["controller" => "StatistiquesController", "method" => "renderViewStatistiques"],
+        'gerant/statistiques/recupererLesRecettes' => ["controller" => "StatistiquesController", "method" => "recupererLesRecettes"],
+        'gerant/statistiques/recupererRecettesPourStatistiquesTotal' => ["controller" => "StatistiquesController", "method" => "recupererRecettesPourStatistiquesTotal"],
 
         // Inventaire
         'gerant/inventaire' => ["controller" => "InventaireController", "method" => "renderViewInventaire"],
         'gerant/inventaire/refreshTableauInventaire' => ["controller" => "InventaireController", "method" => "refreshTableauInventaire"],
         'gerant/inventaire/miseAJourInventaire' => ["controller" => "InventaireController", "method" => "miseAJourInventaire"],
+        'gerant/inventaire/refreshListeIngredients' => ["controller" => "InventaireController", "method" => "refreshListeIngredients"],
 
         // Stock
         'gerant/stock' => ["controller" => "StockController", "method" => "renderViewStock"],
         'gerant/stock/getBonsCommandesAJAX' => ["controller" => "StockController", "method" => "getBonsCommandesAJAX"],
         'gerant/stock/getFournisseursAJAX' => ["controller" => "StockController", "method" => "getFournisseursAJAX"],
         'gerant/stock/refreshTableauIngredientsAJAX' => ["controller" => "StockController", "method" => "refreshTableauIngredientsAJAX"],
+        'gerant/stock/validationBonCommandeAJAX' => ["controller" => "StockController", "method" => "validationBonCommandeAJAX"],
+        'gerant/stock/refreshListeIngredients' => ["controller" => "StockController", "method" => "refreshListeIngredients"],
 
         // Recettes
         'gerant/recettes' => ["controller" => "RecetteController", "method" => "renderViewRecettes"],
