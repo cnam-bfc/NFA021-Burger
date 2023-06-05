@@ -629,6 +629,12 @@ $(function () {
             return;
         }
 
+        // Vérification que la liste des ingrédients n'est pas vide
+        if (ingredientsSelectionMultiple.length === 0) {
+            alert('La liste des ingrédients ne peut pas être vide !\nVeuillez ajouter au moins un ingrédient.');
+            return;
+        }
+
         // Si il s'agit d'un ajout d'une sélection multiple d'ingrédients
         if (ingredientSelectionMultiple === null) {
             // Ajout de la sélection multiple d'ingrédients dans la liste des ingrédients
