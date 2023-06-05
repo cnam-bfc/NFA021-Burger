@@ -12,6 +12,7 @@ $(function () {
         // Création de la balise de navigation
         let a = $("<a>")
             .addClass("wrapper axe_colonne main_axe_space_evenly main_axe_center second_axe_center grow");
+        a.attr("href", "visuModifsBurgers?id=" + data.id);
 
         // Création de la balise contenant l'image
         let img = $("<img>").attr("src", data.image);
@@ -19,6 +20,8 @@ $(function () {
         // Création de la balise contenant le nom
         let h2 = $("<h2>").addClass("bold").text(data.nom);
 
+        //Création du bouton pour ajouter au panier
+        let bouton = $("<button>").addClass("");
         // Ajout des balises dans la div
         a.append(img, h2);
         div.append(a);
