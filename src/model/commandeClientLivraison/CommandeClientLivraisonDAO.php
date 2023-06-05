@@ -141,7 +141,7 @@ class CommandeClientLivraisonDAO extends DAO
     public function selectAll()
     {
         // Requête
-        $sqlQuery = "SELECT cc.*, cl.heure_livraison, cl.adresse_osm_type, cl.adresse_osm_id, cl.adresse_code_postal, cl.adresse_ville, cl.adresse_rue, cl.adresse_numero, cl.id_compte_fk AS 'id_livreur_fk' FROM burger_commande_client AS cc, burger_commande_client_livraison AS cl WHERE burger_commande_client.id_commande_client = burger_commande_client_livraison.id_commande_client";
+        $sqlQuery = "SELECT cc.*, cl.heure_livraison, cl.adresse_osm_type, cl.adresse_osm_id, cl.adresse_code_postal, cl.adresse_ville, cl.adresse_rue, cl.adresse_numero, cl.id_compte_fk AS 'id_livreur_fk' FROM burger_commande_client AS cc, burger_commande_client_livraison AS cl WHERE cc.id_commande_client = cl.id_commande_client";
         $statement = $this->pdo->query($sqlQuery);
         $statement->execute();
 
@@ -170,7 +170,7 @@ class CommandeClientLivraisonDAO extends DAO
     public function selectAllNonArchive()
     {
         // Requête
-        $sqlQuery = "SELECT cc.*, cl.heure_livraison, cl.adresse_osm_type, cl.adresse_osm_id, cl.adresse_code_postal, cl.adresse_ville, cl.adresse_rue, cl.adresse_numero, cl.id_compte_fk AS 'id_livreur_fk' FROM burger_commande_client AS cc, burger_commande_client_livraison AS cl WHERE burger_commande_client.id_commande_client = burger_commande_client_livraison.id_commande_client AND (burger_commande_client.date_archive IS NULL OR burger_commande_client.date_archive > NOW())";
+        $sqlQuery = "SELECT cc.*, cl.heure_livraison, cl.adresse_osm_type, cl.adresse_osm_id, cl.adresse_code_postal, cl.adresse_ville, cl.adresse_rue, cl.adresse_numero, cl.id_compte_fk AS 'id_livreur_fk' FROM burger_commande_client AS cc, burger_commande_client_livraison AS cl WHERE cc.id_commande_client = cl.id_commande_client AND (cc.date_archive IS NULL OR cc.date_archive > NOW())";
         $statement = $this->pdo->query($sqlQuery);
         $statement->execute();
 
@@ -199,7 +199,7 @@ class CommandeClientLivraisonDAO extends DAO
     public function selectAllNonArchiveNonPret()
     {
         // Requête
-        $sqlQuery = "SELECT cc.*, cl.heure_livraison, cl.adresse_osm_type, cl.adresse_osm_id, cl.adresse_code_postal, cl.adresse_ville, cl.adresse_rue, cl.adresse_numero, cl.id_compte_fk AS 'id_livreur_fk' FROM burger_commande_client AS cc, burger_commande_client_livraison AS cl WHERE burger_commande_client.id_commande_client = burger_commande_client_livraison.id_commande_client AND (burger_commande_client.date_archive IS NULL OR burger_commande_client.date_archive > NOW()) AND burger_commande_client.date_pret IS NULL";
+        $sqlQuery = "SELECT cc.*, cl.heure_livraison, cl.adresse_osm_type, cl.adresse_osm_id, cl.adresse_code_postal, cl.adresse_ville, cl.adresse_rue, cl.adresse_numero, cl.id_compte_fk AS 'id_livreur_fk' FROM burger_commande_client AS cc, burger_commande_client_livraison AS cl WHERE cc.id_commande_client = cl.id_commande_client AND (cc.date_archive IS NULL OR cc.date_archive > NOW()) AND cc.date_pret IS NULL";
         $statement = $this->pdo->query($sqlQuery);
         $statement->execute();
 
@@ -229,7 +229,7 @@ class CommandeClientLivraisonDAO extends DAO
     public function selectById($id)
     {
         // Requête
-        $sqlQuery = "SELECT cc.*, cl.heure_livraison, cl.adresse_osm_type, cl.adresse_osm_id, cl.adresse_code_postal, cl.adresse_ville, cl.adresse_rue, cl.adresse_numero, cl.id_compte_fk AS 'id_livreur_fk' FROM burger_commande_client AS cc, burger_commande_client_livraison AS cl WHERE burger_commande_client.id_commande_client = burger_commande_client_livraison.id_commande_client AND burger_commande_client.id_commande_client = :id_commande_client";
+        $sqlQuery = "SELECT cc.*, cl.heure_livraison, cl.adresse_osm_type, cl.adresse_osm_id, cl.adresse_code_postal, cl.adresse_ville, cl.adresse_rue, cl.adresse_numero, cl.id_compte_fk AS 'id_livreur_fk' FROM burger_commande_client AS cc, burger_commande_client_livraison AS cl WHERE cc.id_commande_client = cl.id_commande_client AND cc.id_commande_client = :id_commande_client";
         $statement = $this->pdo->prepare($sqlQuery);
         $statement->bindValue(':id_commande_client', $id, PDO::PARAM_INT);
         $statement->execute();
