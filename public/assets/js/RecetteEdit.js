@@ -112,12 +112,12 @@ $(function () {
 
                 // Si on est en sélection multiple, cacher le champ optionnel
                 if (selectionMultiple) {
-                    inputOptionnel.parent().attr('hidden', true);
+                    inputOptionnel.parent().hide();
                 }
 
                 // Si l'élément est une sélection multiple, cacher le champ optionnel
                 if (element.ingredients !== undefined) {
-                    inputOptionnel.parent().attr('hidden', true);
+                    inputOptionnel.parent().hide();
                 }
 
                 // Prix
@@ -168,12 +168,12 @@ $(function () {
 
                 // Cacher le champ prix on est en sélection multiple
                 if (selectionMultiple) {
-                    inputPrix.parent().attr('hidden', true);
+                    inputPrix.parent().hide();
                 }
 
                 // Cacher le champ prix si l'ingrédient est une sélection multiple
                 if (element.ingredients !== undefined) {
-                    inputPrix.parent().attr('hidden', true);
+                    inputPrix.parent().hide();
                 }
 
                 // Boutons d'action rapide
