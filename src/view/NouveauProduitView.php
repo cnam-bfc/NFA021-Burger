@@ -7,6 +7,10 @@
         <h2 class="titre_bulle">Nouveau Produit</h2>
     </div>
 
+    <div style="display:flex; flex-direction: row; justify-content: center; ">
+        <button type="button" class='bouton' onclick="redirigerPageListeProduits()">Liste des ingrédients</button>
+    </div><br>
+
     <div class="conteneur">
         <div class="box_produit">
             <h2 class='titre_fenetre courbe'>Informations du produit</h2><br>
@@ -42,12 +46,12 @@
                     <label for="qteStock">Stock :</label><br>
                     <input id="qteStock" name="qteStock" class="courbe remplir" required><br><br>
 
-                    <label for="stockAuto">Stock Wizard :</label><br>
+                    <label for="stockAuto">Stock Automatique :</label><br>
                     <input type="checkbox" id="stockAuto" name="stockAuto" class='courbe'><br><br>
 
                     <label for="qteStandard">Quantite Standard :</label><br>
                     <input id="qteStandard" name="qteStandard" class="courbe remplir" disabled><br><br>
-                    
+
                     <label for="qteMin">Quantité Mininum:</label><br>
                     <input id="qteMin" name="qteMin" class="courbe remplir" disabled><br><br>
 
@@ -98,7 +102,7 @@
                     <label for="qteStock">Stock :</label><br>
                     <input id="qteStock" name="qteStock" class="courbe remplir" value=<?php echo $ingredient->getQuantiteStock(); ?> required><br><br>
 
-                    <label for="stockAuto">Stock Wizard :</label><br>
+                    <label for="stockAuto">Stock Automatique :</label><br>
                     <input type="checkbox" id="stockAuto" name="stockAuto" class='courbe' <?php if ($ingredient->isStockAuto() != 0) { ?> checked <?php } ?>><br><br>
 
                     <label for="qteStandard">Quantite Standard :</label><br>
