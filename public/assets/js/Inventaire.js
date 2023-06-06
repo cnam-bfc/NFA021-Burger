@@ -101,6 +101,19 @@ let validationInventaire = function () {
  * @returns {void}
  */
 let actualiserTableau = function () {
+    // on récupère notre tableau, précisément le tbody
+    let tbody = $('#tableau_inventaire>tbody');
+    // Supprimer le contenu du tableau
+    tbody.empty();
+
+    // Ajout ligne de chargement
+    let ligne = $("<tr>");
+    let cellule = $("<td>");
+    cellule.attr("colspan", 5);
+    cellule.html("<br><i class='fa-solid fa-spinner fa-spin'></i> Chargement des ingrédients...<br><br>");
+    ligne.append(cellule);
+    tbody.append(ligne);
+
     $.ajax({
         url: 'inventaire/refreshTableauInventaire',
         type: 'POST',
@@ -108,9 +121,6 @@ let actualiserTableau = function () {
         success: function (data) {
             // message dans la console
             console.log('Inventaire.js - refreshTableauInventaire - success');
-
-            // on récupère notre tableau, précisément le tbody
-            let tbody = $('#tableau_inventaire>tbody');
 
             // on retire tout ce qu'il y a dans le tbody
             tbody.empty();
@@ -123,6 +133,8 @@ let actualiserTableau = function () {
         error: function (data) {
             // message dans la console
             console.log('Inventaire.js - refreshTableauInventaire - error');
+
+            tbody.empty();
 
             // on ajoute une ligne dans le tableau avec un message d'erreur
             ligneDeTexteTBody("Aucun ingrédient n'a été trouvé dans la base de données");
