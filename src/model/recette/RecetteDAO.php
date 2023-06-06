@@ -218,7 +218,6 @@ class RecetteDAO extends DAO
             // Ajout de l'objet dans le tableau
             $recettes[] = $recette;
         }
-
         return $recettes;
     }
 
