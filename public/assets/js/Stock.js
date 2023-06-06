@@ -119,6 +119,20 @@ let validationFormulaire = function () {
     // message dans la console
     console.log('Stock.js - validation formulaire');
 
+    // On change le titre de la box (Ajout icone de chargement)
+    let boutonStock = $(this);
+    let contenuBoutonStock = boutonStock.html();
+    boutonStock.prop('disabled', true);
+    boutonStock.html('<i class="fa-solid fa-spinner fa-spin"></i> ' + "En cours de validation...");
+
+    // Vérification que les champs sont valides (vérification HTML5)
+    let form_stock = $('#form_stock');
+    if (!form_stock[0].checkValidity()) {
+        // Affichage des erreurs HTML5
+        form_stock[0].reportValidity();
+        return;
+    }
+
     // on vérifie si un fournisseur est bien sélectionné 
     // on vérifie si le fournisseur sélectionner n'est pas le fournisseur par défaut avec id_fournisseur = 0
     if ($('#select_fournisseur').find(':selected').attr('id_fournisseur') == 0) {
@@ -142,23 +156,7 @@ let validationFormulaire = function () {
     // note modifier le foreach pour mettre une autre boucle afin de l'arrêter en cas d'erreur
     $('#tableau_inventaire>tbody>tr').each(function () {
         let id = $(this).attr('data_id');
-        let nom = $(this).find('td:nth-child(2)').text();
         let quantiteRecu = $(this).find('td:nth-child(4)>div>input').val();
-        // on vérifie que le quantite n'est pas vide , null ou négatif
-        if (quantiteRecu === null || quantiteRecu === "" || quantiteRecu < 0) {
-            alert("La quantité reçue de l'ingrédient " + nom + " est vide.\nVeuillez entrer une valeur ou supprimer l'ingrédient de l'inventaire");
-            // on focus l'élément pour que l'utilisateur puisse le modifier
-            $(this).find('td:nth-child(4)>div>input').focus();
-            error = true;
-            return;
-        }
-        if (quantiteRecu < 0) {
-            alert("Le quantité reçue de l'ingrédient " + nom + " est négatif.\nVeuillez entrer une valeur positive ou supprimer l'ingrédient de l'inventaire");
-            // on focus l'élément pour que l'utilisateur puisse le modifier
-            $(this).find('td:nth-child(4)>div>input').focus();
-            error = true;
-            return;
-        }
         json["ingredients"].push({
             id: id,
             quantite_recu: quantiteRecu
@@ -210,6 +208,10 @@ let validationFormulaire = function () {
 
             // On notifie l'échec de la mise à jour
             alert("La mise à jour de l'inventaire a échoué");
+        },
+        complete: function (data) {
+            boutonStock.html(contenuBoutonStock);
+            boutonStock.prop('disabled', false);
         }
     });
 }
@@ -221,8 +223,19 @@ refreshTableau = function (idCommande) {
 
     console.log(idCommande);
 
+    // on récupère notre tableau, précisément le tbody
+    let tbody = $('#tableau_inventaire>tbody');
+
     // on vide le tbody 
-    $('#tableau_inventaire > tbody').empty();
+    tbody.empty();
+
+    // Ajout ligne de chargement
+    let ligne = $("<tr>");
+    let cellule = $("<td>");
+    cellule.attr("colspan", 5);
+    cellule.html("<br><i class='fa-solid fa-spinner fa-spin'></i> Chargement des ingrédients...<br><br>");
+    ligne.append(cellule);
+    tbody.append(ligne);
 
     if (idCommande > 0) {
         // on récupère tous les ingrédients associés à la commande avec une requête ajax
@@ -236,9 +249,6 @@ refreshTableau = function (idCommande) {
             success: function (data) {
                 // message dans la console
                 console.log('Stock.js - mise à jour tableau - success');
-
-                // on récupère notre tableau, précisément le tbody
-                let tbody = $('#tableau_inventaire>tbody');
 
                 // on retire tout ce qu'il y a dans le tbody
                 tbody.empty();
@@ -265,6 +275,9 @@ refreshTableau = function (idCommande) {
                 // message dans la console
                 console.log('Stock.js - mise à jour tableau - error');
 
+                // on retire tout ce qu'il y a dans le tbody
+                tbody.empty();
+
                 // On remplie avec une ligne qui dit pas d'ingrédients
                 ligneDeTexteTBody("La récupération des ingrédients a échoué");
 
@@ -275,6 +288,9 @@ refreshTableau = function (idCommande) {
     } else {
         // message dans la console
         console.log('Stock.js - mise à jour tableau - id 0 ou -1 - success');
+
+        // on retire tout ce qu'il y a dans le tbody
+        tbody.empty();
 
         // On remplie avec une ligne qui dit pas d'ingrédients
         ligneDeTexteTBody("Pas d'ingrédient à afficher");
@@ -326,7 +342,8 @@ ajouterLigneTBody = function (id, nom, photo, quantite_attendu, unite) {
     let input2 = $("<input>").addClass("input").attr({
         "type": "number",
         "min": 0,
-        "step": 0.01
+        "step": 1,
+        required: true
     });
     div2.append(input2);
     unite = $("<span>").text(unite);
