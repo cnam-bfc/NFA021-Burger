@@ -3,7 +3,7 @@
         <ul>
             <li><a href=""><i class="fa-solid fa-bars fa-2x header_icone fa"></i></a></li>
             <li><a href="<?php echo PUBLIC_FOLDER ?>carte" class="header_nav_background_anim">Notre carte</a></li>
-            <li><a href="" class="header_nav_background_anim">Nous trouver</a></li>
+            <li><a href="https://www.google.com/maps/place/Cnam+(Cnam+Bourgogne+Franche-Comt%C3%A9)/@46.7765285,4.8460245,15z/data=!4m2!3m1!1s0x0:0x4a42dadcb29915dc?sa=X&ved=2ahUKEwjnyb6Ppa7_AhULWqQEHaraB5UQ_BJ6BAhIEAg" target='blank' class="header_nav_background_anim">Nous trouver</a></li>
         </ul>
         <a href="<?php echo PUBLIC_FOLDER ?>"><img id="header_logo" src="<?= IMG ?>logo/logo.png"></a>
         <ul>
