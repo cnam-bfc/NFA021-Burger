@@ -6,7 +6,7 @@ footer {
     flex-direction: column;
 }
 
-footer p {
+footer p, footer a {
     text-align: center;
 }
 
@@ -52,7 +52,7 @@ footer p {
         width: auto;
     }
 
-    footer p {
+    footer p, footer a {
         font-size: 0.8em;
     }
     
@@ -64,7 +64,7 @@ footer p {
         width: auto;
     }
 
-    footer p {
+    footer p, footer a {
         font-size: 0.6em;
     }
 }

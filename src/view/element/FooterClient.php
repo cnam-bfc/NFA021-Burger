@@ -12,7 +12,8 @@
     </div>
     <p id="footer_mid">11 Rue Georges Maugey<br>71100 Chalon-sur-Saône</p>
     <div id="footer_bot">
-        <p>Mentions légales</p>
+        <!-- Dans l'attente de faire une page de mentions -->
+        <a href="https://entreprendre.service-public.fr/vosdroits/F31228" target='blank' class="color_tertiaire">Mentions légales</a>
         <p>Version <?php echo App::getAppVersion(); ?></p>
     </div>
 </footer>
