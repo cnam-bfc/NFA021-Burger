@@ -1,3 +1,5 @@
+
+
 var panier;
 
 //cette fonction doit lire la variable de session Panier
@@ -145,8 +147,8 @@ function supprimer(idElem) {
     id = idElem.charAt(idElem.length - 1);
     console.log(id);
 
-    //maintenant, dans la variable de session['panier'], supprimer $_SESSION['panier'][id];
-    //pour ça il faut faire une requête ajax
+    //maintenant, dans la variable de session['panier'] ---action---> supprimer $_SESSION['panier'][id];
+    //pour ça il faut faire une requête ajax, sans oublier
 
     $.ajax({
         url: 'panier/SupprimerElemPanier',
@@ -161,6 +163,10 @@ function supprimer(idElem) {
             panier = JSON.parse(response);
             console.log(panier);
             processPanier(panier);
+            var panierIndicateur = document.getElementById("panier_indicateur");
+            panierIndicateur.textContent = parseInt(panierIndicateur.textContent) - 1;
+
+
 
         },
         error: function (xhr, status, error) {

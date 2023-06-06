@@ -12,8 +12,11 @@ var dataBurger;
 
 var idRecette;
 
+var incrementPourLesInputs = 0;
+
 
 function showData(BurgerID) {
+
     idRecette = BurgerID;
     //console.log(BurgerID + " = BurgerID");
     $.ajax({
@@ -153,12 +156,11 @@ function afficherCompoBurger(ingredient) {
 
 
 function afficherTabModifBurger(ingredient, response) {
+    incrementPourLesInputs++;
 
     const tbodyModif = document.getElementById("tbodyMod");
 
     //Déclaration des constantes pour cette function
-
-
 
 
     const tr = document.createElement("tr");
@@ -170,7 +172,7 @@ function afficherTabModifBurger(ingredient, response) {
     tdImage.appendChild(ingrPicture);
 
 
-    const ingredientNom = ingredient["nom"];//  
+    const ingredientNom = ingredient["nom"];//
     const tdNom = document.createElement("td");
     tdNom.textContent = ingredientNom;
 
@@ -180,11 +182,12 @@ function afficherTabModifBurger(ingredient, response) {
     divQuantIngr.className = "wrapper main_axe_center second_axe_center";
     const inputQuantIngr = document.createElement("input");//
     inputQuantIngr.className = 'quantiteIngr';
-    inputQuantIngr.setAttribute('id', 'inputQuantite' + ingredient["nom"]);
+
+    inputQuantIngr.setAttribute('id', 'inputQuantite' + ingredient["nom"] + incrementPourLesInputs);
     inputQuantIngr.setAttribute('type', 'text');
     inputQuantIngr.setAttribute('readonly', 'readonly');
     inputQuantIngr.setAttribute('value', quantiteIngrdient + " " + ingredient['unite']);
-    inputQuantIngr.setAttribute('class', 'inputQ');
+
     divQuantIngr.appendChild(inputQuantIngr);// ici on insert les éléments les uns dans les autres, en partant de la fin
     tdQuantiteIngr.appendChild(divQuantIngr);
 
@@ -200,7 +203,10 @@ function afficherTabModifBurger(ingredient, response) {
 
 
         if (this.textContent == "RETIRER") {
-            document.getElementById('inputQuantite' + ingredient['nom']).setAttribute("value", "0");
+            ///////////////////////////////////////
+            console.log(this.parentNode.parentNode.children[2].children[0].children[0]);
+            this.parentNode.parentNode.children[2].children[0].children[0].setAttribute('value', 0);
+
             this.className = "boutonRemettre";
             this.textContent = "REMETTRE";
 
@@ -280,7 +286,8 @@ function afficherTabModifBurger(ingredient, response) {
         }
         else {
 
-            document.getElementById('inputQuantite' + ingredient['nom']).setAttribute("value", ingredient['quantite'] + " " + ingredient['unite']);
+
+            this.parentNode.parentNode.children[2].children[0].children[0].setAttribute('value', ingredient['quantite'] + " " + ingredient['unite']);
             this.className = "boutonRetirer";
             this.textContent = "RETIRER";
 
@@ -331,9 +338,7 @@ function afficherTabModifBurger(ingredient, response) {
 
                 }
 
-
             }
-
 
 
         };
@@ -353,83 +358,104 @@ function afficherTabModifBurger(ingredient, response) {
 }
 
 
+
+
 $(document).ready(function () {
+
+
+
+
+
     const boutonAjoutPanier = document.getElementById("Ajouter");
     boutonAjoutPanier.addEventListener("click", function () {
 
-        ///////////////////
-
-        const tabBodyModif = document.getElementById("tbodyMod");
-        const nbElem = tabBodyModif.childNodes.length;
-
-
-        //à partir de ça, il faut que j'arrive à metre chaque ingrédient qui un bouton RETIRER, dans le tableau qui suit
-        const tabIngrFinaux = [];
+        //Empecher l'ajout au panier d'un burger dont tous les ingrédients ont été supprimé
+        //////////////////////
+        var sumValue = 0;
 
 
-        //boucle qui parcours donc les lignes de mon tableau tabModifs
-        for (let index = 1; index < nbElem; index++) {
-            // Récupération du nom de l'ingrédient dans une ligne du tableau modif 
-            const ligneEnfants = tabBodyModif.childNodes;
-            const elemEnfantsDeLigne = ligneEnfants[index].childNodes;
-            console.log("tabModifs 1 ligne");
-            console.log(elemEnfantsDeLigne);
-
-            //nom Ingredient
-            console.log(elemEnfantsDeLigne[1].textContent);
-            console.log(elemEnfantsDeLigne);
-
-            // Bouton
-            const elemBouton = elemEnfantsDeLigne[3];
-
-
-            //si la ligne de l'ingrédient a un bouton Retirer
-
-            if (elemBouton.childNodes[0].textContent == "RETIRER") {
-
-
-
-                if (!tabIngrFinaux.includes(elemEnfantsDeLigne[1].textContent))
-                    tabIngrFinaux.push(elemEnfantsDeLigne[1].textContent, elemEnfantsDeLigne[2].firstChild.firstChild.value);
-
-
-
-            }
-
+        var elements = document.getElementsByClassName('quantiteIngr');
+        // Sélection des éléments dont l'ID commence par "inputIngrédient"
+        for (var i = 0; i < elements.length; i++) {
+            // Faites quelque chose avec chaque élément
+            sumValue += parseInt(elements[i].value);
 
         }
-        console.log(dataBurger);
-        console.log("tab Ingrédients Finaux")
-        console.log(tabIngrFinaux); //// CE TABLEAU EST OK
-        ///////////////////////////////
-        const tabBurger = { "prixRecette": prix, "nomRecette": dataBurger[0][2], "idRecette": idRecette, "ingredientsFinaux": tabIngrFinaux };
-        console.log("prix est = " + prix);
-        console.log(dataBurger[0][2]);
 
-        //Le tableau tabBurger est plein
-        //Je l'envoie dans une requête Ajax pour qu'il soit incrémente la variable de session "Panier" (qui est un tableau)
+        //avec une boucle if on vérifie que sumValue est différent de zéro :
+        if (sumValue !== 0) {
 
 
-        $.ajax({
-            url: "visuModifsBurgers/ajouterAuPanier",
-            method: "POST",
-            dataType: "JSON",
-            data: { burgerAjoute: tabBurger },
-            success: function (response) {
-                console.log("responseGOOD : élément ajouté au panier");
-                console.log(response);
-                //modification de l'indicateur du nombre d'éléments dans le panier
-                document.getElementById('panier_indicateur').textContent = response.length;
 
-            },
-            error: function (xhr, status, error) {
-                console.log("Erreur lors de la requête AJAX : " + error);
-                console.log(xhr.responseText);
+            ///////////////////
+
+            const tabBodyModif = document.getElementById("tbodyMod");
+            const nbElem = tabBodyModif.childNodes.length;
+
+
+            //à partir de ça, il faut que j'arrive à metre chaque ingrédient qui un bouton RETIRER, dans le tableau qui suit
+            const tabIngrFinaux = [];
+
+
+            //boucle qui parcours donc les lignes de mon tableau tabModifs
+            for (let index = 1; index < nbElem; index++) {
+                // Récupération du nom de l'ingrédient dans une ligne du tableau modif 
+                const ligneEnfants = tabBodyModif.childNodes;
+                const elemEnfantsDeLigne = ligneEnfants[index].childNodes;
+                console.log("tabModifs 1 ligne");
+                console.log(elemEnfantsDeLigne);
+
+                //nom Ingredient
+                console.log(elemEnfantsDeLigne[1].textContent);
+                console.log(elemEnfantsDeLigne);
+
+                // Bouton
+                const elemBouton = elemEnfantsDeLigne[3];
+
+
+                //si la ligne de l'ingrédient a un bouton Retirer
+
+                if (elemBouton.childNodes[0].textContent == "RETIRER") {
+
+                    if (!tabIngrFinaux.includes(elemEnfantsDeLigne[1].textContent))
+                        tabIngrFinaux.push(elemEnfantsDeLigne[1].textContent, elemEnfantsDeLigne[2].firstChild.firstChild.value);
+
+                }
+
 
             }
-        });
+            console.log(dataBurger);
+            console.log("tab Ingrédients Finaux")
+            console.log(tabIngrFinaux); //// CE TABLEAU EST OK
+            ///////////////////////////////
+            const tabBurger = { "prixRecette": prix, "nomRecette": dataBurger[0][2], "idRecette": idRecette, "ingredientsFinaux": tabIngrFinaux };
+            console.log("prix est = " + prix);
+            console.log(dataBurger[0][2]);
+
+            //Le tableau tabBurger est plein
+            //Je l'envoie dans une requête Ajax pour qu'il soit incrémente la variable de session "Panier" (qui est un tableau)
 
 
+            $.ajax({
+                url: "visuModifsBurgers/ajouterAuPanier",
+                method: "POST",
+                dataType: "JSON",
+                data: { burgerAjoute: tabBurger },
+                success: function (response) {
+
+                    console.log(response);
+                    //modification de l'indicateur du nombre d'éléments dans le panier
+                    document.getElementById('panier_indicateur').textContent = response.length;
+
+                },
+                error: function (xhr, status, error) {
+                    console.log("Erreur lors de la requête AJAX : " + error);
+                    console.log(xhr.responseText);
+
+                }
+            });
+
+        }
     });
 })
 
@@ -440,13 +466,18 @@ $.ajax({
     dataType: "JSON",
     success: function (response) {
         console.log("responseGOOD");
-        // Appeler la fonction de traitement du panier
-        document.getElementById('panier_indicateur').textContent = response.length;
+
+        if (response.length != 0) {
+            document.getElementById('panier_indicateur').textContent = response.length;
+        } else {
+            document.getElementById('panier_indicateur').textContent = "";
+        };
     },
     error: function (xhr, status, error) {
         console.log("Erreur lors de la requête AJAX : " + error);
         console.log(xhr.responseText);
     }
+
 });
 
 
