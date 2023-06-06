@@ -119,17 +119,17 @@ let validationFormulaire = function () {
     // message dans la console
     console.log('Stock.js - validation formulaire');
 
-    // On change le titre de la box (Ajout icone de chargement)
-    let boutonStock = $(this);
-    let contenuBoutonStock = boutonStock.html();
-    boutonStock.prop('disabled', true);
-    boutonStock.html('<i class="fa-solid fa-spinner fa-spin"></i> ' + "En cours de validation...");
-
     // Vérification que les champs sont valides (vérification HTML5)
     let form_stock = $('#form_stock');
     if (!form_stock[0].checkValidity()) {
         // Affichage des erreurs HTML5
         form_stock[0].reportValidity();
+        return;
+    }
+
+    // on vérifie si un bon de commande est bien sélectionné et si c'est pas un bon de commande non référencé
+    if ($('#select_bon_commande').find(':selected').attr('id_bdc') == 0) {
+        alert("Vous devez sélectionner un bon de commande");
         return;
     }
 
@@ -146,13 +146,18 @@ let validationFormulaire = function () {
         return;
     }
 
+    // On change le titre de la box (Ajout icone de chargement)
+    let boutonStock = $(this);
+    let contenuBoutonStock = boutonStock.html();
+    boutonStock.prop('disabled', true);
+    boutonStock.html('<i class="fa-solid fa-spinner fa-spin"></i> ' + "En cours de validation...");
+
     // on boucle sur toutes les lignes et on prépare un json
     let json = {};
     json["id_bdc"] = $('#select_bon_commande').find(':selected').attr('id_bdc');
     json["id_fournisseur"] = $('#select_fournisseur').find(':selected').attr('id_fournisseur');
     json["ingredients"] = [];
 
-    let error = false;
     // note modifier le foreach pour mettre une autre boucle afin de l'arrêter en cas d'erreur
     $('#tableau_inventaire>tbody>tr').each(function () {
         let id = $(this).attr('data_id');
@@ -165,11 +170,6 @@ let validationFormulaire = function () {
 
     // on transforme en json
     json = JSON.stringify(json);
-
-    // si on a détecté une erreur, on arrête la fonction - vérification en + que le html
-    if (error == true) {
-        return;
-    }
 
     // on envoie le json à la méthode ajax
     $.ajax({
@@ -402,7 +402,14 @@ let ligneDeTexteTBody = function (texte) {
 // Fonctions pour gérer le bouton ajouter un ingrédient 
 // Lors de l'ajout d'un nouvel ingrédient
 function onAjouterNewIngredient() {
-    console.log
+    console.log("onAjouterNewIngredient()");
+
+    // on vérifie si un bon de commande est bien sélectionné et si c'est pas un bon de commande non référencé
+    if ($('#select_bon_commande').find(':selected').attr('id_bdc') == 0) {
+        alert("Vous devez sélectionner un bon de commande");
+        return;
+    }
+
     // Ajout d'un icone et texte de chargement (fontawesome)
     let boutonAjouterNewIngredient = $("#ajouter_ingredient");
     let old_html = boutonAjouterNewIngredient.html();
