@@ -67,8 +67,8 @@ class Router
         // PARTIE GÉRANT
         // Statistiques
         'gerant/statistiques' => ["controller" => "StatistiquesController", "method" => "renderViewStatistiques"],
-        'gerant/statistiques/recupererLesRecettes' => ["controller" => "StatistiquesController", "method" => "recupererLesRecettes"],
-        'gerant/statistiques/recupererRecettesPourStatistiquesTotal' => ["controller" => "StatistiquesController", "method" => "recupererRecettesPourStatistiquesTotal"],
+        'gerant/statistiques/getAllBurgers' => ["controller" => "StatistiquesController", "method" => "getAllBurgers"],
+        'gerant/statistiques/getDataBurgerVenteTotal' => ["controller" => "StatistiquesController", "method" => "getDataBurgerVenteTotal"],
 
         // Inventaire
         'gerant/inventaire' => ["controller" => "InventaireController", "method" => "renderViewInventaire"],
