@@ -105,7 +105,7 @@ $(function () {
                     boutonPrendreLivraison.empty();
                     boutonPrendreLivraison.html(oldBoutonPrendreLivraisonHTML);
                     // Avertir l'utilisateur
-                    alert("Erreur lors de la prise de la livraison");
+                    alert("Erreur lors de la prise de la livraison :\nVous devez être connecté en tant que livreur pour prendre une livraison !");
                 }
             });
         });
