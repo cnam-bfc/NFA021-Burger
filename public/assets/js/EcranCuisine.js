@@ -81,11 +81,6 @@ $(function () {
 
     // Fonction permettant d'ajouter une div contenant une commande dans le tableau des recettes
     function addCommande(data) {
-        let numeroCommande = 1;
-
-        if (numeroCommande > 1000) {
-            numeroCommande = 1;
-        }
         // Création de la div contenant la commande
         let divCommande = $("<div>").addClass("commande focus");
         divCommande.attr("id", data.id);
@@ -93,16 +88,6 @@ $(function () {
         //Numéro de la commande
         let divNumCom = $("<div>").addClass("num_com");
         let pNumCom = $("<p>").text(data.id);
-        /*if (numeroCommande <= 10) {
-            pNumCom.text("00" + numeroCommande);
-            numeroCommande++;
-        } else if (numeroCommande <= 100) {
-            pNumCom.text("0" + numeroCommande);
-            numeroCommande++;
-        } else if (numeroCommande <= 1000){
-            pNumCom.text(numeroCommande);
-            numeroCommande++;
-        }*/
 
         divNumCom.append(pNumCom);
         divCommande.append(divNumCom);
