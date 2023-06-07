@@ -12,6 +12,12 @@ class PanierController extends Controller
 
     public function getSessionPanier()
     {
+        //créer la varible de session Panier si elle n'existe pas déjà
+
+        if (!isset($_SESSION['panier'])) {
+
+            $_SESSION['panier'] = array();
+        }
 
         $infosJSON = $_SESSION['panier'];
 

@@ -57,7 +57,7 @@ $(function () {
         cellule = $("<td>");
         // Conteneur des boutons
         let contenuCellule = $("<div>");
-        contenuCellule.addClass('wrapper main_axe_center second_axe_center');
+        contenuCellule.addClass('wrapper axe_ligne main_axe_center second_axe_center');
 
         // Bouton modifier
         let boutonModifier = $("<button>").addClass("bouton");

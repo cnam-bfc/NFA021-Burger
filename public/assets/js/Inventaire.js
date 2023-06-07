@@ -8,7 +8,7 @@ $(document).ready(function () {
     // Evènements
     $('#bouton_mise_a_jour').on('click', validationInventaire);
     $("#ajouter_ingredient").on('click', onAjouterNewIngredient);
-    $('#bouton_annuler_ajouter_ingredient').on('click',onAnnulerAjouterIngredient);
+    $('#bouton_annuler_ajouter_ingredient').on('click', onAnnulerAjouterIngredient);
 });
 
 /*****************
@@ -21,6 +21,20 @@ $(document).ready(function () {
 let validationInventaire = function () {
     console.log('Inventaire.js - validationInventaire');
 
+    // On change le titre de la box (Ajout icone de chargement)
+    let boutonInventaire = $(this);
+    let contenuBoutonInventaire = boutonInventaire.html();
+    boutonInventaire.prop('disabled', true);
+    boutonInventaire.html('<i class="fa-solid fa-spinner fa-spin"></i> ' + "En cours de validation...");
+
+    // Vérification que les champs sont valides (vérification HTML5)
+    let form_inventaire = $('#form_inventaire');
+    if (!form_inventaire[0].checkValidity()) {
+        // Affichage des erreurs HTML5
+        form_inventaire[0].reportValidity();
+        return;
+    }
+
     // vérifier si on a des lignes dans le tableau
     if ($('#tableau_inventaire>tbody>tr[data_id]').length == 0) {
         alert("Vous n'avez aucun ingrédient à mettre à jour");
@@ -28,41 +42,21 @@ let validationInventaire = function () {
     }
     // déclaration des variables
     let json = new Array();
-    let error = false;
     // TODO : modifier le foreach pour mettre une autre boucle afin de l'arrêter en cas d'erreur
     // on boucle pour récupérer les données et ainsi préparer le json à envoyer à la méthode ajax pour la mise à jour
+    let counter = 0;
     $('#tableau_inventaire>tbody>tr[data_id]').each(function () {
         let id = $(this).attr('data_id');
-        let nom = $(this).find('td:nth-child(2)').text();
         let stock = $(this).find('td:nth-child(4)>div>input').val();
-        // on vérifie que le stock n'est pas vide , null ou négatif
-        if (stock === null || stock === "" || stock < 0) {
-            alert("Le stock de l'ingrédient " + nom + " est vide.\nVeuillez entrer une valeur ou supprimer l'ingrédient de l'inventaire");
-            // on focus l'élément pour que l'utilisateur puisse le modifier
-            $(this).find('td:nth-child(4)>div>input').focus();
-            error = true;
-            return;
-        }
-        if (stock < 0) {
-            alert("Le stock de l'ingrédient " + nom + " est négatif.\nVeuillez entrer une valeur positive ou supprimer l'ingrédient de l'inventaire");
-            // on focus l'élément pour que l'utilisateur puisse le modifier
-            $(this).find('td:nth-child(4)>div>input').focus();
-            error = true;
-            return;
-        }
+        console.log(id + " " + stock);
         json.push({
             id: id,
             stock: stock
         });
     });
-
     // on format les données en json
+    console.log(json);
     json = JSON.stringify(json);
-
-    // si on a détecté une erreur, on arrête la fonction - vérification en + que le html
-    if (error == true) {
-        return;
-    }
 
     // on envoie le json à la méthode ajax
     $.ajax({
@@ -94,6 +88,10 @@ let validationInventaire = function () {
 
             // On notifie l'échec de la mise à jour
             alert("La mise à jour de l'inventaire a échoué");
+        },
+        complete: function (data) {
+            boutonInventaire.html(contenuBoutonInventaire);
+            boutonInventaire.prop('disabled', false);
         }
     });
 }
@@ -103,6 +101,19 @@ let validationInventaire = function () {
  * @returns {void}
  */
 let actualiserTableau = function () {
+    // on récupère notre tableau, précisément le tbody
+    let tbody = $('#tableau_inventaire>tbody');
+    // Supprimer le contenu du tableau
+    tbody.empty();
+
+    // Ajout ligne de chargement
+    let ligne = $("<tr>");
+    let cellule = $("<td>");
+    cellule.attr("colspan", 5);
+    cellule.html("<br><i class='fa-solid fa-spinner fa-spin'></i> Chargement des ingrédients...<br><br>");
+    ligne.append(cellule);
+    tbody.append(ligne);
+
     $.ajax({
         url: 'inventaire/refreshTableauInventaire',
         type: 'POST',
@@ -111,19 +122,19 @@ let actualiserTableau = function () {
             // message dans la console
             console.log('Inventaire.js - refreshTableauInventaire - success');
 
-            // on récupère notre tableau, précisément le tbody
-            let tbody = $('#tableau_inventaire>tbody');
-
             // on retire tout ce qu'il y a dans le tbody
             tbody.empty();
 
             data.forEach(element => {
+                // voir pour faire en sorte de prendre en compte que la photo peut ne pas être présente
                 ajouterLigneTBody(element.id, element.nom, element.photo, element.stock, element.unite);
             });
         },
         error: function (data) {
             // message dans la console
             console.log('Inventaire.js - refreshTableauInventaire - error');
+
+            tbody.empty();
 
             // on ajoute une ligne dans le tableau avec un message d'erreur
             ligneDeTexteTBody("Aucun ingrédient n'a été trouvé dans la base de données");
@@ -169,7 +180,8 @@ let ajouterLigneTBody = function (id, nom, photo, stock, unite) {
     let input2 = $("<input>").addClass("input").attr({
         "type": "number",
         "min": 0,
-        "step": 0.01
+        "step": 1,
+        required: true
     });
     div2.append(input2);
     uniteTexte = $("<span>").text(unite);
@@ -245,7 +257,7 @@ function onAjouterNewIngredient() {
     $('#tableau_inventaire tbody tr').each(function () {
         data_id.push($(this).attr('data_id'));
     });
-    console.log (data_id);
+    console.log(data_id);
     // on transforme en json
     data_id = JSON.stringify(data_id);
     console.log(data_id);
@@ -281,7 +293,7 @@ function onAjouterNewIngredient() {
 
             // Ajout des options dans le select
             selectAjouterIngredient.append('<option></option>');
-            console.log (data);
+            console.log(data);
             data.forEach(function (ingredient) {
                 // Ajout de l'option dans le select (dans value mettre l'ingrédient en JSON)
                 selectAjouterIngredient.append('<option value=\'' + JSON.stringify(ingredient) + '\'>' + ingredient.nom + '</option>');
@@ -346,7 +358,7 @@ function onIngredientSelected(data) {
 
     // Ajout de l'ingrédient dans la liste des ingrédients
     console.log(ingredient);
-    ajouterLigneTBody(ingredient.id , ingredient.nom, ingredient.photo, ingredient.stock, ingredient.unite);
+    ajouterLigneTBody(ingredient.id, ingredient.nom, ingredient.photo, ingredient.stock, ingredient.unite);
 
     // Suppression de la bibliothèque select2
     selectAjouterIngredient = $("#select_ajouter_ingredient");

@@ -108,6 +108,7 @@ function processPanier(panier) {
         //PrixTotal
         prixTotal = parseFloat(prixTotal);
         prixTotal = parseFloat(prixTotal) + parseFloat(panier[i]["prixRecette"]);
+        prixTotal = prixTotal.toFixed(2);
 
 
 
@@ -178,15 +179,7 @@ function processLivraison(infosLivraison) {
         divRecupInfos.appendChild(div);
     });
 
-
-
-
-
-
-
-
-
-
+    //ecrire en BDD
 
 }
 

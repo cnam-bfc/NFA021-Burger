@@ -68,7 +68,11 @@ class NouveauProduitController extends Controller
                 $unite = $_POST['unite'];
 
             // Récupération de l'image de la recette
-            $ingredientImage = Form::getFile('icone', true);
+            if (isset($id)) {
+                $ingredientImage = Form::getFile('icone', false);
+            } else {
+                $ingredientImage = Form::getFile('icone', true);
+            }
             $ingredientImageEclatee = Form::getFile('eclate', false);
 
             $ingr = new Ingredient();
@@ -118,11 +122,9 @@ class NouveauProduitController extends Controller
                 $ingredientEclatee = $ingredientFolder . 'eclate.img';
                 move_uploaded_file($ingredientImageEclatee['tmp_name'], $ingredientEclatee);
             }
-
-
             unset($_POST);
         }
-
+        
         $view->renderView();
     }
 }

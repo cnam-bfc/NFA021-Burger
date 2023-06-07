@@ -8,7 +8,13 @@ $(function () {
 });
 
 function redirigerPageListeProduits() {
-
     window.location.href = `listeproduits`;
+}
 
+function messageCreationIngredient() {
+    alert("L'ingrédient a été ajouté avec succès.");
+}
+
+function messageModificationIngredient() {
+    alert("L'ingrédient a été modifié avec succès.");
 }

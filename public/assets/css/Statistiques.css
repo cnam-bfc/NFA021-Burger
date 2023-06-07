@@ -53,7 +53,7 @@ CSS pour la partie Selection d'un graphe
 .box_graphe {
     display : flex;
     flex-direction: column;
-    gap : 5px
+    gap : 10px 5px
 }
 
 .graphe_choix {

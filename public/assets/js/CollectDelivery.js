@@ -90,8 +90,6 @@ function valider() {
         if (new RegExp(HeureCollect.pattern).test(HeureCollect.value) && new RegExp(Prenom.pattern).test(Prenom.value)) {
 
 
-
-
             const tabInfosRecup = {
                 "Mode Récupération": 'Click & Collect',
                 "Heure Collect": HeureCollect.value,

@@ -100,4 +100,5 @@ class ModifsBurgersController extends Controller
         $view->json = $_SESSION['panier'];
         $view->renderView();
     }
+    
 }

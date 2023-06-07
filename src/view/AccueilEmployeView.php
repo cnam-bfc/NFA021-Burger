@@ -3,7 +3,7 @@
 <script src="<?php echo JS ?>AccueilEmploye.js"></script>
 
 <div class="wrapper axe_colonne main_axe_space_around margin_auto grow" id="wrapper_accueil">
-
+    <?php if ($typeCompte == "gerant") { ?>
     <div id="espace_gerant" class="wrapper axe_ligne wrap width_auto height_50 main_axe_space_around margin_bottom_top_large main_axe_center">
         <h1 class="width_100 margin_large bold">Espace Gérant</h1>
         <div class="box wrapper axe_colonne margin_large main_axe_center second_axe_center">
@@ -49,7 +49,8 @@
             </a>
         </div>
     </div>
-
+    <?php } ?>
+    <?php if ($typeCompte === "cuisinier" || $typeCompte === "gerant") { ?>
     <div id="espace_cuisinier" class="wrapper axe_ligne wrap width_auto height_25 main_axe_space_around margin_bottom_top_large main_axe_center">
         <h1 class="width_100 margin_large bold">Espace Cuisinier</h1>
         <div class="box wrapper axe_colonne margin_large main_axe_center second_axe_center">
@@ -59,7 +60,8 @@
             </a>
         </div>
     </div>
-
+    <?php } ?>
+    <?php if ($typeCompte === "livreur" || $typeCompte === "gerant") { ?>
     <div id="espace_livreur" class="wrapper axe_ligne wrap width_auto height_100 main_axe_space_around margin_bottom_top_large main_axe_center">
         <h1 class="width_100 margin_large bold">Espace Livreur</h1>
         <div class="box wrapper axe_colonne margin_large main_axe_center second_axe_center">
@@ -75,6 +77,6 @@
             </a>
         </div>
     </div>
-
+    <?php } ?>
 </div>
 

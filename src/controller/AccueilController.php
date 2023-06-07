@@ -33,24 +33,13 @@ class AccueilController extends Controller
             $result = array();
             foreach ($topRecettes as $recette) {
                 $result[] = array(
+                    "id" => $recette->getId(),
                     "nom" => $recette->getNom(),
                     "image" => IMG . 'recettes' . DIRECTORY_SEPARATOR . $recette->getId() . DIRECTORY_SEPARATOR . 'presentation.img',
                 );
             }
         } else {
-            $result = array();
-            $result[] = array(
-                "nom" => "cheddar lover",
-                "image" => IMG . "recette/burger/presentation.webp"
-            );
-            $result[] = array(
-                "nom" => "steakhouse",
-                "image" => IMG . "recette/burger/steakhouse.webp"
-            );
-            $result[] = array(
-                "nom" => "triple cheese",
-                "image" => IMG . "recette/burger/triple_cheese.webp"
-            );
+            $result = null;
         }
         $view = new View(BaseTemplate::JSON);
 
@@ -84,7 +73,9 @@ class AccueilController extends Controller
 
     /***************************
      ***** ACCUEIL EMPLOYE *****
-     **************************/
+     *************************
+     * @return void
+     */
 
     public function renderViewAccueilEmploye()
     {
@@ -105,41 +96,20 @@ class AccueilController extends Controller
 
         );
 
+        if (UserSession::getUserSession()->isGerant()) {
+            $view->typeCompte = "gerant";
+        }
+        elseif (UserSession::getUserSession()->isCuisinier()) {
+            $view->typeCompte = "cuisinier";
+        }
+        elseif (UserSession::getUserSession()->isLivreur()) {
+            $view->typeCompte = "livreur";
+        }
+        else {
+            $view->typeCompte = "employe";
+        }
+
         $view->renderView();
     }
 
-    public function afficherEspaceAccueilEmploye() {
-        // Récupération la "session" de l'utilisateur
-        $userSession = UserSession::getUserSession();
-
-        $json = array();
-        $json['data'] = array();
-        // Vérification que l'utilisateur est connecté
-        if ($userSession->isLogged()) {
-            // CAS SPÉCIFIQUES POUR CHAQUE RÔLE
-            // Si l'utilisateur est un cuisinier
-            if ($userSession->isCuisinier()) {
-                $json['data'] = array(
-                    'id' => 0,
-                );
-            }
-            // Si l'utilisateur est un livreur
-            elseif ($userSession->isLivreur()) {
-                $json['data'] = array(
-                    'id' => 1,
-                );
-            }
-            // Si l'utilisateur est un gérant
-            elseif ($userSession->isGerant()) {
-                $json['data'] = array(
-                    'id' => 2,
-                );
-            }
-
-            $view = new View(BaseTemplate::JSON);
-            $view->json = $json;
-
-            $view->renderView();
-        }
-    }
 }

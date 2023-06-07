@@ -6,3 +6,7 @@
 #tableau_inventaire tbody td input+span:not(:empty) {
     margin-left: 10px;
 }
+
+#select_ajouter_ingredient {
+    min-width: 30%;
+}

@@ -8,12 +8,14 @@
 
     <div class="padding_default grow">
 
-        <div class="wrapper axe_colonne second_axe_center">            <h2 class="titre_bulle">Bon de commande</h2>
-        </div>
+        <div id='box' class="wrapper axe_colonne second_axe_center">
+            <h2 class="titre_bulle">Bon de commande</h2>
 
-        <div style="display:flex; flex-direction: row">
-            <button type="button" class='bouton' onclick="redirigerPageNouveauBdc()">Nouveau Bon de commande</button>
-        </div><br>
+            <div style="display:flex; flex-direction: row">
+                <button type="button" class='bouton' onclick="redirigerPageNouveauBdc()">Nouveau Bon de commande</button>
+            </div><br>
+
+        </div>
 
         <div class="wrapper axe_ligne second_axe_center wrap" id='bdc'>
         </div>
