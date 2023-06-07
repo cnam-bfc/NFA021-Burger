@@ -194,6 +194,7 @@ class RecetteDAO extends DAO
                     LEFT JOIN burger_recette_finale AS brf ON br.id_recette = brf.id_recette_fk
                     LEFT JOIN burger_commande_client AS bcc ON brf.id_commande_client_fk = bcc.id_commande_client
                     WHERE date_commande BETWEEN DATE_SUB(NOW(), INTERVAL 1 MONTH) AND NOW()
+                    AND br.date_archive IS NULL OR br.date_archive > NOW()
                     GROUP BY id_recette 
                     ORDER BY COUNT(id_recette) 
                     DESC LIMIT 3";
