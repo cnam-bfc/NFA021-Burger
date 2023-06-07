@@ -5,10 +5,20 @@ class ListeProduitsController extends Controller
     {
         $view = new View(BaseTemplate::EMPLOYE, 'ListeProduitsView');
 
-        $ingredientDAO = new IngredientDAO();
-        $view->ingr = $ingredientDAO->selectAll();
+        if (!empty($_GET)) {
+            $ingredientDAO = new IngredientDAO();
 
-        $ingr = $ingredientDAO->selectAll();
+            $ingredient = $ingredientDAO->selectById($_GET['idIngredient']);
+            $ingredient->setDateArchive(date('Y-m-d H:i:s'));
+
+            $ingredientDAO->update($ingredient);
+        }
+
+
+        $ingredientDAO = new IngredientDAO();
+        $view->ingr = $ingredientDAO->selectAllNonArchive();
+
+        $ingr = $ingredientDAO->selectAllNonArchive();
 
         $icone = array();
         foreach ($ingr as $donnees) {
@@ -16,8 +26,9 @@ class ListeProduitsController extends Controller
                 ["img" => IMG . 'ingredients' . DIRECTORY_SEPARATOR . $donnees->getId() . DIRECTORY_SEPARATOR . 'presentation.img'];
         }
 
-        $view->modifier = array(
-            ["img" => IMG . "icone/Modifier.png"]
+        $view->utile = array(
+            ["img" => IMG . "icone/Modifier.png"],
+            ["img" => IMG . "icone/Archiver.png"]
         );
 
         $fournisseurDAO = new FournisseurDAO();
