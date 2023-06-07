@@ -334,9 +334,15 @@ function refreshMenuGauche(boolean) {
 function remplirMenuPersonnalisation() {
     console.log(temporaryChart);
     // MENU - PERSONNALISATION
+    let grapheNom = $('#graphe_nom')
     if (temporaryChart.nom != null) {
-        $('#graphe_nom').attr('value', temporaryChart.nom);
+        grapheNom.attr('value', temporaryChart.nom);
     }
+    grapheNom.on('input', function () {
+        temporaryChart.nom = grapheNom.val();
+        temporaryChart.divNom.html(grapheNom.val());
+    });
+
     if (temporaryChart.description != null) {
         $('#graphe_description').val(temporaryChart.description);
     }
@@ -441,7 +447,7 @@ function updateTemporaryChart() {
     if (!checkDateForUpdateChart() || !checkType()) {
         return;
     }
-    
+
     switch (temporaryChart.typeStatistique) {
         case typeStatistique.BURGER_VENTE_TOTAL:
             getDataBurgerVenteTotal();
@@ -473,23 +479,35 @@ function createChart(chart) {
     console.log("Statistiques.js - createChart");
 
     // on créer la div principale
-    let mainDiv = $('<div>').addClass('wrapper axe_ligne main_axe_space_between second_axe_center grow');
-    // on créer la div contenant les boutons
-    let buttonDiv = $('<div>').addClass('wrapper axe_ligne axe_space_between');
-    // on créer les boutons
-    let button1 = $('<button>').addClass('button button_select');
-    let button2 = $('<button>').addClass('button');
-    buttonDiv.append(button1);
-    buttonDiv.append(button2);
-    mainDiv.append(buttonDiv);
+    let mainDiv = $('<div>').addClass('graphe');
+
     // on créer le titre
-    let title = $('<h3>').addClass('text-center');
+    let title = $('<h3>').addClass('text-center bold');
+    title.html(chart.nom);
+    chart.divNom = title;
     mainDiv.append(title);
+
+    // on créer la div contenant les boutons
+    let buttonDiv = $('<div>');
+    // on créer les boutons
+    let buttonModify = $('<button>').addClass('button button_select');
+    buttonModify.html('<i class="fa-solid fa-pen"></i>');
+    // mettre image / mettre event
+    let buttonDelete = $('<button>').addClass('button');
+    buttonDelete.html('<i class="fa-solid fa-trash"></i>');
+
+    // mettre image / mettre event
+    buttonDiv.append(buttonModify);
+    buttonDiv.append(buttonDelete);
+    mainDiv.append(buttonDiv);
+    
     // on créer un canvas qu'on ajoute à la div
     let canvas = $('<canvas>');
     mainDiv.append(canvas);
     // on créer le paragraphe
     let paragraph = $('<p>').addClass('text-center');
+    paragraph.html(chart.description);
+    chart.divDescription = paragraph;
     mainDiv.append(paragraph);
     let chartConfig;
     // On ajoute la div principale au DOM
