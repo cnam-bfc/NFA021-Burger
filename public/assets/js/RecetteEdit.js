@@ -59,7 +59,10 @@ $(function () {
 
                 // Image
                 let cellule = $("<td>");
-                cellule.append($("<img>").attr("src", element.image));
+                let celluleDiv = $("<div>");
+                celluleDiv.addClass("wrapper axe_ligne main_axe_flex_start second_axe_center");
+                celluleDiv.append($("<img>").attr("src", element.image));
+                cellule.append(celluleDiv);
                 ligne.append(cellule);
 
                 // Nom
@@ -76,8 +79,8 @@ $(function () {
 
                 // Quantité
                 cellule = $("<td>");
-                let celluleDiv = $("<div>");
-                celluleDiv.addClass("wrapper main_axe_center second_axe_center");
+                celluleDiv = $("<div>");
+                celluleDiv.addClass("wrapper axe_ligne main_axe_center second_axe_center");
                 let inputQuantite = $("<input>").attr({
                     type: "number",
                     min: 0,
@@ -89,7 +92,9 @@ $(function () {
                 }).addClass("input");
                 celluleDiv.append(inputQuantite);
                 // Ajouter l'unité
-                celluleDiv.append($("<span>").text(element.unite));
+                let spanUnite = $("<span>").text(element.unite);
+                spanUnite.addClass("span_unite");
+                celluleDiv.append(spanUnite);
                 cellule.append(celluleDiv);
                 ligne.append(cellule);
 
@@ -101,7 +106,7 @@ $(function () {
                 // Optionnel
                 cellule = $("<td>");
                 celluleDiv = $("<div>");
-                celluleDiv.addClass("wrapper main_axe_center second_axe_center");
+                celluleDiv.addClass("wrapper axe_ligne main_axe_center second_axe_center");
                 let inputOptionnel = $("<input>").attr({
                     type: "checkbox",
                     checked: element.optionnel
@@ -112,18 +117,18 @@ $(function () {
 
                 // Si on est en sélection multiple, cacher le champ optionnel
                 if (selectionMultiple) {
-                    inputOptionnel.parent().attr('hidden', true);
+                    inputOptionnel.parent().hide();
                 }
 
                 // Si l'élément est une sélection multiple, cacher le champ optionnel
                 if (element.ingredients !== undefined) {
-                    inputOptionnel.parent().attr('hidden', true);
+                    inputOptionnel.parent().hide();
                 }
 
                 // Prix
                 cellule = $("<td>");
                 celluleDiv = $("<div>");
-                celluleDiv.addClass("wrapper main_axe_center second_axe_center");
+                celluleDiv.addClass("wrapper axe_ligne main_axe_center second_axe_center");
                 let inputPrix = $("<input>").attr({
                     type: "number",
                     min: 0,
@@ -168,18 +173,55 @@ $(function () {
 
                 // Cacher le champ prix on est en sélection multiple
                 if (selectionMultiple) {
-                    inputPrix.parent().attr('hidden', true);
+                    inputPrix.parent().hide();
                 }
 
                 // Cacher le champ prix si l'ingrédient est une sélection multiple
                 if (element.ingredients !== undefined) {
-                    inputPrix.parent().attr('hidden', true);
+                    inputPrix.parent().hide();
                 }
 
                 // Boutons d'action rapide
                 cellule = $("<td>");
                 celluleDiv = $("<div>");
-                celluleDiv.addClass("wrapper main_axe_center second_axe_center");
+                celluleDiv.addClass("wrapper axe_ligne main_axe_flex_end second_axe_center");
+
+                // Bouton modifier
+                let boutonModifier = $("<button>").attr("type", "button").addClass("bouton");
+                boutonModifier.click(function () {
+                    onModifierSelectionMultiple(element);
+                });
+                boutonModifier.append($("<i>").addClass("fa-solid fa-edit"));
+                celluleDiv.append(boutonModifier);
+
+                // Cacher le bouton modifier si l'élément n'est pas une sélection multiple
+                if (element.ingredients === undefined) {
+                    boutonModifier.attr('hidden', true);
+                }
+
+                // Bouton supprimer
+                let boutonSupprimer = $("<button>").attr("type", "button").addClass("bouton");
+                boutonSupprimer.click(function () {
+                    // Supprimer la ligne
+                    // Dans la vue (HTML)
+                    ligne.remove();
+                    // Dans le modèle (Javascript)
+                    let index = composition.indexOf(element);
+                    composition.splice(index, 1);
+
+                    // Si le tableau est vide
+                    if (bodyTableauComposition.children().length === 0) {
+                        // Ajouter la ligne vide
+                        let ligne = $("<tr>");
+                        let cellule = $("<td>");
+                        cellule.attr("colspan", 6);
+                        cellule.html("<br>Aucun ingrédients<br><br>");
+                        ligne.append(cellule);
+                        bodyTableauComposition.append(ligne);
+                    }
+                });
+                boutonSupprimer.append($("<i>").addClass("fa-solid fa-trash"));
+                celluleDiv.append(boutonSupprimer);
 
                 // Bouton monter
                 let boutonMonter = $("<button>").attr("type", "button").addClass("bouton");
@@ -229,48 +271,25 @@ $(function () {
                     boutonDescendre.attr('hidden', true);
                 }
 
-                // Bouton modifier
-                let boutonModifier = $("<button>").attr("type", "button").addClass("bouton");
-                boutonModifier.click(function () {
-                    onModifierSelectionMultiple(element);
-                });
-                boutonModifier.append($("<i>").addClass("fa-solid fa-edit"));
-                celluleDiv.append(boutonModifier);
-
-                // Cacher le bouton modifier si l'élément n'est pas une sélection multiple
-                if (element.ingredients === undefined) {
-                    boutonModifier.attr('hidden', true);
-                }
-
-                // Bouton supprimer
-                let boutonSupprimer = $("<button>").attr("type", "button").addClass("bouton");
-                boutonSupprimer.click(function () {
-                    // Supprimer la ligne
-                    // Dans la vue (HTML)
-                    ligne.remove();
-                    // Dans le modèle (Javascript)
-                    let index = composition.indexOf(element);
-                    composition.splice(index, 1);
-
-                    // Si le tableau est vide
-                    if (bodyTableauComposition.children().length === 0) {
-                        // Ajouter la ligne vide
-                        let ligne = $("<tr>");
-                        let cellule = $("<td>");
-                        cellule.attr("colspan", 6);
-                        cellule.html("<br>Aucun ingrédients<br><br>");
-                        ligne.append(cellule);
-                        bodyTableauComposition.append(ligne);
-                    }
-                });
-                boutonSupprimer.append($("<i>").addClass("fa-solid fa-trash"));
-                celluleDiv.append(boutonSupprimer);
-
                 cellule.append(celluleDiv);
                 ligne.append(cellule);
 
                 // Ajout de la ligne au tableau
                 bodyTableauComposition.append(ligne);
+            });
+
+            // Calculer la longueur des <span> des unités
+            let spansUnites = bodyTableauComposition.find(".span_unite");
+            let spanUniteMaxWidth = 0;
+            spansUnites.each((index, element) => {
+                let spanUniteWidth = $(element).width();
+                if (spanUniteWidth > spanUniteMaxWidth) {
+                    spanUniteMaxWidth = spanUniteWidth;
+                }
+            });
+
+            spansUnites.each((index, element) => {
+                $(element).width(spanUniteMaxWidth);
             });
         }
     }
@@ -626,6 +645,12 @@ $(function () {
         if (!formRecette[0].checkValidity()) {
             // Affichage des erreurs HTML5
             formRecette[0].reportValidity();
+            return;
+        }
+
+        // Vérification que la liste des ingrédients n'est pas vide
+        if (ingredientsSelectionMultiple.length === 0) {
+            alert('La liste des ingrédients ne peut pas être vide !\nVeuillez ajouter au moins un ingrédient.');
             return;
         }
 
