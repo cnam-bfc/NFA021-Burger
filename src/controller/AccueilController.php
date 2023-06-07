@@ -33,24 +33,13 @@ class AccueilController extends Controller
             $result = array();
             foreach ($topRecettes as $recette) {
                 $result[] = array(
+                    "id" => $recette->getId(),
                     "nom" => $recette->getNom(),
                     "image" => IMG . 'recettes' . DIRECTORY_SEPARATOR . $recette->getId() . DIRECTORY_SEPARATOR . 'presentation.img',
                 );
             }
         } else {
-            $result = array();
-            $result[] = array(
-                "nom" => "cheddar lover",
-                "image" => IMG . "recette/burger/presentation.webp"
-            );
-            $result[] = array(
-                "nom" => "steakhouse",
-                "image" => IMG . "recette/burger/steakhouse.webp"
-            );
-            $result[] = array(
-                "nom" => "triple cheese",
-                "image" => IMG . "recette/burger/triple_cheese.webp"
-            );
+            $result = null;
         }
         $view = new View(BaseTemplate::JSON);
 

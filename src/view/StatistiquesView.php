@@ -131,21 +131,7 @@
             <h1>Statistiques</h1>
         </div>
 
-        <div id="graphes">
-            
-            <!--
-        <div>
-            <div>
-                <btn></btn>
-                <btn></btn>
-            </div>
-            <h3></h3>
-            <canvas></canvas>
-            <p></p>
-        </div>
-            -->
-
-        </div> <!-- div pour contenir les graphes -->
+        <div id="graphes"></div> <!-- div pour contenir les graphes -->
     </section>
 </div>
 </div>

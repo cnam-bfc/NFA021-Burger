@@ -218,6 +218,51 @@ class RecetteDAO extends DAO
             // Ajout de l'objet dans le tableau
             $recettes[] = $recette;
         }
+        return $recettes;
+    }
+
+    /**
+     * Méthode permettant de récupérer les recettes de façon personnalisée.
+     * $archive : -1 => archivées, 0 => tous, 1 => non archivées
+     * $order : -1 => ordre décroissant, 0 => pas d'ordre, 1 => ordre croissant
+     *
+     * @param integer $archive
+     * @param integer $order
+     * @return Recette[] (tableau d'objets)
+     */
+    public function selectAllForSelectStats($archive = 0, $order = 0)
+    {
+        // Requête
+        $sqlQuery = "SELECT * FROM burger_recette";
+        // On ajoute la clause WHERE en fonction des paramètres
+        if ($archive > 0) {
+            $sqlQuery .= " WHERE date_archive IS NULL OR date_archive > NOW()";
+        } elseif ($archive < 0) {
+            $sqlQuery .= " WHERE date_archive IS NOT NULL AND date_archive < NOW()";
+        }
+        // On ajoute la clause ORDER BY en fonction des paramètres
+        if ($order > 0) {
+            $sqlQuery .= " ORDER BY nom ASC";
+        } elseif ($order < 0) {
+            $sqlQuery .= " ORDER BY nom DESC";
+        }
+
+        $statement = $this->pdo->query($sqlQuery);
+        $statement->execute();
+
+        // Traitement des résultats
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $recettes = array();
+        foreach ($result as $row) {
+            // Création d'un nouvel objet
+            $recette = new Recette();
+
+            // Remplissage de l'objet
+            $this->fillObject($recette, $row);
+
+            // Ajout de l'objet dans le tableau
+            $recettes[] = $recette;
+        }
 
         return $recettes;
     }
@@ -230,7 +275,8 @@ class RecetteDAO extends DAO
      * @param array[$id] $burgers
      * @return Recette[] (tableau d'objets)
      */
-    public function selectAllForStats ($dateDebut = null, $dateFin = null, $recettes = null) {
+    public function selectAllForStatsVenteBurgerTotal($dateDebut = null, $dateFin = null, $recettes = null)
+    {
         // Requête
         $sqlQuery = "SELECT *
                     FROM burger_recette AS BR
