@@ -20,6 +20,9 @@ var idFournisseur = fournisseur.selectedOptions[0].value;
 // Variable qui contiendra le prix total du bdc
 var montantBdc;
 
+//Calcul du prix au lancement de la page
+calculerPrixTotalBdc();
+
 // Ajout de l'event listener pour l'événement "change"
 selectMenuDeroulantFournisseur.addEventListener("change", function () {
     // Code à exécuter lorsque l'événement "change" se produit
@@ -29,8 +32,30 @@ selectMenuDeroulantFournisseur.addEventListener("change", function () {
     recupererProduits(true);
 });
 
-//Calcul du prix au lancement de la page
-calculerPrixTotalBdc();
+
+//****************************************************************************************************************/
+//****************************************************************************************************************/
+
+
+function recupererProduits(booleen) {
+    afficherVisuelChargement();
+    $.ajax({
+        url: 'nouveaubdc/listeProduits',
+        type: 'POST',
+        dataType: 'json',
+        success: function (data) {
+            if (booleen)
+                majProduits(data);
+            else
+                ajouterLigne(data);
+            retirerVisuelChargement();
+        },
+
+        error: function (data) {
+            console.log('Bdc.js - BDC - error');
+        }
+    });
+}
 
 
 //****************************************************************************************************************/
@@ -63,7 +88,6 @@ function majProduits(data) {
         }
 
         for (var i = 0; i < nomProduit.length; i++) {
-
             selectElement.innerHTML += '<option name ="' + uniteProduit[i] + '" value="' + prixUnitaireProduit[i] + '" id = "' + idProduit[i] + '">' + nomProduit[i] + '</option>';
         }
     });
@@ -122,7 +146,7 @@ function ajouterLigne(data) {
     selectHtml += '</select>';
     produit.innerHTML = selectHtml;
 
-    quantite.innerHTML = '<input type="number" name="quantite" class="courbe espace" value=1>';
+    quantite.innerHTML = '<input type="number" min="0"; name="quantite" class="courbe espace" value=1>';
     unite.innerHTML = '<input type="text" name="unite" disabled class="courbe espace" value="' + uniteProduitParDefaut + '">';
     prix.innerHTML = '<input type="number" name="prix" disabled value ="' + prixProduitParDefaut + '" class="courbe espace">';
     idLigne.innerHTML = '<input type="hidden" name="id" value="' + idProduitParDefaut + '">';
@@ -141,7 +165,7 @@ function ajouterLigne(data) {
             var td2 = td1.nextElementSibling.nextElementSibling;
             var unite = td2.querySelector("input");
             unite.value = selectElement.selectedOptions[0].getAttribute('name');;
-            
+
             var td1 = selectElement.parentNode;
             var td3 = td1.nextElementSibling.nextElementSibling.nextElementSibling;
             var prix = td3.querySelector("input");
@@ -196,7 +220,7 @@ function retirerLigne(btn) {
 //****************************************************************************************************************/
 //****************************************************************************************************************/
 
-//Avant de valider le formulaire, on renomme tous les attributs "name" des balise html pour garantir leur transfert en POST
+//Avant de valider le formulaire, on renomme tous les attributs "name" identiques des balises pour garantir leur transfert en POST
 
 // Sélectionner l'élément <input> avec l'ID "submit"
 var boutonSubmit = document.getElementById("submit");
@@ -204,23 +228,40 @@ var boutonSubmit = document.getElementById("submit");
 // Ajouter un écouteur d'événements
 boutonSubmit.addEventListener("click", function () {
 
-    // Sélectionner tous les éléments <select> avec name="produit"
-    selectTousLesProduits = document.querySelectorAll('select[name="produit"]');
-    // Parcourir les éléments et modifier le nom
-    for (var i = 0; i < selectTousLesProduits.length; i++) {
-        selectTousLesProduits[i].name = "prix" + (i + 1);
-    }
-
-    selectTouteslesQuantites = document.querySelectorAll('input[name="quantite"]');
-    // Parcourir les éléments et modifier le nom
-    for (var i = 0; i < selectTouteslesQuantites.length; i++) {
-        selectTouteslesQuantites[i].name = "quantite" + (i + 1);
-    }
+    tableauId = [];
 
     selectTouslesId = document.querySelectorAll('input[name="id"]');
-    // Parcourir les éléments et modifier le nom
-    for (var i = 0; i < selectTouslesId.length; i++) {
-        selectTouslesId[i].name = "id" + (i + 1);
+    selectTouslesId.forEach(function (selectElement) {
+        tableauId.push(selectElement.value)
+    });
+
+    if (doublonExiste(tableauId)) {
+        event.preventDefault();
+        alert("Un même ingrédient ne peut apparaître que sur une ligne de votre bon de commande.")
+    }
+
+    else {
+
+        // Sélectionner tous les éléments <select> avec name="produit"
+        selectTousLesProduits = document.querySelectorAll('select[name="produit"]');
+        // Parcourir les éléments et modifier le nom
+        for (var i = 0; i < selectTousLesProduits.length; i++) {
+            selectTousLesProduits[i].name = "prix" + (i + 1);
+        }
+
+        selectTouteslesQuantites = document.querySelectorAll('input[name="quantite"]');
+        // Parcourir les éléments et modifier le nom
+        for (var i = 0; i < selectTouteslesQuantites.length; i++) {
+            selectTouteslesQuantites[i].name = "quantite" + (i + 1);
+        }
+
+        selectTouslesId = document.querySelectorAll('input[name="id"]');
+        // Parcourir les éléments et modifier le nom
+        for (var i = 0; i < selectTouslesId.length; i++) {
+            selectTouslesId[i].name = "id" + (i + 1);
+        }
+
+        alert("Votre commande a bien été validée.")
     }
 });
 
@@ -277,7 +318,7 @@ function ajusterPrixEtIdChaqueProduit() {
         var td2 = td1.nextElementSibling.nextElementSibling;
         var unite = td2.querySelector("input");
         unite.value = selectElement.selectedOptions[0].getAttribute('name');;
-        
+
         var td1 = selectElement.parentNode;
         var td3 = td1.nextElementSibling.nextElementSibling.nextElementSibling;
         var prix = td3.querySelector("input");
@@ -325,12 +366,12 @@ function placerEcouteursProduitsExistants() {
             var td2 = td1.nextElementSibling.nextElementSibling;
             var unite = td2.querySelector("input");
             unite.value = selectElement.selectedOptions[0].getAttribute('name');;
-            
+
             var td1 = selectElement.parentNode;
             var td3 = td1.nextElementSibling.nextElementSibling.nextElementSibling;
             var prix = td3.querySelector("input");
             prix.value = selectElement.value;
-    
+
             var td4 = td3.nextElementSibling;
             var id = td4.querySelector("input");
             id.value = selectElement.selectedOptions[0].id;
@@ -359,7 +400,6 @@ function placerEcouteursProduitsExistants() {
 
 
 function redirigerPageListeBdc() {
-
     window.location.href = `listebdc`;
 
 }
@@ -368,21 +408,53 @@ function redirigerPageListeBdc() {
 //****************************************************************************************************************/
 //****************************************************************************************************************/
 
+function afficherVisuelChargement() {
 
-function recupererProduits(booleen) {
-    $.ajax({
-        url: 'nouveaubdc/listeProduits',
-        type: 'POST',
-        dataType: 'json',
-        success: function (data) {
-            if (booleen)
-                majProduits(data);
-            else
-                ajouterLigne(data);
-        },
+    //On ajoute le visuel de chargement
 
-        error: function (data) {
-            console.log('Bdc.js - BDC - error');
-        }
-    });
+    //On créé des éléments
+    var sautLigne1 = document.createElement("br");
+    var iconeChargement = document.createElement("i");
+    iconeChargement.className = "fa-solid fa-spinner fa-spin";
+    var texteChargement = document.createTextNode("Chargement des ingrédients");
+    var sautLigne2 = document.createElement("br");
+
+    //On créé la nouvelle div
+    var nouvelleDiv = document.createElement("div");
+    nouvelleDiv.id = "chargement";
+    nouvelleDiv.className = "wrapper axe_colonne second_axe_center";
+
+    //On ajoute les éléments à la nouvelle div
+    nouvelleDiv.appendChild(sautLigne1);
+    nouvelleDiv.appendChild(iconeChargement);
+    nouvelleDiv.appendChild(texteChargement);
+    nouvelleDiv.appendChild(sautLigne2);
+
+    //on sélectionne une div existante
+    var divExistante = document.getElementById("box");
+
+    //On ajoute la nouvelle div à la div existante
+    divExistante.appendChild(nouvelleDiv);
+
+}
+
+
+//****************************************************************************************************************/
+//****************************************************************************************************************/
+
+
+function retirerVisuelChargement() {
+
+    //On retire le visuel de chargement
+    $("#chargement").remove();
+}
+
+
+//****************************************************************************************************************/
+//****************************************************************************************************************/
+
+
+function doublonExiste(array) {
+    var set = new Set(array);
+    return set.size !== array.length;
 }

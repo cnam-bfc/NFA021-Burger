@@ -1,9 +1,43 @@
-//On commence par récupérer les données en bdd
-afficherBDC();
+$(document).ready(function () {
+    afficherBDC();
+});
 
-// requête AJAX pour récupérer les commandes en bdd
+
+//****************************************************************************************************************/
+//****************************************************************************************************************/
+
+
+//requête AJAX pour récupérer les bdc en bdd
 function afficherBDC() {
+
     $("#bdc").empty();
+
+    //On ajoute le visuel de chargement
+
+    //On créé des éléments
+    var sautLigne1 = document.createElement("br");
+    var iconeChargement = document.createElement("i");
+    iconeChargement.className = "fa-solid fa-spinner fa-spin";
+    var texteChargement = document.createTextNode("Chargement des ingrédients");
+    var sautLigne2 = document.createElement("br");
+
+    //On créé la nouvelle div
+    var nouvelleDiv = document.createElement("div");
+    nouvelleDiv.id = "chargement";
+    nouvelleDiv.className = "wrapper axe_colonne second_axe_center";
+
+    //On ajoute les éléments à la nouvelle div
+    nouvelleDiv.appendChild(sautLigne1);
+    nouvelleDiv.appendChild(iconeChargement);
+    nouvelleDiv.appendChild(texteChargement);
+    nouvelleDiv.appendChild(sautLigne2);
+
+    //on sélectionne une div existante
+    var divExistante = document.getElementById("box");
+
+    //On ajoute la nouvelle div à la div existante
+    divExistante.appendChild(nouvelleDiv);
+
     $.ajax({
         url: 'listebdc/donnees',
         type: 'POST',
@@ -18,33 +52,41 @@ function afficherBDC() {
     })
 }
 
+
+//****************************************************************************************************************/
+//****************************************************************************************************************/
+
+
+//Méthode pour afficher les bdc
 function creerElements(data) {
-    $i = 1;
 
     data.forEach(element => {
 
         if (element.validation === null) {
-            // Créer la div conteneur
+            //Création de la div conteneur
             let conteneur = document.createElement('div');
-            conteneur.setAttribute('id', 'conteneur' + $i);
+            conteneur.setAttribute('id', 'conteneur' + element.id);
             conteneur.setAttribute('class', 'conteneur padding_petit margin_bottom_top_moyen');
+            let div = document.querySelector('#bdc');
+            div.appendChild(conteneur);
 
-            // Créer la div box_liste
+            //Création de la div box_liste
             let boxListe = document.createElement('div');
-            boxListe.setAttribute('id', 'bdc' + $i);
+            boxListe.setAttribute('id', 'bdc' + element.id);
             boxListe.setAttribute('class', 'box_liste ouvert');
+            conteneur.appendChild(boxListe);
 
             let titreBdc = document.createElement('h2');
-            titreBdc.setAttribute('id', 'numBdc' + $i);
+            titreBdc.setAttribute('id', 'numBdc' + element.id);
             titreBdc.setAttribute('class', 'bold');
             boxListe.appendChild(titreBdc);
 
             let nomFournisseur = document.createElement('p');
-            nomFournisseur.setAttribute('id', 'nomFournisseur' + $i);
+            nomFournisseur.setAttribute('id', 'nomFournisseur' + element.id);
             boxListe.appendChild(nomFournisseur);
 
             let montantHT = document.createElement('p');
-            montantHT.setAttribute('id', 'montantHT' + $i);
+            montantHT.setAttribute('id', 'montantHT' + element.id);
             boxListe.appendChild(montantHT);
 
             let btnValider = document.createElement('button');
@@ -59,24 +101,20 @@ function creerElements(data) {
             btnDetails.value = element.id;
             boxListe.appendChild(btnDetails);
 
-            // Ajouter boxListe à conteneur
-            conteneur.appendChild(boxListe);
-
-            // Ajouter conteneur au document
-            document.querySelector('.wrapper.axe_ligne.second_axe_center').appendChild(conteneur);
-
-            // Remplir les éléments avec les données reçues
-            document.getElementById('numBdc' + $i).textContent = "Bdc N°" + element.id;
-            document.getElementById('nomFournisseur' + $i).textContent = element.fournisseur;
-            document.getElementById('montantHT' + $i).textContent = "montant";
+            //On remplit les éléments avec les données reçues
+            document.getElementById('numBdc' + element.id).textContent = "Bdc N°" + element.id;
+            document.getElementById('nomFournisseur' + element.id).textContent = element.fournisseur;
+            document.getElementById('montantHT' + element.id).textContent = "montant";
         }
-        $i++;
+
+        //On retire le visuel de chargement
+        $("#chargement").remove();
+
     });
 
     //On récupère tous les boutons "détails"
-    const boutonsDet = document.querySelectorAll('.btn_details');
+    var boutonsDet = document.querySelectorAll('.btn_details');
 
-    //On parcourt les boutons
     boutonsDet.forEach(bouton => {
         //On place un écouteur sur chaque bouton
         bouton.addEventListener('click', (event) => {
@@ -87,9 +125,8 @@ function creerElements(data) {
 
 
     //On récupère tous les boutons "valider"
-    const boutonsVal = document.querySelectorAll('.btn_valider');
+    var boutonsVal = document.querySelectorAll('.btn_valider');
 
-    //On parcourt les boutons
     boutonsVal.forEach(bouton => {
         //On place un écouteur sur chaque bouton
         bouton.addEventListener('click', (event) => {
@@ -97,6 +134,11 @@ function creerElements(data) {
         });
     });
 }
+
+
+//****************************************************************************************************************/
+//****************************************************************************************************************/
+
 
 function validerBDC($id) {
     let json = ({
@@ -113,7 +155,7 @@ function validerBDC($id) {
             data: json
         },
         success: function (data) {
-            $("#bdc #conteneur" + data.id).remove();
+            $("#conteneur" + data.id).remove();
         },
 
         error: function (data) {
@@ -122,9 +164,11 @@ function validerBDC($id) {
     })
 }
 
+
+//****************************************************************************************************************/
+//****************************************************************************************************************/
+
+
 function redirigerPageNouveauBdc() {
     window.location.href = `nouveaubdc`;
 }
-
-
-

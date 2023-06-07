@@ -6,11 +6,12 @@
 
     <div class="wrapper axe_colonne second_axe_center">
         <h2 class="titre_bulle">Liste des produits</h2>
-    </div><br><br>
 
-    <div style="display:flex; flex-direction: row">
-        <button type="button" class='bouton' onclick="redirigerPageNouveauProduit()">Nouvel ingrédient</button>
-    </div><br>
+        <div style="display:flex; flex-direction: row">
+            <button type="button" class='bouton' onclick="redirigerPageNouveauProduit()">Nouvel ingrédient</button>
+        </div><br>
+
+    </div><br><br>
 
     <div style="display:flex; flex-direction: row">
         <label for="recherche"><i class="loupe fa-solid fa-magnifying-glass fa-lg" style="color: #000;"></i></i></label>
@@ -27,8 +28,9 @@
                     <th>Fournisseur</th>
                     <th>Stock</th>
                     <th>Stock Standard</th>
-                    <th class = 'hidding'>Id</th>
-                    <th><!-- Bouton de modification --></th>
+                    <th class='hidding'>Id</th>
+                    <th><!-- Bouton de modification -->Modifier</th>
+                    <th>Archiver</th>
                 </tr>
                 <tr></tr>
             </thead>
@@ -42,12 +44,14 @@
                         <td><img src=<?php echo $icone[$i]["img"]; ?> class='img'></td>
                         <td><?php echo $donnees->getNom(); ?></td>
                         <td><?php foreach ($fournisseur as $data) {
-                                    if ($data->getId() == $donnees->getIdFournisseur())
-                                        echo $data->getNom(); } ?></td>
+                                if ($data->getId() == $donnees->getIdFournisseur())
+                                    echo $data->getNom();
+                            } ?></td>
                         <td><?php echo $donnees->getQuantiteStock(); ?></td>
                         <td><?php echo $donnees->getQuantiteStandardStockAuto(); ?></td>
-                        <td class = 'hidding'><?php echo $donnees->getId(); ?></td>
-                        <td><img src=<?php echo $modifier[0]["img"]; ?> class='img' id='bouton'></td>
+                        <td class='hidding'><?php echo $donnees->getId(); ?></td>
+                        <td><img src=<?php echo $utile[0]["img"]; ?> class='img bouton' data-name='boutonModifier'></td>
+                        <td><img src=<?php echo $utile[1]["img"]; ?> class='img bouton' data-name='boutonArchiver'></td>
                     </tr>
                 <?php
                     $i++;
