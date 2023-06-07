@@ -6,6 +6,10 @@
 
 
 <div class="wrapper axe_colonne text-center">
+    <!-- <script type="text/javascript">
+        var chargement = $("<p><i class='fa-solid fa-spinner fa-spin'></i> Chargement des données</p>");
+        document.append(chargement);
+    </script> -->
     <div class="wrapper main_axe_space_around">
 
         <h3 class="titre titre_margin_top titre_margin_bottom">Vos Ingrédients</h1>
@@ -30,6 +34,7 @@
 
             <!-- Tableau contenant les ingrédients de la recette -->
             <table class="tableau">
+
                 <thead>
                     <tr>
                         <th><!-- Image --></th>

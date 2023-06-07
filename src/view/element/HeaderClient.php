@@ -29,6 +29,27 @@
                 <?php } ?>
             </li>
             <li><a href="<?php echo PUBLIC_FOLDER ?>panier"><i class="fa-solid fa-basket-shopping fa-2x header_icone"></i><span id="panier_indicateur"></span></a></li>
+            <!-- script pour mettre à jour l'indicateur à côté du panier -->
+            <script type="text/javascript">
+                $.ajax({
+                    url: "panier/getSessionPanier",
+                    method: "POST",
+                    dataType: "JSON",
+                    success: function(response) {
+                        console.log("responseGOOD");
+                        // Appeler la fonction de traitement du panier
+                        if (response.length != 0) {
+                            document.getElementById('panier_indicateur').textContent = response.length;
+                        } else {
+                            document.getElementById('panier_indicateur').textContent = "";
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.log("Erreur lors de la requête AJAX : " + error);
+                        console.log(xhr.responseText);
+                    }
+                });
+            </script>
         </ul>
     </nav>
 </header>
