@@ -81,6 +81,10 @@ CSS pour la partie Selection d'un graphe
     background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(34, 33, 33, 0.2));
 }
 
+#information {
+    margin-bottom: 20px;
+}
+
 /**
 CSS - Autre
 */
