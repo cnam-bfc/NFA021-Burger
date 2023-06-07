@@ -12,7 +12,8 @@ class ModifsBurgersController extends Controller
     public function getIngredients()
     {
 
-
+        $flecheG = IMG . 'Fleches/FlecheCourbeGauche';
+        $flecheD = IMG . 'Fleches/FlecheCourbeDroite';
 
         $idRecette = $_POST['id'];
 
@@ -45,7 +46,7 @@ class ModifsBurgersController extends Controller
             $unite = $uniteSelect->getNom();
             $imgEclatee = IMG . 'ingredients/' . $idIngredient . '/presentation.img';
 
-            $tabResult[] = array('nom' => $nom, "quantite" => $quantite, "unite" =>  $unite, "imgEclatee" => $imgEclatee, 'ordre' => $ordreIngredient, 'nom Recette' => $nomRecette);
+            $tabResult[] = array('nom' => $nom, "quantite" => $quantite, "unite" =>  $unite, "imgEclatee" => $imgEclatee, 'ordre' => $ordreIngredient, 'nom Recette' => $nomRecette, 'flecheDroite' => $flecheD, 'flecheGauche' => $flecheG);
         }
 
 
@@ -100,5 +101,4 @@ class ModifsBurgersController extends Controller
         $view->json = $_SESSION['panier'];
         $view->renderView();
     }
-    
 }
