@@ -21,7 +21,7 @@ $(function () {
         let h2 = $("<h2>").addClass("bold").text(data.nom);
 
         //Création du bouton pour ajouter au panier
-        let bouton = $("<button>").addClass("");
+        let bouton = $("<button>").addClass("boutonRecette");
         // Ajout des balises dans la div
         a.append(img, h2);
         div.append(a);
