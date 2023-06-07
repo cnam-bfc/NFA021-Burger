@@ -111,6 +111,7 @@ class Router
         'cuisinier' => ["controller" => "EcranCuisineController", "method" => "renderView"],
         'cuisinier/recette' => ["controller" => "RecetteCuisineController", "method" => "renderView"],
         'cuisinier/listeCommandes' => ["controller" => "EcranCuisineController", "method" => "listeCommandes"],
+        'cuisinier/supprimer' => ["controller" => "EcranCuisineController", "method" => "supprimerCommande"],
 
 
         // PARTIE LIVREUR

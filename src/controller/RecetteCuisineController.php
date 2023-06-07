@@ -20,10 +20,7 @@ class RecetteCuisineController extends Controller
 
         // Création des objets DAO
 
-        $recetteFinaleDAO = new RecetteFinaleDAO();
-        $recetteFinaleIngredientDAO = new RecetteFinaleIngredientDAO();
-        $ingredientDAO = new IngredientDAO();
-        $uniteDAO = new UniteDAO();
+
 
         // Création du json
         $json = array();
