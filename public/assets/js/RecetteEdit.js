@@ -83,8 +83,7 @@ $(function () {
                 celluleDiv.addClass("wrapper axe_ligne main_axe_center second_axe_center");
                 let inputQuantite = $("<input>").attr({
                     type: "number",
-                    min: 0,
-                    minlenght: 1,
+                    min: 1,
                     max: 999999,
                     step: 1,
                     value: element.quantite,
