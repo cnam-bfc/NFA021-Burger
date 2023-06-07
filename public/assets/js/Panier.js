@@ -92,6 +92,9 @@ function processPanier(panier) {
         prixTotal = parseFloat(prixTotal);
         prixTotal = parseFloat(prixTotal) + parseFloat(panier[i]["prixRecette"]);
 
+        //arrondir à 2 décimales le prix total
+        prixTotal = prixTotal.toFixed(2);
+
 
 
         //ici une boucle for est nécessaire pour parcourir les ingrédients de la variable de Session['panier']
@@ -184,6 +187,10 @@ function commander() {
         // créer une commande en Bdd
         // amener à la page choix Livraison/Click & Collect
         console.log("div pas vide");
+
+        // Remplacez l'URL par l'adresse de la page recap
+        window.location.href = 'recap';
+
     }
     else {
 

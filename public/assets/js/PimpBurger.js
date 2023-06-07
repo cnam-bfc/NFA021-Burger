@@ -242,6 +242,7 @@ function afficherTabModifBurger(ingredient, response) {
                 //si la ligne de l'ingrédient a un bouton Retirer
 
                 if (elemBouton.childNodes[0].textContent == "RETIRER") {
+                    tabNomIngrARemettre.push(elemEnfantsDeLigne[1].textContent);
 
 
                     for (var q = 0; q < elemEnfantsDeLigne[2].firstChild.firstChild.value; q++) {
@@ -256,7 +257,7 @@ function afficherTabModifBurger(ingredient, response) {
 
 
             }
-            console.log("tabIngrédients à remettre")
+            console.log("tabIngrédients à remettre");
             console.log(tabNomIngrARemettre); //// CE TABLEAU EST OK
 
             //parcourir le tableau et mettre tous les ingrédients qui ne sont pas à quantite 0;
@@ -451,7 +452,6 @@ $(document).ready(function () {
                 error: function (xhr, status, error) {
                     console.log("Erreur lors de la requête AJAX : " + error);
                     console.log(xhr.responseText);
-
                 }
             });
 
