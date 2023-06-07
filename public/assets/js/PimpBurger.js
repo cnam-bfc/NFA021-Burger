@@ -16,6 +16,8 @@ var incrementPourLesInputs = 0;
 
 
 function showData(BurgerID) {
+    let chargement = $("<p><i class='fa-solid fa-spinner fa-spin'></i> Chargement des données</p>");
+    $('#affichage').append(chargement);
 
     idRecette = BurgerID;
     //console.log(BurgerID + " = BurgerID");

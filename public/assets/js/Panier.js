@@ -189,11 +189,9 @@ function commander() {
         console.log("div pas vide");
 
         // Remplacez l'URL par l'adresse de la page recap
-        window.location.href = 'recap';
-
+        window.location.href = 'collectLivraison';
     }
     else {
-
         console.log("div vide");
     }
 }

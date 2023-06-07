@@ -12,7 +12,7 @@
     </script> -->
     <div class="wrapper main_axe_space_around">
 
-        <h3 class="titre titre_margin_top titre_margin_bottom">Vos Ingrédients</h1>
+        <h3 class="titre_souligne titre_margin_top titre_margin_bottom">Vos Ingrédients</h1>
 
 
     </div>
@@ -30,7 +30,7 @@
 
         <!-- ************************* DEBUT - EXEMPLE TABLEAU ************************* -->
         <div class="wrapper axe_colonne second_axe_center" id="modifier">
-            <h2 class="zoneTxtGris">Modifier la recette</h2>
+
 
             <!-- Tableau contenant les ingrédients de la recette -->
             <table class="tableau">
@@ -63,10 +63,7 @@
 
 
 
-        <h2 class="zoneTxtGris">Ajouter des suppléments</h2>
-        <div id="supplements">
 
-        </div>
         <!--#supplements-->
     </div><!--#ModifsBurgers-->
 
