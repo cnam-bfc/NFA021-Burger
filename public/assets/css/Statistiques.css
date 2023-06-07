@@ -103,6 +103,7 @@ CSS - Autre
 }
 
 .graphe > div{
+    margin-left: auto;
     display:flex;
     flex-direction: row;
     gap: 10px;
