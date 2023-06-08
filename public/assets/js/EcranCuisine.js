@@ -68,6 +68,7 @@ $(function () {
         let champDateHeure = data.date_remise;
         let parties = champDateHeure.split(" ");
         let heure = parties[1];
+        heure = heure.substring(0, heure.length - 3);
         //Heure Livraison de la commande
         let divHeureCom = $("<div>").addClass("temps_com");
         divHeureCom.text(heure);
@@ -168,7 +169,7 @@ $(function () {
 
         let div = $("<div>").addClass("wrapper box_sans_bordure margin_large");
 
-        let h2 = $("<h2>").addClass("bold").html("<i class='fa-spinner'></i> Chargement des recettes...");
+        let h2 = $("<h2>").addClass("bold").html("<i class='fa-solid fa-spinner fa-spin'></i> Chargement des recettes...");
 
         div.append(h2);
         divPrincipale.append(div);

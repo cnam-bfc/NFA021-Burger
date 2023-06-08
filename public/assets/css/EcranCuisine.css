@@ -66,6 +66,7 @@ div .temps_com {
     background: dimgray;
     justify-content: center;
     text-align: center;
+    display : fixed;
 }
 
 div .temps_com p  {

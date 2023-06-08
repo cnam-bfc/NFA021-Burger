@@ -41,5 +41,10 @@ class CarteMenuController extends Controller
 
 
     }
+
+    public function ajoutPanier() {
+
+
+    }
 }
 

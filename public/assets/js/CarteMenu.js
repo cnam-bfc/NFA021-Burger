@@ -6,7 +6,7 @@ $(function () {
     // Fonction permettant d'ajouter un div contenant le burger dans la div principale
     function addBurger (data) {
         // Création de la div contenant le burger
-        let div = $("<div>").addClass("wrapper box margin_large");
+        let div = $("<div>").addClass("wrapper box axe_colonne margin_large");
         div.attr("id", data.id);
 
         // Création de la balise de navigation
@@ -20,11 +20,12 @@ $(function () {
         // Création de la balise contenant le nom
         let h2 = $("<h2>").addClass("bold").text(data.nom);
 
-        //Création du bouton pour ajouter au panier
-        let bouton = $("<button>").addClass("boutonRecette");
+        // Création du bouton contenant la balise d'ajout au panier
+        let boutonAjoutPanier = $("<button>").html("<i class='fa-solid fa-plus fa-l'></i>").addClass("boutonAjout");
+
         // Ajout des balises dans la div
         a.append(img, h2);
-        div.append(a);
+        div.append(a, boutonAjoutPanier);
         divPrincipale.append(div);
     }
 

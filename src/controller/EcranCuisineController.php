@@ -161,8 +161,6 @@ class EcranCuisineController extends Controller
 
             }
 
-
-
             //Récupération de l'heure de livraison de la commande
 
 
