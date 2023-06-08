@@ -12,8 +12,8 @@ class ModifsBurgersController extends Controller
     public function getIngredients()
     {
 
-        $flecheG = IMG . 'Fleches/FlecheCourbeGauche';
-        $flecheD = IMG . 'Fleches/FlecheCourbeDroite';
+        $flecheG = IMG . 'Fleches/FlecheCourbeGauche.png';
+        $flecheD = IMG . 'Fleches/FlecheCourbeDroite.png';
 
         $idRecette = $_POST['id'];
 
@@ -28,12 +28,69 @@ class ModifsBurgersController extends Controller
         $RecetteDAO = new RecetteDAO();
         $uniteDao = new UniteDAO();
 
+        //DAO recette selection multiple (if yes)
+        $rSelectionMultiple = new RecetteSelectionMultipleDAO();
+        $tabRecettesSelectionMultiple = $rSelectionMultiple->selectAllByIdRecette((int)$idRecette);
 
-        //Récupération du prix de la Recette
+        //DAO ingrédient recette selection multiple
+        //si la recette a des selection multiple
+
+        $tabResult = array();
         $Recette = $RecetteDAO->selectById((int)$idRecette);
         $prix = $Recette->getPrix();
         $nomRecette = $Recette->getNom();
-        $tabResult = array();
+
+        if ($tabRecettesSelectionMultiple != null) {
+
+
+            //je récupère les id recetteSelectionMultiple
+            // $tabRecetteSelectionMutipleId = array();
+            foreach ($tabRecettesSelectionMultiple as $r) {
+                // array_push($tabRecetteSelectionMutipleId,$r->getId());
+                $nom = array();
+                $quantite  = array();
+                $nom = array();
+                $unite = array();
+                $imgEclatee = array();
+                $ordreIngredient = array();
+
+
+                $iSelectionMultiple = new IngredientRecetteSelectionMultipleDAO();
+                $tabIngreidentsRecetteSM = $iSelectionMultiple->selectAllByIdSelectionMultipleRecette($r->getId());
+                foreach ($tabIngreidentsRecetteSM as $i) {
+                    $Ingredient = $ingredientDAO->selectById((int) $i->getIdIngredient);
+
+
+                    $idIngredient = $Ingredient->getId();
+
+                    $Ingredient = $ingredientDAO->selectById((int) $idIngredient);
+                    $n = $Ingredient->getNom();
+                    $q = $i->getQuantite();
+
+                    $idUnite = $Ingredient->getIdUnite();
+                    $uniteSelect = $uniteDao->selectById($idUnite);
+                    $u = $uniteSelect->getNom();
+                    $img = IMG . 'ingredients/' . $idIngredient . '/eclate.img';
+
+                    array_push($nom, $n);
+                    array_push($quantite, $q);
+                    array_push($unite, $u);
+                    array_push($imgEclatee, $img);
+                }
+                $ordreIngredient = $r->getOrdre();
+                $aChoisir = $r->getQuantite();
+
+
+                $tabResult[] = array('nom' => $nom, "quantite" => $quantite, "unite" =>  $unite, "imgEclatee" => $imgEclatee, 'ordre' => $ordreIngredient, 'nom Recette' => $nomRecette, 'flecheDroite' => $flecheD, 'flecheGauche' => $flecheG, 'aChoisir' => $aChoisir, 'selectMultiple' => true);
+            }
+
+            //dans foreach verifier l'ingrédient avec id ingredient_fk
+        }
+
+
+        //Récupération du prix de la Recette
+
+
 
         foreach ($IngredientsBasiques as $IngredientBasique) {
             $idIngredient = $IngredientBasique->getIdIngredient();
@@ -44,9 +101,9 @@ class ModifsBurgersController extends Controller
             $idUnite = $Ingredient->getIdUnite();
             $uniteSelect = $uniteDao->selectById($idUnite);
             $unite = $uniteSelect->getNom();
-            $imgEclatee = IMG . 'ingredients/' . $idIngredient . '/presentation.img';
+            $imgEclatee = IMG . 'ingredients/' . $idIngredient . '/eclate.img';
 
-            $tabResult[] = array('nom' => $nom, "quantite" => $quantite, "unite" =>  $unite, "imgEclatee" => $imgEclatee, 'ordre' => $ordreIngredient, 'nom Recette' => $nomRecette, 'flecheDroite' => $flecheD, 'flecheGauche' => $flecheG);
+            $tabResult[] = array('nom' => $nom, "quantite" => $quantite, "unite" =>  $unite, "imgEclatee" => $imgEclatee, 'ordre' => $ordreIngredient, 'nom Recette' => $nomRecette, 'flecheDroite' => $flecheD, 'flecheGauche' => $flecheG, 'selectionMultiple' => false);
         }
 
 

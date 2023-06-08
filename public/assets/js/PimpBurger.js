@@ -44,9 +44,11 @@ function showData(BurgerID) {
             for (var i = 0; i < response[0][0].length; i++) {
 
 
-                afficherCompoBurger(response[0][0][i]);
+                afficherCompoBurger(response[0][0][i], 0);
 
                 afficherTabModifBurger(response[0][0][i], response[0][0]);
+                console.log(response[0][0][i]);
+                console.log(response[0][0]);
             }
             //afficher le prix ici : 
 
@@ -73,299 +75,588 @@ function showData(BurgerID) {
 
 
 
-function afficherCompoBurger(ingredient) {
-
-    /*déclaration de mes const pour implémenter ma page de manière générique*/
+function afficherCompoBurger(ingredient, i) {
     const decompositionBurger = document.getElementById("affichage");
-    const nbElem = decompositionBurger.childNodes.length;
-    const div1Ligne = document.createElement("div");
-    div1Ligne.className = "wrapper axe_ligne";
-    const divTxt = document.createElement("div");
-    divTxt.className = "txt";
-    const p = document.createElement("p");
-    divTxt.appendChild(p);
-    p.textContent = ingredient["quantite"] + " " + ingredient['unite'] + " " + ingredient["nom"];
+
+    if (ingredient['selectionMultiple']) {
+
+        //code pour selection multiple
+        /*déclaration de mes const pour implémenter ma page de manière générique*/
+
+        const nbElem = decompositionBurger.childNodes.length;
+        const div1Ligne = document.createElement("div");
+        div1Ligne.className = "wrapper axe_ligne";
+        const divTxt = document.createElement("div");
+        divTxt.className = "txt";
+        const p = document.createElement("p");
+        divTxt.appendChild(p);
+        p.textContent = ingredient["quantite"][i] + " " + ingredient['unite'][i] + " " + ingredient["nom"][i];
 
 
 
-    const divFleche = document.createElement("div");
-    divFleche.className = "fleche";
-    const divVide = document.createElement("div");
-    divVide.className = "vide";
-    const divVide2 = document.createElement("div");
-    divVide2.className = "vide";
+        const divFleche = document.createElement("div");
+        divFleche.className = "fleche";
+        const divVide = document.createElement("div");
+        divVide.className = "vide";
+        const divVide2 = document.createElement("div");
+        divVide2.className = "vide";
 
-    const divPhoto = document.createElement("div");
-    divPhoto.className = "centre";
+        const divPhoto = document.createElement("div");
+        divPhoto.className = "centre";
 
-    const ingrPicture = document.createElement("img");
-    ingrPicture.src = ingredient["imgEclatee"];
-    divPhoto.appendChild(ingrPicture);
+        const ingrPicture = document.createElement("img");
+        ingrPicture.src = ingredient["imgEclatee"][i];
+        divPhoto.appendChild(ingrPicture);
 
-    /* fin de déclaration  des variables*/
-    if (nbElem % 2 == 0) {
-        // Ajouter une nouvelle ligne pour les ingrédients pairs
-        decompositionBurger.appendChild(div1Ligne);
-        const lastLine = decompositionBurger.lastChild;
+        /* fin de déclaration  des variables*/
+        if (nbElem % 2 == 0) {
+            // Ajouter une nouvelle ligne pour les ingrédients pairs
+            decompositionBurger.appendChild(div1Ligne);
+            const lastLine = decompositionBurger.lastChild;
 
-        // Ajouter le texte contenant le nom de l'ingrédient
-        lastLine.appendChild(divTxt);
-
-
-        // Ajouter la flèche courbée vers la gauche
-        const fleche = document.createElement("img");
-        fleche.src = ingredient['flecheGauche'];
-        divFleche.appendChild(fleche);
-        lastLine.appendChild(divFleche);
-
-        // Ajouter la photo de l'ingrédient
-        lastLine.appendChild(divPhoto);
+            // Ajouter le texte contenant le nom de l'ingrédient
+            lastLine.appendChild(divTxt);
 
 
-        // ingrPicture.src = "<?php echo IMG; ?>......";
+            // Ajouter la flèche courbée vers la gauche
+            const fleche = document.createElement("img");
+            fleche.src = ingredient['flecheGauche'];
+            divFleche.appendChild(fleche);
+            lastLine.appendChild(divFleche);
 
-        // Ajouter deux div vides pour aligner les ingrédients
-        lastLine.appendChild(divVide);
-        lastLine.appendChild(divVide2);
-    } else {
-        // Ajouter une nouvelle ligne pour les ingrédients impairs
-        decompositionBurger.appendChild(div1Ligne);
-        const lastLine = decompositionBurger.lastChild;
+            // Ajouter la photo de l'ingrédient
+            lastLine.appendChild(divPhoto);
 
-        // Ajouter deux div vides pour aligner les ingrédients
-        lastLine.appendChild(divVide);
-        lastLine.appendChild(divVide2);
 
-        // Ajouter la photo de l'ingrédient
-        lastLine.appendChild(divPhoto);
+            // ingrPicture.src = "<?php echo IMG; ?>......";
+
+            // Ajouter deux div vides pour aligner les ingrédients
+            lastLine.appendChild(divVide);
+            lastLine.appendChild(divVide2);
+        } else {
+            // Ajouter une nouvelle ligne pour les ingrédients impairs
+            decompositionBurger.appendChild(div1Ligne);
+            const lastLine = decompositionBurger.lastChild;
+
+            // Ajouter deux div vides pour aligner les ingrédients
+            lastLine.appendChild(divVide);
+            lastLine.appendChild(divVide2);
+
+            // Ajouter la photo de l'ingrédient
+            lastLine.appendChild(divPhoto);
+            const ingrPicture = document.createElement("img");
+            ingrPicture.src = ingredient["imgEclatee"][i];
+            console.log("image eclate : " + ingredient["imgEclatee"][i]);
+
+            // ingrPicture.src = "<?php echo IMG; ?>....";
+
+            // Ajouter la flèche courbée vers la droite
+            const fleche = document.createElement("img");
+            fleche.src = ingredient['flecheDroite'];
+            divFleche.appendChild(fleche);
+            lastLine.appendChild(divFleche);
+
+            // Ajouter le texte contenant le nom de l'ingrédient
+            lastLine.appendChild(divTxt);
+
+
+        }
+
+    }
+    else {
+
+        /*déclaration de mes const pour implémenter ma page de manière générique*/
+
+        const nbElem = decompositionBurger.childNodes.length;
+        const div1Ligne = document.createElement("div");
+        div1Ligne.className = "wrapper axe_ligne";
+        const divTxt = document.createElement("div");
+        divTxt.className = "txt";
+        const p = document.createElement("p");
+        divTxt.appendChild(p);
+        p.textContent = ingredient["quantite"] + " " + ingredient['unite'] + " " + ingredient["nom"];
+
+
+
+        const divFleche = document.createElement("div");
+        divFleche.className = "fleche";
+        const divVide = document.createElement("div");
+        divVide.className = "vide";
+        const divVide2 = document.createElement("div");
+        divVide2.className = "vide";
+
+        const divPhoto = document.createElement("div");
+        divPhoto.className = "centre";
+
         const ingrPicture = document.createElement("img");
         ingrPicture.src = ingredient["imgEclatee"];
+        divPhoto.appendChild(ingrPicture);
 
-        // ingrPicture.src = "<?php echo IMG; ?>....";
+        /* fin de déclaration  des variables*/
+        if (nbElem % 2 == 0) {
+            // Ajouter une nouvelle ligne pour les ingrédients pairs
+            decompositionBurger.appendChild(div1Ligne);
+            const lastLine = decompositionBurger.lastChild;
 
-        // Ajouter la flèche courbée vers la droite
-        const fleche = document.createElement("img");
-        fleche.src = ingredient['flecheDroite'];
-        divFleche.appendChild(fleche);
-        lastLine.appendChild(divFleche);
+            // Ajouter le texte contenant le nom de l'ingrédient
+            lastLine.appendChild(divTxt);
 
-        // Ajouter le texte contenant le nom de l'ingrédient
-        lastLine.appendChild(divTxt);
+
+            // Ajouter la flèche courbée vers la gauche
+            const fleche = document.createElement("img");
+            fleche.src = ingredient['flecheGauche'];
+            divFleche.appendChild(fleche);
+            lastLine.appendChild(divFleche);
+
+            // Ajouter la photo de l'ingrédient
+            lastLine.appendChild(divPhoto);
+
+
+            // ingrPicture.src = "<?php echo IMG; ?>......";
+
+            // Ajouter deux div vides pour aligner les ingrédients
+            lastLine.appendChild(divVide);
+            lastLine.appendChild(divVide2);
+        } else {
+            // Ajouter une nouvelle ligne pour les ingrédients impairs
+            decompositionBurger.appendChild(div1Ligne);
+            const lastLine = decompositionBurger.lastChild;
+
+            // Ajouter deux div vides pour aligner les ingrédients
+            lastLine.appendChild(divVide);
+            lastLine.appendChild(divVide2);
+
+            // Ajouter la photo de l'ingrédient
+            lastLine.appendChild(divPhoto);
+            const ingrPicture = document.createElement("img");
+            ingrPicture.src = ingredient["imgEclatee"];
+            console.log("image eclate : " + ingredient["imgEclatee"]);
+
+            // ingrPicture.src = "<?php echo IMG; ?>....";
+
+            // Ajouter la flèche courbée vers la droite
+            const fleche = document.createElement("img");
+            fleche.src = ingredient['flecheDroite'];
+            divFleche.appendChild(fleche);
+            lastLine.appendChild(divFleche);
+
+            // Ajouter le texte contenant le nom de l'ingrédient
+            lastLine.appendChild(divTxt);
+
+
+        }
+    }
+}
+
+
+function afficherTabModifBurger(ingredient, response, indice) {
+
+    const tbodyModif = document.getElementById("tbodyMod");
+    incrementPourLesInputs++;
+
+    if (ingredient['selectionMultiple']) {
+        //Déclaration des constantes pour cette function
+
+
+        const tr = document.createElement("tr");
+
+
+        const tdImage = document.createElement("td");
+        const ingrPicture = document.createElement("img");
+        ingrPicture.src = ingredient["imgEclatee"][indice];
+        tdImage.appendChild(ingrPicture);
+
+
+        const ingredientNom = ingredient["nom"][indice];//
+        const tdNom = document.createElement("td");
+        tdNom.textContent = ingredientNom;
+
+        const quantiteIngrdient = ingredient["quantite"][indice];
+        const tdQuantiteIngr = document.createElement("td");//
+        const divQuantIngr = document.createElement("div");//
+        divQuantIngr.className = "wrapper main_axe_center second_axe_center";
+        const inputQuantIngr = document.createElement("input");//
+        inputQuantIngr.className = 'quantiteIngr';
+
+        inputQuantIngr.setAttribute('id', 'inputQuantite' + ingredient["nom"][indice] + incrementPourLesInputs);
+        inputQuantIngr.setAttribute('type', 'text');
+        inputQuantIngr.setAttribute('readonly', 'readonly');
+        inputQuantIngr.setAttribute('value', quantiteIngrdient + " " + ingredient['unite'][indice]);
+
+        divQuantIngr.appendChild(inputQuantIngr);// ici on insert les éléments les uns dans les autres, en partant de la fin
+        tdQuantiteIngr.appendChild(divQuantIngr);
+
+
+        //bouton
+        const tdBouton = document.createElement("td");
+        const boutonRetirer = document.createElement("button");
+        boutonRetirer.className = 'boutonRetirer';
+        boutonRetirer.textContent = "RETIRER";
+
+        //EVENT LISTENER SUR LE BOUTON REMETTRE/RETIRER
+        boutonRetirer.addEventListener("click", function () {
+
+
+            if (this.textContent == "RETIRER") {
+                ///////////////////////////////////////
+                console.log(this.parentNode.parentNode.children[2].children[0].children[0]);
+                this.parentNode.parentNode.children[2].children[0].children[0].setAttribute('value', 0);
+
+                this.className = "boutonRemettre";
+                this.textContent = "REMETTRE";
+
+
+
+                const tabBodyModif = document.getElementById("tbodyMod");
+                const nbElem = tabBodyModif.childNodes.length;
+
+
+                //à partir de ça, il faut que j'arrive à metre chaque ingrédient qui un bouton RETIRER, dans le tableau qui suit
+                const tabNomIngrARemettre = [];
+
+
+
+
+
+                //boucle qui parcours donc les lignes de mon tableau tabModifs
+                for (let index = 1; index < nbElem; index++) {
+                    // Récupération du nom de l'ingrédient dans une ligne du tableau modif 
+                    const ligneEnfants = tabBodyModif.childNodes;
+                    const elemEnfantsDeLigne = ligneEnfants[index].childNodes;
+                    console.log("tabModifs 1 ligne");
+                    console.log(elemEnfantsDeLigne);
+
+                    //nom Ingredient
+                    console.log(elemEnfantsDeLigne[1].textContent);
+                    console.log(elemEnfantsDeLigne);
+
+                    // Bouton
+                    const elemBouton = elemEnfantsDeLigne[3];
+
+
+                    //si la ligne de l'ingrédient a un bouton Retirer
+
+                    if (elemBouton.childNodes[0].textContent == "RETIRER") {
+                        tabNomIngrARemettre.push(elemEnfantsDeLigne[1].textContent);
+
+                    }
+
+
+                }
+                console.log("tabIngrédients à remettre");
+                console.log(tabNomIngrARemettre); //// CE TABLEAU EST OK
+
+                //parcourir le tableau et mettre tous les ingrédients qui ne sont pas à quantite 0;
+                /////////////////////////////////////////////////////////////////////////////////////////////
+                //vide la div#affichage
+
+                var affichageDiv = document.getElementById("affichage");
+                affichageDiv.innerHTML = "";
+                console.log("div affichage");
+                console.log(affichageDiv.childNodes);
+
+
+                //rempli la div affichage avec les nouvelles données
+                console.log("response ligne 265");
+                console.log(response);
+                for (var i = 0; i < response.length; i++) {
+
+                    //if (tabNomIngrARemettre.includes(response[i]["nom"])) {
+                    if (tabNomIngrARemettre.includes(response[i]["nom"][indice])) {
+                        console.log("&&&&&&&&&&");
+                        console.log(response[i][indice]);
+
+                        afficherCompoBurger(response[i][indice]);
+                    }
+
+
+                }
+            }
+            else {
+
+
+                this.parentNode.parentNode.children[2].children[0].children[0].setAttribute('value', ingredient['quantite'][indice] + " " + ingredient['unite'][indice]);
+                this.className = "boutonRetirer";
+                this.textContent = "RETIRER";
+
+
+                //je vide ala div affichage pour ensuite la re-remplir avec les ingredient qui ont une quantité !=0 
+                $("affichage").empty();
+
+                //à partir de ça, il faut que j'arrive à metre chaque ingrédient qui un bouton Remmettre, dans la boucle for qui suit.
+                const tabNomIngrARemettre = [];
+                //variables qui vont me permettre de faire ça
+                const tabBodyModif = document.getElementById("tbodyMod");
+                const nbElem = tabBodyModif.childNodes.length;
+
+
+                //boucle qui parcours donc les lignes de mon tableau
+                for (let index = 1; index < nbElem; index++) {
+                    // Récupération du nom de l'ingrédient dans une ligne du tableau modif 
+                    const ligneEnfants = tabBodyModif.childNodes;
+                    const elemEnfantsDeLigne = ligneEnfants[index].childNodes;
+                    console.log("tabModifs 1 ligne");
+                    console.log(elemEnfantsDeLigne);
+                    console.log(elemEnfantsDeLigne[1].textContent); //nom Ingredient
+                    console.log(elemEnfantsDeLigne);
+                    const elemBouton = elemEnfantsDeLigne[3];
+                    console.log('elemBouton');
+                    console.log(elemBouton);
+
+                    //si la ligne de l'ingrédient a un bouton Retirer
+
+                    if (elemBouton.childNodes[0].textContent == "RETIRER") {
+                        tabNomIngrARemettre.push(elemEnfantsDeLigne[1].textContent);
+                        console.log("elemEnfantDeLigne");
+                        console.log(elemEnfantsDeLigne[1].textContent);
+                    }
+
+                }
+                console.log(tabNomIngrARemettre);
+
+                //parcourir le tableau et mettre tous les ingrédients qui ne sont pas à quantite 0;
+
+                //vide la div#affichage
+                var affichageDiv = document.getElementById("affichage");
+                affichageDiv.innerHTML = "";
+
+                //rempli la div affichage avec les nouvelles données
+                for (var i = 0; i < response.length; i++) {
+                    console.log("responsei")
+                    console.log(response[i]["nom"][indice]);
+                    if (tabNomIngrARemettre.includes(response[i]["nom"][indice])) {
+                        console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                        console.log(response[i][indice]);
+
+                        afficherCompoBurger(response[i][indice]);
+
+                    }
+                }
+
+
+            };
+        });
+        tdBouton.appendChild(boutonRetirer);//
+
+        /*<input class="input" type="number" min="0" max="99" step="1"> */
+
+        //ajout de toute les cellules <td> décrites auparavant, à la ligne <tr> du tableau
+        tr.appendChild(tdImage);
+        tr.appendChild(tdNom);
+        tr.appendChild(tdQuantiteIngr);
+        tr.appendChild(tdBouton);
+        tbodyModif.appendChild(tr);
+
+
+
+        ////ajouter un bouton pour swap entre les aliments échangeables
+
+        //faire l'Event Listener de ce bouton
+
+    }
+    else {
+        //Déclaration des constantes pour cette function
+
+
+        const tr = document.createElement("tr");
+
+
+        const tdImage = document.createElement("td");
+        const ingrPicture = document.createElement("img");
+        ingrPicture.src = ingredient["imgEclatee"];
+        tdImage.appendChild(ingrPicture);
+
+
+        const ingredientNom = ingredient["nom"];//
+        const tdNom = document.createElement("td");
+        tdNom.textContent = ingredientNom;
+
+        const quantiteIngrdient = ingredient["quantite"];
+        const tdQuantiteIngr = document.createElement("td");//
+        const divQuantIngr = document.createElement("div");//
+        divQuantIngr.className = "wrapper main_axe_center second_axe_center";
+        const inputQuantIngr = document.createElement("input");//
+        inputQuantIngr.className = 'quantiteIngr';
+
+        inputQuantIngr.setAttribute('id', 'inputQuantite' + ingredient["nom"] + incrementPourLesInputs);
+        inputQuantIngr.setAttribute('type', 'text');
+        inputQuantIngr.setAttribute('readonly', 'readonly');
+        inputQuantIngr.setAttribute('value', quantiteIngrdient + " " + ingredient['unite']);
+
+        divQuantIngr.appendChild(inputQuantIngr);// ici on insert les éléments les uns dans les autres, en partant de la fin
+        tdQuantiteIngr.appendChild(divQuantIngr);
+
+
+        //bouton
+        const tdBouton = document.createElement("td");
+        const boutonRetirer = document.createElement("button");
+        boutonRetirer.className = 'boutonRetirer';
+        boutonRetirer.textContent = "RETIRER";
+
+        //EVENT LISTENER SUR LE BOUTON REMETTRE/RETIRER
+        boutonRetirer.addEventListener("click", function () {
+
+
+            if (this.textContent == "RETIRER") {
+                ///////////////////////////////////////
+                console.log(this.parentNode.parentNode.children[2].children[0].children[0]);
+                this.parentNode.parentNode.children[2].children[0].children[0].setAttribute('value', 0);
+
+                this.className = "boutonRemettre";
+                this.textContent = "REMETTRE";
+
+
+
+                const tabBodyModif = document.getElementById("tbodyMod");
+                const nbElem = tabBodyModif.childNodes.length;
+
+
+                //à partir de ça, il faut que j'arrive à metre chaque ingrédient qui un bouton RETIRER, dans le tableau qui suit
+                const tabNomIngrARemettre = [];
+
+
+
+
+
+                //boucle qui parcours donc les lignes de mon tableau tabModifs
+                for (let index = 1; index < nbElem; index++) {
+                    // Récupération du nom de l'ingrédient dans une ligne du tableau modif 
+                    const ligneEnfants = tabBodyModif.childNodes;
+                    const elemEnfantsDeLigne = ligneEnfants[index].childNodes;
+                    console.log("tabModifs 1 ligne");
+                    console.log(elemEnfantsDeLigne);
+
+                    //nom Ingredient
+                    console.log(elemEnfantsDeLigne[1].textContent);
+                    console.log(elemEnfantsDeLigne);
+
+                    // Bouton
+                    const elemBouton = elemEnfantsDeLigne[3];
+
+
+                    //si la ligne de l'ingrédient a un bouton Retirer
+
+                    if (elemBouton.childNodes[0].textContent == "RETIRER") {
+                        tabNomIngrARemettre.push(elemEnfantsDeLigne[1].textContent);
+                        console.log("EEEEEEEEEEEEEEEEEEEEEE")
+
+
+                    }
+
+
+                }
+                console.log("tabIngrédients à remettre");
+                console.log(tabNomIngrARemettre); //// CE TABLEAU EST OK
+
+                //parcourir le tableau et mettre tous les ingrédients qui ne sont pas à quantite 0;
+                /////////////////////////////////////////////////////////////////////////////////////////////
+                //vide la div#affichage
+
+                var affichageDiv = document.getElementById("affichage");
+                affichageDiv.innerHTML = "";
+                console.log("div affichage");
+                console.log(affichageDiv.childNodes);
+
+
+                //rempli la div affichage avec les nouvelles données
+                console.log("response ligne 265");
+                console.log(response);
+                for (var i = 0; i < response.length; i++) {
+
+                    //if (tabNomIngrARemettre.includes(response[i]["nom"])) {
+                    if (tabNomIngrARemettre.includes(response[i]["nom"])) {
+                        console.log("&&&&&&&&&&");
+                        console.log(response[i]);
+
+                        afficherCompoBurger(response[i]);
+                    }
+
+
+                }
+            }
+            else {
+
+
+                this.parentNode.parentNode.children[2].children[0].children[0].setAttribute('value', ingredient['quantite'] + " " + ingredient['unite']);
+                this.className = "boutonRetirer";
+                this.textContent = "RETIRER";
+
+
+                //je vide ala div affichage pour ensuite la re-remplir avec les ingredient qui ont une quantité !=0 
+                $("affichage").empty();
+
+                //à partir de ça, il faut que j'arrive à metre chaque ingrédient qui un bouton Remmettre, dans la boucle for qui suit.
+                const tabNomIngrARemettre = [];
+                //variables qui vont me permettre de faire ça
+                const tabBodyModif = document.getElementById("tbodyMod");
+                const nbElem = tabBodyModif.childNodes.length;
+
+
+                //boucle qui parcours donc les lignes de mon tableau
+                for (let index = 1; index < nbElem; index++) {
+                    // Récupération du nom de l'ingrédient dans une ligne du tableau modif 
+                    const ligneEnfants = tabBodyModif.childNodes;
+                    const elemEnfantsDeLigne = ligneEnfants[index].childNodes;
+                    console.log("tabModifs 1 ligne");
+                    console.log(elemEnfantsDeLigne);
+                    console.log(elemEnfantsDeLigne[1].textContent); //nom Ingredient
+                    console.log(elemEnfantsDeLigne);
+                    const elemBouton = elemEnfantsDeLigne[3];
+                    console.log('elemBouton');
+                    console.log(elemBouton);
+
+                    //si la ligne de l'ingrédient a un bouton Retirer
+
+                    if (elemBouton.childNodes[0].textContent == "RETIRER") {
+                        tabNomIngrARemettre.push(elemEnfantsDeLigne[1].textContent);
+                        console.log("elemEnfantDeLigne");
+                        console.log(elemEnfantsDeLigne[1].textContent);
+                    }
+
+                }
+                console.log(tabNomIngrARemettre);
+
+                //parcourir le tableau et mettre tous les ingrédients qui ne sont pas à quantite 0;
+
+                //vide la div#affichage
+                var affichageDiv = document.getElementById("affichage");
+                affichageDiv.innerHTML = "";
+
+                //rempli la div affichage avec les nouvelles données
+                for (var i = 0; i < response.length; i++) {
+                    console.log("responsei")
+                    console.log(response[i]["nom"]);
+                    if (tabNomIngrARemettre.includes(response[i]["nom"])) {
+                        console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                        console.log(response[i]);
+
+                        afficherCompoBurger(response[i]);
+
+                    }
+                }
+
+
+            };
+        });
+        tdBouton.appendChild(boutonRetirer);//
+
+        /*<input class="input" type="number" min="0" max="99" step="1"> */
+
+        //ajout de toute les cellules <td> décrites auparavant, à la ligne <tr> du tableau
+        tr.appendChild(tdImage);
+        tr.appendChild(tdNom);
+        tr.appendChild(tdQuantiteIngr);
+        tr.appendChild(tdBouton);
+        tbodyModif.appendChild(tr);
 
 
     }
 }
 
 
-function afficherTabModifBurger(ingredient, response) {
-    incrementPourLesInputs++;
-
-    const tbodyModif = document.getElementById("tbodyMod");
-
-    //Déclaration des constantes pour cette function
-
-
-    const tr = document.createElement("tr");
-
-
-    const tdImage = document.createElement("td");
-    const ingrPicture = document.createElement("img");
-    ingrPicture.src = ingredient["imgEclatee"];
-    tdImage.appendChild(ingrPicture);
-
-
-    const ingredientNom = ingredient["nom"];//
-    const tdNom = document.createElement("td");
-    tdNom.textContent = ingredientNom;
-
-    const quantiteIngrdient = ingredient["quantite"];
-    const tdQuantiteIngr = document.createElement("td");//
-    const divQuantIngr = document.createElement("div");//
-    divQuantIngr.className = "wrapper main_axe_center second_axe_center";
-    const inputQuantIngr = document.createElement("input");//
-    inputQuantIngr.className = 'quantiteIngr';
-
-    inputQuantIngr.setAttribute('id', 'inputQuantite' + ingredient["nom"] + incrementPourLesInputs);
-    inputQuantIngr.setAttribute('type', 'text');
-    inputQuantIngr.setAttribute('readonly', 'readonly');
-    inputQuantIngr.setAttribute('value', quantiteIngrdient + " " + ingredient['unite']);
-
-    divQuantIngr.appendChild(inputQuantIngr);// ici on insert les éléments les uns dans les autres, en partant de la fin
-    tdQuantiteIngr.appendChild(divQuantIngr);
-
-
-    //bouton
-    const tdBouton = document.createElement("td");
-    const boutonRetirer = document.createElement("button");
-    boutonRetirer.className = 'boutonRetirer';
-    boutonRetirer.textContent = "RETIRER";
-
-    //EVENT LISTENER SUR LE BOUTON REMETTRE/RETIRER
-    boutonRetirer.addEventListener("click", function () {
-
-
-        if (this.textContent == "RETIRER") {
-            ///////////////////////////////////////
-            console.log(this.parentNode.parentNode.children[2].children[0].children[0]);
-            this.parentNode.parentNode.children[2].children[0].children[0].setAttribute('value', 0);
-
-            this.className = "boutonRemettre";
-            this.textContent = "REMETTRE";
-
-
-
-            const tabBodyModif = document.getElementById("tbodyMod");
-            const nbElem = tabBodyModif.childNodes.length;
-
-
-            //à partir de ça, il faut que j'arrive à metre chaque ingrédient qui un bouton RETIRER, dans le tableau qui suit
-            const tabNomIngrARemettre = [];
-
-
-
-
-
-            //boucle qui parcours donc les lignes de mon tableau tabModifs
-            for (let index = 1; index < nbElem; index++) {
-                // Récupération du nom de l'ingrédient dans une ligne du tableau modif 
-                const ligneEnfants = tabBodyModif.childNodes;
-                const elemEnfantsDeLigne = ligneEnfants[index].childNodes;
-                console.log("tabModifs 1 ligne");
-                console.log(elemEnfantsDeLigne);
-
-                //nom Ingredient
-                console.log(elemEnfantsDeLigne[1].textContent);
-                console.log(elemEnfantsDeLigne);
-
-                // Bouton
-                const elemBouton = elemEnfantsDeLigne[3];
-
-
-                //si la ligne de l'ingrédient a un bouton Retirer
-
-                if (elemBouton.childNodes[0].textContent == "RETIRER") {
-                    tabNomIngrARemettre.push(elemEnfantsDeLigne[1].textContent);
-
-
-                    for (var q = 0; q < elemEnfantsDeLigne[2].firstChild.firstChild.value; q++) {
-                        tabNomIngrARemettre.push(elemEnfantsDeLigne[1].textContent);
-                        console.log("quantite truc : ")
-                        console.log(elemEnfantsDeLigne[1].firstChild.textContent)
-
-                        console.log(elemEnfantsDeLigne[2].firstChild.firstChild.value);
-
-                    }
-                }
-
-
-            }
-            console.log("tabIngrédients à remettre");
-            console.log(tabNomIngrARemettre); //// CE TABLEAU EST OK
-
-            //parcourir le tableau et mettre tous les ingrédients qui ne sont pas à quantite 0;
-            /////////////////////////////////////////////////////////////////////////////////////////////
-            //vide la div#affichage
-
-            var affichageDiv = document.getElementById("affichage");
-            affichageDiv.innerHTML = "";
-            console.log("div affichage");
-            console.log(affichageDiv.childNodes);
-
-
-            //rempli la div affichage avec les nouvelles données
-            console.log("response ligne 265");
-            console.log(response);
-            for (var i = 0; i < response.length; i++) {
-
-                //if (tabNomIngrARemettre.includes(response[i]["nom"])) {
-                if (tabNomIngrARemettre.includes(response[i]["nom"])) {
-
-
-                    afficherCompoBurger(response[i]);
-                }
-
-
-            }
-        }
-        else {
-
-
-            this.parentNode.parentNode.children[2].children[0].children[0].setAttribute('value', ingredient['quantite'] + " " + ingredient['unite']);
-            this.className = "boutonRetirer";
-            this.textContent = "RETIRER";
-
-
-            //je vide ala div affichage pour ensuite la re-remplir avec les ingredient qui ont une quantité !=0 
-            $("affichage").empty();
-
-            //à partir de ça, il faut que j'arrive à metre chaque ingrédient qui un bouton Remmettre, dans la boucle for qui suit.
-            const tabNomIngrARemettre = [];
-            //variables qui vont me permettre de faire ça
-            const tabBodyModif = document.getElementById("tbodyMod");
-            const nbElem = tabBodyModif.childNodes.length;
-
-
-            //boucle qui parcours donc les lignes de mon tableau
-            for (let index = 1; index < nbElem; index++) {
-                // Récupération du nom de l'ingrédient dans une ligne du tableau modif 
-                const ligneEnfants = tabBodyModif.childNodes;
-                const elemEnfantsDeLigne = ligneEnfants[index].childNodes;
-                console.log("tabModifs 1 ligne");
-                console.log(elemEnfantsDeLigne);
-                console.log(elemEnfantsDeLigne[1].textContent); //nom Ingredient
-                console.log(elemEnfantsDeLigne);
-                const elemBouton = elemEnfantsDeLigne[3];
-                console.log('elemBouton');
-                console.log(elemBouton);
-
-                //si la ligne de l'ingrédient a un bouton Retirer
-
-                if (elemBouton.childNodes[0].textContent == "RETIRER")
-                    tabNomIngrARemettre.push(elemEnfantsDeLigne[1].textContent);
-
-
-            }
-            console.log(tabNomIngrARemettre);
-
-            //parcourir le tableau et mettre tous les ingrédients qui ne sont pas à quantite 0;
-
-            //vide la div#affichage
-            var affichageDiv = document.getElementById("affichage");
-            affichageDiv.innerHTML = "";
-
-            //rempli la div affichage avec les nouvelles données
-            for (var i = 0; i < response.length; i++) {
-                if (tabNomIngrARemettre.includes(response[i]["nom"])) {
-
-                    afficherCompoBurger(response[i]);
-
-                }
-
-            }
-
-
-        };
-    });
-    tdBouton.appendChild(boutonRetirer);//
-
-    /*<input class="input" type="number" min="0" max="99" step="1"> */
-
-    //ajout de toute les cellules <td> décrites auparavant, à la ligne <tr> du tableau
-    tr.appendChild(tdImage);
-    tr.appendChild(tdNom);
-    tr.appendChild(tdQuantiteIngr);
-    tr.appendChild(tdBouton);
-    tbodyModif.appendChild(tr);
-
-
-}
-
-
 
 
 $(document).ready(function () {
-
-
 
 
 
@@ -420,9 +711,7 @@ $(document).ready(function () {
 
                 if (elemBouton.childNodes[0].textContent == "RETIRER") {
 
-                    if (!tabIngrFinaux.includes(elemEnfantsDeLigne[1].textContent))
-                        tabIngrFinaux.push(elemEnfantsDeLigne[1].textContent, elemEnfantsDeLigne[2].firstChild.firstChild.value);
-
+                    tabNomIngrARemettre.push(elemEnfantsDeLigne[1].textContent);
                 }
 
 
