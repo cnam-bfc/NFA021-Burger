@@ -22,6 +22,25 @@ $(function () {
 
         // Création du bouton contenant la balise d'ajout au panier
         let boutonAjoutPanier = $("<button>").html("<i class='fa-solid fa-plus fa-l'></i>").addClass("boutonAjout");
+        boutonAjoutPanier.click(function () {
+
+            $.ajax({
+                url: "carte/ajoutPanier",
+                method: "POST",
+                data: {
+                    id : data.id,
+                },
+                dataType: "json",
+                success: function (data) {
+                        // Avertir l'utilisateur
+                        alert("Le burger à été ajouté au panier");
+                },
+                error: function (data) {
+                    // Avertir l'utilisateur
+                    alert("Erreur de l'ajout du burger au panier");
+                }
+            });
+        });
 
         // Ajout des balises dans la div
         a.append(img, h2);
