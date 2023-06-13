@@ -49,7 +49,7 @@ $(function () {
             boutonRecette.append(recetteText);
 
             boutonRecette.click(function () {
-                window.open("cuisinier/recette?id=" + element.id,'Recette','menubar=no, scrollbars=no, top=auto, left=auto, width=1000, height=700, position=absolute' );
+                window.open("cuisinier/recette?id=" + element.idrecette +"&idcc=" + data.id + "&idrf=" + element.id,'Recette','menubar=no, scrollbars=no, top=auto, left=auto, width=1000, height=700, position=absolute' );
             });
 
             divContenu.append(boutonRecette);

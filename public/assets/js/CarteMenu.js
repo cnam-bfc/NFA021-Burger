@@ -34,10 +34,12 @@ $(function () {
                 success: function (data) {
                         // Avertir l'utilisateur
                         alert("Le burger à été ajouté au panier");
+                        location.reload();
                 },
                 error: function (data) {
                     // Avertir l'utilisateur
                     alert("Erreur de l'ajout du burger au panier");
+                    location.reload();
                 }
             });
         });

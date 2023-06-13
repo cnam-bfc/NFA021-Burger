@@ -154,6 +154,7 @@ class EcranCuisineController extends Controller
                 //Formatage des recettes finales en json
                 $jsonRecetteFinales[] = array(
                     'id' => $recetteFinale->getId(),
+                    'idrecette' => $recette->getId(),
                     'nom' => $recette->getNom(),
                     'quantite' => $recetteFinale->getQuantite(),
                     'ingredients' => $jsonRecetteFinaleIngredients,

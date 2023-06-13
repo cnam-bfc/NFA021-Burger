@@ -33,6 +33,9 @@ class CarteMenuController extends Controller
             $json['data'][] = $jsonRecette;
 
         }
+        usort($json['data'], function ($a, $b) {
+            return $a['id'] <=> $b['id'];
+        });
 
         $view = new View(BaseTemplate::JSON);
         $view->json = $json;
@@ -43,6 +46,7 @@ class CarteMenuController extends Controller
     }
 
     public function ajoutPanier() {
+
 
         if (!isset($_SESSION['panier'])) {
 
@@ -97,10 +101,11 @@ class CarteMenuController extends Controller
             if ($unite === null) {
                 continue;
             }
-            $quantite = $ingredientRecetteBasique->getQuantite() . ' ' . $unite->getNom();
+            $quantite = $ingredientRecetteBasique->getQuantite() . ' ' . $unite->getDiminutif();
             // Construction du json de l'ingrédient
             $jsonIngredients[] = [
-                $ingredient->getNom(), $quantite,
+                'nom' => $ingredient->getNom(),
+                'quantite' =>  $quantite,
 
             ];
         }
@@ -109,10 +114,11 @@ class CarteMenuController extends Controller
             'prixRecette' => $recette->getPrix(),
             'nomRecette' => $recette->getNom(),
             'idRecette' => $recette->getId(),
+            'carteburger' => true,
             'ingredientsFinaux' => $jsonIngredients,
         );
 
-        $_SESSION['panier'] = $json;
+        $_SESSION['panier'][] = $json;
 
         $view = new View(BaseTemplate::JSON);
 

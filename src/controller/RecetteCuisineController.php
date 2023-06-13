@@ -6,6 +6,8 @@ class RecetteCuisineController extends Controller
     {
         // Récupération de l'id de la recette à afficher vue éclatée
         $recetteId = Form::getParam('id', Form::METHOD_GET, Form::TYPE_INT);
+        $comClientId = Form::getParam('idcc', Form::METHOD_GET, Form::TYPE_INT);
+        $recetteFinaleId = Form::getParam('idrf', Form::METHOD_GET, Form::TYPE_INT);
 
         // Création des objets DAO
 
@@ -18,6 +20,7 @@ class RecetteCuisineController extends Controller
         // Création des objets DAO
         $recetteDAO = new RecetteDAO();
         $recetteFinaleDAO = new RecetteFinaleDAO();
+        $recetteFinaleIngredientDAO = new RecetteFinaleIngredientDAO();
         $recetteIngredientBasiqueDAO = new RecetteIngredientBasiqueDAO();
         $ingredientDAO = new IngredientDAO();
         $uniteDAO = new UniteDAO();
@@ -32,6 +35,10 @@ class RecetteCuisineController extends Controller
 
         $recette = $recetteDAO->selectById($recetteId);
 
+        $recetteFinale = $recetteFinaleDAO->selectAllByIdRecetteAndIdComClient($recetteId, $comClientId);
+
+        $recetteFinaleIngredients = $recetteFinaleIngredientDAO->selectAllByIdRecetteFinale($recetteFinaleId);
+
         // Récupération des ingrédients
         $ingredients = $ingredientDAO->selectAll();
 
@@ -40,12 +47,12 @@ class RecetteCuisineController extends Controller
 
         $jsonRecette = array();
 
-        foreach ($ingredientsBasiques as $ingredientBasique) {
+        foreach ($recetteFinaleIngredients as $ingredientFinal) {
             /** @var Ingredient $ingredient */
             $ingredient = null;
             // Récupération de l'ingrédient
             foreach ($ingredients as $ingredientTmp) {
-                if ($ingredientTmp->getId() === $ingredientBasique->getIdIngredient()) {
+                if ($ingredientTmp->getId() === $ingredientFinal->getIdIngredient()) {
                     $ingredient = $ingredientTmp;
                     break;
                 }
@@ -71,23 +78,23 @@ class RecetteCuisineController extends Controller
                 continue;
             }
 
-            if($ingredient->isAfficherVueEclatee() == 1) {
-                // Construction du json de l'ingrédient
-                $jsonIngredient = array(
-                    'ordre' => $ingredientBasique->getOrdre(),
-                    'nom' => $ingredient->getNom(),
-                    'quantite' => $ingredientBasique->getQuantite(),
-                    'unite' => $unite->getDiminutif(),
-                    'image' => IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'eclate.img',
-                );
+            if ($ingredient->isAfficherVueEclatee() == 1) {
+                $image = IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'eclate.img';
             } else {
-                // Construction du json de l'ingrédient
+                $image = IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'presentation.img';
+            }
+            if ($ingredientFinal->getQuantite() == 0)
+            {
+                continue;
+            }
+            else
+            {
                 $jsonIngredient = array(
-                    'ordre' => $ingredientBasique->getOrdre(),
+                    'ordre' => $ingredientFinal->getOrdre(),
                     'nom' => $ingredient->getNom(),
-                    'quantite' => $ingredientBasique->getQuantite(),
+                    'quantite' => $ingredientFinal->getQuantite(),
                     'unite' => $unite->getDiminutif(),
-                    'image' => IMG . 'ingredients' . DIRECTORY_SEPARATOR . $ingredient->getId() . DIRECTORY_SEPARATOR . 'presentation.img',
+                    'image' => $image,
                 );
             }
 

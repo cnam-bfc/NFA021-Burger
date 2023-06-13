@@ -53,11 +53,15 @@ $(function () {
         divPrincipale.append(div);
 
         let idRecette = url.searchParams.get("id");
+        let idCommande = url.searchParams.get("idcc");
+        let idRecetteFinale = url.searchParams.get("idrf");
         $.ajax({
             url: "recette/afficheBurger",
             method: "GET",
             data: {
-                id: idRecette
+                id: idRecette,
+                idcc: idCommande,
+                idrf: idRecetteFinale,
             },
             dataType: "json",
             success: function (data) {
