@@ -61,6 +61,7 @@ $(function () {
                 router: router,
                 routeWhileDragging: false,
                 draggableWaypoints: false,
+                addWaypoints: false,
                 show: true,
                 autoRoute: false,
                 createMarker: function () {
