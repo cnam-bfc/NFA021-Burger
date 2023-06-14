@@ -1,5 +1,3 @@
-
-
 var panier;
 
 //cette fonction doit lire la variable de session Panier
@@ -31,7 +29,6 @@ function showData() {
         }
     });
 }
-
 
 
 // Fonction de traitement du panier
@@ -70,7 +67,6 @@ function processPanier(panier) {
         theadBurger.appendChild(tr1);
 
 
-
         tr1.appendChild(buttonSupprimer);
 
         //2ème Partie du tableau
@@ -98,28 +94,56 @@ function processPanier(panier) {
         console.log("panier i")
         console.log(panier[i]);
         //ici une boucle for est nécessaire pour parcourir les ingrédients de la variable de Session['panier']
-        for (let index = 0; index < panier[i]["ingredientsFinaux"].length; index++) {
-            const ingredient = panier[i]["ingredientsFinaux"][index].ingredient;
-            const quantite = panier[i]["ingredientsFinaux"][index].quantite;
+        if (panier[i]["carteburger"] === true) {
+            for (let index = 0; index < panier[i]["ingredientsFinaux"].length; index++) {
+                if (panier[i]["ingredientsFinaux"][index] === null) {
+                    continue;
+                } else {
+                    const ingredient = panier[i]["ingredientsFinaux"][index]['nom'];
+                    const quantite = panier[i]["ingredientsFinaux"][index]['quantite'];
 
-            //je créer la ligne qui contient 1 ingrédient
-            const ligneIngr = document.createElement("tr");
-            const cellIngr = document.createElement("td");
-            const cellNumb = document.createElement("td");
-            cellIngr.setAttribute('id', 'Ingredient');
-            cellNumb.setAttribute('id', 'Quantite');
-            cellIngr.textContent = ingredient;
-            cellNumb.textContent = quantite;
+                    //je créer la ligne qui contient 1 ingrédient
+                    const ligneIngr = document.createElement("tr");
+                    const cellIngr = document.createElement("td");
+                    const cellNumb = document.createElement("td");
+                    cellIngr.setAttribute('id', 'Ingredient');
+                    cellNumb.setAttribute('id', 'Quantite');
+                    cellIngr.textContent = ingredient;
+                    cellNumb.textContent = quantite;
 
 
-            //je mets les 2 cellulles dans la ligne
-            ligneIngr.appendChild(cellIngr);
-            ligneIngr.appendChild(cellNumb);
+                    //je mets les 2 cellulles dans la ligne
+                    ligneIngr.appendChild(cellIngr);
+                    ligneIngr.appendChild(cellNumb);
 
-            // je mets la ligne dans la 2nde partie du tableau
-            tbodyBurger.appendChild(ligneIngr);
+                    // je mets la ligne dans la 2nde partie du tableau
+                    tbodyBurger.appendChild(ligneIngr);
+                }
+            }
+        } else {
+            for (let index = 0; index < panier[i]["ingredientsFinaux"].length; index += 2) {
+                const ingredient = panier[i]["ingredientsFinaux"][index];
+                const quantite = panier[i]["ingredientsFinaux"][index + 1];
+
+                //je créer la ligne qui contient 1 ingrédient
+                const ligneIngr = document.createElement("tr");
+                const cellIngr = document.createElement("td");
+                const cellNumb = document.createElement("td");
+                cellIngr.setAttribute('id', 'Ingredient');
+                cellNumb.setAttribute('id', 'Quantite');
+                cellIngr.textContent = ingredient;
+                cellNumb.textContent = quantite;
+
+
+                //je mets les 2 cellulles dans la ligne
+                ligneIngr.appendChild(cellIngr);
+                ligneIngr.appendChild(cellNumb);
+
+                // je mets la ligne dans la 2nde partie du tableau
+                tbodyBurger.appendChild(ligneIngr);
+
+            }
         }
-
 
 
         //je constitue ma divBurger
@@ -140,8 +164,6 @@ function processPanier(panier) {
     PanierDiv.appendChild(divTotal);
     console.log("divTotal OK");
 }
-
-
 
 
 function supprimer(idElem) {
@@ -171,7 +193,6 @@ function supprimer(idElem) {
             panierIndicateur.textContent = parseInt(panierIndicateur.textContent) - 1;
 
 
-
         },
         error: function (xhr, status, error) {
             // Une erreur s'est produite lors de la requête
@@ -191,8 +212,7 @@ function commander() {
 
         // Remplacez l'URL par l'adresse de la page recap
         window.location.href = 'collectLivraison';
-    }
-    else {
+    } else {
         console.log("div vide");
     }
 }
