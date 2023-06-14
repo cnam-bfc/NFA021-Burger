@@ -15,8 +15,8 @@ class ModifsBurgersController extends Controller
         $flecheG = IMG . 'Fleches/FlecheCourbeGauche.png';
         $flecheD = IMG . 'Fleches/FlecheCourbeDroite.png';
 
-        // $idRecette = $_POST['id'];
-        $idRecette = 8;
+        $idRecette = $_POST['id'];
+        
 
 
         /*Jusque là c'est good*/
@@ -104,7 +104,7 @@ class ModifsBurgersController extends Controller
             $quantite = $IngredientBasique->getQuantite();
             $idUnite = $Ingredient->getIdUnite();
             $uniteSelect = $uniteDao->selectById($idUnite);
-            $unite = $uniteSelect->getNom();
+            $unite = $uniteSelect->getDiminutif();
             $imgEclatee = IMG . 'ingredients/' . $idIngredient . '/eclate.img';
 
             $tabResult[] = array('nom' => $nom, "quantite" => $quantite, "unite" =>  $unite, "imgEclatee" => $imgEclatee, 'ordre' => $ordreIngredient, 'nom Recette' => $nomRecette, 'flecheDroite' => $flecheD, 'flecheGauche' => $flecheG, 'selectMultiple' => false);
