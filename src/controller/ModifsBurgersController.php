@@ -12,10 +12,12 @@ class ModifsBurgersController extends Controller
     public function getIngredients()
     {
 
-        $flecheG = IMG . 'Fleches/FlecheCourbeGauche';
-        $flecheD = IMG . 'Fleches/FlecheCourbeDroite';
+        $flecheG = IMG . 'Fleches/FlecheCourbeGauche.png';
+        $flecheD = IMG . 'Fleches/FlecheCourbeDroite.png';
 
-        $idRecette = $_POST['id'];
+        // $idRecette = $_POST['id'];
+        $idRecette = 8;
+
 
         /*Jusque là c'est good*/
         $IngredientRecetteBasiqueDAO = new RecetteIngredientBasiqueDAO();
@@ -28,12 +30,71 @@ class ModifsBurgersController extends Controller
         $RecetteDAO = new RecetteDAO();
         $uniteDao = new UniteDAO();
 
+        //DAO recette selection multiple (if yes)
+        $rSelectionMultiple = new RecetteSelectionMultipleDAO();
+        $tabRecettesSelectionMultiple = $rSelectionMultiple->selectAllByIdRecette((int)$idRecette);
 
-        //Récupération du prix de la Recette
+        //DAO ingrédient recette selection multiple
+        //si la recette a des selection multiple
+
+        $tabResult = array();
         $Recette = $RecetteDAO->selectById((int)$idRecette);
         $prix = $Recette->getPrix();
         $nomRecette = $Recette->getNom();
-        $tabResult = array();
+
+        if ($tabRecettesSelectionMultiple != null) {
+
+
+            //je récupère les id recetteSelectionMultiple
+            // $tabRecetteSelectionMutipleId = array();
+            foreach ($tabRecettesSelectionMultiple as $r) {
+                // array_push($tabRecetteSelectionMutipleId,$r->getId());
+                $nom = array();
+                $quantite  = array();
+                $nom = array();
+                $unite = array();
+                $imgEclatee = array();
+                $ordreIngredient = array();
+
+
+                $iSelectionMultiple = new IngredientRecetteSelectionMultipleDAO();
+                $tabIngreidentsRecetteSM = $iSelectionMultiple->selectAllByIdSelectionMultipleRecette($r->getId());
+                foreach ($tabIngreidentsRecetteSM as $i) {
+                    // var_dump($i);
+                    $Ingredient = $ingredientDAO->selectById((int) $i->getIdIngredient());
+
+
+                    $idIngredient = $Ingredient->getId();
+
+                    $Ingredient = $ingredientDAO->selectById((int) $idIngredient);
+                    $n = $Ingredient->getNom();
+                    $q = $i->getQuantite();
+
+                    $idUnite = $Ingredient->getIdUnite();
+                    $uniteSelect = $uniteDao->selectById($idUnite);
+                    $u = $uniteSelect->getDiminutif();
+                    $img = IMG . 'ingredients/' . $idIngredient . '/eclate.img';
+
+                    $nom[] = $n;
+                    $quantite[] = $q;
+                    $unite[] = $u;
+                    $imgEclatee[] = $img;
+                }
+                $ordreIngredient = $r->getOrdre();
+                //combien d'ingrédient à choisir parmis les 4 par exemple
+                $aChoisir = $r->getQuantite();
+
+
+                $tabResult[] = array('nom' => $nom, "quantite" => $quantite, "unite" =>  $unite, "imgEclatee" => $imgEclatee, 'ordre' => $ordreIngredient, 'nom Recette' => $nomRecette, 'flecheDroite' => $flecheD, 'flecheGauche' => $flecheG, 'aChoisir' => $aChoisir, 'selectMultiple' => true);
+            }
+
+            //dans foreach verifier l'ingrédient avec id ingredient_fk
+        }
+
+
+        //Récupération du prix de la Recette
+
+
 
         foreach ($IngredientsBasiques as $IngredientBasique) {
             $idIngredient = $IngredientBasique->getIdIngredient();
@@ -44,9 +105,9 @@ class ModifsBurgersController extends Controller
             $idUnite = $Ingredient->getIdUnite();
             $uniteSelect = $uniteDao->selectById($idUnite);
             $unite = $uniteSelect->getNom();
-            $imgEclatee = IMG . 'ingredients/' . $idIngredient . '/presentation.img';
+            $imgEclatee = IMG . 'ingredients/' . $idIngredient . '/eclate.img';
 
-            $tabResult[] = array('nom' => $nom, "quantite" => $quantite, "unite" =>  $unite, "imgEclatee" => $imgEclatee, 'ordre' => $ordreIngredient, 'nom Recette' => $nomRecette, 'flecheDroite' => $flecheD, 'flecheGauche' => $flecheG);
+            $tabResult[] = array('nom' => $nom, "quantite" => $quantite, "unite" =>  $unite, "imgEclatee" => $imgEclatee, 'ordre' => $ordreIngredient, 'nom Recette' => $nomRecette, 'flecheDroite' => $flecheD, 'flecheGauche' => $flecheG, 'selectMultiple' => false);
         }
 
 
@@ -58,8 +119,9 @@ class ModifsBurgersController extends Controller
             return ($a['ordre'] < $b['ordre']) ? -1 : 1;
         });
 
-        $tabRecette[] = array($tabResult, $prix, $nomRecette);
-
+        $tabRecette = array($tabResult, $prix, $nomRecette);
+        // echo ("resultat");
+        // var_dump($tabRecette);
 
         $view = new View(BaseTemplate::JSON, null);
 

@@ -21,7 +21,7 @@
             <h2 class="box_titre">Delivery</h2>
             <div class="box_contenu">
                 <!-- Champ pour le code Postal-->
-                <div class="form-input" >
+                <div class="form-input">
                     <label for="cp">Code Postal</label>
                     <input type="text" id="cp" name="cp" placeholder="XX XXX" pattern="[0-9]{5}" required required>
                 </div>
@@ -71,8 +71,32 @@
                 <!--image du restaurant-->
                 <img src="<?php echo IMG; ?>Logo/LogoElanChalonImage.png"></img>
                 <div class="form-input">
-                    <label for="heureCollect">Choisir une heure:</label>
-                    <input type="time" id="heureCollect" name="heureCollect" min="<?php echo date('H:i', ceil(time() / 900) * 900); ?>" max="<?php echo date('H:i', floor(time() / 900) * 900 + 86400); ?>" step="900" required value="<?php echo date('H:i', ceil((time() + 1200) / 900) * 900); ?>">
+                    <label for="heureCollect">Choisir une heure :</label>
+                    <select id="heureCollect" name="heureCollect" required>
+                    </select>
+
+                    <script>
+                        // Date actuelle
+                        let heure = new Date();
+                        // On récupère l'heure actuelle au quart d'heure supérieur
+                        heure.setMinutes(Math.ceil(heure.getMinutes() / 15) * 15);
+
+                        // On affiche les 12 prochains quarts d'heure
+                        for (let i = 0; i < 12; i++) {
+                            let heureTimestamp = heure.getTime();
+                            let heureString = heure.getHours() + ":" + heure.getMinutes();
+                            if (heure.getMinutes() < 10) {
+                                heureString += "0";
+                            }
+                            // On ajoute une option au select
+                            document.getElementById("heureCollect").innerHTML += "<option value='" + heureTimestamp + "'>" + heureString + "</option>";
+                            // On ajoute 15 minutes à l'heure
+                            heure.setMinutes(heure.getMinutes() + 15);
+                        }
+                    </script>
+
+
+
                 </div>
                 <div class="form-input">
                     <label for="prenom">Votre Prénom :</label>
