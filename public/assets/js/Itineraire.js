@@ -45,12 +45,20 @@ $(function () {
             let destinationMarker = L.marker([lat, lon]).addTo(map);
             destinationMarker.bindPopup(display_name).openPopup();
 
+            // Création du routeur (OSRM, vélo, français)
+            let router = L.Routing.osrmv1({
+                serviceUrl: 'https://router.project-osrm.org/route/v1',
+                profile: 'cycling',
+                language: 'fr'
+            });
+
             // Ajout du chemin entre la position actuelle et la destination
             let routingControl = L.Routing.control({
                 waypoints: [
                     currentLocationMarker.getLatLng(),
                     L.latLng(lat, lon)
                 ],
+                router: router,
                 routeWhileDragging: false,
                 draggableWaypoints: false,
                 show: true,
