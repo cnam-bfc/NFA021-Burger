@@ -12,7 +12,7 @@
     </script> -->
     <div class="wrapper main_axe_space_around">
 
-        <h3 class="titre_souligne titre_margin_top titre_margin_bottom">Vos Ingrédients</h1>
+        <h1 class="titre_souligne titre_margin_top titre_margin_bottom">Vos Ingrédients</h1>
 
 
     </div>

@@ -43,6 +43,14 @@ div .composition_com button {
     margin: 0 0 5% 0;
 }
 
+.ingredient {
+    width: 100%;
+    font-size: 15px;
+    color: white;
+    border: none;
+    align-content: center;
+}
+
 div.composition_com button:last-child {
     margin: 0 0 5% 0;
 }
@@ -58,6 +66,7 @@ div .temps_com {
     background: dimgray;
     justify-content: center;
     text-align: center;
+    display : fixed;
 }
 
 div .temps_com p  {

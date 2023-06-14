@@ -1,9 +1,9 @@
 .box {
-    width: 340px;
-    height: 340px;
+    width: 270px;
+    height: 270px;
     border-radius: 20px;
     border: 2px solid black;
-    margin-top: 0;
+    align-items: center;
 }
 
 .box_sans_bordure {
@@ -26,7 +26,7 @@
 }
 
 img {
-    width: 80%;
+    width: 70%;
     height: auto;
 }
 .margin_titre {
@@ -35,4 +35,12 @@ img {
 h2 {
     font-size: 2em;
     text-align: center;
+}
+.boutonAjout {
+    width: 10%;
+    height: 10%;
+    background-color: transparent;
+    border-radius: 100%;
+    align-items: center;
+    margin : 10px 0 10px 0;
 }

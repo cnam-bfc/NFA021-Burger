@@ -20,8 +20,6 @@ class EcranCuisineController extends Controller
 
         $recettes = $recetteDAO->selectAll();
 
-        $numeroCommande = 1;
-
         // Récupération des ingrédients
         $ingredients = $ingredientDAO->selectAll();
 
@@ -90,17 +88,6 @@ class EcranCuisineController extends Controller
 
             }
 
-            //Attribution d'un numéro de commande
-             // Exemple avec le numéro initial 1
-
-            // Augmenter le numéro de commande de 1
-            $numeroCommande++;
-
-            // Vérifier si le numéro de commande dépasse 1000
-            if ($numeroCommande > 1000) {
-                $numeroCommande = 1; // Revenir à 1 si le numéro dépasse 1000
-            }
-
             //Formatage des commandes en json
             $jsonCommandeRetrait = array(
                 'id' => $cmd->getId(),
@@ -167,14 +154,13 @@ class EcranCuisineController extends Controller
                 //Formatage des recettes finales en json
                 $jsonRecetteFinales[] = array(
                     'id' => $recetteFinale->getId(),
+                    'idrecette' => $recette->getId(),
                     'nom' => $recette->getNom(),
                     'quantite' => $recetteFinale->getQuantite(),
                     'ingredients' => $jsonRecetteFinaleIngredients,
                 );
 
             }
-
-
 
             //Récupération de l'heure de livraison de la commande
 
@@ -209,6 +195,44 @@ class EcranCuisineController extends Controller
     public function renderView()
     {
         $view = new View(BaseTemplate::CUISINIER, 'EcranCuisineView');
+        $view->renderView();
+    }
+
+    public function supprimerCommande() {
+        // Récupération des paramètres
+        $idCommande = Form::getParam('id', Form::METHOD_POST, Form::TYPE_INT);
+
+        $json = array();
+
+        // Création des objets DAO
+        $commandeClientDAO = new CommandeClientDAO();
+
+        // Récupération de la recette
+        $commande = $commandeClientDAO->selectById($idCommande);
+
+        // Si la recette n'existe pas, on retourne une erreur
+        if ($commande === null) {
+            $json['success'] = false;
+        }
+        // Si la recette est déjà archivée, on retourne une erreur
+        elseif ($commande->getDatePret() !== null) {
+            $json['success'] = false;
+        }
+        // Sinon, on archive la recette
+        else {
+            // Archivage de la recette
+            $commande->setDatePret(date('Y-m-d H:i:s'));
+
+            // Mise à jour de la recette
+            $commandeClientDAO->update($commande);
+
+            $json['success'] = true;
+        }
+
+        $view = new View(BaseTemplate::JSON);
+
+        $view->json = $json;
+
         $view->renderView();
     }
 }
