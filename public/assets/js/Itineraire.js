@@ -29,6 +29,8 @@ $(function () {
     let osm_type = url.searchParams.get("osm_type");
     let osm_id = url.searchParams.get("osm_id");
 
+    let routeInitialised = false;
+
     // Récupération de la position de la destination via l'API de nominatim
     $.ajax({
         url: "https://nominatim.openstreetmap.org/lookup?osm_ids=" + osm_type + osm_id + "&format=json&addressdetails=1",
@@ -44,19 +46,62 @@ $(function () {
             destinationMarker.bindPopup(display_name).openPopup();
 
             // Ajout du chemin entre la position actuelle et la destination
-            let route = L.Routing.control({
+            let routingControl = L.Routing.control({
                 waypoints: [
-                    L.latLng(lat, lon),
-                    currentLocationMarker.getLatLng()
+                    currentLocationMarker.getLatLng(),
+                    L.latLng(lat, lon)
                 ],
-                routeWhileDragging: true,
-                show: true
+                routeWhileDragging: false,
+                draggableWaypoints: false,
+                show: true,
+                autoRoute: false,
+                createMarker: function () {
+                    return null;
+                }
             }).addTo(map);
 
-            // Ajout du bouton pour centrer la carte sur l'itinéraire
-            L.easyButton('fa-map-marker', function (btn, map) {
-                map.fitBounds(route.getPlan().getWaypointsBounds());
-            }, "Centrer la carte sur l'itinéraire").addTo(map);
+            // Lorsque l'itinéraire est chargé
+            routingControl.on('routesfound', function (e) {
+                // Récupération de la distance et de la durée de l'itinéraire
+                let distance = e.routes[0].summary.totalDistance;
+                let duration = e.routes[0].summary.totalTime;
+
+                // Ajout de la distance et de la durée dans le tableau
+
+                if (!routeInitialised) {
+                    routeInitialised = true;
+
+                    // Ajout du bouton pour actualiser l'itinéraire
+                    L.easyButton('fa-refresh', function (btn, map) {
+                        // Récupération de la position actuelle de l'utilisateur
+                        let newLocationLatLng = currentLocationMarker.getLatLng();
+
+                        // Mise à jour de la position de l'utilisateur
+                        routingControl.spliceWaypoints(0, 1, newLocationLatLng);
+                        routingControl.route();
+                    }, "Actualiser l'itinéraire").addTo(map);
+
+                    // Actualisation de la route en cas de changement de position
+                    setInterval(function () {
+                        // Récupération de la position de l'ancienne position de l'utilisateur
+                        let oldLocationLatLng = routingControl.getWaypoints()[0].latLng;
+
+                        // Récupération de la position actuelle de l'utilisateur
+                        let newLocationLatLng = currentLocationMarker.getLatLng();
+
+                        // Si la position a changé (plus de 10 mètres)
+                        if (oldLocationLatLng.distanceTo(newLocationLatLng) > 10) {
+                            console.log("Votre position a changé, actualisation de l'itinéraire");
+
+                            // Mise à jour de la position de l'utilisateur
+                            routingControl.spliceWaypoints(0, 1, newLocationLatLng);
+                            routingControl.route();
+                        }
+                    }, 2000);
+                }
+            });
+
+            routingControl.route();
         }
     });
 });
