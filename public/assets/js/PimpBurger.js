@@ -39,7 +39,7 @@ function showData(BurgerID) {
             //vide la div #affichage
             var affichageDiv = document.getElementById("affichage");
             affichageDiv.innerHTML = "";
-            console.log("succes");
+            console.log("response");
             console.log(response);
             dataBurger = response;
 
@@ -50,7 +50,11 @@ function showData(BurgerID) {
             console.log(response);
             console.log(response[0][1]);
             prix = response[1];
-            console.log(prix);
+
+            // je vide le tableau #tbodyModifs
+            const tbodyModif = document.getElementById("tbodyMod");
+            tbodyModif.innerHTML = "";
+
             for (var i = 0; i < response[0].length; i++) {
                 HTMLFormControlsCollection.log
 
@@ -89,8 +93,7 @@ function showData(BurgerID) {
 //ajout de i en paramètre pour le cas ou l'ingrédient est a selection multiple
 function afficherCompoBurger(ingredient, indice) {
     const decompositionBurger = document.getElementById("affichage");
-    console.log(ingredient);
-    console.log(ingredient.selectMultiple);
+
 
     if (ingredient.selectMultiple == true) {
         maxIndice = ingredient.nom.length;
@@ -100,7 +103,7 @@ function afficherCompoBurger(ingredient, indice) {
         // ingredient.quantite = JSON.parse(ingredient.quantite);
         // ingredient.unite = JSON.parse(ingredient.unite);
         // ingredient.imgEclatee = JSON.parse(ingredient.imgEclatee);
-        console.log("ingredient multipe i : " + ingredient.nom[indice])
+
 
         //code pour selection multiple
         /*déclaration de mes const pour implémenter ma page de manière générique*/
@@ -112,7 +115,7 @@ function afficherCompoBurger(ingredient, indice) {
         divTxt.className = "txt";
         const p = document.createElement("p");
         divTxt.appendChild(p);
-        console.log(ingredient.quantite);
+
         p.textContent = ingredient.quantite[indice] + " " + ingredient.unite[indice] + " " + ingredient.nom[indice];
 
 
@@ -169,7 +172,7 @@ function afficherCompoBurger(ingredient, indice) {
             lastLine.appendChild(divPhoto);
             const ingrPicture = document.createElement("img");
             ingrPicture.src = ingredient.imgEclatee[indice];
-            console.log("image eclate : " + ingredient.imgEclatee[indice]);
+
 
             // ingrPicture.src = "<?php echo IMG; ?>....";
 
@@ -253,7 +256,7 @@ function afficherCompoBurger(ingredient, indice) {
             lastLine.appendChild(divPhoto);
             const ingrPicture = document.createElement("img");
             ingrPicture.src = ingredient["imgEclatee"];
-            console.log("image eclate : " + ingredient["imgEclatee"]);
+
 
             // ingrPicture.src = "<?php echo IMG; ?>....";
 
@@ -275,6 +278,7 @@ function afficherCompoBurger(ingredient, indice) {
 function afficherTabModifBurger(ingredient, response, indice) {
 
     const tbodyModif = document.getElementById("tbodyMod");
+
     incrementPourLesInputs++;
 
     if (ingredient['selectMultiple']) {
@@ -342,16 +346,12 @@ function afficherTabModifBurger(ingredient, response, indice) {
 
 
                 //boucle qui parcours donc les lignes de mon tableau tabModifs
-                for (let index = 1; index < nbElem; index++) {
+                for (let u = 0; u < nbElem; u++) {
                     // Récupération du nom de l'ingrédient dans une ligne du tableau modif 
                     const ligneEnfants = tabBodyModif.childNodes;
-                    const elemEnfantsDeLigne = ligneEnfants[index].childNodes;
-                    console.log("tabModifs 1 ligne");
-                    console.log(elemEnfantsDeLigne);
+                    const elemEnfantsDeLigne = ligneEnfants[u].childNodes;
 
-                    //nom Ingredient
-                    console.log(elemEnfantsDeLigne[1].textContent);
-                    console.log(elemEnfantsDeLigne);
+
 
                     // Bouton
                     const elemBouton = elemEnfantsDeLigne[3];
@@ -362,7 +362,7 @@ function afficherTabModifBurger(ingredient, response, indice) {
                     if (elemBouton.childNodes[0].textContent == "RETIRER") {
                         var argument = {
                             "ingredient": elemEnfantsDeLigne[1].textContent,
-                            "ordre": index - 1,
+                            "ordre": u - 1,
                             "remettre": true
                         }
                         tabNomIngrARemettre.push(argument);
@@ -370,14 +370,14 @@ function afficherTabModifBurger(ingredient, response, indice) {
                     } else {
                         var argument = {
                             "ingredient": elemEnfantsDeLigne[1].textContent,
-                            "ordre": index - 1,
+                            "ordre": u - 1,
                             "remettre": false
                         }
                         tabNomIngrARemettre.push(argument);
                     }
 
                 }
-
+                console.log(tbodyModif);
                 console.log("tabNomIngrARemettre");
                 console.log(tabNomIngrARemettre);
 
@@ -386,9 +386,7 @@ function afficherTabModifBurger(ingredient, response, indice) {
                 //vide la div#affichage
                 var affichageDiv = document.getElementById("affichage");
                 affichageDiv.innerHTML = "";
-                console.log(tabNomIngrARemettre[0].remettre);
-                console.log(tabNomIngrARemettre[1].remettre);
-                console.log(tabNomIngrARemettre[2].remettre);
+
 
 
 
@@ -405,7 +403,7 @@ function afficherTabModifBurger(ingredient, response, indice) {
 
 
                         afficherCompoBurger(response[i], indice);
-                        console.log(tabNomIngrARemettre[i]['remettre']);
+
 
                     }
                 }
@@ -413,27 +411,31 @@ function afficherTabModifBurger(ingredient, response, indice) {
             else {
 
 
-                this.parentNode.parentNode.children[2].children[0].children[0].setAttribute('value', ingredient['quantite'] + " " + ingredient['unite']);
+                this.parentNode.parentNode.children[2].children[0].children[0].setAttribute('value', ingredient['quantite'][indice] + " " + ingredient['unite'][indice]);
                 this.className = "boutonRetirer";
                 this.textContent = "RETIRER";
 
 
-                //je vide ala div affichage pour ensuite la re-remplir avec les ingredient qui ont une quantité !=0 
-                $("affichage").empty();
-
-                //à partir de ça, il faut que j'arrive à metre chaque ingrédient qui un bouton Remmettre, dans la boucle for qui suit.
-                const tabNomIngrARemettre = [];
-                //variables qui vont me permettre de faire ça
                 const tabBodyModif = document.getElementById("tbodyMod");
                 const nbElem = tabBodyModif.childNodes.length;
 
 
-                //boucle qui parcours donc les lignes de mon tableau
-                for (let index = 1; index < nbElem; index++) {
+                //à partir de ça, il faut que j'arrive à metre chaque ingrédient qui un bouton RETIRER, dans le tableau qui suit
+                const tabNomIngrARemettre = [];
+
+
+
+
+
+                //boucle qui parcours donc les lignes de mon tableau tabModifs
+                for (let u = 0; u < nbElem; u++) {
                     // Récupération du nom de l'ingrédient dans une ligne du tableau modif 
                     const ligneEnfants = tabBodyModif.childNodes;
-                    const elemEnfantsDeLigne = ligneEnfants[index].childNodes;
+                    const elemEnfantsDeLigne = ligneEnfants[u].childNodes;
 
+
+
+                    // Bouton
                     const elemBouton = elemEnfantsDeLigne[3];
 
 
@@ -442,7 +444,7 @@ function afficherTabModifBurger(ingredient, response, indice) {
                     if (elemBouton.childNodes[0].textContent == "RETIRER") {
                         var argument = {
                             "ingredient": elemEnfantsDeLigne[1].textContent,
-                            "ordre": index - 1,
+                            "ordre": u - 1,
                             "remettre": true
                         }
                         tabNomIngrARemettre.push(argument);
@@ -450,14 +452,14 @@ function afficherTabModifBurger(ingredient, response, indice) {
                     } else {
                         var argument = {
                             "ingredient": elemEnfantsDeLigne[1].textContent,
-                            "ordre": index - 1,
+                            "ordre": u - 1,
                             "remettre": false
                         }
                         tabNomIngrARemettre.push(argument);
                     }
 
                 }
-
+                console.log(tbodyModif);
                 console.log("tabNomIngrARemettre");
                 console.log(tabNomIngrARemettre);
 
@@ -469,19 +471,21 @@ function afficherTabModifBurger(ingredient, response, indice) {
 
 
 
+
+
+
                 //rempli la div affichage avec les nouvelles données
                 for (var i = 0; i < response.length; i++) {
 
-                    console.log(tabNomIngrARemettre[i]['remettre']);
+
                     if (tabNomIngrARemettre[i]['remettre']) {
 
                         console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-
                         console.log(response[i]);
 
 
                         afficherCompoBurger(response[i], indice);
-                        console.log(tabNomIngrARemettre[i]['remettre']);
+
 
                     }
                 }
@@ -581,16 +585,12 @@ function afficherTabModifBurger(ingredient, response, indice) {
 
 
                 //boucle qui parcours donc les lignes de mon tableau tabModifs
-                for (let index = 1; index < nbElem; index++) {
+                for (let u = 0; u < nbElem; u++) {
                     // Récupération du nom de l'ingrédient dans une ligne du tableau modif 
                     const ligneEnfants = tabBodyModif.childNodes;
-                    const elemEnfantsDeLigne = ligneEnfants[index].childNodes;
-                    console.log("tabModifs 1 ligne");
-                    console.log(elemEnfantsDeLigne);
+                    const elemEnfantsDeLigne = ligneEnfants[u].childNodes;
 
-                    //nom Ingredient
-                    console.log(elemEnfantsDeLigne[1].textContent);
-                    console.log(elemEnfantsDeLigne);
+
 
                     // Bouton
                     const elemBouton = elemEnfantsDeLigne[3];
@@ -601,7 +601,7 @@ function afficherTabModifBurger(ingredient, response, indice) {
                     if (elemBouton.childNodes[0].textContent == "RETIRER") {
                         var argument = {
                             "ingredient": elemEnfantsDeLigne[1].textContent,
-                            "ordre": index - 1,
+                            "ordre": u - 1,
                             "remettre": true
                         }
                         tabNomIngrARemettre.push(argument);
@@ -609,7 +609,7 @@ function afficherTabModifBurger(ingredient, response, indice) {
                     } else {
                         var argument = {
                             "ingredient": elemEnfantsDeLigne[1].textContent,
-                            "ordre": index - 1,
+                            "ordre": u - 1,
                             "remettre": false
                         }
                         tabNomIngrARemettre.push(argument);
@@ -625,9 +625,7 @@ function afficherTabModifBurger(ingredient, response, indice) {
                 //vide la div#affichage
                 var affichageDiv = document.getElementById("affichage");
                 affichageDiv.innerHTML = "";
-                console.log(tabNomIngrARemettre[0].remettre);
-                console.log(tabNomIngrARemettre[1].remettre);
-                console.log(tabNomIngrARemettre[2].remettre);
+
 
 
 
@@ -644,7 +642,7 @@ function afficherTabModifBurger(ingredient, response, indice) {
 
 
                         afficherCompoBurger(response[i], indice);
-                        console.log(tabNomIngrARemettre[i]['remettre']);
+
 
                     }
                 }
@@ -668,10 +666,10 @@ function afficherTabModifBurger(ingredient, response, indice) {
 
 
                 //boucle qui parcours donc les lignes de mon tableau
-                for (let index = 1; index < nbElem; index++) {
+                for (let u = 0; u < nbElem; u++) {
                     // Récupération du nom de l'ingrédient dans une ligne du tableau modif 
                     const ligneEnfants = tabBodyModif.childNodes;
-                    const elemEnfantsDeLigne = ligneEnfants[index].childNodes;
+                    const elemEnfantsDeLigne = ligneEnfants[u].childNodes;
 
                     const elemBouton = elemEnfantsDeLigne[3];
 
@@ -681,7 +679,7 @@ function afficherTabModifBurger(ingredient, response, indice) {
                     if (elemBouton.childNodes[0].textContent == "RETIRER") {
                         var argument = {
                             "ingredient": elemEnfantsDeLigne[1].textContent,
-                            "ordre": index - 1,
+                            "ordre": u - 1,
                             "remettre": true
                         }
                         tabNomIngrARemettre.push(argument);
@@ -689,7 +687,7 @@ function afficherTabModifBurger(ingredient, response, indice) {
                     } else {
                         var argument = {
                             "ingredient": elemEnfantsDeLigne[1].textContent,
-                            "ordre": index - 1,
+                            "ordre": u - 1,
                             "remettre": false
                         }
                         tabNomIngrARemettre.push(argument);
@@ -709,7 +707,7 @@ function afficherTabModifBurger(ingredient, response, indice) {
 
 
                 //rempli la div affichage avec les nouvelles données
-                for (var i = 0; i < response.length; i++) {
+                for (var i = 0; i <= response.length; i++) {
 
                     console.log(tabNomIngrARemettre[i]['remettre']);
                     if (tabNomIngrARemettre[i]['remettre']) {
@@ -742,7 +740,7 @@ function afficherTabModifBurger(ingredient, response, indice) {
         tbodyModif.appendChild(tr);
 
 
-    }
+    };
 }
 
 
@@ -785,16 +783,14 @@ $(document).ready(function () {
 
 
             //boucle qui parcours donc les lignes de mon tableau tabModifs
-            for (let index = 1; index < nbElem; index++) {
+            for (let u = 0; u < nbElem; u++) {
                 // Récupération du nom de l'ingrédient dans une ligne du tableau modif 
                 const ligneEnfants = tabBodyModif.childNodes;
-                const elemEnfantsDeLigne = ligneEnfants[index].childNodes;
-                console.log("tabModifs 1 ligne");
-                console.log(elemEnfantsDeLigne);
+                const elemEnfantsDeLigne = ligneEnfants[u].childNodes;
+
 
                 //nom Ingredient
-                console.log(elemEnfantsDeLigne[1].textContent);
-                console.log(elemEnfantsDeLigne);
+
 
                 // Bouton
                 const elemBouton = elemEnfantsDeLigne[3];
@@ -814,13 +810,10 @@ $(document).ready(function () {
 
 
             }
-            console.log(dataBurger);
-            console.log("tab Ingrédients Finaux")
-            console.log(tabIngrFinaux); //// CE TABLEAU EST OK
+
             ///////////////////////////////
             const tabBurger = { "prixRecette": prix, "nomRecette": dataBurger[0][2], "idRecette": idRecette, "ingredientsFinaux": tabIngrFinaux };
-            console.log("prix est = " + prix);
-            console.log(dataBurger[0][2]);
+
 
             //Le tableau tabBurger est plein
             //Je l'envoie dans une requête Ajax pour qu'il soit incrémente la variable de session "Panier" (qui est un tableau)
