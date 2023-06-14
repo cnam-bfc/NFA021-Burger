@@ -113,26 +113,55 @@ function processPanier(panier) {
 
 
         //ici une boucle for est nécessaire pour parcourir les ingrédients de la variable de Session['panier']
-        for (let index = 0; index < panier[i]["ingredientsFinaux"].length; index += 2) {
-            const ingredient = panier[i]["ingredientsFinaux"][index];
-            const quantite = panier[i]["ingredientsFinaux"][index + 1];
+        if (panier[i]["carteburger"] === true) {
+            for (let index = 0; index < panier[i]["ingredientsFinaux"].length; index ++) {
+                if (panier[i]["ingredientsFinaux"][index] === null) {
+                    continue;
+                } else {
+                    const ingredient = panier[i]["ingredientsFinaux"][index]['nom'];
+                    const quantite = panier[i]["ingredientsFinaux"][index]['quantite'];
 
-            //je créer la ligne qui contient 1 ingrédient
-            const ligneIngr = document.createElement("tr");
-            const cellIngr = document.createElement("td");
-            const cellNumb = document.createElement("td");
-            cellIngr.setAttribute('id', 'Ingredient');
-            cellNumb.setAttribute('id', 'Quantite');
-            cellIngr.textContent = ingredient;
-            cellNumb.textContent = quantite;
+                    //je créer la ligne qui contient 1 ingrédient
+                    const ligneIngr = document.createElement("tr");
+                    const cellIngr = document.createElement("td");
+                    const cellNumb = document.createElement("td");
+                    cellIngr.setAttribute('id', 'Ingredient');
+                    cellNumb.setAttribute('id', 'Quantite');
+                    cellIngr.textContent = ingredient;
+                    cellNumb.textContent = quantite;
 
 
-            //je mets les 2 cellulles dans la ligne
-            ligneIngr.appendChild(cellIngr);
-            ligneIngr.appendChild(cellNumb);
+                    //je mets les 2 cellulles dans la ligne
+                    ligneIngr.appendChild(cellIngr);
+                    ligneIngr.appendChild(cellNumb);
 
-            // je mets la ligne dans la 2nde partie du tableau
-            tbodyBurger.appendChild(ligneIngr);
+                    // je mets la ligne dans la 2nde partie du tableau
+                    tbodyBurger.appendChild(ligneIngr);
+                }
+            }
+        } else {
+            for (let index = 0; index < panier[i]["ingredientsFinaux"].length; index += 2) {
+                const ingredient = panier[i]["ingredientsFinaux"][index];
+                const quantite = panier[i]["ingredientsFinaux"][index + 1];
+
+                //je créer la ligne qui contient 1 ingrédient
+                const ligneIngr = document.createElement("tr");
+                const cellIngr = document.createElement("td");
+                const cellNumb = document.createElement("td");
+                cellIngr.setAttribute('id', 'Ingredient');
+                cellNumb.setAttribute('id', 'Quantite');
+                cellIngr.textContent = ingredient;
+                cellNumb.textContent = quantite;
+
+
+                //je mets les 2 cellulles dans la ligne
+                ligneIngr.appendChild(cellIngr);
+                ligneIngr.appendChild(cellNumb);
+
+                // je mets la ligne dans la 2nde partie du tableau
+                tbodyBurger.appendChild(ligneIngr);
+
+            }
         }
 
 
