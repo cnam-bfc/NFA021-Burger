@@ -812,8 +812,9 @@ $(document).ready(function () {
             }
 
             ///////////////////////////////
-            const tabBurger = { "prixRecette": prix, "nomRecette": dataBurger[0][2], "idRecette": idRecette, "ingredientsFinaux": tabIngrFinaux };
-
+            
+            const tabBurger = { "prixRecette": prix, "nomRecette": dataBurger[2], "idRecette": idRecette, "ingredientsFinaux": tabIngrFinaux };
+            console.log(tabBurger);
 
             //Le tableau tabBurger est plein
             //Je l'envoie dans une requête Ajax pour qu'il soit incrémente la variable de session "Panier" (qui est un tableau)
