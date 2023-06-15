@@ -52,6 +52,8 @@ class Router
         'visuModifsBurgers' => ["controller" => "ModifsBurgersController", "method" => "renderViewPimpBurgers"],
         'visuModifsBurgers/ingredients' => ["controller" => "ModifsBurgersController", "method" => "getIngredients"],
         'visuModifsBurgers/ajouterAuPanier' => ["controller" => "ModifsBurgersController", "method" => "ajoutPanier"],
+        'visuModifsBurgers/getSupplementsRecette' => ["controller" => "ModifsBurgersController", "method" => "getSupplements"],
+
 
         // Panier
         'panier' => ["controller" => "PanierController", "method" => "renderViewPanier"],

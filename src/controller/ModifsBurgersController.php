@@ -16,7 +16,7 @@ class ModifsBurgersController extends Controller
         $flecheD = IMG . 'Fleches/FlecheCourbeDroite.png';
 
         $idRecette = $_POST['id'];
-        
+
 
 
         /*Jusque là c'est good*/
@@ -161,6 +161,45 @@ class ModifsBurgersController extends Controller
 
         $view = new View(BaseTemplate::JSON, null);
         $view->json = $_SESSION['panier'];
+        $view->renderView();
+    }
+    public function getSupplements()
+    {
+        $idRecette = $_POST['id'];
+
+        $tabResult = array();
+        $supplementsDAO = new RecetteIngredientOptionnelDAO();
+        $supplements = $supplementsDAO->selectAllByIdRecette($idRecette);
+        $ingredientDAO = new IngredientDAO();
+        $uniteDao = new UniteDAO();
+
+
+        foreach ($supplements as $supplement) {
+            $ordre = $supplement->getOrdre();
+            $id = $supplement->getId();
+
+            $idI = $supplement->getIdIngredient();
+            $quantite = $supplement->getQuantite();
+
+            $Ingredient = $ingredientDAO->selectById($idI);
+
+            $nom = $Ingredient->getNom();
+
+            $idUnite = $Ingredient->getIdUnite();
+            $uniteSelect = $uniteDao->selectById($idUnite);
+            $unite = $uniteSelect->getDiminutif();
+
+            $imgEclatee = IMG . 'ingredients/' . $idI . '/eclate.img';
+
+            // $ingredient = $ingredientDAO->selectById($idI);
+            // $imgE=$ingredient->
+
+            $tabResult[] = array('id' => $id, 'nom' => $nom, "quantite" => $quantite, "unite" =>  $unite, "imgEclatee" => $imgEclatee, 'ordre' => $ordre);
+        }
+
+
+        $view = new View(BaseTemplate::JSON, null);
+        $view->json = $tabResult;
         $view->renderView();
     }
 }

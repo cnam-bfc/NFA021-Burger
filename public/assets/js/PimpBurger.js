@@ -812,7 +812,7 @@ $(document).ready(function () {
             }
 
             ///////////////////////////////
-            
+
             const tabBurger = { "prixRecette": prix, "nomRecette": dataBurger[2], "idRecette": idRecette, "ingredientsFinaux": tabIngrFinaux };
             console.log(tabBurger);
 
@@ -830,16 +830,134 @@ $(document).ready(function () {
                     console.log(response);
                     //modification de l'indicateur du nombre d'éléments dans le panier
                     document.getElementById('panier_indicateur').textContent = response.length;
-
+                    alert("Ajout au Panier ✅");
                 },
                 error: function (xhr, status, error) {
                     console.log("Erreur lors de la requête AJAX : " + error);
                     console.log(xhr.responseText);
+                    alert("Une erreur est survenue");
                 }
             });
 
+
+
+        } else {
+            alert("Le burger est vide ! \nImpossible de l'ajouter au panier ❌");
         }
     });
+
+
+
+    const boutonAjoutSupplement = $("#bouton_ajouter_supplement");
+    const ajouterIngredient = $("#ajouter_ingredient");
+    const selectAjouterIngredient = $("#select_ajouter_ingredient");
+    const ulSupp = $("#ulSupp");
+    const boutonCroix = $("#bouton_annuler_ajouter_ingredient");
+
+    var tabIdSuppChoisi = [];
+
+    selectAjouterIngredient.on("change", function () {
+
+        if (!this.value) {
+            return;
+        }
+        //variable supplément
+        var supp = JSON.parse(this.value);
+        var liSupp = document.createElement("li")
+
+        liSupp.textContent = supp.nom + " " + supp.quantite + " " + supp.unite;
+        ulSupp.append(liSupp);
+
+        tabIdSuppChoisi.push(supp.id);
+        boutonCroix.click();
+    });
+
+
+    boutonCroix.on("click", function () {
+        // Cacher le formulaire d'ajout d'ingrédient
+        ajouterIngredient.attr('hidden', true);
+
+        // Suppression des options du select
+        selectAjouterIngredient.empty();
+
+        // Afficher le bouton d'ajout d'ingrédient
+        boutonAjoutSupplement.attr('hidden', false);
+
+    });
+
+    boutonAjoutSupplement.on("click", function () {
+
+        // Récupération des informations de la recette dans l'url
+        const url = new URL(window.location.href);
+        // Récupération de l'id de la recette
+        let BurgerID = url.searchParams.get("id");
+
+        ////////////////////////////
+        // Ajout d'un icone et texte de chargement (fontawesome)
+        let old_html = boutonAjoutSupplement.html();
+        boutonAjoutSupplement.html('<i class="fas fa-spinner fa-spin"></i> Chargement...');
+        boutonAjoutSupplement.prop("disabled", true);
+
+        let ingredientIgnorer = [];
+
+        ////////////////////////////
+
+
+        //requete pour avoir la liste des supplements disponibles pour la recette
+        $.ajax({
+            url: "visuModifsBurgers/getSupplementsRecette",
+            method: "POST",
+            dataType: "JSON",
+            data: { id: BurgerID },
+            success: function (response) {
+                // Cacher le bouton d'ajout d'ingrédient
+                boutonAjoutSupplement.attr('hidden', true);
+                boutonAjoutSupplement.html(old_html);
+                boutonAjoutSupplement.prop("disabled", false);
+
+                // Afficher le formulaire d'ajout d'ingrédient
+                ajouterIngredient.attr('hidden', false);
+
+                // Suppression des options du select
+                selectAjouterIngredient.empty();
+
+                selectAjouterIngredient.append("<option> --- </option");
+
+                response.forEach(function (ingredient) {
+                    // Ajout de l'option dans le select (dans value mettre l'ingrédient en JSON)
+                    if (tabIdSuppChoisi.includes(ingredient.id)) {
+                        return;
+                    }
+                    selectAjouterIngredient.append('<option value=\'' + JSON.stringify(ingredient) + '\'>' + ingredient.nom + '</option>');
+                });
+
+
+
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                if (jqXHR.status !== 0) {
+                    let alertMessage = 'Erreur ' + jqXHR.status;
+                    // Si errorThrown contient des informations (est une chaîne de caractères)
+                    if (typeof errorThrown === 'string') {
+                        alertMessage += ' : ' + errorThrown.replace(/<br>/g, "\n");
+                    }
+                    alert(alertMessage);
+                } else {
+                    alert('Une erreur inconue est survenue !\nVeuillez vérifier votre connexion internet.');
+                }
+
+                // Réafficher le bouton d'ajout d'ingrédient
+                boutonAjoutSupplement.html(old_html);
+                boutonAjoutSupplement.prop("disabled", false);
+            }
+
+
+        });
+
+        /////////////////////////////////
+        /////////////////////////////////
+
+    })
 })
 
 //requête pour mettre à jour l'indicateur du bouton panier concernant le nombre d'éléments dans le panier
