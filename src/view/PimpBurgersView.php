@@ -45,13 +45,31 @@
                     <tr></tr>
                 </thead>
                 <tbody id="tbodyMod">
-                    
+
                 </tbody>
                 <tfoot>
                     <tr></tr>
                     <tr>
                         <td colspan="6">
-                            <button class="bouton" id="ajouter_ingredient"><i class="fa-solid fa-plus"></i> Ajouter un ingrédient</button>
+
+                            <button class="bouton" id="bouton_ajouter_supplement"><i class="fa-solid fa-plus"></i> Ajouter un Supplément</button>
+                            <div id="ajouter_ingredient" hidden>
+                                <select id="select_ajouter_ingredient">
+
+                                </select>
+                                <button type="button" class="bouton" id="bouton_annuler_ajouter_ingredient"><i class="fa-solid fa-times"></i></button>
+                            </div>
+                        </td>
+
+                    </tr>
+                    <tr></tr>
+                    <tr>
+                        <td colspan="6">
+                            <ul id="ulSupp">            
+                                
+
+                            </ul>
+
                         </td>
                     </tr>
                 </tfoot>
