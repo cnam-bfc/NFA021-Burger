@@ -31,7 +31,7 @@
                         <th><!-- Image --></th>
                         <th>Ingrédient</th>
                         <th>Quantité attendue</th>
-                        <th>Quantité reçu</th>
+                        <th>Quantité reçue</th>
                         <th><!-- Bouton actions rapide --></th>
                     </tr>
                     <tr></tr>

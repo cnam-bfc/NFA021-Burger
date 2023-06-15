@@ -192,7 +192,7 @@ let ajouterLigneTBody = function (id, nom, photo, stock, unite) {
     let td5 = $("<td></td>");
     let div3 = $("<div></div>").addClass("wrapper main_axe_center second_axe_center");
     let button = $("<button></button>").addClass("bouton");
-    let icon = $("<i></i>").addClass("fa-solid fa-trash");
+    let icon = $("<i></i>").addClass("fa-solid fa-eye");
     button.append(icon);
     button.on("click", suppressionIngredient);
     div3.append(button);
