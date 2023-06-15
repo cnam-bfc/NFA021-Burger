@@ -802,11 +802,29 @@ $(document).ready(function () {
                     var element = {
                         "ingredient": elemEnfantsDeLigne[1].textContent,
                         "quantite": elemEnfantsDeLigne[2].children[0].children[0].value
-
                     }
 
                     tabIngrFinaux.push(element);
                 }
+            }
+
+            const tabUl = document.getElementById("ulSupp");
+            console.log(tabUl);
+            console.log(tabUl.childNodes);
+            const nbElemUl = tabUl.childNodes.length;
+            for (let u = 1; u < nbElemUl; u++) {
+
+                const ligneEnfants = tabUl.childNodes;
+                const elemEnfantsDeLigne = ligneEnfants[u].childNodes;
+
+                console.log(elemEnfantsDeLigne[0]);
+
+                var element = {
+                    "ingredient": elemEnfantsDeLigne[0].textContent,
+                    "quantite": elemEnfantsDeLigne[1].textContent + elemEnfantsDeLigne[2].textContent
+                }
+                tabIngrFinaux.push(element);
+
 
 
             }
@@ -864,8 +882,19 @@ $(document).ready(function () {
         //variable supplément
         var supp = JSON.parse(this.value);
         var liSupp = document.createElement("li")
+        var pNom = document.createElement("i");
+        var pQuant = document.createElement("i");
+        var pUnite = document.createElement("i");
 
-        liSupp.textContent = supp.nom + " " + supp.quantite + " " + supp.unite;
+        pNom.textContent = supp.nom;
+        pQuant.textContent = " " + supp.quantite + " ";
+        pUnite.textContent = supp.unite;
+
+
+        liSupp.appendChild(pNom);
+        liSupp.appendChild(pQuant);
+        liSupp.appendChild(pUnite);
+
         ulSupp.append(liSupp);
 
         tabIdSuppChoisi.push(supp.id);
