@@ -60,6 +60,46 @@ $(function () {
         cellule.text(data.heure_livraison);
         ligne.append(cellule);
 
+        // Status
+        cellule = $("<td>");
+        switch (data.status) {
+            case "archive":
+                cellule.text("Archivée");
+                cellule.css("color", "grey");
+                break;
+            case "livre":
+                cellule.text("Livrée");
+                cellule.css("color", "green");
+                break;
+            case "en_livraison":
+                cellule.text("En livraison");
+                cellule.css("color", "lightgrey");
+                break;
+            case "pret":
+                cellule.text("Prête");
+                cellule.css("color", "blue");
+                break;
+            case "cuisine":
+                cellule.text("En cuisine");
+                cellule.css("color", "orange");
+                break;
+            case "attente":
+                cellule.text("En attente");
+                cellule.css("color", "purple");
+                break;
+            default:
+                cellule.text("Inconnu");
+                cellule.css("color", "black");
+                break;
+        }
+        cellule.css("font-weight", "bold");
+        ligne.append(cellule);
+
+        // Client
+        cellule = $("<td>");
+        cellule.text(data.client.prenom + " " + data.client.nom);
+        ligne.append(cellule);
+
         // Boutons d'action rapide
         cellule = $("<td>");
         // Conteneur des boutons
@@ -144,7 +184,7 @@ $(function () {
         // Ajout ligne de chargement
         let ligne = $("<tr>");
         let cellule = $("<td>");
-        cellule.attr("colspan", 6);
+        cellule.attr("colspan", 8);
         cellule.html("<br><i class='fa-solid fa-spinner fa-spin'></i> Chargement des livraisons<br><br>");
         ligne.append(cellule);
         bodyTableauLivraisons.append(ligne);
@@ -162,7 +202,7 @@ $(function () {
                 if (data['data'].length == 0) {
                     let ligne = $("<tr>");
                     let cellule = $("<td>");
-                    cellule.attr("colspan", 6);
+                    cellule.attr("colspan", 8);
                     cellule.html("<br>Aucune livraison n'a été trouvée<br><br>");
                     ligne.append(cellule);
                     bodyTableauLivraisons.append(ligne);
@@ -181,7 +221,7 @@ $(function () {
                 // Ajout ligne d'erreur
                 let ligne = $("<tr>");
                 let cellule = $("<td>");
-                cellule.attr("colspan", 6);
+                cellule.attr("colspan", 8);
                 cellule.html("<br><i class='fa-solid fa-exclamation-triangle'></i> Erreur lors du chargement des livraisons<br><br>");
                 ligne.append(cellule);
                 bodyTableauLivraisons.append(ligne);

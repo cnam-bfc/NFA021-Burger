@@ -20,6 +20,8 @@ class LivraisonController extends Controller
     {
         // Création des objets DAO
         $commandeClientLivraisonDAO = new CommandeClientLivraisonDAO();
+        $livreurDAO = new LivreurDAO();
+        $clientDAO = new ClientDAO();
 
         $json = array();
         $json['data'] = array();
@@ -52,9 +54,20 @@ class LivraisonController extends Controller
                 'heure_livraison' => $commande->getHeureLivraison()
             );
 
+            // Récupération du client
+            $client = $clientDAO->selectById($commande->getIdClient());
+
+            if ($client !== null) {
+                // Formatage du client en json
+                $jsonCommande['client'] = array(
+                    'id' => $commande->getIdClient(),
+                    'nom' => $client->getNom(),
+                    'prenom' => $client->getPrenom()
+                );
+            }
+
             if (!empty($commande->getIdLivreur())) {
                 // Récupération du livreur
-                $livreurDAO = new LivreurDAO();
                 $livreur = $livreurDAO->selectById($commande->getIdLivreur());
 
                 if ($livreur !== null) {
@@ -65,6 +78,29 @@ class LivraisonController extends Controller
                         'prenom' => $livreur->getPrenom()
                     );
                 }
+            }
+
+            // Différents status de la commande possibles
+            // Archive : date_archive non null & id_livreur null
+            // Livré : date_archive non null & id_livreur non null
+            // En livraison : date_pret non null & id_livreur non null
+            // Prêt : date_pret non null & id_livreur null
+            // Cuisine : date_commande non null & date_pret null
+            // En attente : date_commande null & date_pret null
+
+            // Formatage du status en json
+            if (!empty($commande->getDateArchive()) && empty($commande->getIdLivreur())) {
+                $jsonCommande['status'] = 'archive';
+            } else if (!empty($commande->getDateArchive()) && !empty($commande->getIdLivreur())) {
+                $jsonCommande['status'] = 'livre';
+            } else if (!empty($commande->getDatePret()) && !empty($commande->getIdLivreur())) {
+                $jsonCommande['status'] = 'en_livraison';
+            } else if (!empty($commande->getDatePret()) && empty($commande->getIdLivreur())) {
+                $jsonCommande['status'] = 'pret';
+            } else if (!empty($commande->getDateCommande()) && empty($commande->getDatePret())) {
+                $jsonCommande['status'] = 'cuisine';
+            } else if (empty($commande->getDateCommande()) && empty($commande->getDatePret())) {
+                $jsonCommande['status'] = 'attente';
             }
 
             // Tri des commandes par heure de livraison
