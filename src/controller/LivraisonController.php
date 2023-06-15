@@ -33,10 +33,10 @@ class LivraisonController extends Controller
             $jsonCommande = array(
                 'id' => $commande->getId(),
                 'adresse_depart' => array(
-                    'osm_type' => 'way',
-                    'osm_id' => 123456789,
+                    'osm_type' => 'W',
+                    'osm_id' => 219487836,
                     'numero' => 11,
-                    'rue' => 'rue Georges Maugey',
+                    'rue' => 'Rue Georges Maugey',
                     'ville' => 'Chalon-sur-Saône',
                     'code_postal' => '71100'
                 ),
