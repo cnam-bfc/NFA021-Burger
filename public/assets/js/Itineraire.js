@@ -71,24 +71,8 @@ $(function () {
 
             // Lorsque l'itinéraire est chargé
             routingControl.on('routesfound', function (e) {
-                // Récupération de la distance et de la durée de l'itinéraire
-                let distance = e.routes[0].summary.totalDistance;
-                let duration = e.routes[0].summary.totalTime;
-
-                // Ajout de la distance et de la durée dans le tableau
-
                 if (!routeInitialised) {
                     routeInitialised = true;
-
-                    // Ajout du bouton pour actualiser l'itinéraire
-                    L.easyButton('fa-refresh', function (btn, map) {
-                        // Récupération de la position actuelle de l'utilisateur
-                        let newLocationLatLng = currentLocationMarker.getLatLng();
-
-                        // Mise à jour de la position de l'utilisateur
-                        routingControl.spliceWaypoints(0, 1, newLocationLatLng);
-                        routingControl.route();
-                    }, "Actualiser l'itinéraire").addTo(map);
 
                     // Actualisation de la route en cas de changement de position
                     setInterval(function () {
