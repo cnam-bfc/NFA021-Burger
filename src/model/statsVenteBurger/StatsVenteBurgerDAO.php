@@ -124,7 +124,7 @@ class StatsVenteBurgerDAO extends DAO
      * AND bcc.date_commande_client BETWEEN '2021-01-01' AND '2023-12-31'
      * AND (date_archive IS NULL OR date_archive > NOW())
      * GROUP BY br.id_recette
-     * ORDER BY qteTotal DESC
+     * ORDER BY qteTotal DESC, br.nom ASC
      * LIMIT 10;
      *
      * @param string[]|null $ids (tableau d'id)
@@ -163,7 +163,7 @@ class StatsVenteBurgerDAO extends DAO
             $sqlQuery .= " AND br.date_archive IS NOT NULL AND br.date_archive <= NOW()";
         }
         $sqlQuery .= "  GROUP BY br.id_recette
-                        ORDER BY qteTotal DESC
+                        ORDER BY qteTotal DESC, br.nom ASC
                         LIMIT 10;";
         $statement = $this->pdo->prepare($sqlQuery);
         if ($ids !== null && count($ids) > 0) {
