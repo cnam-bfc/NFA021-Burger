@@ -218,7 +218,7 @@ function initButtons() {
     // Bouton d'information
     button.INFORMATION.click(function () {
         // si on clique sur le bouton on envoie sur google
-        window.open('https://media.licdn.com/dms/image/C5603AQGe_mt1Iw1mJQ/profile-displayphoto-shrink_800_800/0/1517398409444?e=2147483647&v=beta&t=UBekPWfLXStE58ZGnuqGEREfl-3UqcMH0ggi4_9zDOY');
+        window.open('https://www.google.fr', '_blank');
     });
 
     // Bouton de sauvegarde de graphe
