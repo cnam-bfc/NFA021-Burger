@@ -63,6 +63,8 @@ class Router
         //Recap Commande
         'recap' => ["controller" => "RecapController", "method" => "renderViewRecap"],
         'recap/getInfos' => ["controller" => "RecapController", "method" => "getRecapInfos"],
+        'recap/writeOnBDD' => ["controller" => "RecapController", "method" => "writeOnBDD"],
+
 
         // Choix entre Livraison et Click&Collect
         'collectLivraison' => ["controller" => "CollectLivraisonController", "method" => "renderViewCollectORDelivery"],
