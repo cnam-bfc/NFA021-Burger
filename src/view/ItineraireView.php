@@ -11,6 +11,10 @@
 <link rel="stylesheet" href="<?php echo ASSETS ?>leaflet-control-fullscreen/Control.FullScreen.css">
 <script src="<?php echo ASSETS ?>leaflet-control-fullscreen/Control.FullScreen.js"></script>
 
+<!-- Bibliothèque Leaflet Control Select -->
+<link rel="stylesheet" href="<?php echo ASSETS ?>leaflet-control-select/leaflet.control.select.css">
+<script src="<?php echo ASSETS ?>leaflet-control-select/leaflet.control.select.js"></script>
+
 <!-- Bibliothèque Leaflet Routing Machine -->
 <link rel="stylesheet" href="<?php echo ASSETS ?>leaflet-routing-machine/leaflet-routing-machine.css">
 <script src="<?php echo ASSETS ?>leaflet-routing-machine/leaflet-routing-machine.min.js"></script>

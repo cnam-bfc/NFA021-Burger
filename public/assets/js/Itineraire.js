@@ -2,20 +2,41 @@ $(function () {
     // Récupération des informations de l'itinéraire dans l'url
     const url = new URL(window.location.href);
 
+    // Création de la carte
     let map = L.map('map', {
         fullscreenControl: true,
         fullscreenControlOptions: {
             position: 'topleft'
         }
     }).setView([46.783, 4.8519], 13);
+
+    // Ajout des tuiles OpenStreetMap
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
+    // Ajout du bouton de retour à la liste des livraisons
     L.easyButton('fa-arrow-left', function (btn, map) {
         window.location.href = "livraisons";
     }, "Retour à la liste des livraisons").addTo(map);
+
+    // Ajout du choix de mode de transport
+    let moyensTransport = [
+        { label: "Voiture", value: "car" },
+        { label: "Vélo", value: "bike" },
+        { label: "Pied", value: "foot" }
+    ];
+    L.control.select({
+        position: "topleft",
+        iconMain: '<span class="fas fa-car"></span>',
+        title: "Choix du mode de transport",
+        selectedDefault: "bike",
+        items: moyensTransport,
+        onSelect: function (e) {
+            console.log(e);
+        }
+    }).addTo(map);
 
     // Ajout du marqueur pour la position actuelle
     let currentLocationMarker = L.marker([0, 0]).addTo(map);
