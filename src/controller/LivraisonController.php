@@ -81,26 +81,28 @@ class LivraisonController extends Controller
             }
 
             // Différents status de la commande possibles
+            // ETATS TERMINE
             // Archive : date_archive non null & id_livreur null
             // Livré : date_archive non null & id_livreur non null
-            // En livraison : date_pret non null & id_livreur non null
-            // Prêt : date_pret non null & id_livreur null
-            // Cuisine : date_commande non null & date_pret null
-            // En attente : date_commande null & date_pret null
+
+            // ETATS EN COURS
+            // En livraison : date_recuperation non null & id_livreur non null
+            // Attente livreur : date_pret non null
+            // En cuisine : date_commande non null & date_pret null
 
             // Formatage du status en json
             if (!empty($commande->getDateArchive()) && empty($commande->getIdLivreur())) {
                 $jsonCommande['status'] = 'archive';
             } else if (!empty($commande->getDateArchive()) && !empty($commande->getIdLivreur())) {
                 $jsonCommande['status'] = 'livre';
-            } else if (!empty($commande->getDatePret()) && !empty($commande->getIdLivreur())) {
+            } else if (!empty($commande->getHeureRecuperation()) && !empty($commande->getIdLivreur())) {
                 $jsonCommande['status'] = 'en_livraison';
-            } else if (!empty($commande->getDatePret()) && empty($commande->getIdLivreur())) {
-                $jsonCommande['status'] = 'pret';
+            } else if (!empty($commande->getDatePret())) {
+                $jsonCommande['status'] = 'attente_livreur';
             } else if (!empty($commande->getDateCommande()) && empty($commande->getDatePret())) {
-                $jsonCommande['status'] = 'cuisine';
-            } else if (empty($commande->getDateCommande()) && empty($commande->getDatePret())) {
-                $jsonCommande['status'] = 'attente';
+                $jsonCommande['status'] = 'en_cuisine';
+            } else {
+                $jsonCommande['status'] = 'en_attente';
             }
 
             // Tri des commandes par heure de livraison

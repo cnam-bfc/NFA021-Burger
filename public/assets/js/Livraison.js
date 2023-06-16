@@ -66,8 +66,8 @@ $(function () {
         switch (data.status) {
             case "archive":
                 cellule.text("Archivée");
-                cellule.css("color", "grey");
-                icone.addClass("fa-solid fa-archive");
+                cellule.css("color", "lightgrey");
+                icone.addClass("fa-solid fa-box-archive");
                 break;
             case "livre":
                 cellule.text("Livrée");
@@ -76,23 +76,18 @@ $(function () {
                 break;
             case "en_livraison":
                 cellule.text("En livraison");
-                cellule.css("color", "lightgrey");
+                cellule.css("color", "grey");
                 icone.addClass("fa-solid fa-truck");
                 break;
-            case "pret":
-                cellule.text("Prête");
-                cellule.css("color", "blue");
-                icone.addClass("fa-solid fa-utensils");
-                break;
-            case "cuisine":
-                cellule.text("En cuisine");
+            case "attente_livreur":
+                cellule.text("En attente d'un livreur");
                 cellule.css("color", "orange");
-                icone.addClass("fa-solid fa-utensils");
+                icone.addClass("fa-solid fa-bowl-food");
                 break;
-            case "attente":
-                cellule.text("En attente");
-                cellule.css("color", "purple");
-                icone.addClass("fa-solid fa-utensils");
+            case "en_cuisine":
+                cellule.text("En cuisine");
+                cellule.css("color", "grey");
+                icone.addClass("fa-solid fa-fire-burner");
                 break;
             default:
                 cellule.text("Inconnu");
