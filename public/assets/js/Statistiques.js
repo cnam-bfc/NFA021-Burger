@@ -119,9 +119,12 @@ function globalStates(currentState) {
     $('#information').empty();
     temporaryChart = {};
 
+    // On retire les classes actives des seleciton de graphe
+    $('.graphe_choix').removeClass('selected');
+
     switch (currentState) {
         case state.DEFAULT: // On est dans l'état par défaut ou l'on affiche les graphes s'ils existent
-            console.log('state.BASIC_WITHOUT_GRAPHE');
+            console.log('state.DEFAULT');
             // On affiche le bouton pour ajouter un graphe et celui d'information et on les active.
             button.ADD_GRAPHE.show();
             button.INFORMATION.show();
@@ -133,7 +136,7 @@ function globalStates(currentState) {
             } else {
                 button.EXPORT_PDF.show();
                 button.EXPORT_PDF.prop('disabled', false);
-                drawCharts();
+                createCharts();
             }
             break;
         case state.ADD_GRAPHE:
@@ -171,6 +174,7 @@ function globalStates(currentState) {
             button.SAVE_GRAPHE.prop('disabled', false);
             // On ajoute un message pour dire qu'on est en mode édition d'un graphe
             $('#information').html('Mode édition d\'un graphe');
+            break;
         case state.EXPORT_PDF:
             console.log('state.EXPORT_PDF');
             // On affiche le boutons d'information
@@ -178,6 +182,7 @@ function globalStates(currentState) {
             button.INFORMATION.prop('disabled', false);
             // On ajoute un message pour dire qu'on est en mode exportation d'un graphe
             $('#information').html('Mode export PDF');
+            break;
     }
 }
 
@@ -223,10 +228,42 @@ function initButtons() {
 
     // Bouton de sauvegarde de graphe
     button.SAVE_GRAPHE.click(function () {
+        console.log('button_stat_save_graphe clicked');
+        buttonSelectEffect(button.SAVE_GRAPHE, 'fbe272');
+        let textP = "Voulez-vous sauvegarder le graphe ?";
+        let buttonYes = "Confirmer";
+        let functionYes = function () {
+            console.log('button_stat_save_graphe yes clicked');
+            // On sauvegarde le graphe
+            charts[charts.length] = temporaryChart;
+            // On ferme le menu gauche
+            refreshMenuGauche(false);
+            // On désactive les boutons
+            buttonSelectEffect(null, null);
+            globalStates(state.DEFAULT)
+        };
+        personnaliserMenuGaucheLambda(textP, buttonYes, functionYes, null, null);
+        selectMenuGaucheContent(menuGaucheContent.LAMBDA);
+        $("#titre_onglet").html("Sauvegarde");
     });
 
     // bouton d'annulation
     button.CANCEL_GRAPHE.click(function () {
+        console.log('button_stat_cancel_graphe clicked');
+        buttonSelectEffect(button.SAVE_GRAPHE, 'fbe272');
+        let textP = "Voulez-vous annuler tous vos changements ?";
+        let buttonYes = "Confirmer";
+        let functionYes = function () {
+            console.log('button_stat_cancel_graphe yes clicked');
+            // On ferme le menu gauche
+            refreshMenuGauche(false);
+            // On désactive les boutons
+            buttonSelectEffect(null, null);
+            globalStates(state.DEFAULT)
+        };
+        personnaliserMenuGaucheLambda(textP, buttonYes, functionYes, null, null);
+        selectMenuGaucheContent(menuGaucheContent.LAMBDA);
+        $("#titre_onglet").html("Annulation");
     });
 
     // Bouton de suppression de graphe
@@ -328,6 +365,35 @@ function refreshMenuGauche(boolean) {
         $('#menu_graphe').hide();
         $('#menu_gauche').addClass('dont_show_menu_graphe');
         $('#menu_gauche').removeClass('show_menu_graphe');
+    }
+}
+
+function personnaliserMenuGaucheLambda(textP, textButtonActionUn, fonctionButtonActionUn, textButtonActionDeux, fonctionButtonActionDeux) {
+    let paragraphe = $('#texte_paragraphe_lambda');
+    let boutonActionUn = $('#button_stat_action_un_lambda');
+    let boutonActionDeux = $('#button_stat_action_deux_lambda');
+    // On reset tout
+    paragraphe.html('');
+    boutonActionUn.html('');
+    boutonActionUn.off('click');
+    boutonActionDeux.html('');
+    boutonActionDeux.off('click');
+    // On met le texte
+    paragraphe.html(textP);
+    // On met le bouton 1
+    boutonActionUn.html(textButtonActionUn);
+    boutonActionUn.click(fonctionButtonActionUn);
+    // On met le bouton 2
+    if (textButtonActionDeux == null || fonctionButtonActionDeux == null) {
+        // Faire le menu gauche
+        boutonActionDeux.html("Annuler");
+        boutonActionDeux.click(function () {
+            refreshMenuGauche(false);
+            buttonSelectEffect(null, null);
+        });
+    } else {
+        boutonActionDeux.html(textButtonActionDeux);
+        boutonActionDeux.click(fonctionButtonActionDeux);
     }
 }
 
@@ -464,8 +530,15 @@ function updateTemporaryChart() {
 
 function createCharts() {
     console.log("Statistiques.js - createCharts");
+    // on regarde la longueur de charts
+    let plusieursGraphs;
+    charts.length > 1 ? plusieursGraphs = true : plusieursGraphs = false;
     for (var i = 0; i < charts.length; i++) {
         createChart(charts[i]);
+        if (plusieursGraphs && i != charts.length - 1) {
+            console.log('trou2balle');
+            $('#graphes').append($('<hr>').addClass('delimitation_trait'));
+        }
     }
 }
 
@@ -558,47 +631,47 @@ function createChart(chart) {
                     }
                 };
             } else {
-            chartConfig = {
-                type: chart.type,
-                plugins: [ChartDataLabels],
-                data: {
-                    labels: chart.data.labels,
-                    datasets: [{
-                        label: 'Quantités',
-                        data: chart.data.quantities,
-                        backgroundColor: ['#FFB1C1', '#FFD1B1', '#FFF1B1', '#D1FFB1', '#B1FFC1', '#B1FFD1', '#B1FFF1', '#B1D1FF', '#B1B1FF', '#D1B1FF', '#FFB1FF', '#FFB1D1'],
-                    }]
-                },
-                options: {
-                    responsive: false,
-                    plugins: {
-                        datalabels: {
-                            anchor: 'end',
-                            align: 'end',
-                            labels: {
-                                value: {
-                                    color: 'black'
-                                }
-                            }
-                        },
-                        legend: {
-                            display: false
-                        },
-                        title: {
-                            display: true,
-                            text: 'Quantités',
-                            position: 'top',
-                            align: 'start'
-                        },
+                chartConfig = {
+                    type: chart.type,
+                    plugins: [ChartDataLabels],
+                    data: {
+                        labels: chart.data.labels,
+                        datasets: [{
+                            label: 'Quantités',
+                            data: chart.data.quantities,
+                            backgroundColor: ['#FFB1C1', '#FFD1B1', '#FFF1B1', '#D1FFB1', '#B1FFC1', '#B1FFD1', '#B1FFF1', '#B1D1FF', '#B1B1FF', '#D1B1FF', '#FFB1FF', '#FFB1D1'],
+                        }]
                     },
-                    scales: {
-                        y: {
-                            display: false // Cacher l'axe des ordonnées
+                    options: {
+                        responsive: false,
+                        plugins: {
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'end',
+                                labels: {
+                                    value: {
+                                        color: 'black'
+                                    }
+                                }
+                            },
+                            legend: {
+                                display: false
+                            },
+                            title: {
+                                display: true,
+                                text: 'Quantités',
+                                position: 'top',
+                                align: 'start'
+                            },
+                        },
+                        scales: {
+                            y: {
+                                display: false // Cacher l'axe des ordonnées
+                            }
                         }
                     }
-                }
-            };
-        }
+                };
+            }
             break;
     }
     if (chart.data != null) {

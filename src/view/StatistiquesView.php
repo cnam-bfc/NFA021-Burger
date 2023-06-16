@@ -119,10 +119,10 @@
             <!-- Menu de confirmation lambda -->
             <div id="onglet_lambda" class="menu_graphe_content">
                 <div class="box_graphe">
-                    <h3 class="graphe_categorie bold"></h3>
-                    <p id="texte_confirmation"></p>
+                    <p id="texte_paragraphe_lambda"></p>
                 </div>
-                <button id="button_stat_confirmation_lambda" class="bouton">Confirmer</button>
+                <button id="button_stat_action_un_lambda" class="bouton"></button>
+                <button id="button_stat_action_deux_lambda" class="bouton"></button>
             </div>
         </div>
     </section>
