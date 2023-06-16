@@ -56,9 +56,14 @@ $(function () {
     navigator.geolocation.watchPosition(updateCurrentLocation);
 
     // Ajout du bouton de retour à la liste des livraisons
-    L.easyButton('fa-arrow-left', function (btn, map) {
+    let backButton = L.easyButton('fa-arrow-left', function (btn, map) {
         window.location.href = "livraisons";
     }, "Retour à la liste des livraisons").addTo(map);
+
+    // Ajout du bouton de rafraichissement de l'itinéraire
+    let refreshButton = L.easyButton('fa-sync-alt', function (btn, map) {
+        refreshItineraire();
+    }, "Rafraichir l'itinéraire").addTo(map);
 
     // Ajout du choix de mode de transport
     console.log("Récupération des moyens de transport...");
@@ -112,7 +117,7 @@ $(function () {
                             });
 
                             // Recréation de la route
-                            recreateItineraireData();
+                            refreshItineraire();
                         }
                     });
                 }
@@ -145,6 +150,9 @@ $(function () {
      * Fonction permettant de recréer l'itinéraire
      */
     function recreateItineraireView() {
+        let fontawesomeicon = refreshButton.button.children[0].children[0];
+        fontawesomeicon.classList.remove("fa-spin");
+
         console.log("Re-création de l'itinéraire...");
 
         let routerOptions = {
@@ -206,7 +214,6 @@ $(function () {
      * Fonction permettant de recréer l'itinéraire
      */
     function recreateItineraireData() {
-
         // Si on est en mode vision d'un point
         if (url.searchParams.has("osm_type") && url.searchParams.has("osm_id")) {
             // Récupération des informations de l'itinéraire
@@ -306,5 +313,19 @@ $(function () {
         }
     }
 
-    recreateItineraireData();
+    function refreshItineraire() {
+        let fontawesomeicon = refreshButton.button.children[0].children[0];
+
+        if (fontawesomeicon.classList.contains("fa-spin")) {
+            return;
+        }
+
+        console.log("Rafraichissement de l'itinéraire...");
+
+        fontawesomeicon.classList.add("fa-spin");
+
+        recreateItineraireData();
+    }
+
+    refreshItineraire();
 });

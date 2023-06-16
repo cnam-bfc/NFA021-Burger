@@ -302,33 +302,38 @@ class LivraisonController extends Controller
             exit;
         }
 
-        // Récupération de la commande
-        $commande = $commandeClientLivraisonDAO->selectById($livreur->getIdCommande());
-        if ($commande === null) {
-            ErrorController::error(404, 'La commande n\'existe pas');
-            exit;
+        // Récupération des commandes du livreur
+        $commandes = $commandeClientLivraisonDAO->selectAllByIdLivreur($livreur->getId());
+
+        $json = array(
+            'data' => array(
+                'itineraire' => array()
+            )
+        );
+
+        // Formatage des commandes en json
+        foreach ($commandes as $commande) {
+            // Si la commande n'est pas prise, mettre l'adresse du restaurant
+            if (empty($commande->getHeureRecuperation())) {
+                $json['data']['itineraire'][] = array(
+                    'id' => $commande->getId(),
+                    'osm_type' => 'W',
+                    'osm_id' => 219487836
+                );
+            }
+            // Sinon si la commande est prise, mettre l'adresse du client
+            else {
+                $json['data']['itineraire'][] = array(
+                    'id' => $commande->getId(),
+                    'osm_type' => $commande->getAdresseOsmType(),
+                    'osm_id' => $commande->getAdresseOsmId()
+                );
+            }
         }
-
-        // Récupération de l'adresse de livraison
-        $adresseLivraison = $commande->getAdresseLivraison();
-
-        // Récupération de l'adresse du restaurant
-        $adresseRestaurant = $commande->getAdresseRestaurant();
-
-        // Récupération du moyen de transport
-        $moyenTransport = $livreur->getMoyenTransport();
-
-        // Récupération de l'itinéraire
-        $itineraire = $this->getItineraire($adresseRestaurant, $adresseLivraison, $moyenTransport);
 
         $view = new View(BaseTemplate::JSON);
 
-        $view->json = array(
-            'success' => true,
-            'data' => array(
-                'itineraire' => $itineraire
-            )
-        );
+        $view->json = $json;
 
         $view->renderView();
     }

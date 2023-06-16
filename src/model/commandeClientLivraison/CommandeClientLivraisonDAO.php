@@ -226,6 +226,37 @@ class CommandeClientLivraisonDAO extends DAO
     }
 
     /**
+     * Méthode permettant de récupérer tous les objets d'un livreur
+     * 
+     * @param int $idLivreur (id du livreur)
+     * @return CommandeClientLivraison[] (tableau d'objets)
+     */
+    public function selectAllByIdLivreur($idLivreur)
+    {
+        // Requête
+        $sqlQuery = "SELECT cc.*, cl.heure_livraison, cl.heure_recuperation, cl.adresse_osm_type, cl.adresse_osm_id, cl.adresse_code_postal, cl.adresse_ville, cl.adresse_rue, cl.adresse_numero, cl.id_compte_fk AS 'id_livreur_fk' FROM burger_commande_client AS cc, burger_commande_client_livraison AS cl WHERE cc.id_commande_client = cl.id_commande_client AND cl.id_compte_fk = :id_compte_fk";
+        $statement = $this->pdo->prepare($sqlQuery);
+        $statement->bindValue(':id_compte_fk', $idLivreur, PDO::PARAM_INT);
+        $statement->execute();
+
+        // Traitement des résultats
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $commandesClientsLivraisons = array();
+        foreach ($result as $row) {
+            // Création d'un nouvel objet
+            $commandeClientLivraison = new CommandeClientLivraison();
+
+            // Remplissage de l'objet
+            $this->fillObject($commandeClientLivraison, $row);
+
+            // Ajout de l'objet dans le tableau
+            $commandesClientsLivraisons[] = $commandeClientLivraison;
+        }
+
+        return $commandesClientsLivraisons;
+    }
+
+    /**
      * Méthode permettant de récupérer un objet par son id
      * 
      * @param int $id (id de l'objet à récupérer)
