@@ -31,11 +31,10 @@ class RecetteCuisineController extends Controller
         $json['data'] = array();
 
         // Récupération de la recette
-        $ingredientsBasiques = $recetteIngredientBasiqueDAO->selectAllByIdRecette($recetteId);
 
         $recette = $recetteDAO->selectById($recetteId);
 
-        $recetteFinale = $recetteFinaleDAO->selectAllByIdRecetteAndIdComClient($recetteId, $comClientId);
+        $recetteFinale = $recetteFinaleDAO->selectByIdCmdClientAndRecette($recetteId, $comClientId);
 
         $recetteFinaleIngredients = $recetteFinaleIngredientDAO->selectAllByIdRecetteFinale($recetteFinaleId);
 
@@ -103,7 +102,9 @@ class RecetteCuisineController extends Controller
 
         $jsonRecette = array(
             'id' => $recette->getId(),
+            'idcc' => $comClientId,
             'nom' => $recette->getNom(),
+            'quantite' => $recetteFinale->getQuantite(),
             'ingredients' => $jsonRecetteIngredients,
         );
 
@@ -115,7 +116,6 @@ class RecetteCuisineController extends Controller
 
 
         $view = new View(BaseTemplate::JSON);
-
         $view->json = $json;
 
         $view->renderView();
@@ -124,7 +124,6 @@ class RecetteCuisineController extends Controller
     public function renderView()
     {
         $view = new View(BaseTemplate::EMPTY, 'RecetteCuisineView');
-
         $view->renderView();
     }
 }

@@ -1,23 +1,38 @@
-.container {
-    margin: 0 auto;
-    max-width: 800px;
+#wrapper_burger {
+    margin: auto;
+    align-items: center;
+}
+h1 {
+    width: 30%;
 }
 
-h1 {
+.titre_souligne {
+    font-size: 2em;
+}
+h2 {
+    text-align: center;
+    font-size: 3em;
+}
+
+.image {
+    margin: 0 auto 0 auto;
+    align-content: center;
+    width: 50%;
+    height: 50%;
+}
+img {
+    width: 50%;
+    margin: 0 auto 0 auto;
     text-align: center;
 }
 
-.burger {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin-top: 50px;
+.ingredients {
+    width: 50%;
+    font-size: 1.5em;
+    text-align: center;
 }
+.ingredients p {
 
-img {
-    width:  200px;
-    height: auto;
-    margin-bottom: 20px;
 }
 
 ul {
