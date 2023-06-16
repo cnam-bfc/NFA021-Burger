@@ -18,6 +18,8 @@
                     <th>Adresse de destination</th>
                     <th>Distance</th>
                     <th>Heure de livraison</th>
+                    <th>Status</th>
+                    <th>Client</th>
                     <th><!-- Bouton actions rapide --></th>
                 </tr>
                 <tr></tr>
