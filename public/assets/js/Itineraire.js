@@ -24,7 +24,14 @@ $(function () {
     }).addTo(map);
 
     // Ajout du marqueur pour la position actuelle
-    currentLocationMarker = L.marker([0, 0]).addTo(map);
+    currentLocationMarker = L.marker([0, 0], {
+        icon: L.ExtraMarkers.icon({
+            icon: 'fa-user',
+            markerColor: 'blue',
+            shape: 'circle',
+            prefix: 'fas'
+        })
+    }).addTo(map);
 
     // Fonction de mise à jour de la position du marqueur
     function updateCurrentLocation(position) {
@@ -240,7 +247,14 @@ $(function () {
                     waypoints = [];
 
                     // Ajout du marqueur pour la destination
-                    let destinationMarker = L.marker([lat, lon]).addTo(map);
+                    let destinationMarker = L.marker([lat, lon], {
+                        icon: L.ExtraMarkers.icon({
+                            icon: 'fa-circle',
+                            markerColor: 'green',
+                            shape: 'circle',
+                            prefix: 'fa'
+                        })
+                    }).addTo(map);
                     destinationMarker.bindPopup(display_name).openPopup();
 
                     waypoints.push(destinationMarker);
@@ -293,7 +307,14 @@ $(function () {
 
                             // Ajout des marqueurs pour les points de l'itinéraire
                             response.forEach(function (point) {
-                                let waypointMarker = L.marker([point.lat, point.lon]).addTo(map);
+                                let waypointMarker = L.marker([point.lat, point.lon], {
+                                    icon: L.ExtraMarkers.icon({
+                                        icon: 'fa-circle',
+                                        markerColor: 'green',
+                                        shape: 'circle',
+                                        prefix: 'fa'
+                                    })
+                                }).addTo(map);
                                 waypointMarker.bindPopup(point.display_name);
 
                                 waypoints.push(waypointMarker);
