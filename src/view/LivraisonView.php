@@ -1,3 +1,12 @@
+<!-- Leaflet : Bibliothèque pour intégrer une carte -->
+<!-- Bibliothèque Leaflet -->
+<link rel="stylesheet" href="<?php echo ASSETS ?>leaflet/leaflet.css">
+<script src="<?php echo ASSETS ?>leaflet/leaflet.js"></script>
+
+<!-- Bibliothèque Leaflet Routing Machine -->
+<link rel="stylesheet" href="<?php echo ASSETS ?>leaflet-routing-machine/leaflet-routing-machine.css">
+<script src="<?php echo ASSETS ?>leaflet-routing-machine/leaflet-routing-machine.min.js"></script>
+
 <!-- On ajoute la feuille de style associé à la page -->
 <link rel="stylesheet" href="<?php echo CSS ?>Livraison.css">
 

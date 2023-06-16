@@ -129,7 +129,8 @@ class Router
         'livreur/livraisons/list' => ["controller" => "LivraisonController", "method" => "listeLivraisons"],
         'livreur/livraisons/prendre' => ["controller" => "LivraisonController", "method" => "prendreLivraison"],
         'livreur/itineraire' => ["controller" => "LivraisonController", "method" => "renderViewItineraire"],
-        'livreur/moyenstransport' => ["controller" => "LivraisonController", "method" => "listeMoyensTransport"],
+        'livreur/itineraire/moyenstransport' => ["controller" => "LivraisonController", "method" => "listeMoyensTransport"],
+        'livreur/itineraire/afficher' => ["controller" => "LivraisonController", "method" => "afficherItineraire"],
 
         // Exemples
         'exemple' => ["controller" => "ExempleController", "method" => "renderView"],

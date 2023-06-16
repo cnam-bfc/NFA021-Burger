@@ -21,10 +21,34 @@ class LivraisonController extends Controller
         // Création des objets DAO
         $commandeClientLivraisonDAO = new CommandeClientLivraisonDAO();
         $livreurDAO = new LivreurDAO();
+        $moyensTransportDAO = new MoyenTransportDAO();
         $clientDAO = new ClientDAO();
 
-        $json = array();
-        $json['data'] = array();
+        $json = array(
+            'data' => array(
+                'livreur' => false,
+                'osrm_profile' => '',
+                'commandes' => array()
+            )
+        );
+
+        // Récupération de l'utilisateur connecté
+        $userSession = UserSession::getUserSession();
+        if ($userSession->isLogged() && $userSession->isLivreur()) {
+            $json['data']['livreur'] = true;
+
+            // Récupération du livreur
+            $livreur = $livreurDAO->selectById($userSession->getCompte()->getId());
+
+            if ($livreur !== null) {
+                // Récupération du moyen de transport du livreur
+                $moyenTransport = $moyensTransportDAO->selectById($livreur->getIdMoyenTransport());
+
+                if ($moyenTransport !== null) {
+                    $json['data']['osrm_profile'] = $moyenTransport->getOsrmProfile();
+                }
+            }
+        }
 
         // Récupération des commandes
         $commandes = $commandeClientLivraisonDAO->selectAllNonArchive();
@@ -50,7 +74,6 @@ class LivraisonController extends Controller
                     'ville' => $commande->getAdresseVille(),
                     'code_postal' => $commande->getAdresseCodePostal()
                 ),
-                'distance' => '1,2',
                 'heure_livraison' => $commande->getHeureLivraison()
             );
 
@@ -106,11 +129,11 @@ class LivraisonController extends Controller
             }
 
             // Tri des commandes par heure de livraison
-            usort($json['data'], function ($a, $b) {
+            usort($json['data']['commandes'], function ($a, $b) {
                 return $a['heure_livraison'] <=> $b['heure_livraison'];
             });
 
-            $json['data'][] = $jsonCommande;
+            $json['data']['commandes'][] = $jsonCommande;
         }
 
         $view = new View(BaseTemplate::JSON);
@@ -214,5 +237,9 @@ class LivraisonController extends Controller
         $view = new View(BaseTemplate::JSON);
         $view->json = $json;
         $view->renderView();
+    }
+
+    public function afficherItineraire()
+    {
     }
 }
