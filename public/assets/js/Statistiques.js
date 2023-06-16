@@ -587,6 +587,11 @@ function setSpecificiteBurgerVenteTotal() {
     span.append(input);
     divChoixBurger.append(span);
     input.prop('checked', true);
+    input.on('change', function () {
+        if ($(this).is(':checked')) {
+            updateTemporaryChart();
+        }
+    });
 
     // on construit le select 
     let select = $('<select>');
@@ -613,6 +618,7 @@ function setSpecificiteBurgerVenteTotal() {
             $('#select_choix_recette').select2({
                 width: '100%',
                 placeholder: 'Sélectionnez une recette',
+                maximumSelectionLength: 10
             }).on('select2:select', function (e) {
                 updateTemporaryChart();
             });
@@ -691,6 +697,8 @@ function getDataBurgerVenteTotal() {
         dataToSend.recette_all = false;
         dataToSend.recettes = $('#select_choix_recette').val();
     }
+    // on récupère la valeur d'archives
+    dataToSend.archives = $('#graphe_archives').val();
     dataToSend = JSON.stringify(dataToSend);
 
     $.ajax({

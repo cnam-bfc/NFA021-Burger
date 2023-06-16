@@ -48,6 +48,7 @@ class StatistiquesController extends Controller
         $dateDebut = null;
         $dateFin = null;
         $recettes = null;
+        $archive = 0;
 
         if ($data["recette_all"] == false) {
             $recettes = $data["recettes"];
@@ -58,9 +59,11 @@ class StatistiquesController extends Controller
             $dateFin = $data["date_fin"];
         }
 
+        $archive = $data["archives"];
+
         // On récupère toutes les recettes
         $statsVenteBurgerDAO = new StatsVenteBurgerDAO();
-        $statsVenteBurgers = $statsVenteBurgerDAO->selectForStatisticsTotal($recettes, $dateDebut, $dateFin);
+        $statsVenteBurgers = $statsVenteBurgerDAO->selectForStatisticsTotal($recettes, $dateDebut, $dateFin, $archive);
 
         // on récupère les données pour la vue
         $result = array();
