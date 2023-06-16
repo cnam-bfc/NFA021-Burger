@@ -30,7 +30,7 @@ $(function () {
     L.control.select({
         position: "topleft",
         iconMain: '<span class="fas fa-car"></span>',
-        title: "Choix du mode de transport",
+        title: "Choisir un moyen de transport",
         selectedDefault: "bike",
         items: moyensTransport,
         onSelect: function (e) {
