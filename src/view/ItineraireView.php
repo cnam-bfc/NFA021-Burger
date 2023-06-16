@@ -3,6 +3,10 @@
 <link rel="stylesheet" href="<?php echo ASSETS ?>leaflet/leaflet.css">
 <script src="<?php echo ASSETS ?>leaflet/leaflet.js"></script>
 
+<!-- Bibliothèque Leaflet ExtraMarkers -->
+<link rel="stylesheet" href="<?php echo ASSETS ?>leaflet-extramarkers/css/leaflet.extra-markers.min.css">
+<script src="<?php echo ASSETS ?>leaflet-extramarkers/js/leaflet.extra-markers.min.js"></script>
+
 <!-- Bibliothèque Leaflet Control EasyButton -->
 <link rel="stylesheet" href="<?php echo ASSETS ?>leaflet-control-easybutton/easy-button.min.css">
 <script src="<?php echo ASSETS ?>leaflet-control-easybutton/easy-button.min.js"></script>

@@ -1,3 +1,18 @@
 #boxs {
     gap: 25px;
 }
+
+#description_api_routexl a {
+    color: #0084ff;
+    font-weight: bold;
+    padding: 0 0 5px 0;
+    text-decoration: none;
+}
+
+#description_api_routexl a:hover {
+    color: #00ccff;
+}
+
+#description_api_routexl i {
+    font-style: italic;
+}

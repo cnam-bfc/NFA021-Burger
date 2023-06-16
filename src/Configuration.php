@@ -17,6 +17,7 @@ class Configuration
     }
 
     const CATEGORY_BDD = 'bdd';
+    const CATEGORY_API_ROUTEXL = 'api_route_xl';
 
     private $config = array();
 
@@ -192,4 +193,55 @@ class Configuration
     /*****************************
      *** FIN - BASE DE DONNEES ***
      ****************************/
+
+    /***************************
+     *** DEBUT - API ROUTEXL ***
+     ***************************/
+    /**
+     * Méthode permettant de récupérer le nom d'utilisateur de l'API RouteXL
+     * 
+     * @return string (nom d'utilisateur de l'API RouteXL)
+     * @throws Exception (si la valeur de configuration n'existe pas)
+     */
+    public function getRouteXLUsername()
+    {
+        return $this->get(self::CATEGORY_API_ROUTEXL, 'username');
+    }
+
+    /**
+     * Méthode permettant de récupérer le mot de passe de l'API RouteXL
+     * 
+     * @return string (mot de passe de l'API RouteXL)
+     * @throws Exception (si la valeur de configuration n'existe pas)
+     */
+    public function getRouteXLPassword()
+    {
+        return $this->get(self::CATEGORY_API_ROUTEXL, 'password');
+    }
+
+    /**
+     * Méthode permettant de modifier le nom d'utilisateur de l'API RouteXL
+     * 
+     * @param string $username (nom d'utilisateur de l'API RouteXL)
+     * @throws Exception (si une erreur survient lors de l'écriture dans le fichier de configuration)
+     */
+    public function setRouteXLUsername($username)
+    {
+        $this->set(self::CATEGORY_API_ROUTEXL, 'username', $username);
+    }
+
+    /**
+     * Méthode permettant de modifier le mot de passe de l'API RouteXL
+     * 
+     * @param string $password (mot de passe de l'API RouteXL)
+     * @throws Exception (si une erreur survient lors de l'écriture dans le fichier de configuration)
+     */
+    public function setRouteXLPassword($password)
+    {
+        $this->set(self::CATEGORY_API_ROUTEXL, 'password', $password);
+    }
+
+    /*************************
+     *** FIN - API ROUTEXL ***
+     ************************/
 }

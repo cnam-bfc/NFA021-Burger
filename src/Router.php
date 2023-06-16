@@ -13,7 +13,9 @@ class Router
         'install' => ["controller" => "InstallController", "method" => "renderView"],
         'install/config_bdd' => ["controller" => "InstallController", "method" => "configBdd"],
         'install/install_bdd' => ["controller" => "InstallController", "method" => "installBdd"],
+        'install/api_routexl' => ["controller" => "InstallController", "method" => "apiRouteXL"],
         'install/create_gerant' => ["controller" => "InstallController", "method" => "createGerant"],
+        'install/install_moyens_transport' => ["controller" => "InstallController", "method" => "installMoyensTransport"],
         'install/install_unites' => ["controller" => "InstallController", "method" => "installUnites"],
         'install/install_emballages' => ["controller" => "InstallController", "method" => "installEmballages"],
         'install/install_fournisseurs' => ["controller" => "InstallController", "method" => "installFournisseurs"],
@@ -129,6 +131,9 @@ class Router
         'livreur/livraisons/list' => ["controller" => "LivraisonController", "method" => "listeLivraisons"],
         'livreur/livraisons/prendre' => ["controller" => "LivraisonController", "method" => "prendreLivraison"],
         'livreur/itineraire' => ["controller" => "LivraisonController", "method" => "renderViewItineraire"],
+        'livreur/itineraire/moyenstransport' => ["controller" => "LivraisonController", "method" => "listeMoyensTransport"],
+        'livreur/itineraire/moyentransport' => ["controller" => "LivraisonController", "method" => "saveMoyenTransport"],
+        'livreur/itineraire/afficher' => ["controller" => "LivraisonController", "method" => "afficherItineraire"],
 
         // Exemples
         'exemple' => ["controller" => "ExempleController", "method" => "renderView"],

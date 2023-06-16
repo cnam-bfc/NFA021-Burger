@@ -21,10 +21,34 @@ class LivraisonController extends Controller
         // Création des objets DAO
         $commandeClientLivraisonDAO = new CommandeClientLivraisonDAO();
         $livreurDAO = new LivreurDAO();
+        $moyensTransportDAO = new MoyenTransportDAO();
         $clientDAO = new ClientDAO();
 
-        $json = array();
-        $json['data'] = array();
+        $json = array(
+            'data' => array(
+                'livreur' => false,
+                'osrm_profile' => '',
+                'commandes' => array()
+            )
+        );
+
+        // Récupération de l'utilisateur connecté
+        $userSession = UserSession::getUserSession();
+        if ($userSession->isLogged() && $userSession->isLivreur()) {
+            $json['data']['livreur'] = true;
+
+            // Récupération du livreur
+            $livreur = $livreurDAO->selectById($userSession->getCompte()->getId());
+
+            if ($livreur !== null) {
+                // Récupération du moyen de transport du livreur
+                $moyenTransport = $moyensTransportDAO->selectById($livreur->getIdMoyenTransport());
+
+                if ($moyenTransport !== null) {
+                    $json['data']['osrm_profile'] = $moyenTransport->getOsrmProfile();
+                }
+            }
+        }
 
         // Récupération des commandes
         $commandes = $commandeClientLivraisonDAO->selectAllNonArchive();
@@ -50,7 +74,6 @@ class LivraisonController extends Controller
                     'ville' => $commande->getAdresseVille(),
                     'code_postal' => $commande->getAdresseCodePostal()
                 ),
-                'distance' => '1,2',
                 'heure_livraison' => $commande->getHeureLivraison()
             );
 
@@ -81,34 +104,36 @@ class LivraisonController extends Controller
             }
 
             // Différents status de la commande possibles
+            // ETATS TERMINE
             // Archive : date_archive non null & id_livreur null
             // Livré : date_archive non null & id_livreur non null
-            // En livraison : date_pret non null & id_livreur non null
-            // Prêt : date_pret non null & id_livreur null
-            // Cuisine : date_commande non null & date_pret null
-            // En attente : date_commande null & date_pret null
+
+            // ETATS EN COURS
+            // En livraison : date_recuperation non null & id_livreur non null
+            // Attente livreur : date_pret non null
+            // En cuisine : date_commande non null & date_pret null
 
             // Formatage du status en json
             if (!empty($commande->getDateArchive()) && empty($commande->getIdLivreur())) {
                 $jsonCommande['status'] = 'archive';
             } else if (!empty($commande->getDateArchive()) && !empty($commande->getIdLivreur())) {
                 $jsonCommande['status'] = 'livre';
-            } else if (!empty($commande->getDatePret()) && !empty($commande->getIdLivreur())) {
+            } else if (!empty($commande->getHeureRecuperation()) && !empty($commande->getIdLivreur())) {
                 $jsonCommande['status'] = 'en_livraison';
-            } else if (!empty($commande->getDatePret()) && empty($commande->getIdLivreur())) {
-                $jsonCommande['status'] = 'pret';
+            } else if (!empty($commande->getDatePret())) {
+                $jsonCommande['status'] = 'attente_livreur';
             } else if (!empty($commande->getDateCommande()) && empty($commande->getDatePret())) {
-                $jsonCommande['status'] = 'cuisine';
-            } else if (empty($commande->getDateCommande()) && empty($commande->getDatePret())) {
-                $jsonCommande['status'] = 'attente';
+                $jsonCommande['status'] = 'en_cuisine';
+            } else {
+                $jsonCommande['status'] = 'en_attente';
             }
 
             // Tri des commandes par heure de livraison
-            usort($json['data'], function ($a, $b) {
+            usort($json['data']['commandes'], function ($a, $b) {
                 return $a['heure_livraison'] <=> $b['heure_livraison'];
             });
 
-            $json['data'][] = $jsonCommande;
+            $json['data']['commandes'][] = $jsonCommande;
         }
 
         $view = new View(BaseTemplate::JSON);
@@ -170,6 +195,146 @@ class LivraisonController extends Controller
 
         $view = new View(BaseTemplate::JSON);
         $view->json = $json;
+        $view->renderView();
+    }
+
+    public function listeMoyensTransport()
+    {
+        // Création des objets DAO
+        $moyensTransportDAO = new MoyenTransportDAO();
+        $livreurDAO = new LivreurDAO();
+
+        $json = array(
+            'data' => array(
+                'moyens_transport' => array()
+            )
+        );
+
+        // Récupération de la liste des moyens de transport
+        $moyensTransport = $moyensTransportDAO->selectAll();
+
+        // Formatage des moyens de transport en json
+        foreach ($moyensTransport as $moyenTransport) {
+            $json['data']['moyens_transport'][] = array(
+                'id' => $moyenTransport->getId(),
+                'nom' => $moyenTransport->getNom(),
+                'osrm_profile' => $moyenTransport->getOsrmProfile()
+            );
+        }
+
+        // Récupération de l'utilisateur connecté
+        $userSession = UserSession::getUserSession();
+        if ($userSession->isLogged() && $userSession->isLivreur()) {
+            // Récupération du livreur
+            $livreur = $livreurDAO->selectById($userSession->getCompte()->getId());
+
+            if ($livreur !== null) {
+                // Récupération du profil actuel du livreur
+                $json['data']['profil_actuel'] = $livreur->getIdMoyenTransport();
+            }
+        }
+
+        $view = new View(BaseTemplate::JSON);
+        $view->json = $json;
+        $view->renderView();
+    }
+
+    public function saveMoyenTransport()
+    {
+        // Récupération du moyen de transport
+        $idMoyenTransport = Form::getParam('moyen_transport', Form::METHOD_POST, Form::TYPE_INT);
+
+        // Récupération de l'utilisateur connecté
+        $userSession = UserSession::getUserSession();
+        if (!$userSession->isLogged() || !$userSession->isLivreur()) {
+            ErrorController::error(401, 'Vous devez être connecté en tant que livreur pour effectuer cette action');
+            exit;
+        }
+
+        // Création des objets DAO
+        $livreurDAO = new LivreurDAO();
+        $moyensTransportDAO = new MoyenTransportDAO();
+
+        // Récupération du livreur
+        $livreur = $livreurDAO->selectById($userSession->getCompte()->getId());
+        if ($livreur === null) {
+            ErrorController::error(404, 'Le livreur n\'existe pas');
+            exit;
+        }
+
+        // Récupération du moyen de transport
+        $moyenTransport = $moyensTransportDAO->selectById($idMoyenTransport);
+        if ($moyenTransport === null) {
+            ErrorController::error(404, 'Le moyen de transport n\'existe pas');
+            exit;
+        }
+
+        // Mise à jour du moyen de transport du livreur
+        $livreur->setIdMoyenTransport($moyenTransport->getId());
+        $livreurDAO->update($livreur);
+
+        $view = new View(BaseTemplate::JSON);
+
+        $view->json = array(
+            'success' => true
+        );
+
+        $view->renderView();
+    }
+
+    public function afficherItineraire()
+    {
+        // Récupération de l'utilisateur connecté
+        $userSession = UserSession::getUserSession();
+        if (!$userSession->isLogged() || !$userSession->isLivreur()) {
+            ErrorController::error(401, 'Vous devez être connecté en tant que livreur pour effectuer cette action');
+            exit;
+        }
+
+        // Création des objets DAO
+        $livreurDAO = new LivreurDAO();
+        $commandeClientLivraisonDAO = new CommandeClientLivraisonDAO();
+
+        // Récupération du livreur
+        $livreur = $livreurDAO->selectById($userSession->getCompte()->getId());
+        if ($livreur === null) {
+            ErrorController::error(404, 'Le livreur n\'existe pas');
+            exit;
+        }
+
+        // Récupération des commandes du livreur
+        $commandes = $commandeClientLivraisonDAO->selectAllByIdLivreur($livreur->getId());
+
+        $json = array(
+            'data' => array(
+                'itineraire' => array()
+            )
+        );
+
+        // Formatage des commandes en json
+        foreach ($commandes as $commande) {
+            // Si la commande n'est pas prise, mettre l'adresse du restaurant
+            if (empty($commande->getHeureRecuperation())) {
+                $json['data']['itineraire'][] = array(
+                    'id' => $commande->getId(),
+                    'osm_type' => 'W',
+                    'osm_id' => 219487836
+                );
+            }
+            // Sinon si la commande est prise, mettre l'adresse du client
+            else {
+                $json['data']['itineraire'][] = array(
+                    'id' => $commande->getId(),
+                    'osm_type' => $commande->getAdresseOsmType(),
+                    'osm_id' => $commande->getAdresseOsmId()
+                );
+            }
+        }
+
+        $view = new View(BaseTemplate::JSON);
+
+        $view->json = $json;
+
         $view->renderView();
     }
 }
