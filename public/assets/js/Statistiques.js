@@ -691,6 +691,8 @@ function getDataBurgerVenteTotal() {
         dataToSend.recette_all = false;
         dataToSend.recettes = $('#select_choix_recette').val();
     }
+    // on récupère la valeur d'archives
+    dataToSend.archives = $('#graphe_archives').val();
     dataToSend = JSON.stringify(dataToSend);
 
     $.ajax({
