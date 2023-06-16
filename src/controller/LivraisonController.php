@@ -174,4 +174,45 @@ class LivraisonController extends Controller
         $view->json = $json;
         $view->renderView();
     }
+
+    public function listeMoyensTransport()
+    {
+        // Création des objets DAO
+        $moyensTransportDAO = new MoyenTransportDAO();
+        $livreurDAO = new LivreurDAO();
+
+        $json = array(
+            'data' => array(
+                'moyens_transport' => array()
+            )
+        );
+
+        // Récupération de la liste des moyens de transport
+        $moyensTransport = $moyensTransportDAO->selectAll();
+
+        // Formatage des moyens de transport en json
+        foreach ($moyensTransport as $moyenTransport) {
+            $json['data']['moyens_transport'][] = array(
+                'id' => $moyenTransport->getId(),
+                'nom' => $moyenTransport->getNom(),
+                'osrm_profile' => $moyenTransport->getOsrmProfile()
+            );
+        }
+
+        // Récupération de l'utilisateur connecté
+        $userSession = UserSession::getUserSession();
+        if ($userSession->isLogged() && $userSession->isLivreur()) {
+            // Récupération du livreur
+            $livreur = $livreurDAO->selectById($userSession->getCompte()->getId());
+
+            if ($livreur !== null) {
+                // Récupération du profil actuel du livreur
+                $json['data']['profil_actuel'] = $livreur->getIdMoyenTransport();
+            }
+        }
+
+        $view = new View(BaseTemplate::JSON);
+        $view->json = $json;
+        $view->renderView();
+    }
 }
