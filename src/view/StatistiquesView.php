@@ -6,7 +6,7 @@
 
 
 <!-- on inclut la feuille js -->
-<script src="<?php echo JS; ?>statistiques.js"></script>
+<script src="<?php echo JS; ?>Statistiques.js"></script>
 
 <!-- content -->
 <div class="wrapper axe_ligne grow">
