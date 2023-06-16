@@ -2,6 +2,10 @@ $(function () {
     // Récupération des informations de l'itinéraire dans l'url
     const url = new URL(window.location.href);
 
+    let moyensTransport = [];
+    let currentMoyenTransport = "";
+    let currentLocationMarker;
+
     // Création de la carte
     let map = L.map('map', {
         fullscreenControl: true,
@@ -16,33 +20,13 @@ $(function () {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
-    // Ajout du bouton de retour à la liste des livraisons
-    L.easyButton('fa-arrow-left', function (btn, map) {
-        window.location.href = "livraisons";
-    }, "Retour à la liste des livraisons").addTo(map);
-
-    // Ajout du choix de mode de transport
-    let moyensTransport = [
-        { label: "Voiture", value: "car" },
-        { label: "Vélo", value: "bike" },
-        { label: "Pied", value: "foot" }
-    ];
-    L.control.select({
-        position: "topleft",
-        iconMain: '<span class="fas fa-car"></span>',
-        title: "Choisir un moyen de transport",
-        selectedDefault: "bike",
-        items: moyensTransport,
-        onSelect: function (e) {
-            console.log(e);
-        }
-    }).addTo(map);
-
     // Ajout du marqueur pour la position actuelle
-    let currentLocationMarker = L.marker([0, 0]).addTo(map);
+    currentLocationMarker = L.marker([0, 0]).addTo(map);
 
     // Fonction de mise à jour de la position du marqueur
     function updateCurrentLocation(position) {
+        console.log("Mise à jour de la position de l'utilisateur");
+
         let lat = position.coords.latitude;
         let lng = position.coords.longitude;
         currentLocationMarker.setLatLng([lat, lng]);
@@ -50,6 +34,98 @@ $(function () {
 
     // Suivi de la position de l'utilisateur
     navigator.geolocation.watchPosition(updateCurrentLocation);
+
+    // Ajout du bouton de retour à la liste des livraisons
+    L.easyButton('fa-arrow-left', function (btn, map) {
+        window.location.href = "livraisons";
+    }, "Retour à la liste des livraisons").addTo(map);
+
+    // Ajout du choix de mode de transport
+    console.log("Récupération des moyens de transport...");
+    $.ajax({
+        url: "itineraire/moyenstransport",
+        method: "GET",
+        dataType: "json",
+        success: function (response) {
+            console.log("Moyens de transport récupérés");
+
+            // Sauvegarde des moyens de transport dans un tableau
+            moyensTransport = response['data']['moyens_transport'];
+
+            // Construction des items pour le select
+            let selectMoyensTransportData = [];
+            moyensTransport.forEach(function (moyenTransport) {
+                selectMoyensTransportData.push({
+                    label: moyenTransport['nom'],
+                    value: moyenTransport['id']
+                });
+            });
+
+            // Configuration du select
+            let selectOptions = {
+                position: "topleft",
+                iconMain: '<span class="fas fa-car"></span>',
+                title: "Choisir un moyen de transport",
+                items: selectMoyensTransportData,
+                onSelect: function (item) {
+                    moyensTransport.forEach(function (moyenTransport) {
+                        if (moyenTransport['id'] == item) {
+                            console.log("Moyen de transport sélectionné : " + moyenTransport['nom']);
+
+                            // Actualisation du moyen de transport sélectionné
+                            currentMoyenTransport = moyenTransport['osrm_profile'];
+
+                            // Sauvegarde du moyen de transport sélectionné
+                            $.ajax({
+                                url: "itineraire/moyentransport",
+                                method: "POST",
+                                data: {
+                                    moyen_transport: moyenTransport['id']
+                                },
+                                dataType: "json",
+                                success: function (response) {
+                                    console.log("Moyen de transport sélectionné sauvegardé");
+                                },
+                                error: function (xhr, status, error) {
+                                    console.log("Erreur lors de la sauvegarde du moyen de transport sélectionné : " + error);
+                                }
+                            });
+
+                            // Recréation de la route
+                            recreateItineraireView();
+                        }
+                    });
+                }
+            }
+
+            if (response['data']['profil_actuel']) {
+                // Récupération du moyen de transport sélectionné
+                moyensTransport.forEach(function (moyenTransport) {
+                    if (moyenTransport['id'] == response['data']['profil_actuel']) {
+                        console.log("Moyen de transport sélectionné : " + moyenTransport['nom']);
+
+                        // Actualisation du moyen de transport sélectionné
+                        currentMoyenTransport = moyenTransport['osrm_profile'];
+
+                        // Sélection du moyen de transport par défaut
+                        selectOptions['selectedDefault'] = moyenTransport['id'];
+                    }
+                });
+            }
+
+            // Création du select
+            L.control.select(selectOptions).addTo(map);
+        },
+        error: function (xhr, status, error) {
+            console.log("Erreur lors de la récupération des moyens de transport : " + error);
+        }
+    });
+
+    /**
+     * Fonction permettant de recréer l'itinéraire
+     */
+    function recreateItineraireView() {
+    }
 
     // Récupération des informations de l'itinéraire
     let osm_type = url.searchParams.get("osm_type");

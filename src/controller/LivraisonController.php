@@ -239,6 +239,49 @@ class LivraisonController extends Controller
         $view->renderView();
     }
 
+    public function saveMoyenTransport()
+    {
+        // Récupération du moyen de transport
+        $idMoyenTransport = Form::getParam('moyen_transport', Form::METHOD_POST, Form::TYPE_INT);
+
+        // Récupération de l'utilisateur connecté
+        $userSession = UserSession::getUserSession();
+        if (!$userSession->isLogged() || !$userSession->isLivreur()) {
+            ErrorController::error(401, 'Vous devez être connecté en tant que livreur pour effectuer cette action');
+            exit;
+        }
+
+        // Création des objets DAO
+        $livreurDAO = new LivreurDAO();
+        $moyensTransportDAO = new MoyenTransportDAO();
+
+        // Récupération du livreur
+        $livreur = $livreurDAO->selectById($userSession->getCompte()->getId());
+        if ($livreur === null) {
+            ErrorController::error(404, 'Le livreur n\'existe pas');
+            exit;
+        }
+
+        // Récupération du moyen de transport
+        $moyenTransport = $moyensTransportDAO->selectById($idMoyenTransport);
+        if ($moyenTransport === null) {
+            ErrorController::error(404, 'Le moyen de transport n\'existe pas');
+            exit;
+        }
+
+        // Mise à jour du moyen de transport du livreur
+        $livreur->setIdMoyenTransport($moyenTransport->getId());
+        $livreurDAO->update($livreur);
+
+        $view = new View(BaseTemplate::JSON);
+
+        $view->json = array(
+            'success' => true
+        );
+
+        $view->renderView();
+    }
+
     public function afficherItineraire()
     {
     }
