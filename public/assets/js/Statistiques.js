@@ -343,9 +343,16 @@ function remplirMenuPersonnalisation() {
         temporaryChart.divNom.html(grapheNom.val());
     });
 
+
+    let grapheDescription = $('#graphe_description');
     if (temporaryChart.description != null) {
-        $('#graphe_description').val(temporaryChart.description);
+        grapheDescription.val(temporaryChart.description);
     }
+    grapheDescription.on('input', function () {
+        temporaryChart.description = grapheDescription.val();
+        temporaryChart.divDescription.html(grapheDescription.val());
+    });
+
     // on génère le select
     let select = $("#graphe_type");
     if (temporaryChart.typePossible != null) {
