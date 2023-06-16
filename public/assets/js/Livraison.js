@@ -54,7 +54,14 @@ $(function () {
         cellule = $("<td>");
         let celluleDistance = cellule;
         cellule.text("Calcul en cours...");
-        //cellule.html(data.distance + "&nbsp;km");
+        ligne.append(cellule);
+
+        // Temps de trajet
+        cellule = $("<td>");
+        let celluleTemps = cellule;
+        cellule.text("Calcul en cours...");
+        ligne.append(cellule);
+
         // Récupération de la position de la destination via l'API de nominatim
         $.ajax({
             url: "https://nominatim.openstreetmap.org/lookup?osm_ids=" + data.adresse_depart.osm_type + data.adresse_depart.osm_id + "," + data.adresse_arrivee.osm_type + data.adresse_arrivee.osm_id + "&format=json&addressdetails=1",
@@ -110,13 +117,20 @@ $(function () {
                     let distance = e.routes[0].summary.totalDistance;
                     // Affichage de la distance
                     celluleDistance.html(distance / 1000 + "&nbsp;km");
+
+                    // Récupération du temps de trajet
+                    let temps = e.routes[0].summary.totalTime;
+                    // Affichage du temps de trajet (minutes)
+                    temps = temps / 60;
+                    // Arrondi à la minute supérieure
+                    temps = Math.ceil(temps);
+
+                    celluleTemps.html(temps + "&nbsp;min");
                 });
 
                 routing.route();
             }
         });
-
-        ligne.append(cellule);
 
 
         // Heure de livraison
@@ -257,7 +271,7 @@ $(function () {
         // Ajout ligne de chargement
         let ligne = $("<tr>");
         let cellule = $("<td>");
-        cellule.attr("colspan", 8);
+        cellule.attr("colspan", 9);
         cellule.html("<br><i class='fa-solid fa-spinner fa-spin'></i> Chargement des livraisons<br><br>");
         ligne.append(cellule);
         bodyTableauLivraisons.append(ligne);
@@ -275,7 +289,7 @@ $(function () {
                 if (data['data']['commandes'].length == 0) {
                     let ligne = $("<tr>");
                     let cellule = $("<td>");
-                    cellule.attr("colspan", 8);
+                    cellule.attr("colspan", 9);
                     cellule.html("<br>Aucune livraison n'a été trouvée<br><br>");
                     ligne.append(cellule);
                     bodyTableauLivraisons.append(ligne);
@@ -294,7 +308,7 @@ $(function () {
                 // Ajout ligne d'erreur
                 let ligne = $("<tr>");
                 let cellule = $("<td>");
-                cellule.attr("colspan", 8);
+                cellule.attr("colspan", 9);
                 cellule.html("<br><i class='fa-solid fa-exclamation-triangle'></i> Erreur lors du chargement des livraisons<br><br>");
                 ligne.append(cellule);
                 bodyTableauLivraisons.append(ligne);

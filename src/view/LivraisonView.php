@@ -26,6 +26,7 @@
                     <th>Adresse de départ</th>
                     <th>Adresse de destination</th>
                     <th>Distance</th>
+                    <th>Temps de trajet</th>
                     <th>Heure de livraison</th>
                     <th>Status</th>
                     <th>Client</th>
