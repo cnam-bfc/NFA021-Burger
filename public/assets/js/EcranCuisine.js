@@ -43,7 +43,7 @@ $(function () {
         let divContenu = $("<div>").addClass("composition_com");
 
         data.recettes.forEach(element => {
-            let boutonRecette = $("<button>");
+            let boutonRecette = $("<button>").addClass("boutonRecette");
             boutonRecette.attr("id", element.id);
             let recetteText = element.quantite + "x " + element.nom;
             boutonRecette.append(recetteText);
@@ -102,7 +102,7 @@ $(function () {
 
     function addBoutons() {
         const divBoutons = $("div.bouton");
-
+        divBoutons.empty();
         //Création du bouton Précedent
         let boutonPrev = $("<button>").addClass('boutonsPrincipaux').text('Précédent');
         boutonPrev.attr("id", "boutonPrev");
@@ -170,6 +170,8 @@ $(function () {
                     }
                 });
                 commandeFocus.remove();
+                divPrincipale.empty();
+                refreshCommande();
 
                 if (commandeSuivante) {
                     commandeSuivante.classList.add('focus');
@@ -218,7 +220,7 @@ $(function () {
                 // Sinon, ajouter chaque recette dans une nouvelle ligne
                 else {
                     if (data['data'].length > 8) {
-                        for (let i = 0; i < 8; i++) {
+                        for (let i = 0 ; i < 8 ; i++) {
                             addCommande(data['data'][i]);
                         }
                     } else {
@@ -248,8 +250,4 @@ $(function () {
     }
 
     refreshCommande();
-
-    boutonValide.click(function () {
-
-    });
 });
