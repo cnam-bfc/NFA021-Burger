@@ -5,6 +5,8 @@
 
     <?php if (!isset($ingredient)) { ?>
 
+        <!-- Création d'un nouvel ingrédient -->
+
         <div class="wrapper axe_colonne second_axe_center">
             <h2 class="titre_bulle">Nouvel ingrédient</h2>
         </div>
@@ -72,11 +74,10 @@
                         <input type='submit' class="bouton" value='Valider' onclick='messageCreationIngredient()'>
                     </div>
 
-
-                    <!-- Modification d'un produit existant -->
                 <?php
             } else {
                 ?>
+                    <!-- Modification d'un produit existant -->
 
                     <div class="wrapper axe_colonne second_axe_center">
                         <h2 class="titre_bulle">Modification ingrédient</h2>
@@ -150,9 +151,6 @@
                             <?php
                         }
                             ?>
-
-
-
                             </form>
                         </div>
                     </div>

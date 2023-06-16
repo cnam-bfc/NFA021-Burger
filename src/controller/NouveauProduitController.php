@@ -31,6 +31,7 @@ class NouveauProduitController extends Controller
         //Si le tableau $_POST existe alors le formulaire de création/modification a bien été envoyé.
         if (!empty($_POST)) {
 
+            //On récupère les données de chaque clé
             if (!empty($_POST['id']))
                 $id = $_POST["id"];
 
@@ -67,7 +68,7 @@ class NouveauProduitController extends Controller
             if ($_POST['unite'])
                 $unite = $_POST['unite'];
 
-            // Récupération de l'image de la recette
+            //On récupère l'image de la recette
             if (isset($id)) {
                 $ingredientImage = Form::getFile('icone', false);
             } else {
@@ -75,6 +76,7 @@ class NouveauProduitController extends Controller
             }
             $ingredientImageEclatee = Form::getFile('eclate', false);
 
+            //On crée un objet un ingrédient avec les données récupérées
             $ingr = new Ingredient();
             $ingr->setNom($nom);
             $ingr->setPrixFournisseur($prix);
@@ -86,6 +88,7 @@ class NouveauProduitController extends Controller
             $ingr->setIdFournisseur($fournisseur);
             $ingr->setIdUnite($unite);
 
+            //S'il y a une image éclatée, on l'ajoute à l'ingrédient
             if ($ingredientImageEclatee === null)
                 $ingr->setAfficherVueEclatee(false);
             else
@@ -104,7 +107,7 @@ class NouveauProduitController extends Controller
             }
 
             if ($ingredientImage !== null) {
-                // Déplacement de l'image dans le dossier des images de recettes
+                //On déplace l'image dans le dossier des images des ingrédients
                 $ingredientFolder = DATA_INGREDIENTS . $id . DIRECTORY_SEPARATOR;
                 if (!file_exists($ingredientFolder)) {
                     mkdir($ingredientFolder, 0777, true);
@@ -114,7 +117,7 @@ class NouveauProduitController extends Controller
             }
 
             if ($ingredientImageEclatee !== null) {
-                // Déplacement de l'image dans le dossier des images de recettes
+                // Déplacement de l'image dans le dossier des images des ingrédients
                 $ingredientFolder = DATA_INGREDIENTS . $id . DIRECTORY_SEPARATOR;
                 if (!file_exists($ingredientFolder)) {
                     mkdir($ingredientFolder, 0777, true);
