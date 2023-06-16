@@ -8,6 +8,7 @@
 L.Control.Select = L.Control.extend({
   options: {
     position: "topright",
+    title: "",
     iconMain: "≡",
     iconChecked: "◉",
     // "☑"
@@ -99,6 +100,11 @@ L.Control.Select = L.Control.extend({
     this.container.setAttribute("id", opts.id);
     var icon = L.DomUtil.create("a", "leaflet-control-button ", this.container);
     icon.innerHTML = opts.iconMain;
+
+    if (opts.title) {
+      icon.title = opts.title;
+    }
+
     map.on("click", this._hideMenu, this);
     L.DomEvent.on(icon, "click", L.DomEvent.stop);
     L.DomEvent.on(icon, "click", this._iconClicked, this);
