@@ -122,6 +122,10 @@ function globalStates(currentState) {
     // On retire les classes actives des seleciton de graphe
     $('.graphe_choix').removeClass('selected');
 
+    // On ajoute display none à la classe boutonRapideGraphe
+    $('.boutonRapideGraphe').addClass('boutonRapideGrapheHide');
+    $('.boutonRapideGraphe').removeClass('boutonRapideGrapheShow');
+
     switch (currentState) {
         case state.DEFAULT: // On est dans l'état par défaut ou l'on affiche les graphes s'ils existent
             console.log('state.DEFAULT');
@@ -138,6 +142,8 @@ function globalStates(currentState) {
                 button.EXPORT_PDF.prop('disabled', false);
                 createCharts();
             }
+            $('.boutonRapideGraphe').removeClass('boutonRapideGrapheHide');
+            $('.boutonRapideGraphe').addClass('boutonRapideGrapheShow');
             break;
         case state.ADD_GRAPHE:
             console.log('state.ADD_GRAPHE');
@@ -150,7 +156,6 @@ function globalStates(currentState) {
             button.INFORMATION.show();
             button.SELECTION_GRAPHE.prop('disabled', false);
             button.CANCEL_GRAPHE.prop('disabled', false);
-            button.SAVE_GRAPHE.prop('disabled', false);
             button.INFORMATION.prop('disabled', false);
             // On ajoute un message pour dire qu'on est en mode création d'un graphe
             $('#information').html('Mode création d\'un graphe');
@@ -295,6 +300,7 @@ function initButtonsSelectionGraphe() {
         // On réactive les boutons de personnalisation et paramétrage des graphes
         button.PERSONNALISATION_GRAPHE.prop('disabled', false);
         button.CONFIGURATION_GRAPHE.prop('disabled', false);
+        button.SAVE_GRAPHE.prop('disabled', false);
 
         // On remplie le menu et on met sur l'onglet de personnalisation
         remplirMenuPersonnalisation();
@@ -421,6 +427,7 @@ function remplirMenuPersonnalisation() {
 
     // on génère le select
     let select = $("#graphe_type");
+    select.empty();
     if (temporaryChart.typePossible != null) {
         for (var i = 0; i < temporaryChart.typePossible.length; i++) {
             select.append('<option value="' + temporaryChart.typePossible[i] + '">' + temporaryChart.typePossible[i] + '</option>');
@@ -536,7 +543,6 @@ function createCharts() {
     for (var i = 0; i < charts.length; i++) {
         createChart(charts[i]);
         if (plusieursGraphs && i != charts.length - 1) {
-            console.log('trou2balle');
             $('#graphes').append($('<hr>').addClass('delimitation_trait'));
         }
     }
@@ -568,9 +574,9 @@ function createChart(chart) {
     mainDiv.append(title);
 
     // on créer la div contenant les boutons
-    let buttonDiv = $('<div>');
+    let buttonDiv = $('<div>').addClass('boutonRapideGraphe boutonRapideGrapheHide');
     // on créer les boutons
-    let buttonModify = $('<button>').addClass('button button_select');
+    let buttonModify = $('<button>').addClass('button');
     buttonModify.html('<i class="fa-solid fa-pen"></i>');
     // mettre image / mettre event
     let buttonDelete = $('<button>').addClass('button');
