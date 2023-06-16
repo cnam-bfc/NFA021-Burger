@@ -85,7 +85,7 @@ class ModifsBurgersController extends Controller
                 $aChoisir = $r->getQuantite();
 
 
-                $tabResult[] = array('nom' => $nom, "quantite" => $quantite, "unite" =>  $unite, "imgEclatee" => $imgEclatee, 'ordre' => $ordreIngredient, 'nom Recette' => $nomRecette, 'flecheDroite' => $flecheD, 'flecheGauche' => $flecheG, 'aChoisir' => $aChoisir, 'selectMultiple' => true);
+                $tabResult[] = array('nom' => $nom, "quantite" => $quantite, "unite" =>  $unite, "imgEclatee" => $imgEclatee, 'ordre' => $ordreIngredient, 'nom Recette' => $nomRecette, 'flecheDroite' => $flecheD, 'flecheGauche' => $flecheG, 'aChoisir' => $aChoisir, 'selectMultiple' => true, 'IdIngredient' => $idIngredient);
             }
 
             //dans foreach verifier l'ingrédient avec id ingredient_fk
@@ -107,7 +107,7 @@ class ModifsBurgersController extends Controller
             $unite = $uniteSelect->getDiminutif();
             $imgEclatee = IMG . 'ingredients/' . $idIngredient . '/eclate.img';
 
-            $tabResult[] = array('nom' => $nom, "quantite" => $quantite, "unite" =>  $unite, "imgEclatee" => $imgEclatee, 'ordre' => $ordreIngredient, 'nom Recette' => $nomRecette, 'flecheDroite' => $flecheD, 'flecheGauche' => $flecheG, 'selectMultiple' => false);
+            $tabResult[] = array('nom' => $nom, "quantite" => $quantite, "unite" =>  $unite, "imgEclatee" => $imgEclatee, 'ordre' => $ordreIngredient, 'nom Recette' => $nomRecette, 'flecheDroite' => $flecheD, 'flecheGauche' => $flecheG, 'selectMultiple' => false, 'IdIngredient' => $idIngredient);
         }
 
 
@@ -185,6 +185,7 @@ class ModifsBurgersController extends Controller
 
             $nom = $Ingredient->getNom();
 
+
             $idUnite = $Ingredient->getIdUnite();
             $uniteSelect = $uniteDao->selectById($idUnite);
             $unite = $uniteSelect->getDiminutif();
@@ -194,7 +195,7 @@ class ModifsBurgersController extends Controller
             // $ingredient = $ingredientDAO->selectById($idI);
             // $imgE=$ingredient->
 
-            $tabResult[] = array('id' => $id, 'nom' => $nom, "quantite" => $quantite, "unite" =>  $unite, "imgEclatee" => $imgEclatee, 'ordre' => $ordre);
+            $tabResult[] = array('id' => $id, 'nom' => $nom, "quantite" => $quantite, "unite" =>  $unite, "imgEclatee" => $imgEclatee, 'ordre' => $ordre, 'IdIngredient' => $idI);
         }
 
 

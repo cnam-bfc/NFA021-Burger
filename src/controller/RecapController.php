@@ -46,14 +46,9 @@ class RecapController extends Controller
                 $retrait->setIdEmballage(2);
             }
             $retrait->setIdClient($client->getId());
+            $retraitDAO->create($retrait);
 
             $idCommandeClient = $retrait->getId();
-
-
-
-
-
-            $retraitDAO->create($retrait);
         } elseif (isset($_POST['tabCommandeClientLivraison'])) {
             $livraisonDAO  = new CommandeClientLivraisonDAO();
             $livraison = new CommandeClientLivraison();
@@ -94,8 +89,32 @@ class RecapController extends Controller
                 $recetteFinale->setQuantite(1);
 
                 $recetteFinaleDAO->create($recetteFinale);
+                $idRecetteFinale = $recetteFinale->getId();
+
+
+                for ($i = 0; $i < count($burger["ingredientsFinaux"]); $i++) {
+                    if ($burger["ingredientsFinaux"][$i] != null) {
+
+                        $FinalIngrDAO  = new RecetteFinaleIngredientDAO();
+                        $FinalIngr = new RecetteFinaleIngredient();
+
+                        $FinalIngr->setOrdre($i + 1);
+                        $FinalIngr->setQuantite(intval($burger["ingredientsFinaux"][$i]["quantite"]));
+                        $FinalIngr->setIdIngredient($burger["ingredientsFinaux"][$i]["id"]);
+                        $FinalIngr->setIdRecetteFinale($idRecetteFinale);
+
+
+                        $burger["ingredientsFinaux"][$i];
+
+                        $FinalIngrDAO->create($FinalIngr);
+                    }
+                }
             }
         }
+
+
+        //créer burger_recette_finale_ingrédient pour chaque ingrédient de chaque burger
+
 
 
 
