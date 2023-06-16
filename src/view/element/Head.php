@@ -18,6 +18,8 @@
     <script src="<?php echo ASSETS ?>jspdf/jspdf.min.js"></script>
     <!-- html2canvas -->
     <script src="<?php echo ASSETS ?>html2canvas/html2canvas.min.js"></script>
+    <!-- moment -->
+    <script src="<?php echo ASSETS; ?>moment/moment.min.js"></script>
     <!-- Select2 -->
     <link href="<?php echo ASSETS ?>select2/css/select2.min.css" rel="stylesheet">
     <script src="<?php echo ASSETS ?>select2/js/select2.min.js"></script>
