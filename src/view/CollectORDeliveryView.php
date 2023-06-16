@@ -102,6 +102,16 @@
                     <label for="prenom">Votre Prénom :</label>
                     <input type="txt" id="prenom" name="prenom" pattern="[a-zA-Z\u00C0-\u024F\u1E00-\u1EFF\s-]+" required>
                 </div>
+                <div class="form-input">
+                    <label for="emballage">Choisissez un type d'emballage :</label>
+                    <select id="emballage" name="emballage">
+                        <option value="carton">Carton</option>
+                        <option value="isotherme">Isotherme</option>
+                    </select>
+
+
+
+                </div>
 
 
             </div>

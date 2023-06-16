@@ -12,6 +12,7 @@ $(function () {
             delivery.style.display = "none";
             click_collect.style.display = "block";
         }
+        console.log(document.getElementById("emballage").value);
     });
 
     bdelivery.addEventListener("change", () => {
@@ -57,7 +58,8 @@ function valider() {
                 "Voie": voie.value,
                 "NumVoie": numeroVoie.value,
                 "Telephone": telephone.value,
-                "Heure": heureDelivery.value
+                "Heure": heureDelivery.value,
+                "Emballage": "isotherme"
             };
 
             // Enregistre les informations de récupération en session
@@ -87,15 +89,25 @@ function valider() {
 
         const HeureCollect = document.getElementById("heureCollect");
         const Prenom = document.getElementById("prenom");
+        const Emballage = document.getElementById("emballage");
 
         if (new RegExp(HeureCollect.pattern).test(HeureCollect.value) && new RegExp(Prenom.pattern).test(Prenom.value)) {
-
-
+            console.log(Emballage.value);
+            
+            var optionSelectionnee = HeureCollect.selectedOptions[0]; // Première option sélectionnée (peut en contenir plusieurs avec l'attribut 'multiple')
+            
+            if (optionSelectionnee) {
+              var texteOptionSelectionnee = optionSelectionnee.textContent;
+              console.log("Option sélectionnée : " + texteOptionSelectionnee);
+            } else {
+              console.log("Aucune option sélectionnée");
+            }
+            
             const tabInfosRecup = {
                 "Mode Récupération": 'Click & Collect',
-                "Heure Collect": HeureCollect.value,
-                "Prenom": Prenom.value
-
+                "Heure Collect": texteOptionSelectionnee,
+                "Prenom": Prenom.value,
+                "Emballage" : Emballage.value
             };
 
             // Enregistre les informations de récupération en session
