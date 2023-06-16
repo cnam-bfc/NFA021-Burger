@@ -259,6 +259,8 @@ class IngredientDAO extends DAO
             $sqlQuery .= ")";
             $statement = $this->pdo->prepare($sqlQuery);
         }
+        // trier par nom croissant
+        $sqlQuery .= " ORDER BY nom ASC";
         $statement = $this->pdo->prepare($sqlQuery);
         $statement->bindValue(':id_fournisseur_fk', $fournisseur, PDO::PARAM_INT);
         if ($tableauIdIngredients[0] != null) {
