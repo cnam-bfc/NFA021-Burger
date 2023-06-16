@@ -108,6 +108,7 @@ class Router
         // Produits
         'gerant/nouveauproduit' => ["controller" => "NouveauProduitController", "method" => "renderView"],
         'gerant/listeproduits' => ["controller" => "ListeProduitsController", "method" => "renderView"],
+        'gerant/listeproduits/archiver' => ["controller" => "ListeProduitsController", "method" => "archiver"],
 
 
         // PARTIE CUISINIER

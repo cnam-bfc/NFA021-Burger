@@ -18,7 +18,7 @@ class NouveauBDCController extends Controller
             $view->listeIngredientsBdc = $daoIngredientsBdc->selectAllByIdCommandeFournisseur($_GET['idBdc']);
 
             $daoIngredients = new IngredientDAO();
-            $view->listeIngredients = $daoIngredients->selectAll();
+            $view->listeIngredients = $daoIngredients->selectAllNonArchive();
 
             $daoUnite = new UniteDAO();
             $view->listeUnites = $daoUnite->selectAll();
@@ -113,7 +113,7 @@ class NouveauBDCController extends Controller
     public function listeProduits()
     {
         $dao = new IngredientDAO();
-        $ingredient = $dao->selectAll();
+        $ingredient = $dao->selectAllNonArchive();
         $daoUnite = new UniteDAO();
 
         $tableau = array();
