@@ -188,8 +188,10 @@ function globalStates(currentState) {
             $('#information').html('Mode édition d\'un graphe');
 
             // On remplie le menu et on met sur l'onglet de personnalisation
+            resetMenuGraphes();
             temporaryChart = modifyChartSelected;
             remplirMenuPersonnalisation();
+            remplirDates();
             afficherDate();
             setSpecificiteBurgerVenteTotal();
             if (modifyChartSelectedType == 'delete') {
@@ -326,6 +328,18 @@ function initButtons() {
     });
 }
 
+function resetMenuGraphes() {
+    // On réinitialise les spécificités
+    $('#specificite').empty();
+    // on créer : <h3 class="graphe_categorie bold" id="spécificité graphe">Spécificité</h3>
+    let h3 = $('<h3></h3>');
+    h3.addClass('graphe_categorie bold');
+    h3.attr('id', 'spécificité graphe');
+    h3.html('Spécificité');
+    $('#specificite').append(h3);
+}
+
+
 function initButtonsSelectionGraphe() {
     $('#burger_vente_total').click(function () {
         console.log('burger_vente_total clicked');
@@ -343,7 +357,9 @@ function initButtonsSelectionGraphe() {
         button.SAVE_GRAPHE.prop('disabled', false);
 
         // On remplie le menu et on met sur l'onglet de personnalisation
+        resetMenuGraphes();
         remplirMenuPersonnalisation();
+        remplirDates();
         afficherDate();
         setSpecificiteBurgerVenteTotal();
         button.PERSONNALISATION_GRAPHE.click();
@@ -481,13 +497,33 @@ function remplirMenuPersonnalisation() {
     }
 }
 
+function remplirDates() {
+    console.log("Statistiques.js - remplirDates");
+    // on récupère les dates
+    if (temporaryChart.datePersonnalise) {
+        $("#graphe_date_personnalise").prop('checked', true);
+    } else {
+        $("#graphe_date_personnalise").prop('checked', false);
+    }
+    if (temporaryChart.dateDebut != null) {
+        $("#graphe_date_debut").val(temporaryChart.dateDebut);
+    } else {
+        $("#graphe_date_debut").val("");
+    }
+    if (temporaryChart.dateFin != null) {
+        $("#graphe_date_fin").val(temporaryChart.dateFin);
+    } else {
+        $("#graphe_date_fin").val("");
+    }
+}
+
 /**
  * Méthode permettant d'activer/désactiver le module de date personnalisé. Si date personnalisé pas coché, on prend depuis toujours.
  */
 function afficherDate() {
     console.log("Statistiques.js - afficherDate");
     // si la case est coché on affiche le champ date et on réactive le bouton
-    if ($(this).is(':checked')) {
+    if ($("#graphe_date_personnalise").is(':checked')) {
         $('#date_debut_span').show();
         $('#date_fin_span').show();
         $('#graphe_date_debut').prop('disabled', false);
@@ -565,8 +601,14 @@ function updateTemporaryChart() {
     console.log("Statistiques.js - updateGraphe");
     // on vérifie le type et la date
     if (!checkDateForUpdateChart() || !checkType()) {
+        button.SAVE_GRAPHE.prop('disabled', true);
+        $('#graphesTemp').empty().append($('<p>').text('Veuillez remplir les champs correctement.'));
         return;
     }
+    button.SAVE_GRAPHE.prop('disabled', false);
+    temporaryChart.datePersonnalise = $("#graphe_date_personnalise").is(':checked');
+    temporaryChart.dateDebut = $('#graphe_date_debut').val();
+    temporaryChart.dateFin = $('#graphe_date_fin').val();
 
     switch (temporaryChart.typeStatistique) {
         case typeStatistique.BURGER_VENTE_TOTAL:
@@ -779,7 +821,16 @@ function setSpecificiteBurgerVenteTotal() {
     span.append(h3Label);
     span.append(input);
     divChoixBurger.append(span);
-    input.prop('checked', true);
+    // solution temporaire
+    if (temporaryChart.specificite == null) {
+        temporaryChart.specificite = {};
+    }
+
+    if (temporaryChart.specificite.choixRecette != null) {
+        input.prop('checked', temporaryChart.specificite.choixRecette);
+    } else {
+        input.prop('checked', true);
+    }
 
     // on construit le select 
     let select = $('<select>');
@@ -814,9 +865,20 @@ function setSpecificiteBurgerVenteTotal() {
         updateTemporaryChart();
     });
     // initialisation
-    $('#select_choix_recette').prop('disabled', true);
-    $('#select_choix_recette').select2('destroy');
-    $('#select_choix_recette').hide();
+    if (input.is(':checked')) {
+        $('#select_choix_recette').prop('disabled', true);
+        $('#select_choix_recette').select2('destroy');
+        $('#select_choix_recette').hide();
+    } else {
+        $('#select_choix_recette').prop('disabled', false);
+        $('#select_choix_recette').select2({
+            width: '100%',
+            placeholder: 'Sélectionnez une recette',
+            maximumSelectionLength: 10
+        }).on('select2:select', function (e) {
+            updateTemporaryChart();
+        });
+    }
 
     // on ajoute un écouteur d'évènement sur le select
     selectArchives.on('change', function () {
@@ -843,6 +905,12 @@ function setSpecificiteBurgerVenteTotal() {
                 data.forEach(element => {
                     select.append('<option value="' + element.id + '">' + element.nom + '</option>');
                 });
+                // On re selectionne dans le choix multiples les recettes sélectionnées dans temporaryChart.specificite.recettes
+                if (temporaryChart.specificite.recettes != null) {
+                    console.log(temporaryChart.specificite.recettes);
+                    $('#select_choix_recette').val(temporaryChart.specificite.recettes);
+                    $('#select_choix_recette').trigger('change');
+                }
                 updateTemporaryChart();
             },
             error: function (data) {
@@ -852,8 +920,11 @@ function setSpecificiteBurgerVenteTotal() {
         });
     });
 
-    // on met le select archive à la value 0 et on déclanche les évènements
-    selectArchives.val(0);
+    if (temporaryChart.specificite.archives != null) {
+        selectArchives.val(temporaryChart.specificite.archives);
+    } else {
+        selectArchives.val(0);
+    }
     selectArchives.trigger('change');
 }
 
@@ -879,8 +950,6 @@ function getDataBurgerVenteTotal() {
     } else {
         dataToSend.date_all = true;
     }
-    // archives
-    dataToSend.archives = $('#choix_archives').is(':checked');
     // listes des burgers
     if ($('#choix_recette_checkbox').is(':checked')) {
         dataToSend.recette_all = true;
@@ -891,6 +960,11 @@ function getDataBurgerVenteTotal() {
     // on récupère la valeur d'archives
     dataToSend.archives = $('#graphe_archives').val();
     dataToSend = JSON.stringify(dataToSend);
+
+    // remplir specifite temporaryChart
+    temporaryChart.specificite.choixRecette = $('#choix_recette_checkbox').is(':checked');
+    temporaryChart.specificite.recettes = $('#select_choix_recette').val();
+    temporaryChart.specificite.archives = $('#graphe_archives').val();
 
     $.ajax({
         url: "statistiques/getDataBurgerVenteTotal",
@@ -907,7 +981,7 @@ function getDataBurgerVenteTotal() {
 
             // on boucle sur data avec un foreach
             if (data.length == 0) {
-                $('#graphes').empty().html('<h3 class="text-center">Aucune donnée à afficher</h3>');
+                $('#graphesTemp').empty().html('<h3 class="text-center">Aucune donnée à afficher</h3>');
                 temporaryChart.error = true;
                 return;
             }
