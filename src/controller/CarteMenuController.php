@@ -65,10 +65,9 @@ class CarteMenuController extends Controller
 
         $recette = $recetteDAO->selectById($idBurger);
         $ingredientRecetteBasiques = $ingredientBasiqueDAO->selectAllByIdRecette($idBurger);
-        $unites = $uniteDAO->selectAllNonArchive();
-        $ingredients = $ingredientDAO->selectAllNonArchive();
+        $unites = $uniteDAO->selectAll();
+        $ingredients = $ingredientDAO->selectAll();
 
-        $json = array();
         $json['data'] = array();
         $jsonIngredients[] = array();
 
@@ -101,13 +100,14 @@ class CarteMenuController extends Controller
             if ($unite === null) {
                 continue;
             }
-            $quantite = $ingredientRecetteBasique->getQuantite() . ' ' . $unite->getDiminutif();
             // Construction du json de l'ingrédient
-            $jsonIngredients[] = [
+            $jsonIngredient = array(
                 'nom' => $ingredient->getNom(),
-                'quantite' =>  $quantite,
+                'quantite' =>  $ingredientRecetteBasique->getQuantite() . ' ' . $unite->getDiminutif(),
 
-            ];
+            );
+
+            $jsonIngredients[] = $jsonIngredient;
         }
 
         $json = array(
