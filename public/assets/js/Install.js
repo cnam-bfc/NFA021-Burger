@@ -2,6 +2,7 @@ $(function () {
     // Forms
     let form_config_bdd = $('#config_bdd');
     let form_install_bdd = $('#install_bdd');
+    let form_api_routexl = $('#api_routexl');
     let form_create_gerant = $('#create_gerant');
     let form_install_unites = $('#install_unites');
     let form_install_emballages = $('#install_emballages');
@@ -44,6 +45,34 @@ $(function () {
         let inputs = form_install_bdd.find('input');
         // On récupère le bouton de soumission
         let submit = form_install_bdd.find('button[type="submit"]');
+
+        // On désactive les champs input et le bouton de soumission
+        inputs.prop('disabled', true);
+        submit.prop('disabled', true);
+
+        // On change le titre de la box (Ajout icone de chargement)
+        let old_title = title.html();
+        title.html('<i class="fa-solid fa-spinner fa-spin"></i> ' + old_title);
+
+        // On attend 1 seconde
+        setTimeout(function () {
+            // On remet le titre de la box à son état initial
+            title.html(old_title);
+
+            // On active les champs input et le bouton de soumission
+            inputs.prop('disabled', false);
+            submit.prop('disabled', false);
+        }, 1000);
+    }
+
+    // Fonction permettant de charger la partie de configuration de l'API RouteXL
+    function loadAPIRouteXL() {
+        // On récupère le titre de la box
+        let title = form_api_routexl.find('h2[class="box_titre"]');
+        // On récupère les champs input
+        let inputs = form_api_routexl.find('input');
+        // On récupère le bouton de soumission
+        let submit = form_api_routexl.find('button[type="submit"]');
 
         // On désactive les champs input et le bouton de soumission
         inputs.prop('disabled', true);
@@ -313,8 +342,8 @@ $(function () {
                     // On change la couleur du bouton
                     submit.css('background-color', '#28a745');
 
-                    // On charge la partie de création du compte gérant
-                    loadCreateGerant();
+                    // On charge la partie de configuration de l'API RouteXL
+                    loadAPIRouteXL();
                 }
                 // Si l'installation de la base de données à échouée
                 else {
@@ -322,6 +351,84 @@ $(function () {
                     submit.html(old_submit);
 
                     // On active le bouton de soumission
+                    submit.prop('disabled', false);
+                }
+            }
+        });
+    }
+
+    // Fonction permettant de sauvegarder la partie de configuration de l'API RouteXL
+    function saveAPIRouteXL() {
+        // On récupère les champs nécessaire
+        let user_routexl = form_api_routexl.find('input[name="user_routexl"]');
+        let password_routexl = form_api_routexl.find('input[name="password_routexl"]');
+
+        // On regroupe tous les champs dans un tableau
+        let inputs = form_api_routexl.find('input');
+
+        // On récupère le bouton de soumission
+        let submit = form_api_routexl.find('button[type="submit"]');
+
+        // On désactive les champs input et le bouton de soumission
+        inputs.prop('disabled', true);
+        submit.prop('disabled', true);
+
+        // On change le bouton de soumission (Ajout icone de chargement)
+        let old_submit = submit.html();
+        submit.html('<i class="fa-solid fa-spinner fa-spin"></i> ' + old_submit);
+
+        let success = false;
+
+        // On envoie les données au serveur
+        $.ajax({
+            url: 'install/api_routexl',
+            type: 'POST',
+            data: {
+                user_routexl: user_routexl.val(),
+                password_routexl: password_routexl.val()
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data['success']) {
+                    success = true;
+
+                    // On affiche le nombre de positions supportées par l'API RouteXL
+                    alert(' --- INFORMATION --- \n\nConnexion à ' + data['api_id'] + ' réussie !\nNombre de positions maximales supportées : ' + data['api_max_locations']);
+                } else {
+                    // On affiche un message d'erreur
+                    alert('Impossible de se connecter à l\'API RouteXL !\nVeuillez vérifier les identifiants.\nCode erreur : ' + data['error_code'] + '\nMessage : ' + data['error_message']);
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                if (jqXHR.status !== 0) {
+                    let alertMessage = 'Erreur ' + jqXHR.status;
+                    // Si errorThrown contient des informations (est une chaîne de caractères)
+                    if (typeof errorThrown === 'string') {
+                        alertMessage += ' : ' + errorThrown.replace(/<br>/g, "\n");
+                    }
+                    alert(alertMessage);
+                } else {
+                    alert('Une erreur inconue est survenue !\nVeuillez vérifier votre connexion internet.');
+                }
+            },
+            complete: function () {
+                // Si la connexion à l'API RouteXL est réussie
+                if (success) {
+                    // On remplace le bouton par un bouton de validation
+                    submit.html('<i class="fa-solid fa-check"></i> API RouteXL configurée !');
+                    // On change la couleur du bouton
+                    submit.css('background-color', '#28a745');
+
+                    // On charge la partie de création du compte gérant
+                    loadCreateGerant();
+                }
+                // Si la connexion à l'API RouteXL à échouée
+                else {
+                    // On remet le bouton de soumission à son état initial
+                    submit.html(old_submit);
+
+                    // On active les champs input et le bouton de soumission
+                    inputs.prop('disabled', false);
                     submit.prop('disabled', false);
                 }
             }
@@ -679,6 +786,12 @@ $(function () {
         e.preventDefault();
 
         saveInstallBdd();
+    });
+
+    form_api_routexl.submit(function (e) {
+        e.preventDefault();
+
+        saveAPIRouteXL();
     });
 
     form_create_gerant.submit(function (e) {

@@ -72,6 +72,64 @@ class InstallController extends Controller
     }
 
     /**
+     * Méthode permettant de configurer l'API RouteXL
+     */
+    public function apiRouteXL()
+    {
+        // Récupération des paramètres de la requête
+        $user = Form::getParam('user_routexl', Form::METHOD_POST, Form::TYPE_STRING);
+        $password = Form::getParam('password_routexl', Form::METHOD_POST, Form::TYPE_STRING);
+
+        // Initialisation de l'API RouteXL
+        $routeXL = new RouteXLAPI($user, $password);
+
+        // Test de la connexion à l'API RouteXL
+        $success = $routeXL->status();
+
+        $json = array(
+            'success' => $success
+        );
+
+        $result = $routeXL->getResult();
+        if (!empty($result['id'])) {
+            $json['api_id'] = $result['id'];
+        }
+        if (!empty($result['max_locations'])) {
+            $json['api_max_locations'] = $result['max_locations'];
+        }
+
+        // Si le test est un succès, on enregistre les informations de connexion dans le fichier de configuration
+        if ($success) {
+            // Modification du fichier de configuration
+            $config = Configuration::getInstance();
+
+            // Modification des informations de connexion à l'API RouteXL
+            $config->setRouteXLUsername($user);
+            $config->setRouteXLPassword($password);
+        }
+        // Si le test est un échec, on affiche le message d'erreur dans le JSON
+        else {
+            $json['error_code'] = $routeXL->getResultHttpCode();
+            $json['error_message'] = $routeXL->getResultError();
+            // Message d'erreur personnalisé
+            if (empty($json['error_message'])) {
+                if ($json['error_code'] == 401) {
+                    $json['error_message'] = 'Identifiants invalides';
+                } else {
+                    $json['error_message'] = 'Erreur inconnue';
+                }
+            }
+        }
+
+        $view = new View(BaseTemplate::JSON);
+
+        // Définission des variables utilisées dans la vue
+        $view->json = $json;
+
+        $view->renderView();
+    }
+
+    /**
      * Méthode permettant de créer un compte gérant
      */
     public function createGerant()

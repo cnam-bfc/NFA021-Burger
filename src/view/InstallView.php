@@ -80,10 +80,48 @@
         </form>
         <!-- FIN * ÉTAPE 2 - Installation de la base de données -->
 
-        <!-- DÉBUT * ÉTAPE 3 - Configuration du compte gérant -->
+        <!-- DÉBUT * ÉTAPE 3 - Configuration de l'API RouteXL -->
+        <form id="api_routexl">
+            <div class="box" id="box_api_routexl">
+                <h2 class="box_titre">ÉTAPE 3 - Configuration de l'API RouteXL</h2>
+                <div class="box_contenu">
+                    <!-- Description de l'étape -->
+                    <p id="description_api_routexl">
+                        <i>L'API RouteXL permet de calculer des itinéraires optimisés pour les tournées de livraison.</i>
+                        <br>
+                        <br>
+                        Vous devez renseigner vos identifiants de connexion à l'API RouteXL.
+                        <br>
+                        Si vous ne possédez pas d'identifiants, vous pouvez vous créer un compte gratuitement sur <a href="https://www.routexl.com/register" target="_blank">RouteXL</a>.
+                    </p>
+
+                    <hr class="delimitation_trait">
+
+                    <!-- Formulaire de configuration de l'API RouteXL -->
+                    <!-- Champ pour le nom d'utilisateur de l'API RouteXL -->
+                    <div class="form-input">
+                        <label for="user_routexl">Nom d'utilisateur</label>
+                        <input type="text" id="user_routexl" name="user_routexl" placeholder="Nom d'utilisateur de l'API RouteXL" required disabled>
+                    </div>
+                    <!-- Champ pour le mot de passe de l'API RouteXL -->
+                    <div class="form-input">
+                        <label for="password_routexl">Mot de passe</label>
+                        <input type="password" id="password_routexl" name="password_routexl" placeholder="Mot de passe de l'API RouteXL" required disabled>
+                    </div>
+
+                    <!-- Bouton pour tester et enregistrer la configuration de l'API RouteXL -->
+                    <div class="form-action">
+                        <button type="submit" class="bouton" disabled>Tester et enregistrer la configuration</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- FIN * ÉTAPE 3 - Configuration de l'API RouteXL -->
+
+        <!-- DÉBUT * ÉTAPE 4 - Configuration du compte gérant -->
         <form id="create_gerant">
             <div class="box" id="box_create_gerant">
-                <h2 class="box_titre">ÉTAPE 3 - Création d'un compte gérant</h2>
+                <h2 class="box_titre">ÉTAPE 4 - Création d'un compte gérant</h2>
                 <div class="box_contenu">
                     <!-- Description de l'étape -->
                     <p>
@@ -133,12 +171,12 @@
                 </div>
             </div>
         </form>
-        <!-- FIN * ÉTAPE 3 - Configuration du compte gérant -->
+        <!-- FIN * ÉTAPE 4 - Configuration du compte gérant -->
 
-        <!-- DÉBUT * ÉTAPE 4 - (Optionnel) Ajouter les unités par défaut (recommandé) -->
+        <!-- DÉBUT * ÉTAPE 6 - (Optionnel) Ajouter les unités par défaut (recommandé) -->
         <form id="install_unites">
             <div class="box" id="box_install_unites">
-                <h2 class="box_titre">ÉTAPE 4 - (Optionnel) Ajouter les unités par défaut (recommandé)</h2>
+                <h2 class="box_titre">ÉTAPE 6 - (Optionnel) Ajouter les unités par défaut (recommandé)</h2>
                 <div class="box_contenu">
                     <!-- Description de l'étape -->
                     <p>
@@ -156,12 +194,12 @@
                 </div>
             </div>
         </form>
-        <!-- FIN * ÉTAPE 4 - (Optionnel) Ajouter les unités par défaut (recommandé) -->
+        <!-- FIN * ÉTAPE 6 - (Optionnel) Ajouter les unités par défaut (recommandé) -->
 
-        <!-- DÉBUT * ÉTAPE 5 - (Optionnel) Ajouter les emballages par défaut (recommandé) -->
+        <!-- DÉBUT * ÉTAPE 7 - (Optionnel) Ajouter les emballages par défaut (recommandé) -->
         <form id="install_emballages">
             <div class="box" id="box_install_emballages">
-                <h2 class="box_titre">ÉTAPE 5 - (Optionnel) Ajouter les emballages par défaut (recommandé)</h2>
+                <h2 class="box_titre">ÉTAPE 7 - (Optionnel) Ajouter les emballages par défaut (recommandé)</h2>
                 <div class="box_contenu">
                     <!-- Description de l'étape -->
                     <p>
@@ -179,12 +217,12 @@
                 </div>
             </div>
         </form>
-        <!-- FIN * ÉTAPE 5 - (Optionnel) Ajouter les emballages par défaut (recommandé) -->
+        <!-- FIN * ÉTAPE 7 - (Optionnel) Ajouter les emballages par défaut (recommandé) -->
 
-        <!-- DÉBUT * ÉTAPE 6 - (Optionnel) Ajouter les fournisseurs par défaut (recommandé) -->
+        <!-- DÉBUT * ÉTAPE 8 - (Optionnel) Ajouter les fournisseurs par défaut (recommandé) -->
         <form id="install_fournisseurs">
             <div class="box" id="box_install_fournisseurs">
-                <h2 class="box_titre">ÉTAPE 6 - (Optionnel) Ajouter les fournisseurs par défaut (recommandé)</h2>
+                <h2 class="box_titre">ÉTAPE 8 - (Optionnel) Ajouter les fournisseurs par défaut (recommandé)</h2>
                 <div class="box_contenu">
                     <!-- Description de l'étape -->
                     <p>
@@ -202,7 +240,7 @@
                 </div>
             </div>
         </form>
-        <!-- FIN * ÉTAPE 6 - (Optionnel) Ajouter les fournisseurs par défaut (recommandé) -->
+        <!-- FIN * ÉTAPE 8 - (Optionnel) Ajouter les fournisseurs par défaut (recommandé) -->
     </div>
 
     <!-- DÉBUT * TERMINER L'INSTALLATION -->

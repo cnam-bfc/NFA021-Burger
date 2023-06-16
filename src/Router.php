@@ -13,6 +13,7 @@ class Router
         'install' => ["controller" => "InstallController", "method" => "renderView"],
         'install/config_bdd' => ["controller" => "InstallController", "method" => "configBdd"],
         'install/install_bdd' => ["controller" => "InstallController", "method" => "installBdd"],
+        'install/api_routexl' => ["controller" => "InstallController", "method" => "apiRouteXL"],
         'install/create_gerant' => ["controller" => "InstallController", "method" => "createGerant"],
         'install/install_unites' => ["controller" => "InstallController", "method" => "installUnites"],
         'install/install_emballages' => ["controller" => "InstallController", "method" => "installEmballages"],
