@@ -62,37 +62,47 @@ $(function () {
 
         // Status
         cellule = $("<td>");
+        let icone = $("<i>");
         switch (data.status) {
             case "archive":
                 cellule.text("Archivée");
                 cellule.css("color", "grey");
+                icone.addClass("fa-solid fa-archive");
                 break;
             case "livre":
                 cellule.text("Livrée");
                 cellule.css("color", "green");
+                icone.addClass("fa-solid fa-check");
                 break;
             case "en_livraison":
                 cellule.text("En livraison");
                 cellule.css("color", "lightgrey");
+                icone.addClass("fa-solid fa-truck");
                 break;
             case "pret":
                 cellule.text("Prête");
                 cellule.css("color", "blue");
+                icone.addClass("fa-solid fa-utensils");
                 break;
             case "cuisine":
                 cellule.text("En cuisine");
                 cellule.css("color", "orange");
+                icone.addClass("fa-solid fa-utensils");
                 break;
             case "attente":
                 cellule.text("En attente");
                 cellule.css("color", "purple");
+                icone.addClass("fa-solid fa-utensils");
                 break;
             default:
                 cellule.text("Inconnu");
                 cellule.css("color", "black");
+                icone.addClass("fa-solid fa-question");
                 break;
         }
         cellule.css("font-weight", "bold");
+        cellule.prepend("&nbsp;");
+        cellule.prepend(icone);
         ligne.append(cellule);
 
         // Client
