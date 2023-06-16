@@ -5,6 +5,9 @@ $(function () {
     let moyensTransport = [];
     let currentMoyenTransport = "";
     let currentLocationMarker;
+    let routingControl;
+    let waypoints = [];
+    let itineraire = [];
 
     // Création de la carte
     let map = L.map('map', {
@@ -30,6 +33,23 @@ $(function () {
         let lat = position.coords.latitude;
         let lng = position.coords.longitude;
         currentLocationMarker.setLatLng([lat, lng]);
+
+        if (routingControl) {
+            // Récupération de la position de l'ancienne position de l'utilisateur
+            let oldLocationLatLng = routingControl.getWaypoints()[0].latLng;
+
+            // Récupération de la position actuelle de l'utilisateur
+            let newLocationLatLng = currentLocationMarker.getLatLng();
+
+            // Si la position a changé (plus de 10 mètres)
+            if (oldLocationLatLng.distanceTo(newLocationLatLng) > 10) {
+                console.log("Votre position a changé, actualisation de l'itinéraire");
+
+                // Mise à jour de la position de l'utilisateur
+                routingControl.spliceWaypoints(0, 1, newLocationLatLng);
+                routingControl.route();
+            }
+        }
     }
 
     // Suivi de la position de l'utilisateur
@@ -92,7 +112,7 @@ $(function () {
                             });
 
                             // Recréation de la route
-                            recreateItineraireView();
+                            recreateItineraireData();
                         }
                     });
                 }
@@ -125,69 +145,166 @@ $(function () {
      * Fonction permettant de recréer l'itinéraire
      */
     function recreateItineraireView() {
+        console.log("Re-création de l'itinéraire...");
+
+        let routerOptions = {
+            serviceUrl: 'https://router.project-osrm.org/route/v1',
+            language: 'fr'
+        };
+
+        if (currentMoyenTransport) {
+            routerOptions['profile'] = currentMoyenTransport;
+        }
+
+        // Création du routeur (OSRM, vélo, français)
+        let router = L.Routing.osrmv1(routerOptions);
+
+        let routeWaypoints = [];
+        routeWaypoints.push(currentLocationMarker.getLatLng());
+        waypoints.forEach(function (waypoint) {
+            routeWaypoints.push(waypoint.getLatLng());
+        });
+
+        let routingOptions = {
+            router: router,
+            routeWhileDragging: false,
+            draggableWaypoints: false,
+            addWaypoints: false,
+            show: true,
+            autoRoute: false,
+            createMarker: function () {
+                return null;
+            }
+        };
+
+        // Si il y a moins de 2 points, on ne peut pas créer d'itinéraire
+        if (routeWaypoints.length < 2) {
+            console.log("Il n'y a pas assez de points pour créer un itinéraire");
+            return;
+        }
+
+        routingOptions['waypoints'] = routeWaypoints;
+
+        if (routingControl) {
+            // Suppression de l'ancien itinéraire
+            map.removeControl(routingControl);
+        }
+
+        // Ajout du chemin entre la position actuelle et la destination
+        routingControl = L.Routing.control(routingOptions).addTo(map);
+
+        console.log("Itinéraire recréé");
+
+        routingControl.on('routesfound', function (e) {
+            console.log("Itinéraire recalculé");
+        });
+
+        routingControl.route();
     }
 
-    // Récupération des informations de l'itinéraire
-    let osm_type = url.searchParams.get("osm_type");
-    let osm_id = url.searchParams.get("osm_id");
+    /**
+     * Fonction permettant de recréer l'itinéraire
+     */
+    function recreateItineraireData() {
 
-    // Récupération de la position de la destination via l'API de nominatim
-    $.ajax({
-        url: "https://nominatim.openstreetmap.org/lookup?osm_ids=" + osm_type + osm_id + "&format=json&addressdetails=1",
-        method: "GET",
-        dataType: "json",
-        success: function (response) {
-            let lat = response[0].lat;
-            let lon = response[0].lon;
-            let display_name = response[0].display_name;
+        // Si on est en mode vision d'un point
+        if (url.searchParams.has("osm_type") && url.searchParams.has("osm_id")) {
+            // Récupération des informations de l'itinéraire
+            let osm_type = url.searchParams.get("osm_type");
+            let osm_id = url.searchParams.get("osm_id");
 
-            // Ajout du marqueur pour la destination
-            let destinationMarker = L.marker([lat, lon]).addTo(map);
-            destinationMarker.bindPopup(display_name).openPopup();
+            // Récupération de la position de la destination via l'API de nominatim
+            console.log("Récupération de la destination...");
+            $.ajax({
+                url: "https://nominatim.openstreetmap.org/lookup?osm_ids=" + osm_type + osm_id + "&format=json&addressdetails=1",
+                method: "GET",
+                dataType: "json",
+                success: function (response) {
+                    let lat = response[0].lat;
+                    let lon = response[0].lon;
+                    let display_name = response[0].display_name;
 
-            // Création du routeur (OSRM, vélo, français)
-            let router = L.Routing.osrmv1({
-                serviceUrl: 'https://router.project-osrm.org/route/v1',
-                profile: 'cycling',
-                language: 'fr'
+                    console.log("Destination récupérée : " + display_name);
+
+                    // Enlever tous les marqueurs
+                    waypoints.forEach(function (waypoint) {
+                        map.removeLayer(waypoint);
+                    });
+                    waypoints = [];
+
+                    // Ajout du marqueur pour la destination
+                    let destinationMarker = L.marker([lat, lon]).addTo(map);
+                    destinationMarker.bindPopup(display_name).openPopup();
+
+                    waypoints.push(destinationMarker);
+
+                    recreateItineraireView();
+                }
             });
-
-            // Ajout du chemin entre la position actuelle et la destination
-            let routingControl = L.Routing.control({
-                waypoints: [
-                    currentLocationMarker.getLatLng(),
-                    L.latLng(lat, lon)
-                ],
-                router: router,
-                routeWhileDragging: false,
-                draggableWaypoints: false,
-                addWaypoints: false,
-                show: true,
-                autoRoute: false,
-                createMarker: function () {
-                    return null;
-                }
-            }).addTo(map);
-
-            // Actualisation de la route en cas de changement de position
-            setInterval(function () {
-                // Récupération de la position de l'ancienne position de l'utilisateur
-                let oldLocationLatLng = routingControl.getWaypoints()[0].latLng;
-
-                // Récupération de la position actuelle de l'utilisateur
-                let newLocationLatLng = currentLocationMarker.getLatLng();
-
-                // Si la position a changé (plus de 10 mètres)
-                if (oldLocationLatLng.distanceTo(newLocationLatLng) > 10) {
-                    console.log("Votre position a changé, actualisation de l'itinéraire");
-
-                    // Mise à jour de la position de l'utilisateur
-                    routingControl.spliceWaypoints(0, 1, newLocationLatLng);
-                    routingControl.route();
-                }
-            }, 2000);
-
-            routingControl.route();
         }
-    });
+        // Sinon on charge les points de la livraison
+        else {
+            // Récupération de l'itinéraire
+            console.log("Récupération de l'itinéraire...");
+
+            $.ajax({
+                url: "itineraire/afficher",
+                method: "POST",
+                data: {
+                },
+                dataType: "json",
+                success: function (response) {
+                    console.log("Itinéraire récupéré");
+
+                    let locations = [];
+
+                    itineraire = response['data']['itineraire'];
+
+                    // Formatage des points de l'itinéraire
+                    response['data']['itineraire'].forEach(function (point) {
+                        locations.push(point['osm_type'] + point['osm_id']);
+                    });
+
+                    // Récupération des latitudes et longitudes des points de l'itinéraire via l'API de nominatim
+                    console.log("Récupération des points de l'itinéraire...");
+                    $.ajax({
+                        url: "https://nominatim.openstreetmap.org/lookup?osm_ids=" + locations.join(",") + "&format=json&addressdetails=1",
+                        method: "GET",
+                        dataType: "json",
+                        success: function (response) {
+                            let log = "Points de l'itinéraire récupérés : ";
+                            for (let i = 0; i < response.length; i++) {
+                                log += "\n" + i + " - " + response[i].display_name;
+                            }
+                            console.log(log);
+
+                            // Enlever tous les marqueurs
+                            waypoints.forEach(function (waypoint) {
+                                map.removeLayer(waypoint);
+                            });
+                            waypoints = [];
+
+                            // Ajout des marqueurs pour les points de l'itinéraire
+                            response.forEach(function (point) {
+                                let waypointMarker = L.marker([point.lat, point.lon]).addTo(map);
+                                waypointMarker.bindPopup(point.display_name);
+
+                                waypoints.push(waypointMarker);
+                            });
+
+                            recreateItineraireView();
+                        },
+                        error: function (xhr, status, error) {
+                            console.log("Erreur lors de la récupération des points de l'itinéraire : " + error);
+                        }
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.log("Erreur lors de la récupération de l'itinéraire : " + error);
+                }
+            });
+        }
+    }
+
+    recreateItineraireData();
 });

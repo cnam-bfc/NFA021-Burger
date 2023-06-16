@@ -284,5 +284,52 @@ class LivraisonController extends Controller
 
     public function afficherItineraire()
     {
+        // Récupération de l'utilisateur connecté
+        $userSession = UserSession::getUserSession();
+        if (!$userSession->isLogged() || !$userSession->isLivreur()) {
+            ErrorController::error(401, 'Vous devez être connecté en tant que livreur pour effectuer cette action');
+            exit;
+        }
+
+        // Création des objets DAO
+        $livreurDAO = new LivreurDAO();
+        $commandeClientLivraisonDAO = new CommandeClientLivraisonDAO();
+
+        // Récupération du livreur
+        $livreur = $livreurDAO->selectById($userSession->getCompte()->getId());
+        if ($livreur === null) {
+            ErrorController::error(404, 'Le livreur n\'existe pas');
+            exit;
+        }
+
+        // Récupération de la commande
+        $commande = $commandeClientLivraisonDAO->selectById($livreur->getIdCommande());
+        if ($commande === null) {
+            ErrorController::error(404, 'La commande n\'existe pas');
+            exit;
+        }
+
+        // Récupération de l'adresse de livraison
+        $adresseLivraison = $commande->getAdresseLivraison();
+
+        // Récupération de l'adresse du restaurant
+        $adresseRestaurant = $commande->getAdresseRestaurant();
+
+        // Récupération du moyen de transport
+        $moyenTransport = $livreur->getMoyenTransport();
+
+        // Récupération de l'itinéraire
+        $itineraire = $this->getItineraire($adresseRestaurant, $adresseLivraison, $moyenTransport);
+
+        $view = new View(BaseTemplate::JSON);
+
+        $view->json = array(
+            'success' => true,
+            'data' => array(
+                'itineraire' => $itineraire
+            )
+        );
+
+        $view->renderView();
     }
 }
