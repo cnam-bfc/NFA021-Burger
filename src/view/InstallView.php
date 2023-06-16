@@ -173,6 +173,29 @@
         </form>
         <!-- FIN * ÉTAPE 4 - Configuration du compte gérant -->
 
+        <!-- DÉBUT * ÉTAPE 5 - (Optionnel) Ajouter les moyens de transport par défaut (recommandé) -->
+        <form id="install_moyens_transport">
+            <div class="box" id="box_install_moyens_transport">
+                <h2 class="box_titre">ÉTAPE 5 - (Optionnel) Ajouter les moyens de transport par défaut (recommandé)</h2>
+                <div class="box_contenu">
+                    <!-- Description de l'étape -->
+                    <p>
+                        En cliquant sur le bouton ci-dessous, vous allez ajouter les moyens de transport par défaut.
+                        <br>
+                        Ces moyens de transport sont recommandées pour une utilisation optimale de l'application.
+                    </p>
+
+                    <hr class="delimitation_trait">
+
+                    <!-- Bouton pour installer les moyens de transport par défaut -->
+                    <div class="form-action">
+                        <button type="submit" class="bouton" disabled>Ajouter les moyens de transport par défaut</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!-- FIN * ÉTAPE 5 - (Optionnel) Ajouter les unités par défaut (recommandé) -->
+
         <!-- DÉBUT * ÉTAPE 6 - (Optionnel) Ajouter les unités par défaut (recommandé) -->
         <form id="install_unites">
             <div class="box" id="box_install_unites">

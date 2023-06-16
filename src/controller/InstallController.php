@@ -169,6 +169,54 @@ class InstallController extends Controller
     }
 
     /**
+     * Fonction permettant d'installer les moyens de transport par défaut
+     */
+    public function installMoyensTransport()
+    {
+        // Création des DAO
+        $moyenTransportDAO = new MoyenTransportDAO();
+
+        // On lance une transaction
+        Database::getInstance()->getPDO()->beginTransaction();
+
+        // Création des moyens de transport par défaut
+        // Vélo
+        $velo = new MoyenTransport();
+        $velo->setNom('Vélo');
+        $velo->setOsrmProfile('bike');
+        $velo->setRouteXLType('bike');
+        $moyenTransportDAO->create($velo);
+
+        // Voiture
+        $voiture = new MoyenTransport();
+        $voiture->setNom('Voiture');
+        $voiture->setOsrmProfile('car');
+        $voiture->setRouteXLType('car');
+        $moyenTransportDAO->create($voiture);
+
+        // Piéton
+        $pieton = new MoyenTransport();
+        $pieton->setNom('Piéton');
+        $pieton->setOsrmProfile('foot');
+        $pieton->setRouteXLType('foot');
+        $moyenTransportDAO->create($pieton);
+
+        // On valide la transaction
+        Database::getInstance()->getPDO()->commit();
+
+        $json = array(
+            'success' => true
+        );
+
+        $view = new View(BaseTemplate::JSON);
+
+        // Définission des variables utilisées dans la vue
+        $view->json = $json;
+
+        $view->renderView();
+    }
+
+    /**
      * Fonction permettant d'installer les unités par défaut
      */
     public function installUnites()

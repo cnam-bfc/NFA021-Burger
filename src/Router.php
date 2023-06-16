@@ -15,6 +15,7 @@ class Router
         'install/install_bdd' => ["controller" => "InstallController", "method" => "installBdd"],
         'install/api_routexl' => ["controller" => "InstallController", "method" => "apiRouteXL"],
         'install/create_gerant' => ["controller" => "InstallController", "method" => "createGerant"],
+        'install/install_moyens_transport' => ["controller" => "InstallController", "method" => "installMoyensTransport"],
         'install/install_unites' => ["controller" => "InstallController", "method" => "installUnites"],
         'install/install_emballages' => ["controller" => "InstallController", "method" => "installEmballages"],
         'install/install_fournisseurs' => ["controller" => "InstallController", "method" => "installFournisseurs"],
