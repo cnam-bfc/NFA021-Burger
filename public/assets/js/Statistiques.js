@@ -13,6 +13,7 @@ const button = {
     CLOSE_MENU: null
 };
 
+// Les différents contenus du menu de gauche affichable
 const menuGaucheContent = {
     SELECTION_GRAPHE: null,
     CONFIGURATION_GRAPHE: null,
@@ -21,6 +22,7 @@ const menuGaucheContent = {
     LAMBDA: null
 };
 
+// Les différents types de statistiques
 const typeStatistique = {
     BURGER_VENTE_TOTAL: 1,
     BURGER_VENTE_TEMPS: 2,
@@ -31,9 +33,11 @@ const typeStatistique = {
     NOMBRE_CLIENT_TEMPS: 7
 };
 
+// Les différents types de graphiques
 const actual = {
     BUTTON: null,
     MENU_GAUCHE_CONTENT: null,
+    CURRENT_STATE: null,
 }
 
 // Les états
@@ -42,8 +46,6 @@ const state = {
     ADD_GRAPHE: 2,
     MODIFY_GRAPHE: 3,
 };
-
-let currentState;
 
 // Constantes pour les graphiques
 const chartType = {
@@ -133,7 +135,7 @@ function globalStates(currentState) {
     switch (currentState) {
         case state.DEFAULT: // On est dans l'état par défaut ou l'on affiche les graphes s'ils existent
             console.log('state.DEFAULT');
-            cuurentState = state.DEFAULT;
+            actual.CURRENT_STATE = state.DEFAULT;
             // On affiche le bouton pour ajouter un graphe et celui d'information et on les active.
             button.ADD_GRAPHE.show();
             button.INFORMATION.show();
@@ -152,7 +154,7 @@ function globalStates(currentState) {
             break;
         case state.ADD_GRAPHE:
             console.log('state.ADD_GRAPHE');
-            currentState = state.ADD_GRAPHE;
+            actual.CURRENT_STATE = state.ADD_GRAPHE;
             // On affiche les boutons de sélection de type de graphe, de paramétrage de graphe, d'annulation et de sauvegarde de graphe et on les active.
             button.SELECTION_GRAPHE.show();
             button.PERSONNALISATION_GRAPHE.show();
@@ -169,7 +171,7 @@ function globalStates(currentState) {
             break;
         case state.MODIFY_GRAPHE:
             console.log('state.MODIFY_GRAPHE');
-            currentState = state.MODIFY_GRAPHE;
+            actual.CURRENT_STATE = state.MODIFY_GRAPHE;
             button.SELECTION_GRAPHE.show();
             button.PERSONNALISATION_GRAPHE.show();
             button.CONFIGURATION_GRAPHE.show();
