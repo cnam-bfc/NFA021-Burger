@@ -4,8 +4,8 @@
 <script src="<?php echo ASSETS ?>leaflet/leaflet.js"></script>
 
 <!-- Bibliothèque Leaflet EasyButton -->
-<link rel="stylesheet" href="<?php echo ASSETS ?>leaflet-easybutton/easy-button.min.css">
-<script src="<?php echo ASSETS ?>leaflet-easybutton/easy-button.min.js"></script>
+<link rel="stylesheet" href="<?php echo ASSETS ?>leaflet-control-easybutton/easy-button.min.css">
+<script src="<?php echo ASSETS ?>leaflet-control-easybutton/easy-button.min.js"></script>
 
 <!-- Bibliothèque Leaflet Routing Machine -->
 <link rel="stylesheet" href="<?php echo ASSETS ?>leaflet-routing-machine/leaflet-routing-machine.css">
