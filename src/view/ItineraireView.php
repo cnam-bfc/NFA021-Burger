@@ -12,8 +12,8 @@
 <script src="<?php echo ASSETS ?>leaflet-routing-machine/leaflet-routing-machine.min.js"></script>
 
 <!-- Bibliothèque Leaflet Fullscreen -->
-<link rel="stylesheet" href="<?php echo ASSETS ?>leaflet-fullscreen/Control.FullScreen.css">
-<script src="<?php echo ASSETS ?>leaflet-fullscreen/Control.FullScreen.js"></script>
+<link rel="stylesheet" href="<?php echo ASSETS ?>leaflet-control-fullscreen/Control.FullScreen.css">
+<script src="<?php echo ASSETS ?>leaflet-control-fullscreen/Control.FullScreen.js"></script>
 
 <!-- On ajoute la feuille de style associé à la page -->
 <link rel="stylesheet" href="<?php echo CSS ?>Itineraire.css">
