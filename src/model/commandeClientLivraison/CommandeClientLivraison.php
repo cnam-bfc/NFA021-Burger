@@ -13,6 +13,13 @@ class CommandeClientLivraison extends CommandeClient
     private $heureLivraison;
 
     /**
+     * Heure de récurération d'une livraison au restaurant (date et heure, format Y-m-d H:i:s)
+     * 
+     * @var string
+     */
+    private $heureRecuperation;
+
+    /**
      * Adresse OpenStreetMap type Nominatim à laquelle la commande d'un client doit être livrée
      * 
      * @var string
@@ -69,6 +76,16 @@ class CommandeClientLivraison extends CommandeClient
     public function getHeureLivraison()
     {
         return $this->heureLivraison;
+    }
+
+    /**
+     * Méthode permettant de récupérer l'heure de récurération d'une livraison au restaurant
+     * 
+     * @return string
+     */
+    public function getHeureRecuperation()
+    {
+        return $this->heureRecuperation;
     }
 
     /**
@@ -150,6 +167,17 @@ class CommandeClientLivraison extends CommandeClient
     public function setHeureLivraison($heureLivraison)
     {
         $this->heureLivraison = $heureLivraison;
+    }
+
+    /**
+     * Méthode permettant de modifier l'heure de récurération d'une livraison au restaurant
+     * 
+     * @param string $heureRecuperation (Date et heure au format Y-m-d H:i:s)
+     * @return void
+     */
+    public function setHeureRecuperation($heureRecuperation)
+    {
+        $this->heureRecuperation = $heureRecuperation;
     }
 
     /**
