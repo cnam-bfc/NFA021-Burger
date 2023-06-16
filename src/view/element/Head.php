@@ -15,7 +15,9 @@
     <!-- JQuery -->
     <script src="<?php echo ASSETS ?>jquery/jquery-3.7.0.min.js"></script>
     <!-- JSPDF -->
-    <script src="<?php echo ASSETS ?>jspdf/jspdf.umd.min"></script>
+    <script src="<?php echo ASSETS ?>jspdf/jspdf.min.js"></script>
+    <!-- html2canvas -->
+    <script src="<?php echo ASSETS ?>html2canvas/html2canvas.min.js"></script>
     <!-- Select2 -->
     <link href="<?php echo ASSETS ?>select2/css/select2.min.css" rel="stylesheet">
     <script src="<?php echo ASSETS ?>select2/js/select2.min.js"></script>
