@@ -587,6 +587,11 @@ function setSpecificiteBurgerVenteTotal() {
     span.append(input);
     divChoixBurger.append(span);
     input.prop('checked', true);
+    input.on('change', function () {
+        if ($(this).is(':checked')) {
+            updateTemporaryChart();
+        }
+    });
 
     // on construit le select 
     let select = $('<select>');
