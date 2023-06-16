@@ -224,7 +224,7 @@ class RecetteDAO extends DAO
 
     /**
      * Méthode permettant de récupérer les recettes de façon personnalisée.
-     * $archive : -1 => archivées, 0 => tous, 1 => non archivées
+     * $archive : -1 => non archivé , 0 => tous, 1 => archivées
      * $order : -1 => ordre décroissant, 0 => pas d'ordre, 1 => ordre croissant
      *
      * @param integer $archive
@@ -236,10 +236,10 @@ class RecetteDAO extends DAO
         // Requête
         $sqlQuery = "SELECT * FROM burger_recette";
         // On ajoute la clause WHERE en fonction des paramètres
-        if ($archive > 0) {
+        if ($archive < 0) {
             $sqlQuery .= " WHERE date_archive IS NULL OR date_archive > NOW()";
-        } elseif ($archive < 0) {
-            $sqlQuery .= " WHERE date_archive IS NOT NULL AND date_archive < NOW()";
+        } elseif ($archive > 0) {
+            $sqlQuery .= " WHERE date_archive IS NOT NULL AND date_archive <= NOW()";
         }
         // On ajoute la clause ORDER BY en fonction des paramètres
         if ($order > 0) {
