@@ -613,6 +613,7 @@ function setSpecificiteBurgerVenteTotal() {
             $('#select_choix_recette').select2({
                 width: '100%',
                 placeholder: 'Sélectionnez une recette',
+                maximumSelectionLength: 10
             }).on('select2:select', function (e) {
                 updateTemporaryChart();
             });
