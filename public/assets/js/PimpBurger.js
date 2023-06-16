@@ -112,7 +112,7 @@ function afficherCompoBurger(ingredient) {
 
         // Ajouter la flèche courbée vers la gauche
         const fleche = document.createElement("img");
-        fleche.src = "/NFA021-Burger/public/assets/img/Fleches/FlecheCourbeGauche";
+        fleche.src = ingredient['flecheGauche'];
         divFleche.appendChild(fleche);
         lastLine.appendChild(divFleche);
 
@@ -143,7 +143,7 @@ function afficherCompoBurger(ingredient) {
 
         // Ajouter la flèche courbée vers la droite
         const fleche = document.createElement("img");
-        fleche.src = "/NFA021-Burger/public/assets/img/Fleches/FlecheCourbeDroite";
+        fleche.src = ingredient['flecheDroite'];
         divFleche.appendChild(fleche);
         lastLine.appendChild(divFleche);
 

@@ -131,6 +131,8 @@
             <h1>Statistiques</h1>
         </div>
 
+        <h3 id="information"></h3>
+
         <div id="graphes"></div> <!-- div pour contenir les graphes -->
     </section>
 </div>

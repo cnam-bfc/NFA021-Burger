@@ -78,10 +78,10 @@ $(document).ready(function () {
 
     // on initialise les évènements non initialisés dans des fonctions
     $('#graphe_date_personnalise').on('change', afficherDate);
-    $('#graphe_date_personnalise').on('change', checkDateForUpdateChart);
-    $('#graphe_date_debut').on('change', checkDateForUpdateChart);
-    $('#graphe_date_fin').on('change', checkDateForUpdateChart);
-    $('#graphe_type').on('change', changeTypeAndUpdate);
+    $('#graphe_date_personnalise').on('change', updateTemporaryChart);
+    $('#graphe_date_debut').on('change', updateTemporaryChart);
+    $('#graphe_date_fin').on('change', updateTemporaryChart);
+    $('#graphe_type').on('change', updateTemporaryChart);
 
     // On initialise la page
     initButtons();
@@ -91,14 +91,15 @@ $(document).ready(function () {
     refreshMenuGauche(false);
 });
 
-function changeTypeAndUpdate() {
+function checkType() {
     console.log('changeTypeAndUpdate()');
     // on vérifie que c'est pas la valeur par défaut
     if ($('#graphe_type').val() == '') {
-        return;
+        console.log('Type de graphe non valide');
+        return false;
     }
     temporaryChart.type = $('#graphe_type').val();
-    updateTemporaryChart();
+    return true;
 }
 
 // FONCTIONS PRIMAIRES
@@ -115,6 +116,7 @@ function globalStates(currentState) {
     $('.boutonStats').hide();
     // on supprime le contenu de la div des graphes et de temporaryChart
     $('#graphes').empty();
+    $('#information').empty();
     temporaryChart = {};
 
     switch (currentState) {
@@ -127,7 +129,7 @@ function globalStates(currentState) {
             button.INFORMATION.prop('disabled', false);
             if (charts.length < 1) {
                 // On ajoute à la div des graphes un message d'information
-                $('#graphes').append('<p class="text-center">Aucun graphe à afficher, veuillez en créer un.</p>');
+                $('#information').html('Aucun graphe à afficher, veuillez en créer un.');
             } else {
                 button.EXPORT_PDF.show();
                 button.EXPORT_PDF.prop('disabled', false);
@@ -148,7 +150,7 @@ function globalStates(currentState) {
             button.SAVE_GRAPHE.prop('disabled', false);
             button.INFORMATION.prop('disabled', false);
             // On ajoute un message pour dire qu'on est en mode création d'un graphe
-            $('#graphes').append('<p class="text-center">Mode création d\'un graphe</p>');
+            $('#information').html('Mode création d\'un graphe');
             button.SELECTION_GRAPHE.click();
             break;
         case state.MODIFY_GRAPHE:
@@ -168,14 +170,14 @@ function globalStates(currentState) {
             button.DELETE_GRAPHE.prop('disabled', false);
             button.SAVE_GRAPHE.prop('disabled', false);
             // On ajoute un message pour dire qu'on est en mode édition d'un graphe
-            $('#graphes').append('<p class="text-center">Mode édition d\'un graphe</p>');
+            $('#information').html('Mode édition d\'un graphe');
         case state.EXPORT_PDF:
             console.log('state.EXPORT_PDF');
             // On affiche le boutons d'information
             button.INFORMATION.show();
             button.INFORMATION.prop('disabled', false);
             // On ajoute un message pour dire qu'on est en mode exportation d'un graphe
-            $('#graphes').append('<p class="text-center">Mode export PDF</p>');
+            $('#information').html('Mode export PDF');
     }
 }
 
@@ -378,15 +380,16 @@ function checkDateForUpdateChart() {
     console.log("Statistiques.js - checkDateForUpdateChart");
     // Si la case est décoché on update
     if (!$("#graphe_date_personnalise").is(':checked')) {
-        updateTemporaryChart();
+        return true;
     }
     // Si la case est décoché on vérifie si les dates sont juste
     else {
         // Si les dates sont juste on update
         if (checkDate()) {
-            updateTemporaryChart();
+            return true;
         }
     }
+    return false;
 }
 
 function checkDate() {
@@ -434,6 +437,11 @@ function checkDateFormate(date) {
 
 function updateTemporaryChart() {
     console.log("Statistiques.js - updateGraphe");
+    // on vérifie le type et la date
+    if (!checkDateForUpdateChart() || !checkType()) {
+        return;
+    }
+    
     switch (temporaryChart.typeStatistique) {
         case typeStatistique.BURGER_VENTE_TOTAL:
             getDataBurgerVenteTotal();
@@ -582,14 +590,16 @@ function setSpecificiteBurgerVenteTotal() {
             $('#select_choix_recette').prop('disabled', true);
             $('#select_choix_recette').select2('destroy');
             $('#select_choix_recette').hide();
-            updateTemporaryChart();
         } else {
             $('#select_choix_recette').prop('disabled', false);
             $('#select_choix_recette').select2({
                 width: '100%',
                 placeholder: 'Sélectionnez une recette',
+            }).on('select2:select', function (e) {
+                updateTemporaryChart();
             });
         }
+        updateTemporaryChart();
     });
 
     // on ajoute un écouteur d'évènement sur le select
@@ -617,6 +627,7 @@ function setSpecificiteBurgerVenteTotal() {
                 data.forEach(element => {
                     select.append('<option value="' + element.id + '">' + element.nom + '</option>');
                 });
+                updateTemporaryChart();
             },
             error: function (data) {
                 console.log("Statistiques.js - getAllBurgers - error");
@@ -679,7 +690,7 @@ function getDataBurgerVenteTotal() {
 
             // on boucle sur data avec un foreach
             if (data.length == 0) {
-                alert("Aucune donnée à afficher.");
+                $('#graphes').empty().html('<h3 class="text-center">Aucune donnée à afficher</h3>');
                 temporaryChart.error = true;
                 return;
             }
