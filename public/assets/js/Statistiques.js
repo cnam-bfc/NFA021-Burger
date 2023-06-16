@@ -200,15 +200,6 @@ function globalStates(currentState) {
                 button.PERSONNALISATION_GRAPHE.click();
             }
             break;
-        case state.EXPORT_PDF:
-            console.log('state.EXPORT_PDF');
-            currentState = state.EXPORT_PDF;
-            // On affiche le boutons d'information
-            button.INFORMATION.show();
-            button.INFORMATION.prop('disabled', false);
-            // On ajoute un message pour dire qu'on est en mode exportation d'un graphe
-            $('#information').html('Mode export PDF');
-            break;
     }
 }
 
@@ -319,6 +310,59 @@ function initButtons() {
 
     // Bouton d'export du document
     button.EXPORT_PDF.click(function () {
+        console.log('button_stat_export_pdf clicked');
+        $('.boutonRapideGraphe').addClass('boutonRapideGrapheHide');
+        $('.boutonRapideGraphe').removeClass('boutonRapideGrapheShow');
+        buttonSelectEffect(button.EXPORT_PDF, 'fbe272');
+        selectMenuGaucheContent(menuGaucheContent.EXPORT);
+        $("#titre_onglet").html("Export");
+        // On exporte en pdf la div graphe avec la biliothèque jsPDF avec le nom dans le champ le texte du champs #nom_fichier_export
+        $('#button_stat_confirmation_export').click(function () {
+            console.log('button_stat_confirmation_export clicked');
+            let divExport = document.querySelector('#graphes');
+
+            let dimensionsDiv = divExport.getBoundingClientRect();
+            let divWidth = dimensionsDiv.width;
+            let divHeight = dimensionsDiv.height;
+
+            //On capture le contenu HTML dans une image
+            html2canvas(divExport).then(function (canvas) {
+                let imgData = canvas.toDataURL('image/png');
+
+                let pdf = new jsPDF();
+
+                //On juste la taille de l'image
+                let imageWidth = divWidth * 0.3;
+                let imageHeight = divHeight * 0.3;
+
+                //On centre l'image
+                let pageWidth = pdf.internal.pageSize.getWidth();
+                let pageHeight = pdf.internal.pageSize.getHeight();
+                let xPos = (pageWidth - imageWidth) / 2;
+                let yPos = (pageHeight - imageHeight) / 2;
+
+                //On ajoute l'image capturée au document PDF en utilisant les coordonnées centrées
+                pdf.addImage(imgData, 'PNG', xPos, yPos, imageWidth, imageHeight);
+
+                //On enregistre le fichier PDF
+                // on récupère le nom du pdf dans le champ #nom_fichier_export
+                let nomFichier = $('#nom_fichier_export').val();
+                if (nomFichier === "") {
+                    nomFichier = "statistiques";
+                }
+                pdf.save(nomFichier  + '.pdf');
+            });
+        });
+
+        // Bouton pour annuler
+        $('#button_stat_annulation_export').click(function () {
+            console.log('button_stat_annulation_export clicked');
+            refreshMenuGauche(false);
+            buttonSelectEffect(null, null);
+            $('.boutonRapideGraphe').removeClass('boutonRapideGrapheHide');
+            $('.boutonRapideGraphe').addClass('boutonRapideGrapheShow');
+        });
+
     });
 
     // Bouton pour fermer le menu gauche

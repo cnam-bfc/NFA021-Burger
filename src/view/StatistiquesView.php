@@ -4,6 +4,7 @@
 <script src="<?php echo ASSETS; ?>chartjs/chart.umd.min.js"></script>
 <script src="<?php echo ASSETS; ?>chartjs/chartjs-plugin-datalabels@2.0.0-rc.js"></script>
 
+
 <!-- on inclut la feuille js -->
 <script src="<?php echo JS; ?>statistiques.js"></script>
 
@@ -114,6 +115,7 @@
                     <input type="text" id="nom_fichier_export" name="nom_fichier_export" class="input" placeholder="Nom du fichier">
                 </div>
                 <button id="button_stat_confirmation_export" class="bouton">Exporter</button>
+                <button id="button_stat_annulation_export" class="bouton">Annuler</button>
             </div>
 
             <!-- Menu de confirmation lambda -->
