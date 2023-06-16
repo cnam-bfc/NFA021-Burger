@@ -238,6 +238,8 @@ refreshTableau = function (idCommande) {
     tbody.append(ligne);
 
     if (idCommande > 0) {
+        // on cache les td dans le tfoot
+        $('#tableau_inventaire>tfoot>tr>td').hide();
         // on récupère tous les ingrédients associés à la commande avec une requête ajax
         $.ajax({
             url: 'stock/refreshTableauIngredientsAJAX',
@@ -256,6 +258,8 @@ refreshTableau = function (idCommande) {
                 if (data.length == 0) {
                     // On remplie avec une ligne qui dit pas d'ingrédients
                     ligneDeTexteTBody("Aucun ingrédient n'a été trouvé dans la base de données");
+                    // on re affiche le td dans le tfoot
+                    $('#tableau_inventaire>tfoot>tr>td').show();
                     return;
                 }
 
@@ -270,6 +274,8 @@ refreshTableau = function (idCommande) {
                     };
                     ajouterLigneTBody(element.id, element.nom, element.photo, element.quantite_attendu, element.unite);
                 });
+                // on re affiche le td dans le tfoot
+                $('#tableau_inventaire>tfoot>tr>td').show();
                 // on met à jour le select des ingrédients
                 onAjouterNewIngredient();
             },
@@ -279,6 +285,9 @@ refreshTableau = function (idCommande) {
 
                 // on retire tout ce qu'il y a dans le tbody
                 tbody.empty();
+
+                // on re affiche le td dans le tfoot
+                $('#tableau_inventaire>tfoot>tr>td').show();
 
                 // On remplie avec une ligne qui dit pas d'ingrédients
                 ligneDeTexteTBody("La récupération des ingrédients a échoué");
