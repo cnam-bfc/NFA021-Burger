@@ -770,92 +770,141 @@ $(document).ready(function () {
         if (sumValue !== 0) {
 
 
-
+            // Récupération des informations de la recette dans l'url
+            const url = new URL(window.location.href);
+            // Récupération de l'id de la recette
+            let idBurger = url.searchParams.get("id");
             ///////////////////
 
             const tabBodyModif = document.getElementById("tbodyMod");
             const nbElem = tabBodyModif.childNodes.length;
-
-
-            //à partir de ça, il faut que j'arrive à metre chaque ingrédient qui un bouton RETIRER, dans le tableau qui suit
-            const tabIngrFinaux = [];
-
-
-
-            //boucle qui parcours donc les lignes de mon tableau tabModifs
-            for (let u = 0; u < nbElem; u++) {
-                // Récupération du nom de l'ingrédient dans une ligne du tableau modif 
-                const ligneEnfants = tabBodyModif.childNodes;
-                const elemEnfantsDeLigne = ligneEnfants[u].childNodes;
-
-
-                //nom Ingredient
-
-
-                // Bouton
-                const elemBouton = elemEnfantsDeLigne[3];
-
-
-                //si la ligne de l'ingrédient a un bouton Retirer
-
-                if (elemBouton.childNodes[0].textContent == "RETIRER") {
-                    var element = {
-                        "ingredient": elemEnfantsDeLigne[1].textContent,
-                        "quantite": elemEnfantsDeLigne[2].children[0].children[0].value
-                    }
-
-                    tabIngrFinaux.push(element);
-                }
-            }
-
-            const tabUl = document.getElementById("ulSupp");
-            console.log(tabUl);
-            console.log(tabUl.childNodes);
-            const nbElemUl = tabUl.childNodes.length;
-            for (let u = 1; u < nbElemUl; u++) {
-
-                const ligneEnfants = tabUl.childNodes;
-                const elemEnfantsDeLigne = ligneEnfants[u].childNodes;
-
-                console.log(elemEnfantsDeLigne[0]);
-
-                var element = {
-                    "ingredient": elemEnfantsDeLigne[0].textContent,
-                    "quantite": elemEnfantsDeLigne[1].textContent + elemEnfantsDeLigne[2].textContent
-                }
-                tabIngrFinaux.push(element);
-
-
-
-            }
-
-            ///////////////////////////////
-
-            const tabBurger = { "prixRecette": prix, "nomRecette": dataBurger[2], "idRecette": idRecette, "ingredientsFinaux": tabIngrFinaux };
-            console.log(tabBurger);
-
-            //Le tableau tabBurger est plein
-            //Je l'envoie dans une requête Ajax pour qu'il soit incrémente la variable de session "Panier" (qui est un tableau)
-
-
             $.ajax({
-                url: "visuModifsBurgers/ajouterAuPanier",
+                url: "visuModifsBurgers/ingredients",
                 method: "POST",
                 dataType: "JSON",
-                data: { burgerAjoute: tabBurger },
+                data: { id: idBurger },
                 success: function (response) {
+                    //à partir de ça, il faut que j'arrive à metre chaque ingrédient qui un bouton RETIRER, dans le tableau qui suit
+                    const tabIngrFinaux = [];
 
-                    console.log(response);
-                    //modification de l'indicateur du nombre d'éléments dans le panier
-                    document.getElementById('panier_indicateur').textContent = response.length;
-                    alert("Ajout au Panier ✅");
+
+
+                    //boucle qui parcours donc les lignes de mon tableau tabModifs
+                    for (let u = 0; u < nbElem; u++) {
+                        // Récupération du nom de l'ingrédient dans une ligne du tableau modif 
+                        const ligneEnfants = tabBodyModif.childNodes;
+                        const elemEnfantsDeLigne = ligneEnfants[u].childNodes;
+
+
+                        //nom Ingredient
+
+
+                        // Bouton
+                        const elemBouton = elemEnfantsDeLigne[3];
+                        var idIng;
+
+                        //si la ligne de l'ingrédient a un bouton Retirer
+                        for (let size = 0; size < response[0].length; size++) {
+                            if (response[0][size] != null) {
+                                if (response[0][size]["nom"] == elemEnfantsDeLigne[1].textContent) {
+                                    idIng = response[0][size]["IdIngredient"];
+
+                                }
+                            }
+
+                        }
+
+                        if (elemBouton.childNodes[0].textContent == "RETIRER") {
+                            var element = {
+                                "ingredient": elemEnfantsDeLigne[1].textContent,
+                                "quantite": elemEnfantsDeLigne[2].children[0].children[0].value,
+                                "id": idIng
+                            }
+
+                            tabIngrFinaux.push(element);
+                        }
+                    }
+
+                    const tabUl = document.getElementById("ulSupp");
+                    console.log(tabUl);
+                    console.log(tabUl.childNodes);
+                    const nbElemUl = tabUl.childNodes.length;
+
+                    for (let u = 1; u < nbElemUl; u++) {
+
+                        const ligneEnfants = tabUl.childNodes;
+                        const elemEnfantsDeLigne = ligneEnfants[u].childNodes;
+                        console.log(elemEnfantsDeLigne);
+                        console.log(elemEnfantsDeLigne[0]);
+                        var idIng;
+
+                        //si la ligne de l'ingrédient a un bouton Retirer
+                        for (let size = 0; size < response[0].length; size++) {
+                            if (response[0][size] != null) {
+                                if (response[0][size]["nom"] == elemEnfantsDeLigne[0].textContent) {
+                                    idIng = response[0][size]["IdIngredient"];
+
+                                }
+                            }
+
+                        }
+
+                        var element = {
+                            "ingredient": elemEnfantsDeLigne[0].textContent,
+                            "quantite": elemEnfantsDeLigne[1].textContent + elemEnfantsDeLigne[2].textContent,
+                            "id": idIng
+
+                        }
+                        tabIngrFinaux.push(element);
+
+
+
+                    }
+
+                    ///////////////////////////////
+
+                    const tabBurger = { "prixRecette": prix, "nomRecette": dataBurger[2], "idRecette": idRecette, "ingredientsFinaux": tabIngrFinaux };
+                    console.log(tabBurger);
+
+                    //Le tableau tabBurger est plein
+                    //Je l'envoie dans une requête Ajax pour qu'il soit incrémente la variable de session "Panier" (qui est un tableau)
+
+
+                    $.ajax({
+                        url: "visuModifsBurgers/ajouterAuPanier",
+                        method: "POST",
+                        dataType: "JSON",
+                        data: { burgerAjoute: tabBurger },
+                        success: function (response) {
+
+                            console.log(response);
+                            //modification de l'indicateur du nombre d'éléments dans le panier
+                            document.getElementById('panier_indicateur').textContent = response.length;
+                            alert("Ajout au Panier ✅");
+                        },
+                        error: function (xhr, status, error) {
+                            console.log("Erreur lors de la requête AJAX : " + error);
+                            console.log(xhr.responseText);
+                            alert("Une erreur est survenue");
+                        }
+                    });
+
+
+
                 },
-                error: function (xhr, status, error) {
-                    console.log("Erreur lors de la requête AJAX : " + error);
-                    console.log(xhr.responseText);
-                    alert("Une erreur est survenue");
+                error: function (jqXHR, textStatus, errorThrown) {
+                    if (jqXHR.status !== 0) {
+                        alert('Erreur ' + jqXHR.status + ' : ' + errorThrown);
+                        console.log('Erreur ' + jqXHR.status + ' : ' + errorThrown);
+                    } else {
+                        alert('Une erreur inconue est survenue !\nVeuillez vérifier votre connexion internet.');
+                        console.log('Une erreur inconue est survenue !\nVeuillez vérifier votre connexion internet.');
+                    }
                 }
             });
+
+
+
 
 
 
