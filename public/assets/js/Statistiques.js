@@ -13,6 +13,7 @@ const button = {
     CLOSE_MENU: null
 };
 
+// Les différents contenus du menu de gauche affichable
 const menuGaucheContent = {
     SELECTION_GRAPHE: null,
     CONFIGURATION_GRAPHE: null,
@@ -21,6 +22,7 @@ const menuGaucheContent = {
     LAMBDA: null
 };
 
+// Les différents types de statistiques
 const typeStatistique = {
     BURGER_VENTE_TOTAL: 1,
     BURGER_VENTE_TEMPS: 2,
@@ -31,9 +33,11 @@ const typeStatistique = {
     NOMBRE_CLIENT_TEMPS: 7
 };
 
+// Les différents types de graphiques
 const actual = {
     BUTTON: null,
     MENU_GAUCHE_CONTENT: null,
+    CURRENT_STATE: null,
 }
 
 // Les états
@@ -52,8 +56,9 @@ const chartType = {
 };
 
 const charts = [];
-let temporaryChart = {
-};
+let temporaryChart = {};
+let modifyChartSelectedType = null;
+let modifyChartSelected = null;
 
 // INITIALISATION
 $(document).ready(function () {
@@ -116,12 +121,21 @@ function globalStates(currentState) {
     $('.boutonStats').hide();
     // on supprime le contenu de la div des graphes et de temporaryChart
     $('#graphes').empty();
+    $('#graphesTemp').empty();
     $('#information').empty();
     temporaryChart = {};
 
+    // On retire les classes actives des seleciton de graphe
+    $('.graphe_choix').removeClass('selected');
+
+    // On ajoute display none à la classe boutonRapideGraphe
+    $('.boutonRapideGraphe').addClass('boutonRapideGrapheHide');
+    $('.boutonRapideGraphe').removeClass('boutonRapideGrapheShow');
+
     switch (currentState) {
         case state.DEFAULT: // On est dans l'état par défaut ou l'on affiche les graphes s'ils existent
-            console.log('state.BASIC_WITHOUT_GRAPHE');
+            console.log('state.DEFAULT');
+            actual.CURRENT_STATE = state.DEFAULT;
             // On affiche le bouton pour ajouter un graphe et celui d'information et on les active.
             button.ADD_GRAPHE.show();
             button.INFORMATION.show();
@@ -133,11 +147,14 @@ function globalStates(currentState) {
             } else {
                 button.EXPORT_PDF.show();
                 button.EXPORT_PDF.prop('disabled', false);
-                drawCharts();
+                createCharts();
             }
+            $('.boutonRapideGraphe').removeClass('boutonRapideGrapheHide');
+            $('.boutonRapideGraphe').addClass('boutonRapideGrapheShow');
             break;
         case state.ADD_GRAPHE:
             console.log('state.ADD_GRAPHE');
+            actual.CURRENT_STATE = state.ADD_GRAPHE;
             // On affiche les boutons de sélection de type de graphe, de paramétrage de graphe, d'annulation et de sauvegarde de graphe et on les active.
             button.SELECTION_GRAPHE.show();
             button.PERSONNALISATION_GRAPHE.show();
@@ -147,7 +164,6 @@ function globalStates(currentState) {
             button.INFORMATION.show();
             button.SELECTION_GRAPHE.prop('disabled', false);
             button.CANCEL_GRAPHE.prop('disabled', false);
-            button.SAVE_GRAPHE.prop('disabled', false);
             button.INFORMATION.prop('disabled', false);
             // On ajoute un message pour dire qu'on est en mode création d'un graphe
             $('#information').html('Mode création d\'un graphe');
@@ -155,6 +171,7 @@ function globalStates(currentState) {
             break;
         case state.MODIFY_GRAPHE:
             console.log('state.MODIFY_GRAPHE');
+            actual.CURRENT_STATE = state.MODIFY_GRAPHE;
             button.SELECTION_GRAPHE.show();
             button.PERSONNALISATION_GRAPHE.show();
             button.CONFIGURATION_GRAPHE.show();
@@ -171,13 +188,20 @@ function globalStates(currentState) {
             button.SAVE_GRAPHE.prop('disabled', false);
             // On ajoute un message pour dire qu'on est en mode édition d'un graphe
             $('#information').html('Mode édition d\'un graphe');
-        case state.EXPORT_PDF:
-            console.log('state.EXPORT_PDF');
-            // On affiche le boutons d'information
-            button.INFORMATION.show();
-            button.INFORMATION.prop('disabled', false);
-            // On ajoute un message pour dire qu'on est en mode exportation d'un graphe
-            $('#information').html('Mode export PDF');
+
+            // On remplie le menu et on met sur l'onglet de personnalisation
+            resetMenuGraphes();
+            temporaryChart = modifyChartSelected;
+            remplirMenuPersonnalisation();
+            remplirDates();
+            afficherDate();
+            setSpecificiteBurgerVenteTotal();
+            if (modifyChartSelectedType == 'delete') {
+                button.DELETE_GRAPHE.click();
+            } else if (modifyChartSelectedType == 'modify') {
+                button.PERSONNALISATION_GRAPHE.click();
+            }
+            break;
     }
 }
 
@@ -223,18 +247,124 @@ function initButtons() {
 
     // Bouton de sauvegarde de graphe
     button.SAVE_GRAPHE.click(function () {
+        console.log('button_stat_save_graphe clicked');
+        buttonSelectEffect(button.SAVE_GRAPHE, 'fbe272');
+        let textP = "Voulez-vous sauvegarder le graphe ?";
+        let buttonYes = "Confirmer";
+        let functionYes = function () {
+            console.log('button_stat_save_graphe yes clicked');
+
+            // on vérifie si le graphe existe déjà dans le tableau
+            if (!charts.includes(temporaryChart)) {
+                // On sauvegarde le graphe
+                charts[charts.length] = temporaryChart;
+            }
+            // On ferme le menu gauche
+            refreshMenuGauche(false);
+            // On désactive les boutons
+            buttonSelectEffect(null, null);
+            globalStates(state.DEFAULT)
+        };
+        personnaliserMenuGaucheLambda(textP, buttonYes, functionYes, null, null);
+        selectMenuGaucheContent(menuGaucheContent.LAMBDA);
+        $("#titre_onglet").html("Sauvegarde");
     });
 
     // bouton d'annulation
     button.CANCEL_GRAPHE.click(function () {
+        console.log('button_stat_cancel_graphe clicked');
+        buttonSelectEffect(button.SAVE_GRAPHE, 'fbe272');
+        let textP = "Voulez-vous annuler tous vos changements ?";
+        let buttonYes = "Confirmer";
+        let functionYes = function () {
+            console.log('button_stat_cancel_graphe yes clicked');
+            // On ferme le menu gauche
+            refreshMenuGauche(false);
+            // On désactive les boutons
+            buttonSelectEffect(null, null);
+            globalStates(state.DEFAULT)
+        };
+        personnaliserMenuGaucheLambda(textP, buttonYes, functionYes, null, null);
+        selectMenuGaucheContent(menuGaucheContent.LAMBDA);
+        $("#titre_onglet").html("Annulation");
     });
 
     // Bouton de suppression de graphe
     button.DELETE_GRAPHE.click(function () {
+        console.log('button_stat_delete_graphe clicked');
+        buttonSelectEffect(button.DELETE_GRAPHE, 'fbe272');
+        let textP = "Voulez-vous supprimer le graphe ?";
+        let buttonYes = "Confirmer";
+        let functionYes = function () {
+            console.log('button_stat_delete_graphe yes clicked');
+            // On supprime le graphe
+            charts.splice(charts.indexOf(temporaryChart), 1);
+            // On ferme le menu gauche
+            refreshMenuGauche(false);
+            // On désactive les boutons
+            buttonSelectEffect(null, null);
+            globalStates(state.DEFAULT)
+        };
+        personnaliserMenuGaucheLambda(textP, buttonYes, functionYes, null, null);
+        selectMenuGaucheContent(menuGaucheContent.LAMBDA);
+        $("#titre_onglet").html("Suppression");
     });
 
     // Bouton d'export du document
     button.EXPORT_PDF.click(function () {
+        console.log('button_stat_export_pdf clicked');
+        $('.boutonRapideGraphe').addClass('boutonRapideGrapheHide');
+        $('.boutonRapideGraphe').removeClass('boutonRapideGrapheShow');
+        buttonSelectEffect(button.EXPORT_PDF, 'fbe272');
+        selectMenuGaucheContent(menuGaucheContent.EXPORT);
+        $("#titre_onglet").html("Export");
+        // On exporte en pdf la div graphe avec la biliothèque jsPDF avec le nom dans le champ le texte du champs #nom_fichier_export
+        $('#button_stat_confirmation_export').click(function () {
+            console.log('button_stat_confirmation_export clicked');
+            let divExport = document.querySelector('#graphes');
+
+            let dimensionsDiv = divExport.getBoundingClientRect();
+            let divWidth = dimensionsDiv.width;
+            let divHeight = dimensionsDiv.height;
+
+            //On capture le contenu HTML dans une image
+            html2canvas(divExport).then(function (canvas) {
+                let imgData = canvas.toDataURL('image/png');
+
+                let pdf = new jsPDF();
+
+                //On juste la taille de l'image
+                let imageWidth = divWidth * 0.3;
+                let imageHeight = divHeight * 0.3;
+
+                //On centre l'image
+                let pageWidth = pdf.internal.pageSize.getWidth();
+                let pageHeight = pdf.internal.pageSize.getHeight();
+                let xPos = (pageWidth - imageWidth) / 2;
+                let yPos = (pageHeight - imageHeight) / 2;
+
+                //On ajoute l'image capturée au document PDF en utilisant les coordonnées centrées
+                pdf.addImage(imgData, 'PNG', xPos, yPos, imageWidth, imageHeight);
+
+                //On enregistre le fichier PDF
+                // on récupère le nom du pdf dans le champ #nom_fichier_export
+                let nomFichier = $('#nom_fichier_export').val();
+                if (nomFichier === "") {
+                    nomFichier = "statistiques";
+                }
+                pdf.save(nomFichier  + '.pdf');
+            });
+        });
+
+        // Bouton pour annuler
+        $('#button_stat_annulation_export').click(function () {
+            console.log('button_stat_annulation_export clicked');
+            refreshMenuGauche(false);
+            buttonSelectEffect(null, null);
+            $('.boutonRapideGraphe').removeClass('boutonRapideGrapheHide');
+            $('.boutonRapideGraphe').addClass('boutonRapideGrapheShow');
+        });
+
     });
 
     // Bouton pour fermer le menu gauche
@@ -243,6 +373,18 @@ function initButtons() {
         buttonSelectEffect(null, null);
     });
 }
+
+function resetMenuGraphes() {
+    // On réinitialise les spécificités
+    $('#specificite').empty();
+    // on créer : <h3 class="graphe_categorie bold" id="spécificité graphe">Spécificité</h3>
+    let h3 = $('<h3></h3>');
+    h3.addClass('graphe_categorie bold');
+    h3.attr('id', 'spécificité graphe');
+    h3.html('Spécificité');
+    $('#specificite').append(h3);
+}
+
 
 function initButtonsSelectionGraphe() {
     $('#burger_vente_total').click(function () {
@@ -258,9 +400,12 @@ function initButtonsSelectionGraphe() {
         // On réactive les boutons de personnalisation et paramétrage des graphes
         button.PERSONNALISATION_GRAPHE.prop('disabled', false);
         button.CONFIGURATION_GRAPHE.prop('disabled', false);
+        button.SAVE_GRAPHE.prop('disabled', false);
 
         // On remplie le menu et on met sur l'onglet de personnalisation
+        resetMenuGraphes();
         remplirMenuPersonnalisation();
+        remplirDates();
         afficherDate();
         setSpecificiteBurgerVenteTotal();
         button.PERSONNALISATION_GRAPHE.click();
@@ -331,6 +476,35 @@ function refreshMenuGauche(boolean) {
     }
 }
 
+function personnaliserMenuGaucheLambda(textP, textButtonActionUn, fonctionButtonActionUn, textButtonActionDeux, fonctionButtonActionDeux) {
+    let paragraphe = $('#texte_paragraphe_lambda');
+    let boutonActionUn = $('#button_stat_action_un_lambda');
+    let boutonActionDeux = $('#button_stat_action_deux_lambda');
+    // On reset tout
+    paragraphe.html('');
+    boutonActionUn.html('');
+    boutonActionUn.off('click');
+    boutonActionDeux.html('');
+    boutonActionDeux.off('click');
+    // On met le texte
+    paragraphe.html(textP);
+    // On met le bouton 1
+    boutonActionUn.html(textButtonActionUn);
+    boutonActionUn.click(fonctionButtonActionUn);
+    // On met le bouton 2
+    if (textButtonActionDeux == null || fonctionButtonActionDeux == null) {
+        // Faire le menu gauche
+        boutonActionDeux.html("Annuler");
+        boutonActionDeux.click(function () {
+            refreshMenuGauche(false);
+            buttonSelectEffect(null, null);
+        });
+    } else {
+        boutonActionDeux.html(textButtonActionDeux);
+        boutonActionDeux.click(fonctionButtonActionDeux);
+    }
+}
+
 function remplirMenuPersonnalisation() {
     console.log(temporaryChart);
     // MENU - PERSONNALISATION
@@ -343,11 +517,19 @@ function remplirMenuPersonnalisation() {
         temporaryChart.divNom.html(grapheNom.val());
     });
 
+
+    let grapheDescription = $('#graphe_description');
     if (temporaryChart.description != null) {
-        $('#graphe_description').val(temporaryChart.description);
+        grapheDescription.val(temporaryChart.description);
     }
+    grapheDescription.on('input', function () {
+        temporaryChart.description = grapheDescription.val();
+        temporaryChart.divDescription.html(grapheDescription.val());
+    });
+
     // on génère le select
     let select = $("#graphe_type");
+    select.empty();
     if (temporaryChart.typePossible != null) {
         for (var i = 0; i < temporaryChart.typePossible.length; i++) {
             select.append('<option value="' + temporaryChart.typePossible[i] + '">' + temporaryChart.typePossible[i] + '</option>');
@@ -361,13 +543,33 @@ function remplirMenuPersonnalisation() {
     }
 }
 
+function remplirDates() {
+    console.log("Statistiques.js - remplirDates");
+    // on récupère les dates
+    if (temporaryChart.datePersonnalise) {
+        $("#graphe_date_personnalise").prop('checked', true);
+    } else {
+        $("#graphe_date_personnalise").prop('checked', false);
+    }
+    if (temporaryChart.dateDebut != null) {
+        $("#graphe_date_debut").val(temporaryChart.dateDebut);
+    } else {
+        $("#graphe_date_debut").val("");
+    }
+    if (temporaryChart.dateFin != null) {
+        $("#graphe_date_fin").val(temporaryChart.dateFin);
+    } else {
+        $("#graphe_date_fin").val("");
+    }
+}
+
 /**
  * Méthode permettant d'activer/désactiver le module de date personnalisé. Si date personnalisé pas coché, on prend depuis toujours.
  */
 function afficherDate() {
     console.log("Statistiques.js - afficherDate");
     // si la case est coché on affiche le champ date et on réactive le bouton
-    if ($(this).is(':checked')) {
+    if ($("#graphe_date_personnalise").is(':checked')) {
         $('#date_debut_span').show();
         $('#date_fin_span').show();
         $('#graphe_date_debut').prop('disabled', false);
@@ -445,8 +647,14 @@ function updateTemporaryChart() {
     console.log("Statistiques.js - updateGraphe");
     // on vérifie le type et la date
     if (!checkDateForUpdateChart() || !checkType()) {
+        button.SAVE_GRAPHE.prop('disabled', true);
+        $('#graphesTemp').empty().append($('<p>').text('Veuillez remplir les champs correctement.'));
         return;
     }
+    button.SAVE_GRAPHE.prop('disabled', false);
+    temporaryChart.datePersonnalise = $("#graphe_date_personnalise").is(':checked');
+    temporaryChart.dateDebut = $('#graphe_date_debut').val();
+    temporaryChart.dateFin = $('#graphe_date_fin').val();
 
     switch (temporaryChart.typeStatistique) {
         case typeStatistique.BURGER_VENTE_TOTAL:
@@ -457,8 +665,14 @@ function updateTemporaryChart() {
 
 function createCharts() {
     console.log("Statistiques.js - createCharts");
+    // on regarde la longueur de charts
+    let plusieursGraphs;
+    charts.length > 1 ? plusieursGraphs = true : plusieursGraphs = false;
     for (var i = 0; i < charts.length; i++) {
         createChart(charts[i]);
+        if (plusieursGraphs && i != charts.length - 1) {
+            $('#graphes').append($('<hr>').addClass('delimitation_trait'));
+        }
     }
 }
 
@@ -488,19 +702,29 @@ function createChart(chart) {
     mainDiv.append(title);
 
     // on créer la div contenant les boutons
-    let buttonDiv = $('<div>');
+    let buttonDiv = $('<div>').addClass('boutonRapideGraphe boutonRapideGrapheHide');
     // on créer les boutons
-    let buttonModify = $('<button>').addClass('button button_select');
+    let buttonModify = $('<button>').addClass('button');
     buttonModify.html('<i class="fa-solid fa-pen"></i>');
+    buttonModify.click(function () {
+        modifyChartSelected = chart;
+        modifyChartSelectedType = 'modify';
+        globalStates(state.MODIFY_GRAPHE);
+    });
     // mettre image / mettre event
     let buttonDelete = $('<button>').addClass('button');
     buttonDelete.html('<i class="fa-solid fa-trash"></i>');
+    buttonDelete.click(function () {
+        modifyChartSelected = chart;
+        modifyChartSelectedType = 'delete';
+        globalStates(state.MODIFY_GRAPHE);
+    });
 
     // mettre image / mettre event
     buttonDiv.append(buttonModify);
     buttonDiv.append(buttonDelete);
     mainDiv.append(buttonDiv);
-    
+
     // on créer un canvas qu'on ajoute à la div
     let canvas = $('<canvas>');
     mainDiv.append(canvas);
@@ -510,8 +734,13 @@ function createChart(chart) {
     chart.divDescription = paragraph;
     mainDiv.append(paragraph);
     let chartConfig;
+
     // On ajoute la div principale au DOM
-    $('#graphes').append(mainDiv);
+    if (chart != temporaryChart) {
+        $('#graphes').append(mainDiv);
+    } else {
+        $('#graphesTemp').append(mainDiv);
+    }
 
     // On configure le graphe en fonction du type de statistique
     switch (chart.typeStatistique) {
@@ -520,26 +749,78 @@ function createChart(chart) {
         case typeStatistique.PRODUIT_ACHAT_TOTAL:
         case typeStatistique.FOURNISSEUR_ACHAT_TOTAL:
             console.log(chart);
-            chartConfig = {
-                type: chart.type,
-                data: {
-                    labels: chart.data.labels,
-                    datasets: [{
-                        label: 'Quantités',
-                        data: chart.data.quantities,
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
+            if (chart.type == chartType.DOUGHNUT || chart.type == chartType.PIE) {
+                chartConfig = {
+                    type: chart.type,
+                    plugins: [ChartDataLabels],
+                    data: {
+                        labels: chart.data.labels,
+                        datasets: [{
+                            label: 'Quantités',
+                            data: chart.data.quantities,
+                            backgroundColor: ['#FFB1C1', '#FFD1B1', '#FFF1B1', '#D1FFB1', '#B1FFC1', '#B1FFD1', '#B1FFF1', '#B1D1FF', '#B1B1FF', '#D1B1FF', '#FFB1FF', '#FFB1D1'],
+                        }]
+                    },
+                    options: {
+                        responsive: false,
+                        plugins: {
+                            datalabels: {
+                                labels: {
+                                    value: {
+                                        color: 'black'
+                                    }
+                                }
+                            },
+                        },
+                        scales: {
+                            y: {
+                                display: false // Cacher l'axe des ordonnées
+                            }
                         }
                     }
-                }
-            };
+                };
+            } else {
+                chartConfig = {
+                    type: chart.type,
+                    plugins: [ChartDataLabels],
+                    data: {
+                        labels: chart.data.labels,
+                        datasets: [{
+                            label: 'Quantités',
+                            data: chart.data.quantities,
+                            backgroundColor: ['#FFB1C1', '#FFD1B1', '#FFF1B1', '#D1FFB1', '#B1FFC1', '#B1FFD1', '#B1FFF1', '#B1D1FF', '#B1B1FF', '#D1B1FF', '#FFB1FF', '#FFB1D1'],
+                        }]
+                    },
+                    options: {
+                        responsive: false,
+                        plugins: {
+                            datalabels: {
+                                anchor: 'end',
+                                align: 'end',
+                                labels: {
+                                    value: {
+                                        color: 'black'
+                                    }
+                                }
+                            },
+                            legend: {
+                                display: false
+                            },
+                            title: {
+                                display: true,
+                                text: 'Quantités',
+                                position: 'top',
+                                align: 'start'
+                            },
+                        },
+                        scales: {
+                            y: {
+                                display: false // Cacher l'axe des ordonnées
+                            }
+                        }
+                    }
+                };
+            }
             break;
     }
     if (chart.data != null) {
@@ -586,7 +867,16 @@ function setSpecificiteBurgerVenteTotal() {
     span.append(h3Label);
     span.append(input);
     divChoixBurger.append(span);
-    input.prop('checked', true);
+    // solution temporaire
+    if (temporaryChart.specificite == null) {
+        temporaryChart.specificite = {};
+    }
+
+    if (temporaryChart.specificite.choixRecette != null) {
+        input.prop('checked', temporaryChart.specificite.choixRecette);
+    } else {
+        input.prop('checked', true);
+    }
 
     // on construit le select 
     let select = $('<select>');
@@ -613,12 +903,28 @@ function setSpecificiteBurgerVenteTotal() {
             $('#select_choix_recette').select2({
                 width: '100%',
                 placeholder: 'Sélectionnez une recette',
+                maximumSelectionLength: 10
             }).on('select2:select', function (e) {
                 updateTemporaryChart();
             });
         }
         updateTemporaryChart();
     });
+    // initialisation
+    if (input.is(':checked')) {
+        $('#select_choix_recette').prop('disabled', true);
+        $('#select_choix_recette').select2('destroy');
+        $('#select_choix_recette').hide();
+    } else {
+        $('#select_choix_recette').prop('disabled', false);
+        $('#select_choix_recette').select2({
+            width: '100%',
+            placeholder: 'Sélectionnez une recette',
+            maximumSelectionLength: 10
+        }).on('select2:select', function (e) {
+            updateTemporaryChart();
+        });
+    }
 
     // on ajoute un écouteur d'évènement sur le select
     selectArchives.on('change', function () {
@@ -645,6 +951,12 @@ function setSpecificiteBurgerVenteTotal() {
                 data.forEach(element => {
                     select.append('<option value="' + element.id + '">' + element.nom + '</option>');
                 });
+                // On re selectionne dans le choix multiples les recettes sélectionnées dans temporaryChart.specificite.recettes
+                if (temporaryChart.specificite.recettes != null) {
+                    console.log(temporaryChart.specificite.recettes);
+                    $('#select_choix_recette').val(temporaryChart.specificite.recettes);
+                    $('#select_choix_recette').trigger('change');
+                }
                 updateTemporaryChart();
             },
             error: function (data) {
@@ -654,10 +966,12 @@ function setSpecificiteBurgerVenteTotal() {
         });
     });
 
-    // on met le select archive à la value 0 et on déclanche les évènements
-    selectArchives.val(0);
+    if (temporaryChart.specificite.archives != null) {
+        selectArchives.val(temporaryChart.specificite.archives);
+    } else {
+        selectArchives.val(0);
+    }
     selectArchives.trigger('change');
-    input.trigger('change');
 }
 
 /*********************************************************************************
@@ -682,8 +996,6 @@ function getDataBurgerVenteTotal() {
     } else {
         dataToSend.date_all = true;
     }
-    // archives
-    dataToSend.archives = $('#choix_archives').is(':checked');
     // listes des burgers
     if ($('#choix_recette_checkbox').is(':checked')) {
         dataToSend.recette_all = true;
@@ -691,7 +1003,14 @@ function getDataBurgerVenteTotal() {
         dataToSend.recette_all = false;
         dataToSend.recettes = $('#select_choix_recette').val();
     }
+    // on récupère la valeur d'archives
+    dataToSend.archives = $('#graphe_archives').val();
     dataToSend = JSON.stringify(dataToSend);
+
+    // remplir specifite temporaryChart
+    temporaryChart.specificite.choixRecette = $('#choix_recette_checkbox').is(':checked');
+    temporaryChart.specificite.recettes = $('#select_choix_recette').val();
+    temporaryChart.specificite.archives = $('#graphe_archives').val();
 
     $.ajax({
         url: "statistiques/getDataBurgerVenteTotal",
@@ -708,22 +1027,30 @@ function getDataBurgerVenteTotal() {
 
             // on boucle sur data avec un foreach
             if (data.length == 0) {
-                $('#graphes').empty().html('<h3 class="text-center">Aucune donnée à afficher</h3>');
+                $('#graphesTemp').empty().html('<h3 class="text-center">Aucune donnée à afficher</h3>');
                 temporaryChart.error = true;
                 return;
             }
             let labels = [];
             let quantities = [];
+            let lePlusGrand = 0;
             data.forEach(element => {
                 labels.push(element.nom);
+                // on convertit en nombre element.quantite
+                element.quantite = parseInt(element.quantite);
                 quantities.push(element.quantite);
+                if (element.quantite > lePlusGrand) {
+                    lePlusGrand = element.quantite;
+                }
             });
             dataResult = {}
             dataResult.labels = labels;
             dataResult.quantities = quantities;
+            dataResult.lePlusGrand = lePlusGrand;
             temporaryChart.data = dataResult;
             temporaryChart.error = false;
-            $('#graphes').empty();
+            // solution provisoire
+            $('#graphesTemp').empty();
             createChart(temporaryChart);
         },
         error: function (data) {

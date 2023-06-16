@@ -2,6 +2,9 @@
 <link rel="stylesheet" href="<?php echo CSS; ?>Statistiques.css">
 <!-- bibliothèque pour générer un graphique -->
 <script src="<?php echo ASSETS; ?>chartjs/chart.umd.min.js"></script>
+<script src="<?php echo ASSETS; ?>chartjs/chartjs-plugin-datalabels@2.0.0-rc.js"></script>
+
+
 <!-- on inclut la feuille js -->
 <script src="<?php echo JS; ?>statistiques.js"></script>
 
@@ -112,15 +115,16 @@
                     <input type="text" id="nom_fichier_export" name="nom_fichier_export" class="input" placeholder="Nom du fichier">
                 </div>
                 <button id="button_stat_confirmation_export" class="bouton">Exporter</button>
+                <button id="button_stat_annulation_export" class="bouton">Annuler</button>
             </div>
 
             <!-- Menu de confirmation lambda -->
             <div id="onglet_lambda" class="menu_graphe_content">
                 <div class="box_graphe">
-                    <h3 class="graphe_categorie bold"></h3>
-                    <p id="texte_confirmation"></p>
+                    <p id="texte_paragraphe_lambda"></p>
                 </div>
-                <button id="button_stat_confirmation_lambda" class="bouton">Confirmer</button>
+                <button id="button_stat_action_un_lambda" class="bouton"></button>
+                <button id="button_stat_action_deux_lambda" class="bouton"></button>
             </div>
         </div>
     </section>
@@ -134,6 +138,7 @@
         <h3 id="information"></h3>
 
         <div id="graphes"></div> <!-- div pour contenir les graphes -->
+        <div id="graphesTemp"></div> <!-- div pour contenir les graphes temporaire -->
     </section>
 </div>
 </div>

@@ -102,7 +102,11 @@ CSS - Autre
     flex-grow: 1;
 }
 
-.graphe > div{
+.boutonRapideGrapheHide {
+    display: none;
+}
+
+.boutonRapideGrapheShow{
     margin-left: auto;
     display:flex;
     flex-direction: row;
