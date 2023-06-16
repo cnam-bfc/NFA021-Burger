@@ -2,7 +2,12 @@ $(function () {
     // Récupération des informations de l'itinéraire dans l'url
     const url = new URL(window.location.href);
 
-    let map = L.map('map').setView([46.783, 4.8519], 13);
+    let map = L.map('map', {
+        fullscreenControl: true,
+        fullscreenControlOptions: {
+            position: 'topleft'
+        }
+    }).setView([46.783, 4.8519], 13);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
