@@ -136,6 +136,7 @@
         <h3 id="information"></h3>
 
         <div id="graphes"></div> <!-- div pour contenir les graphes -->
+        <div id="graphesTemp"></div> <!-- div pour contenir les graphes temporaire -->
     </section>
 </div>
 </div>

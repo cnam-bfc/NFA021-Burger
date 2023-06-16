@@ -43,6 +43,8 @@ const state = {
     MODIFY_GRAPHE: 3,
 };
 
+let currentState;
+
 // Constantes pour les graphiques
 const chartType = {
     BAR: 'bar',
@@ -52,8 +54,9 @@ const chartType = {
 };
 
 const charts = [];
-let temporaryChart = {
-};
+let temporaryChart = {};
+let modifyChartSelectedType = null;
+let modifyChartSelected = null;
 
 // INITIALISATION
 $(document).ready(function () {
@@ -116,6 +119,7 @@ function globalStates(currentState) {
     $('.boutonStats').hide();
     // on supprime le contenu de la div des graphes et de temporaryChart
     $('#graphes').empty();
+    $('#graphesTemp').empty();
     $('#information').empty();
     temporaryChart = {};
 
@@ -129,6 +133,7 @@ function globalStates(currentState) {
     switch (currentState) {
         case state.DEFAULT: // On est dans l'état par défaut ou l'on affiche les graphes s'ils existent
             console.log('state.DEFAULT');
+            cuurentState = state.DEFAULT;
             // On affiche le bouton pour ajouter un graphe et celui d'information et on les active.
             button.ADD_GRAPHE.show();
             button.INFORMATION.show();
@@ -147,6 +152,7 @@ function globalStates(currentState) {
             break;
         case state.ADD_GRAPHE:
             console.log('state.ADD_GRAPHE');
+            currentState = state.ADD_GRAPHE;
             // On affiche les boutons de sélection de type de graphe, de paramétrage de graphe, d'annulation et de sauvegarde de graphe et on les active.
             button.SELECTION_GRAPHE.show();
             button.PERSONNALISATION_GRAPHE.show();
@@ -163,6 +169,7 @@ function globalStates(currentState) {
             break;
         case state.MODIFY_GRAPHE:
             console.log('state.MODIFY_GRAPHE');
+            currentState = state.MODIFY_GRAPHE;
             button.SELECTION_GRAPHE.show();
             button.PERSONNALISATION_GRAPHE.show();
             button.CONFIGURATION_GRAPHE.show();
@@ -179,9 +186,21 @@ function globalStates(currentState) {
             button.SAVE_GRAPHE.prop('disabled', false);
             // On ajoute un message pour dire qu'on est en mode édition d'un graphe
             $('#information').html('Mode édition d\'un graphe');
+
+            // On remplie le menu et on met sur l'onglet de personnalisation
+            temporaryChart = modifyChartSelected;
+            remplirMenuPersonnalisation();
+            afficherDate();
+            setSpecificiteBurgerVenteTotal();
+            if (modifyChartSelectedType == 'delete') {
+                button.DELETE_GRAPHE.click();
+            } else if (modifyChartSelectedType == 'modify') {
+                button.PERSONNALISATION_GRAPHE.click();
+            }
             break;
         case state.EXPORT_PDF:
             console.log('state.EXPORT_PDF');
+            currentState = state.EXPORT_PDF;
             // On affiche le boutons d'information
             button.INFORMATION.show();
             button.INFORMATION.prop('disabled', false);
@@ -239,8 +258,12 @@ function initButtons() {
         let buttonYes = "Confirmer";
         let functionYes = function () {
             console.log('button_stat_save_graphe yes clicked');
-            // On sauvegarde le graphe
-            charts[charts.length] = temporaryChart;
+
+            // on vérifie si le graphe existe déjà dans le tableau
+            if (!charts.includes(temporaryChart)) {
+                // On sauvegarde le graphe
+                charts[charts.length] = temporaryChart;
+            }
             // On ferme le menu gauche
             refreshMenuGauche(false);
             // On désactive les boutons
@@ -273,6 +296,23 @@ function initButtons() {
 
     // Bouton de suppression de graphe
     button.DELETE_GRAPHE.click(function () {
+        console.log('button_stat_delete_graphe clicked');
+        buttonSelectEffect(button.DELETE_GRAPHE, 'fbe272');
+        let textP = "Voulez-vous supprimer le graphe ?";
+        let buttonYes = "Confirmer";
+        let functionYes = function () {
+            console.log('button_stat_delete_graphe yes clicked');
+            // On supprime le graphe
+            charts.splice(charts.indexOf(temporaryChart), 1);
+            // On ferme le menu gauche
+            refreshMenuGauche(false);
+            // On désactive les boutons
+            buttonSelectEffect(null, null);
+            globalStates(state.DEFAULT)
+        };
+        personnaliserMenuGaucheLambda(textP, buttonYes, functionYes, null, null);
+        selectMenuGaucheContent(menuGaucheContent.LAMBDA);
+        $("#titre_onglet").html("Suppression");
     });
 
     // Bouton d'export du document
@@ -578,9 +618,19 @@ function createChart(chart) {
     // on créer les boutons
     let buttonModify = $('<button>').addClass('button');
     buttonModify.html('<i class="fa-solid fa-pen"></i>');
+    buttonModify.click(function () {
+        modifyChartSelected = chart;
+        modifyChartSelectedType = 'modify';
+        globalStates(state.MODIFY_GRAPHE);
+    });
     // mettre image / mettre event
     let buttonDelete = $('<button>').addClass('button');
     buttonDelete.html('<i class="fa-solid fa-trash"></i>');
+    buttonDelete.click(function () {
+        modifyChartSelected = chart;
+        modifyChartSelectedType = 'delete';
+        globalStates(state.MODIFY_GRAPHE);
+    });
 
     // mettre image / mettre event
     buttonDiv.append(buttonModify);
@@ -596,8 +646,13 @@ function createChart(chart) {
     chart.divDescription = paragraph;
     mainDiv.append(paragraph);
     let chartConfig;
+
     // On ajoute la div principale au DOM
-    $('#graphes').append(mainDiv);
+    if (chart != temporaryChart) {
+        $('#graphes').append(mainDiv);
+    } else {
+        $('#graphesTemp').append(mainDiv);
+    }
 
     // On configure le graphe en fonction du type de statistique
     switch (chart.typeStatistique) {
@@ -725,11 +780,6 @@ function setSpecificiteBurgerVenteTotal() {
     span.append(input);
     divChoixBurger.append(span);
     input.prop('checked', true);
-    input.on('change', function () {
-        if ($(this).is(':checked')) {
-            updateTemporaryChart();
-        }
-    });
 
     // on construit le select 
     let select = $('<select>');
@@ -763,6 +813,10 @@ function setSpecificiteBurgerVenteTotal() {
         }
         updateTemporaryChart();
     });
+    // initialisation
+    $('#select_choix_recette').prop('disabled', true);
+    $('#select_choix_recette').select2('destroy');
+    $('#select_choix_recette').hide();
 
     // on ajoute un écouteur d'évènement sur le select
     selectArchives.on('change', function () {
@@ -801,7 +855,6 @@ function setSpecificiteBurgerVenteTotal() {
     // on met le select archive à la value 0 et on déclanche les évènements
     selectArchives.val(0);
     selectArchives.trigger('change');
-    input.trigger('change');
 }
 
 /*********************************************************************************
@@ -876,7 +929,8 @@ function getDataBurgerVenteTotal() {
             dataResult.lePlusGrand = lePlusGrand;
             temporaryChart.data = dataResult;
             temporaryChart.error = false;
-            $('#graphes').empty();
+            // solution provisoire
+            $('#graphesTemp').empty();
             createChart(temporaryChart);
         },
         error: function (data) {
