@@ -3,17 +3,17 @@
 <link rel="stylesheet" href="<?php echo ASSETS ?>leaflet/leaflet.css">
 <script src="<?php echo ASSETS ?>leaflet/leaflet.js"></script>
 
-<!-- Bibliothèque Leaflet EasyButton -->
+<!-- Bibliothèque Leaflet Control EasyButton -->
 <link rel="stylesheet" href="<?php echo ASSETS ?>leaflet-control-easybutton/easy-button.min.css">
 <script src="<?php echo ASSETS ?>leaflet-control-easybutton/easy-button.min.js"></script>
+
+<!-- Bibliothèque Leaflet Control Fullscreen -->
+<link rel="stylesheet" href="<?php echo ASSETS ?>leaflet-control-fullscreen/Control.FullScreen.css">
+<script src="<?php echo ASSETS ?>leaflet-control-fullscreen/Control.FullScreen.js"></script>
 
 <!-- Bibliothèque Leaflet Routing Machine -->
 <link rel="stylesheet" href="<?php echo ASSETS ?>leaflet-routing-machine/leaflet-routing-machine.css">
 <script src="<?php echo ASSETS ?>leaflet-routing-machine/leaflet-routing-machine.min.js"></script>
-
-<!-- Bibliothèque Leaflet Fullscreen -->
-<link rel="stylesheet" href="<?php echo ASSETS ?>leaflet-control-fullscreen/Control.FullScreen.css">
-<script src="<?php echo ASSETS ?>leaflet-control-fullscreen/Control.FullScreen.js"></script>
 
 <!-- On ajoute la feuille de style associé à la page -->
 <link rel="stylesheet" href="<?php echo CSS ?>Itineraire.css">
