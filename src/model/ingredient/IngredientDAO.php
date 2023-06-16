@@ -145,7 +145,6 @@ class IngredientDAO extends DAO
             $ingredientBdc->setQuantiteCommandee($ingredient->getQuantiteStandardStockAuto() - $ingredient->getQuantiteStock());
 
             $daoIngredientBdc->create($ingredientBdc);
-
         }
     }
 
