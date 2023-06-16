@@ -2,6 +2,8 @@
 <link rel="stylesheet" href="<?php echo CSS; ?>Statistiques.css">
 <!-- bibliothèque pour générer un graphique -->
 <script src="<?php echo ASSETS; ?>chartjs/chart.umd.min.js"></script>
+<script src="<?php echo ASSETS; ?>chartjs/chartjs-plugin-datalabels@2.0.0-rc.js"></script>
+
 <!-- on inclut la feuille js -->
 <script src="<?php echo JS; ?>statistiques.js"></script>
 

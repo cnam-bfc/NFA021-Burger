@@ -507,7 +507,7 @@ function createChart(chart) {
     buttonDiv.append(buttonModify);
     buttonDiv.append(buttonDelete);
     mainDiv.append(buttonDiv);
-    
+
     // on créer un canvas qu'on ajoute à la div
     let canvas = $('<canvas>');
     mainDiv.append(canvas);
@@ -527,26 +527,78 @@ function createChart(chart) {
         case typeStatistique.PRODUIT_ACHAT_TOTAL:
         case typeStatistique.FOURNISSEUR_ACHAT_TOTAL:
             console.log(chart);
+            if (chart.type == chartType.DOUGHNUT || chart.type == chartType.PIE) {
+                chartConfig = {
+                    type: chart.type,
+                    plugins: [ChartDataLabels],
+                    data: {
+                        labels: chart.data.labels,
+                        datasets: [{
+                            label: 'Quantités',
+                            data: chart.data.quantities,
+                            backgroundColor: ['#FFB1C1', '#FFD1B1', '#FFF1B1', '#D1FFB1', '#B1FFC1', '#B1FFD1', '#B1FFF1', '#B1D1FF', '#B1B1FF', '#D1B1FF', '#FFB1FF', '#FFB1D1'],
+                        }]
+                    },
+                    options: {
+                        responsive: false,
+                        plugins: {
+                            datalabels: {
+                                labels: {
+                                    value: {
+                                        color: 'black'
+                                    }
+                                }
+                            },
+                        },
+                        scales: {
+                            y: {
+                                display: false // Cacher l'axe des ordonnées
+                            }
+                        }
+                    }
+                };
+            } else {
             chartConfig = {
                 type: chart.type,
+                plugins: [ChartDataLabels],
                 data: {
                     labels: chart.data.labels,
                     datasets: [{
                         label: 'Quantités',
                         data: chart.data.quantities,
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
+                        backgroundColor: ['#FFB1C1', '#FFD1B1', '#FFF1B1', '#D1FFB1', '#B1FFC1', '#B1FFD1', '#B1FFF1', '#B1D1FF', '#B1B1FF', '#D1B1FF', '#FFB1FF', '#FFB1D1'],
                     }]
                 },
                 options: {
+                    responsive: false,
+                    plugins: {
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'end',
+                            labels: {
+                                value: {
+                                    color: 'black'
+                                }
+                            }
+                        },
+                        legend: {
+                            display: false
+                        },
+                        title: {
+                            display: true,
+                            text: 'Quantités',
+                            position: 'top',
+                            align: 'start'
+                        },
+                    },
                     scales: {
                         y: {
-                            beginAtZero: true
+                            display: false // Cacher l'axe des ordonnées
                         }
                     }
                 }
             };
+        }
             break;
     }
     if (chart.data != null) {
@@ -729,13 +781,20 @@ function getDataBurgerVenteTotal() {
             }
             let labels = [];
             let quantities = [];
+            let lePlusGrand = 0;
             data.forEach(element => {
                 labels.push(element.nom);
+                // on convertit en nombre element.quantite
+                element.quantite = parseInt(element.quantite);
                 quantities.push(element.quantite);
+                if (element.quantite > lePlusGrand) {
+                    lePlusGrand = element.quantite;
+                }
             });
             dataResult = {}
             dataResult.labels = labels;
             dataResult.quantities = quantities;
+            dataResult.lePlusGrand = lePlusGrand;
             temporaryChart.data = dataResult;
             temporaryChart.error = false;
             $('#graphes').empty();
