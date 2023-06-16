@@ -244,12 +244,14 @@ class IngredientDAO extends DAO
      * @param [$id] $tableauIdIngredients
      * @return array (tableau d'objets)
      */
-    public function selectAllWithoutIngredientsNonArchive($tableauIdIngredients)
+    public function selectAllWithoutIngredientsNonArchive($fournisseur, $tableauIdIngredients)
     {
         // Requête préparée
-        $sqlQuery = "SELECT * FROM burger_ingredient WHERE (date_archive IS NULL OR date_archive > NOW())";
+        $sqlQuery = "SELECT * FROM burger_ingredient WHERE (date_archive IS NULL OR date_archive > NOW())
+                    AND id_fournisseur_fk = :id_fournisseur_fk";
+        // on vérifie pour chaque ingrédient si il est dans le tableau
         if ($tableauIdIngredients[0] != null) {
-            $sqlQuery .= "AND id_ingredient NOT IN (";
+            $sqlQuery .= " AND id_ingredient NOT IN (";
             foreach ($tableauIdIngredients as $idIngredient) {
                 $sqlQuery .= ':IdIngredient_' . $idIngredient . ',';
             }
@@ -258,6 +260,7 @@ class IngredientDAO extends DAO
             $statement = $this->pdo->prepare($sqlQuery);
         }
         $statement = $this->pdo->prepare($sqlQuery);
+        $statement->bindValue(':id_fournisseur_fk', $fournisseur, PDO::PARAM_INT);
         if ($tableauIdIngredients[0] != null) {
             foreach ($tableauIdIngredients as $idIngredient) {
                 $statement->bindValue(':IdIngredient_' . $idIngredient, $idIngredient, PDO::PARAM_INT);
