@@ -4,10 +4,10 @@
 
 <div class="wrapper axe_colonne ">
     <div id="choice" class="width_90 margin_auto">
-        <input type="button" name="click_collect" id="bclick_collect" value="Click & Collect">
+        <input type="button" name="click_collect" id="bclick_collect" value="Retrait en Restaurant">
 
 
-        <input type="button" name="delivery" id="bdelivery" value="Delivery">
+        <input type="button" name="delivery" id="bdelivery" value="Livraison">
 
     </div>
 
@@ -19,7 +19,7 @@
 
         <!-- Boite de rensignement d'informations pour une Livraison -->
         <div class="box" id="delivery" style="display: none;">
-            <h2 class="box_titre">Delivery</h2>
+            <h2 class="box_titre">Livraison</h2>
             <div class="box_contenu">
                 <!-- Champ pour le code Postal-->
                 <div class="form-input">
@@ -64,7 +64,7 @@
 
         <!-- Boite de rensignement d'informations pour une Collecte en restaurant -->
         <div class="box" id="clickCollect">
-            <h2 class="box_titre">Click & Collect</h2>
+            <h2 class="box_titre">Retrait en Restaurant</h2>
             <div class="box_contenu">
                 <!--Adresse du restaurant-->
                 <p>14 Boulevard Magenta</p>

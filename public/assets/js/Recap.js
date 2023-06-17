@@ -293,11 +293,17 @@ function writeBDD(infosLivraison, panier) {
             success: function (response) {
                 console.log("responseGOODPanierInfos");
                 console.log(response);
+                if(response){
+                    alert("Commande passé avec suuccès");
+                }else{
+                    alert("La commande a échouée");
+                }
 
             },
             error: function (xhr, status, error) {
                 console.log("Erreur lors de la requête AJAX : " + error);
                 console.log(xhr.responseText);
+                alert("La commande a échouée");
 
             }
         });
