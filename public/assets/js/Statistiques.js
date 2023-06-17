@@ -949,7 +949,7 @@ function createChart(chart) {
                                 display: true,
                                 text: 'Quantités',
                                 position: 'top',
-                                align: 'start'
+                                align: 'end'
                             },
                         },
                         scales: {
