@@ -62,7 +62,9 @@ class RecapController extends Controller
                 $livraison->setAdresseCodePostal($_POST['tabCommandeClientLivraison']["code postal"]);
                 $livraison->setAdresseVille($_POST['tabCommandeClientLivraison']["ville"]);
                 $livraison->setAdresseRue($_POST['tabCommandeClientLivraison']["rue"]);
-                $livraison->setAdresseNumero($_POST['tabCommandeClientLivraison']["numero voie"]);
+                if ($_POST['tabCommandeClientLivraison']["numero voie"] != 'NaN') {
+                    $livraison->setAdresseNumero($_POST['tabCommandeClientLivraison']["numero voie"]);
+                }
                 $livraison->setPrix($_POST['tabCommandeClientLivraison']["prix"]);
                 $livraison->setPrix($_POST['tabCommandeClientLivraison']["prix"]);
                 $livraison->setDateCommande(date('Y-m-d H:i:s'));
@@ -99,8 +101,8 @@ class RecapController extends Controller
 
 
                     for ($i = 0; $i < count($burger["ingredientsFinaux"]); $i++) {
-                        
-                        if (count($burger["ingredientsFinaux"][$i])>1) {
+
+                        if (count($burger["ingredientsFinaux"][$i]) > 1) {
 
                             $FinalIngrDAO  = new RecetteFinaleIngredientDAO();
                             $FinalIngr = new RecetteFinaleIngredient();
