@@ -66,8 +66,8 @@ function showData(BurgerID) {
             }
             //afficher le prix ici : 
 
-            var montant = document.getElementById("Montant");
-            montant.innerHTML = prix;
+            const montant = document.getElementById("Montant");
+            montant.innerHTML = parseFloat(prix);
             // jusque ici OK
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -839,10 +839,10 @@ $(document).ready(function () {
                         var idIng;
 
                         //si la ligne de l'ingrédient a un bouton Retirer
-                        for (let size = 0; size < response[0].length; size++) {
+                        for (let size = 0; size < response[3].length; size++) {
                             if (response[0][size] != null) {
-                                if (response[0][size]["nom"] == elemEnfantsDeLigne[0].textContent) {
-                                    idIng = response[0][size]["IdIngredient"];
+                                if (response[3][size]["nom"] == elemEnfantsDeLigne[0].textContent) {
+                                    idIng = response[3][size]["IdIngredient"];
 
                                 }
                             }
@@ -934,17 +934,24 @@ $(document).ready(function () {
         var pNom = document.createElement("i");
         var pQuant = document.createElement("i");
         var pUnite = document.createElement("i");
+        var pPrice = document.createElement("i");
 
         pNom.textContent = supp.nom;
         pQuant.textContent = " " + supp.quantite + " ";
         pUnite.textContent = supp.unite;
+        pPrice.textContent = "    + ➕ " + supp.prix +" €";
 
 
         liSupp.appendChild(pNom);
         liSupp.appendChild(pQuant);
         liSupp.appendChild(pUnite);
+        liSupp.appendChild(pPrice);
 
         ulSupp.append(liSupp);
+
+        var PrixTotal = document.getElementById("Montant");
+        prix = (parseFloat(PrixTotal.textContent) + parseFloat(supp.prix)).toFixed(2);
+        PrixTotal.textContent = prix;
 
         tabIdSuppChoisi.push(supp.id);
         boutonCroix.click();
