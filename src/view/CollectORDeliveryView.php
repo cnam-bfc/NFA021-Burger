@@ -21,30 +21,11 @@
         <div class="box" id="delivery" style="display: none;">
             <h2 class="box_titre">Livraison</h2>
             <div class="box_contenu">
-                <!-- Champ pour le code Postal-->
+                <!-- Champ pour l'adresse du client-->
                 <div class="form-input">
-                    <label for="cp">Code Postal</label>
-                    <input type="text" id="cp" name="cp" placeholder="XX XXX" pattern="[0-9]{5}" required required>
-                </div>
-                <!-- Champ pour la ville -->
-                <div class="form-input">
-                    <label for="ville">Ville</label>
-                    <input type="text" id="ville" name="ville" placeholder="city" required minlength=1 maxlength=250><?php if (isset($recetteDescription)) echo $recetteDescription; ?></textarea>
-                </div>
-                <!-- Champ pour la voie -->
-                <div class="form-input">
-                    <label for="voie">Voie</label>
-                    <input type="text" id="voie" name="voie" placeholder="De Traumi" required>
-                </div>
-                <!-- Champ pour le n° de voie -->
-                <div class="form-input">
-                    <label for="numeroVoie">N° de Voie</label>
-                    <input type="number" id="numeroVoie" name="numeroVoie" min="1" placeholder="21" required>
-                </div>
-
-                <!-- Boutton pour vérifier l'adresse -->
-                <div>
-                    <button>Verify adresse</button>
+                    <label for="adresse">Adresse</label>
+                    <input type="text" id="adresse" name="adresse" placeholder="Adresse complète" required>
+                    <div id="suggestions"></div>
                 </div>
 
                 <!-- Champ pour le numéro de téléphone du client-->

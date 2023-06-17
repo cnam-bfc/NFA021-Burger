@@ -241,6 +241,10 @@ function processLivraison(infosLivraison) {
         const key = Object.keys(infosLivraison)[index];
         console.log("Clé:" + key);
         console.log("Valeur:" + value);
+        // Si clé commence par "OSM_", skip
+        if (key.startsWith("OSM_")) {
+            return;
+        }
         const div = document.createElement("div"); // Créer un nouvel élément <div>
         cle = key;
         valeur = value;
@@ -276,7 +280,6 @@ function writeBDD(infosLivraison, panier) {
         var prix = 0;
         for (let index = 0; index < panier.length; index++) {
             prix += parseFloat(panier[index].prixRecette);
-            
         }
         //doit contenir Heure Retrait / Prix / Date_commande / emballage;
         var tabCommandeClientRetrait = {
@@ -293,9 +296,9 @@ function writeBDD(infosLivraison, panier) {
             success: function (response) {
                 console.log("responseGOODPanierInfos");
                 console.log(response);
-                if(response){
+                if (response) {
                     alert("Commande passé avec suuccès");
-                }else{
+                } else {
                     alert("La commande a échouée");
                 }
 
@@ -315,12 +318,11 @@ function writeBDD(infosLivraison, panier) {
         var prix = 0;
         for (let index = 0; index < panier.length; index++) {
             prix += parseFloat(panier[index].prixRecette);
-            
         }
         var tabCommandeClientLivraison = {
             "heure Livraison": infosLivraison["Heure"],
-            "osm type": "M",
-            "osm id": 2911629812,
+            "osm type": infosLivraison["OSM_TYPE"],
+            "osm id": infosLivraison["OSM_ID"],
             "code postal": parseInt(infosLivraison["Code Postal"]),
             "ville": infosLivraison["Ville"],
             "rue": infosLivraison["Voie"],
