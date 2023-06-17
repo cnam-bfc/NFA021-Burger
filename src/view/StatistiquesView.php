@@ -4,12 +4,11 @@
 <script src="<?php echo ASSETS; ?>chartjs/chart.umd.min.js"></script>
 <script src="<?php echo ASSETS; ?>chartjs/chartjs-plugin-datalabels@2.0.0-rc.js"></script>
 
-
 <!-- on inclut la feuille js -->
-<script src="<?php echo JS; ?>statistiques.js"></script>
+<script src="<?php echo JS; ?>Statistiques.js"></script>
 
 <!-- content -->
-<div class="wrapper axe_ligne grow">
+<div class="wrapper axe_ligne grow" id="main_div_stats">
     <section id="menu_gauche" class="wrapper axe_ligne">
         <!-- Menu des actions rapide (ne se ferme pas) -->
         <div id="menu_action_rapide" class="wrapper axe_colonne main_axe_space_between second_axe_center gap_top_bottom_moyen">
@@ -88,12 +87,13 @@
 
             <!-- Menu de configuration d'un graphe -->
             <div id="onglet_configuration_graphe" class="menu_graphe_content">
-                <div class="box_graphe">
+                <div id="date_perso" class="box_graphe">
                     <h3 class="graphe_categorie bold">Date</h3>
                     <span class="wrapper axe_ligne main_axe_space_between second_axe_center grow">
                         <label for="graphe_date_personnalise">Date personnalisé</label>
                         <input class="input" id="graphe_date_personnalise" name="graphe_date_personnalise" type="checkbox">
                     </span>
+                    <p id="date_perso_message" class="message"></p>
                     <span class="wrapper axe_colonne main_axe_space_between grow" id="date_debut_span">
                         <label for="graphe_date_debut">Date de début</label>
                         <input type="date" id="graphe_date_debut" name="graphe_date_debut" class="input" placeholder="Nom du graphique" required>
@@ -137,7 +137,7 @@
 
         <h3 id="information"></h3>
 
-        <div id="graphes"></div> <!-- div pour contenir les graphes -->
+        <div id="graphes" class="wrapper axe_colonne second_axe_center width_100 gap_top_bottom_moyen"></div> <!-- div pour contenir les graphes -->
         <div id="graphesTemp"></div> <!-- div pour contenir les graphes temporaire -->
     </section>
 </div>
