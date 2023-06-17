@@ -53,6 +53,11 @@ class LivraisonController extends Controller
         // Récupération des commandes
         $commandes = $commandeClientLivraisonDAO->selectAllNonArchive();
 
+        // Trier les commandes par date de livraison
+        usort($commandes, function ($a, $b) {
+            return $a->getHeureLivraison() > $b->getHeureLivraison();
+        });
+
         // Formatage des commandes en json
         foreach ($commandes as $commande) {
             // Formatage de la commande en json
@@ -304,6 +309,11 @@ class LivraisonController extends Controller
 
         // Récupération des commandes du livreur
         $commandes = $commandeClientLivraisonDAO->selectAllByIdLivreur($livreur->getId());
+
+        // Trier les commandes par date de livraison
+        usort($commandes, function ($a, $b) {
+            return $a->getHeureLivraison() > $b->getHeureLivraison();
+        });
 
         $json = array(
             'data' => array(
