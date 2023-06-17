@@ -57,6 +57,7 @@ const chartType = {
 
 const charts = [];
 let temporaryChart = {};
+let temporaryOrginalChart = {};
 let modifyChartSelectedType = null;
 let modifyChartSelected = null;
 
@@ -124,6 +125,7 @@ function globalStates(currentState) {
     $('#graphesTemp').empty();
     $('#information').empty();
     temporaryChart = {};
+    temporaryOrginalChart = {};
 
     // On retire les classes actives des seleciton de graphe
     $('.graphe_choix').removeClass('selected');
@@ -191,11 +193,22 @@ function globalStates(currentState) {
 
             // On remplie le menu et on met sur l'onglet de personnalisation
             resetMenuGraphes();
-            temporaryChart = modifyChartSelected;
+            temporaryOrginalChart = modifyChartSelected;
+            temporaryChart = JSON.parse(JSON.stringify(modifyChartSelected));
             remplirMenuPersonnalisation();
             remplirDates();
             afficherDate();
-            setSpecificiteBurgerVenteTotal();
+            switch (temporaryChart.typeStatistique) {
+                case typeStatistique.BURGER_VENTE_TOTAL:
+                    setSpecificiteBurgerVenteTotal();
+                    break;
+                case typeStatistique.BURGER_VENTE_TEMPS:
+                    setSpecificiteBurgerVenteTemps();
+                    break;
+                case typeStatistique.FOURNISSEUR_ACHAT_TOTAL:
+                    setSpecificiteFournisseurAchatTotal();
+                    break;
+            }
             if (modifyChartSelectedType == 'delete') {
                 button.DELETE_GRAPHE.click();
             } else if (modifyChartSelectedType == 'modify') {
@@ -255,9 +268,13 @@ function initButtons() {
             console.log('button_stat_save_graphe yes clicked');
 
             // on vérifie si le graphe existe déjà dans le tableau
-            if (!charts.includes(temporaryChart)) {
+            if (!charts.includes(temporaryOrginalChart)) {
                 // On sauvegarde le graphe
                 charts[charts.length] = temporaryChart;
+            } else {
+                // On remplace le graphe
+                charts[charts.indexOf(temporaryOrginalChart)] = temporaryChart;
+                temporaryOrginalChart= {};
             }
             // On ferme le menu gauche
             refreshMenuGauche(false);
@@ -352,7 +369,7 @@ function initButtons() {
                 if (nomFichier === "") {
                     nomFichier = "statistiques";
                 }
-                pdf.save(nomFichier  + '.pdf');
+                pdf.save(nomFichier + '.pdf');
             });
         });
 
@@ -390,6 +407,8 @@ function initButtonsSelectionGraphe() {
     $('#burger_vente_total').click(function () {
         console.log('burger_vente_total clicked');
         // On initialise le graphe avec les données de base
+        $('#graphesTemp').empty();
+        $('.graphe_choix').removeClass('selected');
         $('#burger_vente_total').addClass('selected');
         temporaryChart.nom = 'Burger vente total';
         temporaryChart.description = 'Statistiques de la vente total des burgers';
@@ -413,6 +432,28 @@ function initButtonsSelectionGraphe() {
 
     $('#burger_vente_temps').click(function () {
         console.log('burger_vente_temps clicked');
+        // On initialise le graphe avec les données de base
+        $('#graphesTemp').empty();
+        $('.graphe_choix').removeClass('selected');
+        $('#burger_vente_temps').addClass('selected');
+        temporaryChart.nom = 'Burger vente temps';
+        temporaryChart.description = 'Statistiques de la vente sur le temps des burgers';
+        temporaryChart.type = chartType.LINE;
+        temporaryChart.typePossible = [chartType.LINE];
+        temporaryChart.typeStatistique = typeStatistique.BURGER_VENTE_TEMPS;
+
+        // On réactive les boutons de personnalisation et paramétrage des graphes
+        button.PERSONNALISATION_GRAPHE.prop('disabled', false);
+        button.CONFIGURATION_GRAPHE.prop('disabled', false);
+        button.SAVE_GRAPHE.prop('disabled', false);
+
+        // On remplie le menu et on met sur l'onglet de personnalisation
+        resetMenuGraphes();
+        remplirMenuPersonnalisation();
+        remplirDates();
+        afficherDate();
+        setSpecificiteBurgerVenteTemps();
+        button.PERSONNALISATION_GRAPHE.click();
     });
 
     $('#ingredient_achat_total').click(function () {
@@ -422,6 +463,29 @@ function initButtonsSelectionGraphe() {
     });
 
     $('#fournisseur_achat_total').click(function () {
+        console.log('fournisseur_achat_total clicked');
+        // On initialise le graphe avec les données de base
+        $('#graphesTemp').empty();
+        $('.graphe_choix').removeClass('selected');
+        $('#fournisseur_achat_total').addClass('selected');
+        temporaryChart.nom = 'Fournisseur achat total';
+        temporaryChart.description = 'Statistiques représentant le nombre de commande passées par fournisseur';
+        temporaryChart.type = chartType.BAR;
+        temporaryChart.typePossible = [chartType.BAR, chartType.DOUGHNUT, chartType.PIE];
+        temporaryChart.typeStatistique = typeStatistique.FOURNISSEUR_ACHAT_TOTAL;
+
+        // On réactive les boutons de personnalisation et paramétrage des graphes
+        button.PERSONNALISATION_GRAPHE.prop('disabled', false);
+        button.CONFIGURATION_GRAPHE.prop('disabled', false);
+        button.SAVE_GRAPHE.prop('disabled', false);
+
+        // On remplie le menu et on met sur l'onglet de personnalisation
+        resetMenuGraphes();
+        remplirMenuPersonnalisation();
+        remplirDates();
+        afficherDate();
+        setSpecificiteFournisseurAchatTotal();
+        button.PERSONNALISATION_GRAPHE.click();
     });
 
     $('#benefice_temps').click(function () {
@@ -634,6 +698,53 @@ function checkDate() {
     }
 }
 
+/**
+ * Méthode permettant de vérifier si la date est au bon format et comprise dans le bon format 
+ * 
+ * 1 -> jour
+ * 2 -> mois
+ * 3 -> année
+ * @returns {boolean} true si la date est au bon format, false sinon
+ */
+function checkDateWithIntervalle(minIntervalle, maxIntervalle) {
+    if (!$("#graphe_date_personnalise").is(':checked')) {
+        return true;
+    }
+    if (!checkDate()) {
+        return false;
+    }
+    let intervalChoisi = $('#graphe_intervalle_temps').val();
+    let dateDebut = moment($('#graphe_date_debut').val());
+    let dateFin = moment($('#graphe_date_fin').val());
+
+    switch (intervalChoisi) {
+        case '0':
+            // On regarde si le nombre de jour est compris dans l'intervalle
+            if (dateFin.diff(dateDebut, 'days') >= minIntervalle && dateFin.diff(dateDebut, 'days') <= maxIntervalle) {
+                return true;
+            }
+            break;
+        case '1':
+            // On regarde si le nombre de mois est compris dans l'intervalle
+            if (dateFin.diff(dateDebut, 'months') >= minIntervalle && dateFin.diff(dateDebut, 'months') <= maxIntervalle) {
+                console.log('debug : ' + dateFin.diff(dateDebut, 'months'));
+                console.log('debug : ' + dateFin.diff(dateDebut, 'months'));
+                return true;
+            }
+            break;
+        case '2':
+            // On regarde si le nombre d'années est compris dans l'intervalle
+            if (dateFin.diff(dateDebut, 'years') >= minIntervalle && dateFin.diff(dateDebut, 'years') <= maxIntervalle) {
+                return true;
+            }
+            break;
+        default:
+            return false;
+    }
+    return false;
+}
+
+
 function checkDateFormate(date) {
     console.log("Statistiques.js - checkDateFormate");
     // On vérifie le format
@@ -645,13 +756,36 @@ function checkDateFormate(date) {
 
 function updateTemporaryChart() {
     console.log("Statistiques.js - updateGraphe");
-    // on vérifie le type et la date
-    if (!checkDateForUpdateChart() || !checkType()) {
+    if (temporaryChart.typeStatistique == typeStatistique.BURGER_VENTE_TEMPS) {
+        // on vérifie le type
+        if (!checkDateWithIntervalle(temporaryChart.specificite.minIntervalleTemps, temporaryChart.specificite.maxIntervalleTemps)) {
+            console.log('min : ' + temporaryChart.specificite.minIntervalleTemps + ' max : ' + temporaryChart.specificite.maxIntervalleTemps)
+            button.SAVE_GRAPHE.prop('disabled', true);
+            $('#date_perso_message').text('Veuillez remplir les champs correctement.');
+            $('#date_perso_message').show();
+            $('#graphesTemp').empty().append($('<p>').text('Veuillez vérifier les dates.'));
+            return;
+        }
+    } else {
+        // on vérifie le type et la date
+        if (!checkDateForUpdateChart()) {
+            button.SAVE_GRAPHE.prop('disabled', true);
+            $('#date_perso_message').text('Veuillez remplir les champs correctement.');
+            $('#date_perso_message').show();
+            $('#graphesTemp').empty().append($('<p>').text('Veuillez vérifier les dates.'));
+            return;
+        }
+    }
+
+    if (!checkType()) {
         button.SAVE_GRAPHE.prop('disabled', true);
-        $('#graphesTemp').empty().append($('<p>').text('Veuillez remplir les champs correctement.'));
+        $('#date_perso_message').text('Veuillez remplir les champs correctement.');
+        $('#date_perso_message').show();
         return;
     }
-    button.SAVE_GRAPHE.prop('disabled', false);
+
+    $('#date_perso_message').hide();
+    $('#date_perso_message').empty();
     temporaryChart.datePersonnalise = $("#graphe_date_personnalise").is(':checked');
     temporaryChart.dateDebut = $('#graphe_date_debut').val();
     temporaryChart.dateFin = $('#graphe_date_fin').val();
@@ -660,7 +794,19 @@ function updateTemporaryChart() {
         case typeStatistique.BURGER_VENTE_TOTAL:
             getDataBurgerVenteTotal();
             break;
+        case typeStatistique.BURGER_VENTE_TEMPS:
+            // On vérifie que le select comporte bien au moins un burger
+            if ($('#select_choix_recette').val() == null || $('#select_choix_recette').val().length == 0) {
+                button.SAVE_GRAPHE.prop('disabled', true);
+                return;
+            }
+            getDataBurgerVenteTemps();
+            break;
+        case typeStatistique.FOURNISSEUR_ACHAT_TOTAL:
+            getDataFournisseurAchatTotal();
+            break;
     }
+    button.SAVE_GRAPHE.prop('disabled', false);
 }
 
 function createCharts() {
@@ -810,7 +956,7 @@ function createChart(chart) {
                                 display: true,
                                 text: 'Quantités',
                                 position: 'top',
-                                align: 'start'
+                                align: 'end'
                             },
                         },
                         scales: {
@@ -821,6 +967,48 @@ function createChart(chart) {
                     }
                 };
             }
+            break;
+        case typeStatistique.BURGER_VENTE_TEMPS:
+            console.log(chart);
+            chartConfig = {
+                type: chart.type,
+                data: chart.data,
+                options: {
+                    responsive: false,
+                    plugins: {
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'end',
+                            labels: {
+                                value: {
+                                    color: 'black'
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Quantités',
+                            position: 'top',
+                            align: 'start'
+                        },
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                font: {
+                                    size: 12,
+                                    weight: 'bold'
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)',
+                                lineWidth: 1
+                            }
+                        }
+                    }
+                }
+            };
             break;
     }
     if (chart.data != null) {
@@ -904,7 +1092,7 @@ function setSpecificiteBurgerVenteTotal() {
                 width: '100%',
                 placeholder: 'Sélectionnez une recette',
                 maximumSelectionLength: 10
-            }).on('select2:select', function (e) {
+            }).on('select2:select select2:unselect', function (e) {
                 updateTemporaryChart();
             });
         }
@@ -921,7 +1109,7 @@ function setSpecificiteBurgerVenteTotal() {
             width: '100%',
             placeholder: 'Sélectionnez une recette',
             maximumSelectionLength: 10
-        }).on('select2:select', function (e) {
+        }).on('select2:select select2:unselect', function (e) {
             updateTemporaryChart();
         });
     }
@@ -962,6 +1150,302 @@ function setSpecificiteBurgerVenteTotal() {
             error: function (data) {
                 console.log("Statistiques.js - getAllBurgers - error");
                 alert("Une erreur est survenue lors de la récupération des recettes.");
+            },
+        });
+    });
+
+    if (temporaryChart.specificite.archives != null) {
+        selectArchives.val(temporaryChart.specificite.archives);
+    } else {
+        selectArchives.val(0);
+    }
+    selectArchives.trigger('change');
+}
+
+/**
+ * Méthode permettant de gérer les spécificités du type de statistique BURGER_VENTE_TOTAL
+ */
+function setSpecificiteBurgerVenteTemps() {
+    // solution temporaire
+    if (temporaryChart.specificite == null) {
+        temporaryChart.specificite = {};
+    }
+
+    // INTERVALLE DE TEMPS (Select)
+    let divIntervalleTemps = $('<div>').addClass('wrapper axe_colonne main_axe_space_between');
+    let h3LabelIntervalleTemps = $('<h3>').text('Intervalle de temps');
+    let selectIntervalleTemps = $('<select>').attr('id', 'graphe_intervalle_temps');
+    let messageIntervalleTemps = $('<p>').attr('id', 'message_intervalle_temps');
+    messageIntervalleTemps.addClass('message');
+    selectIntervalleTemps.addClass('select');
+    selectIntervalleTemps.append($('<option>').attr('value', 0).text('Jour'));
+    selectIntervalleTemps.append($('<option>').attr('value', 1).text('Mois'));
+    selectIntervalleTemps.append($('<option>').attr('value', 2).text('Année'));
+    divIntervalleTemps.append(h3LabelIntervalleTemps);
+    divIntervalleTemps.append(selectIntervalleTemps);
+    divIntervalleTemps.append(messageIntervalleTemps);
+    selectIntervalleTemps.on('change', function () {
+        switch ($(this).val()) {
+            case '0':
+                messageIntervalleTemps.text('Maximum 12 jours. Si aucune date n\'est sélectionnée, les 12 derniers jours seront utilisés.');
+                temporaryChart.specificite.intervalleTemps = 0;
+                temporaryChart.specificite.minIntervalleTemps = 2;
+                temporaryChart.specificite.maxIntervalleTemps = 12;
+                break;
+            case '1':
+                messageIntervalleTemps.text('Maximum 12 mois. Si aucune date n\'est sélectionnée, les 12 derniers mois seront utilisés. Les mois sont pris en compte à partir du premier au dernier jour du mois.');
+                temporaryChart.specificite.intervalleTemps = 1;
+                temporaryChart.specificite.minIntervalleTemps = 2;
+                temporaryChart.specificite.maxIntervalleTemps = 12;
+                break;
+            case '2':
+                messageIntervalleTemps.text('Maximum 12 années. Si aucune date n\'est sélectionnée, les 12 dernières années seront utilisées. Les années sont prises en compte du premier au dernier jour.');
+                temporaryChart.specificite.intervalleTemps = 2;
+                temporaryChart.specificite.minIntervalleTemps = 2;
+                temporaryChart.specificite.maxIntervalleTemps = 12;
+                break;
+        }
+        updateTemporaryChart();
+    });
+    if (temporaryChart.specificite.intervalleTemps != null) {
+        selectIntervalleTemps.val(temporaryChart.specificite.intervalleTemps);
+    } else {
+        selectIntervalleTemps.val(1);
+    }
+    selectIntervalleTemps.trigger('change');
+
+    // ARCHIVES (Select)
+    let divArchives = $('<div>').addClass('wrapper axe_colonne main_axe_space_between');
+    let h3LabelArchives = $('<h3>').text('Archives');
+    let selectArchives = $('<select>').attr('id', 'graphe_archives');
+    selectArchives.addClass('select');
+    selectArchives.append($('<option>').attr('value', -1).text('Sans les archives'));
+    selectArchives.append($('<option>').attr('value', 0).text('Tous'));
+    selectArchives.append($('<option>').attr('value', 1).text('Uniquement les archives'));
+    divArchives.append(h3LabelArchives);
+    divArchives.append(selectArchives);
+
+    // CHOIX BURGER (Checkbox)
+    let divChoixBurger = $('<div>').addClass('wrapper axe_colonne main_axe_space_between');
+    let h3Label = $('<h3>').text('Choix des burger');
+
+    // on construit le select 
+    let select = $('<select>');
+    select.attr('id', 'select_choix_recette');
+    select.attr('multiple', 'multiple');
+    // on ajoute le select dans la div puis on l'initialise avec select2
+    divChoixBurger.append(h3Label);
+    divChoixBurger.append(select);
+    select.hide();
+
+    // on ajoute les div au DOM
+    let specificite = $('#specificite');
+    specificite.append(divIntervalleTemps);
+    specificite.append(divArchives);
+    specificite.append(divChoixBurger);
+    $('#select_choix_recette').select2();
+
+    // on ajoute un écouteur d'évènement sur le select
+    $('#select_choix_recette').prop('disabled', false);
+    $('#select_choix_recette').select2({
+        width: '100%',
+        placeholder: 'Sélectionnez une recette',
+        maximumSelectionLength: 3
+    }).on('select2:select select2:unselect', function (e) {
+        updateTemporaryChart();
+    });
+
+    // on ajoute un écouteur d'évènement sur le select
+    selectArchives.on('change', function () {
+        // on récupère la valeur
+        let value = $(this).val();
+        // on transforme pour l'envoie en ajax
+        let dataToSend = {
+            'archives': value
+        };
+        dataToSend = JSON.stringify(dataToSend);
+        $.ajax({
+            url: "statistiques/getAllBurgers",
+            method: "POST",
+            dataType: "json",
+            data: {
+                dataReceived: dataToSend
+            },
+            success: function (data) {
+                console.log("Statistiques.js - getAllBurgers - success");
+                // SELECT2
+                // on ajoute comme attr id et multiple
+                let select = $('#select_choix_recette');
+                select.empty();
+                data.forEach(element => {
+                    select.append('<option value="' + element.id + '">' + element.nom + '</option>');
+                });
+                // On re selectionne dans le choix multiples les recettes sélectionnées dans temporaryChart.specificite.recettes
+                if (temporaryChart.specificite.recettes != null) {
+                    console.log(temporaryChart.specificite.recettes);
+                    $('#select_choix_recette').val(temporaryChart.specificite.recettes);
+                    $('#select_choix_recette').trigger('change');
+                }
+                updateTemporaryChart();
+            },
+            error: function (data) {
+                console.log("Statistiques.js - getAllBurgers - error");
+                alert("Une erreur est survenue lors de la récupération des recettes.");
+            },
+        });
+    });
+
+    if (temporaryChart.specificite.archives != null) {
+        selectArchives.val(temporaryChart.specificite.archives);
+    } else {
+        selectArchives.val(0);
+    }
+    selectArchives.trigger('change');
+}
+
+/**
+ * Méthode permettant de gérer les spécificités du type de statistique BURGER_VENTE_TOTAL
+ */
+function setSpecificiteFournisseurAchatTotal() {
+    if (temporaryChart.specificite == null) {
+        temporaryChart.specificite = {};
+    }
+
+    // ARCHIVES Fournisseur (Select)
+    let divArchives = $('<div>').addClass('wrapper axe_colonne main_axe_space_between');
+    let h3LabelArchives = $('<h3>').text('Archives Fournisseur');
+    let selectArchives = $('<select>').attr('id', 'graphe_archives');
+    selectArchives.addClass('select');
+    selectArchives.append($('<option>').attr('value', -1).text('Fournisseurs non archivés'));
+    selectArchives.append($('<option>').attr('value', 0).text('Tous'));
+    selectArchives.append($('<option>').attr('value', 1).text('Fournisseurs archivés'));
+    divArchives.append(h3LabelArchives);
+    divArchives.append(selectArchives);
+
+    // ARCHIVES Commande (Select)
+    let divArchivesCommande = $('<div>').addClass('wrapper axe_colonne main_axe_space_between');
+    let h3LabelArchivesCommande = $('<h3>').text('Archives Commande');
+    let selectArchivesCommande = $('<select>').attr('id', 'graphe_archives_commande');
+    selectArchivesCommande.addClass('select');
+    selectArchivesCommande.append($('<option>').attr('value', -1).text('Commandes non réceptionnées'));
+    selectArchivesCommande.append($('<option>').attr('value', 0).text('Tous'));
+    selectArchivesCommande.append($('<option>').attr('value', 1).text('Commandes réceptionnées'));
+    divArchivesCommande.append(h3LabelArchivesCommande);
+    divArchivesCommande.append(selectArchivesCommande);
+    selectArchivesCommande.on('change', function () {
+        temporaryChart.specificite.archivesCommande = $(this).val();
+        updateTemporaryChart();
+    });
+    if (temporaryChart.specificite.archivesCommande != null) {
+        selectArchivesCommande.val(temporaryChart.specificite.archivesCommande);
+    } else {
+        selectArchivesCommande.val(0);
+    }
+
+    // CHOIX Fournisseur (Checkbox)
+    let divChoixFournisseur = $('<div>').addClass('wrapper axe_colonne main_axe_space_between');
+    let span = $('<span>').addClass('wrapper axe_ligne main_axe_space_between second_axe_center grow');
+    let h3Label = $('<h3>').attr('for', 'choix_fournisseur_checkbox').text('Tous les fournisseurs');
+    let input = $('<input>').addClass('input').attr({
+        'id': 'choix_fournisseur_checkbox',
+        'name': 'choix_fournisseur_checkbox',
+        'type': 'checkbox',
+    });
+    span.append(h3Label);
+    span.append(input);
+    divChoixFournisseur.append(span);
+
+    if (temporaryChart.specificite.choixFournisseur != null) {
+        input.prop('checked', temporaryChart.specificite.choixFournisseur);
+    } else {
+        input.prop('checked', true);
+    }
+
+    // on construit le select 
+    let select = $('<select>');
+    select.attr('id', 'select_choix_fournisseur');
+    select.attr('multiple', 'multiple');
+    // on ajoute le select dans la div puis on l'initialise avec select2
+    divChoixFournisseur.append(select);
+    select.hide();
+
+    // on ajoute les div au DOM
+    let specificite = $('#specificite');
+    specificite.append(divArchives);
+    specificite.append(divArchivesCommande);
+    specificite.append(divChoixFournisseur);
+    $('#select_choix_fournisseur').select2();
+
+    // on ajoute un écouteur d'évènement sur le checkbox
+    input.on('change', function () {
+        if ($(this).is(':checked')) {
+            $('#select_choix_fournisseur').prop('disabled', true);
+            $('#select_choix_fournisseur').select2('destroy');
+            $('#select_choix_fournisseur').hide();
+        } else {
+            $('#select_choix_fournisseur').prop('disabled', false);
+            $('#select_choix_fournisseur').select2({
+                width: '100%',
+                placeholder: 'Sélectionnez un fournisseur',
+                maximumSelectionLength: 5
+            }).on('select2:select select2:unselect', function (e) {
+                updateTemporaryChart();
+            });
+        }
+        updateTemporaryChart();
+    });
+    // initialisation
+    if (input.is(':checked')) {
+        $('#select_choix_fournisseur').prop('disabled', true);
+        $('#select_choix_fournisseur').select2('destroy');
+        $('#select_choix_fournisseur').hide();
+    } else {
+        $('#select_choix_fournisseur').prop('disabled', false);
+        $('#select_choix_fournisseur').select2({
+            width: '100%',
+            placeholder: 'Sélectionnez un fournisseur',
+            maximumSelectionLength: 5
+        }).on('select2:select select2:unselect', function (e) {
+            updateTemporaryChart();
+        });
+    }
+
+    // on ajoute un écouteur d'évènement sur le select
+    selectArchives.on('change', function () {
+        // on récupère la valeur
+        let value = $(this).val();
+        // on transforme pour l'envoie en ajax
+        let dataToSend = {
+            'archives': value
+        };
+        dataToSend = JSON.stringify(dataToSend);
+        $.ajax({
+            url: "statistiques/getAllFournisseurs",
+            method: "POST",
+            dataType: "json",
+            data: {
+                dataReceived: dataToSend
+            },
+            success: function (data) {
+                console.log("Statistiques.js - getAllFournisseurs - success");
+                // SELECT2
+                // on ajoute comme attr id et multiple
+                let select = $('#select_choix_fournisseur');
+                select.empty();
+                data.forEach(element => {
+                    select.append('<option value="' + element.id + '">' + element.nom + '</option>');
+                });
+                // On re selectionne dans le choix multiples les recettes sélectionnées dans temporaryChart.specificite.recettes
+                if (temporaryChart.specificite.fournisseurs != null) {
+                    console.log(temporaryChart.specificite.fournisseurs);
+                    $('#select_choix_fournisseur').val(temporaryChart.specificite.fournisseurs);
+                    $('#select_choix_fournisseur').trigger('change');
+                }
+                updateTemporaryChart();
+            },
+            error: function (data) {
+                console.log("Statistiques.js - getAllFournisseurs - error");
+                alert("Une erreur est survenue lors de la récupération des fournisseurs.");
             },
         });
     });
@@ -1056,6 +1540,185 @@ function getDataBurgerVenteTotal() {
         error: function (data) {
             console.log("Statistiques.js - getDataBurgerVenteTotal - error");
             alert("Une erreur est survenue lors de la récupération des recettes.");
+        },
+    });
+    return dataResult;
+}
+
+/**
+ * Méthode permettant de récupérer les données du graphe de type BURGER_VENTE_TOTAL
+ * @returns {}
+ */
+function getDataBurgerVenteTemps() {
+    console.log("Statistiques.js - getDataBurgerVenteTemps");
+    let dataResult = null;
+    let dataToSend = {};
+
+    // dates
+    if ($('#graphe_date_personnalise').is(':checked')) {
+        dataToSend.date_all = false;
+        dataToSend.date_debut = $('#graphe_date_debut').val();
+        dataToSend.date_fin = $('#graphe_date_fin').val();
+    } else {
+        dataToSend.date_all = true;
+    }
+    // listes des burgers
+    dataToSend.recettes = $('#select_choix_recette').val();
+    // on récupère la valeur d'archives
+    dataToSend.archives = $('#graphe_archives').val();
+
+    // intervalle de temps
+    dataToSend.intervalle = $('#graphe_intervalle_temps').val();
+
+    dataToSend = JSON.stringify(dataToSend);
+
+    // remplir specifite temporaryChart
+    temporaryChart.specificite.recettes = $('#select_choix_recette').val();
+    temporaryChart.specificite.archives = $('#graphe_archives').val();
+
+    $.ajax({
+        url: "statistiques/getDataBurgerVenteTemps",
+        method: "POST",
+        dataType: "json",
+        data: {
+            dataReceived: dataToSend
+        },
+        success: function (data) {
+            console.log("Statistiques.js - getDataBurgerVenteTemps - success");
+
+            // on récupère les données
+            console.log(data);
+
+            // on boucle sur data avec un foreach
+            if (data.length == 0) {
+                $('#graphesTemp').empty().html('<h3 class="text-center">Aucune donnée à afficher</h3>');
+                temporaryChart.error = true;
+                return;
+            }
+            // On récupère les labels (représentant les dates contenus dans les clé)
+            let labels = [];
+            for (dateKey in data.data) {
+                labels.push(dateKey);
+            }
+            console.log(labels);
+            let datasets = [];
+            let lePlusGrand = 0;
+            // On récupère les quantités (représentant les quantités de burgers vendus par id)
+            for (key in data.info) {
+                let dataset = {};
+                dataset.label = data.info[key].nom;
+                let temp = [];
+                for (dateKey in data.data) {
+                    if (data.data[dateKey] == undefined || data.data[dateKey] == null || data.data[dateKey][key] == undefined || data.data[dateKey][key] == null) {
+                        temp.push(0);
+                    } else {
+                        temp.push(parseInt(data.data[dateKey][key]));
+                        if (parseInt(data.data[dateKey][key]) > lePlusGrand) {
+                            lePlusGrand = parseInt(data.data[dateKey][key]);
+                        }
+                    }
+                }
+                dataset.data = temp;
+                datasets.push(dataset);
+            }
+            console.log(datasets);
+            dataResult = {}
+            dataResult.labels = labels;
+            dataResult.datasets = datasets;
+            dataResult.lePlusGrand = lePlusGrand;
+            temporaryChart.data = dataResult;
+            temporaryChart.error = false;
+            // solution provisoire
+            $('#graphesTemp').empty();
+            createChart(temporaryChart);
+        },
+        error: function (data) {
+            console.log("Statistiques.js - getDataBurgerVenteTemps - error");
+            alert("Une erreur est survenue lors de la récupération des recettes.");
+        },
+    });
+    return dataResult;
+}
+
+/**
+ * Méthode permettant de récupérer les données du graphe de type FOURNISSEUR_ACHAT_TOTAL
+ * @returns {}
+ */
+function getDataFournisseurAchatTotal() {
+    console.log("Statistiques.js - getDataFournisseurAchatTotal");
+    let dataResult = null;
+    let dataToSend = {};
+
+    // dates
+    if ($('#graphe_date_personnalise').is(':checked')) {
+        dataToSend.date_all = false;
+        dataToSend.date_debut = $('#graphe_date_debut').val();
+        dataToSend.date_fin = $('#graphe_date_fin').val();
+    } else {
+        dataToSend.date_all = true;
+    }
+    // listes des burgers
+    if ($('#choix_fournisseur_checkbox').is(':checked')) {
+        dataToSend.fournisseur_all = true;
+    } else {
+        dataToSend.fournisseur_all = false;
+        dataToSend.fournisseurs = $('#select_choix_fournisseur').val();
+    }
+    // on récupère la valeur d'archives
+    dataToSend.archives = $('#graphe_archives').val();
+    dataToSend.archivesCommande = $('#graphe_archives_commande').val();
+    dataToSend = JSON.stringify(dataToSend);
+
+    // remplir specifite temporaryChart
+    temporaryChart.specificite.choixFournisseur = $('#choix_fournisseur_checkbox').is(':checked');
+    temporaryChart.specificite.fournisseurs = $('#select_choix_fournisseur').val();
+    temporaryChart.specificite.archives = $('#graphe_archives').val();
+    temporaryChart.specificite.archivesCommande = $('#graphe_archives_commande').val();
+
+    $.ajax({
+        url: "statistiques/getDataFournisseurAchatTotal",
+        method: "POST",
+        dataType: "json",
+        data: {
+            dataReceived: dataToSend
+        },
+        success: function (data) {
+            console.log("Statistiques.js - getDataFournisseurAchatTotal - success");
+
+            // on récupère les données
+            console.log(data);
+
+            // on boucle sur data avec un foreach
+            if (data.length == 0) {
+                $('#graphesTemp').empty().html('<h3 class="text-center">Aucune donnée à afficher</h3>');
+                temporaryChart.error = true;
+                return;
+            }
+            let labels = [];
+            let quantities = [];
+            let lePlusGrand = 0;
+            data.forEach(element => {
+                labels.push(element.nom);
+                // on convertit en nombre element.quantite
+                element.quantite = parseInt(element.quantite);
+                quantities.push(element.quantite);
+                if (element.quantite > lePlusGrand) {
+                    lePlusGrand = element.quantite;
+                }
+            });
+            dataResult = {}
+            dataResult.labels = labels;
+            dataResult.quantities = quantities;
+            dataResult.lePlusGrand = lePlusGrand;
+            temporaryChart.data = dataResult;
+            temporaryChart.error = false;
+            // solution provisoire
+            $('#graphesTemp').empty();
+            createChart(temporaryChart);
+        },
+        error: function (data) {
+            console.log("Statistiques.js - getDataFournisseurAchatTotal - error");
+            alert("Une erreur est survenue lors de la récupération des fournisseurs.");
         },
     });
     return dataResult;

@@ -3,15 +3,16 @@
 
 
 <div class="wrapper axe_colonne ">
-    <div id="choice">
-        <input type="checkbox" name="click_collect" id="bclick_collect" checked>
-        <label for="click_collect">Click & Collect</label>
+    <div id="choice" class="width_90 margin_auto">
+        <input type="button" name="click_collect" id="bclick_collect" value="Click & Collect">
 
-        <input type="checkbox" name="delivery" id="bdelivery">
-        <label for="delivery">Delivery</label>
+
+        <input type="button" name="delivery" id="bdelivery" value="Delivery">
+
     </div>
 
 
+    <div id="custom-cursor"></div>
 
 
     <div class="wrapper axe_ligne width_90 margin_auto " id="boxs">

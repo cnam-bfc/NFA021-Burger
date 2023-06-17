@@ -85,7 +85,7 @@ class ModifsBurgersController extends Controller
                 $aChoisir = $r->getQuantite();
 
 
-                $tabResult[] = array('nom' => $nom, "quantite" => $quantite, "unite" =>  $unite, "imgEclatee" => $imgEclatee, 'ordre' => $ordreIngredient, 'nom Recette' => $nomRecette, 'flecheDroite' => $flecheD, 'flecheGauche' => $flecheG, 'aChoisir' => $aChoisir, 'selectMultiple' => true);
+                $tabResult[] = array('nom' => $nom, "quantite" => $quantite, "unite" =>  $unite, "imgEclatee" => $imgEclatee, 'ordre' => $ordreIngredient, 'nom Recette' => $nomRecette, 'flecheDroite' => $flecheD, 'flecheGauche' => $flecheG, 'aChoisir' => $aChoisir, 'selectMultiple' => true, 'IdIngredient' => $idIngredient);
             }
 
             //dans foreach verifier l'ingrédient avec id ingredient_fk
@@ -107,7 +107,7 @@ class ModifsBurgersController extends Controller
             $unite = $uniteSelect->getDiminutif();
             $imgEclatee = IMG . 'ingredients/' . $idIngredient . '/eclate.img';
 
-            $tabResult[] = array('nom' => $nom, "quantite" => $quantite, "unite" =>  $unite, "imgEclatee" => $imgEclatee, 'ordre' => $ordreIngredient, 'nom Recette' => $nomRecette, 'flecheDroite' => $flecheD, 'flecheGauche' => $flecheG, 'selectMultiple' => false);
+            $tabResult[] = array('nom' => $nom, "quantite" => $quantite, "unite" =>  $unite, "imgEclatee" => $imgEclatee, 'ordre' => $ordreIngredient, 'nom Recette' => $nomRecette, 'flecheDroite' => $flecheD, 'flecheGauche' => $flecheG, 'selectMultiple' => false, 'IdIngredient' => $idIngredient);
         }
 
 
@@ -118,8 +118,48 @@ class ModifsBurgersController extends Controller
             }
             return ($a['ordre'] < $b['ordre']) ? -1 : 1;
         });
+        ////////////////////POUR LES SUPPLEMENTS//////////////////////////////
+        $SupplementsTab = array();
+        $supplementsDAO = new RecetteIngredientOptionnelDAO();
+        $supplements = $supplementsDAO->selectAllByIdRecette($idRecette);
+        $ingredientDAO = new IngredientDAO();
+        $uniteDao = new UniteDAO();
 
-        $tabRecette = array($tabResult, $prix, $nomRecette);
+
+        foreach ($supplements as $supplement) {
+            $ordre = $supplement->getOrdre();
+            $id = $supplement->getId();
+
+            $idI = $supplement->getIdIngredient();
+            $quantite = $supplement->getQuantite();
+
+            $Ingredient = $ingredientDAO->selectById($idI);
+
+            $nom = $Ingredient->getNom();
+
+
+            $idUnite = $Ingredient->getIdUnite();
+            $uniteSelect = $uniteDao->selectById($idUnite);
+            $unite = $uniteSelect->getDiminutif();
+
+            $imgEclatee = IMG . 'ingredients/' . $idI . '/eclate.img';
+
+            // $ingredient = $ingredientDAO->selectById($idI);
+            // $imgE=$ingredient->
+
+            $SupplementsTab[] = array('id' => $id, 'nom' => $nom, "quantite" => $quantite, "unite" =>  $unite, "imgEclatee" => $imgEclatee, 'ordre' => $ordre, 'IdIngredient' => $idI);
+        }
+
+         // Fonction de comparaison personnalisée
+         usort($SupplementsTab, function ($a, $b) {
+            if ($a['ordre'] == $b['ordre']) {
+                return 0;
+            }
+            return ($a['ordre'] < $b['ordre']) ? -1 : 1;
+        });
+        /////////////////////FIN POUR LES SUPPLEMENTS////////////////////////////////////////////
+
+        $tabRecette = array($tabResult, $prix, $nomRecette,$SupplementsTab);
         // echo ("resultat");
         // var_dump($tabRecette);
 
@@ -185,16 +225,19 @@ class ModifsBurgersController extends Controller
 
             $nom = $Ingredient->getNom();
 
+
             $idUnite = $Ingredient->getIdUnite();
             $uniteSelect = $uniteDao->selectById($idUnite);
             $unite = $uniteSelect->getDiminutif();
 
             $imgEclatee = IMG . 'ingredients/' . $idI . '/eclate.img';
 
+            $prix = $supplement->getPrix(); 
+
             // $ingredient = $ingredientDAO->selectById($idI);
             // $imgE=$ingredient->
 
-            $tabResult[] = array('id' => $id, 'nom' => $nom, "quantite" => $quantite, "unite" =>  $unite, "imgEclatee" => $imgEclatee, 'ordre' => $ordre);
+            $tabResult[] = array('id' => $id, 'nom' => $nom, "quantite" => $quantite, "unite" =>  $unite, "imgEclatee" => $imgEclatee, 'ordre' => $ordre, 'IdIngredient' => $idI, "prix" => $prix);
         }
 
 
