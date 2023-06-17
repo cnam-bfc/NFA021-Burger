@@ -453,6 +453,29 @@ function initButtonsSelectionGraphe() {
     });
 
     $('#fournisseur_achat_total').click(function () {
+        console.log('fournisseur_achat_total clicked');
+        // On initialise le graphe avec les données de base
+        $('#graphesTemp').empty();
+        $('.graphe_choix').removeClass('selected');
+        $('#fournisseur_achat_total').addClass('selected');
+        temporaryChart.nom = 'Fournisseur achat total';
+        temporaryChart.description = 'Statistiques représentant le nombre de commande passées par fournisseur';
+        temporaryChart.type = chartType.BAR;
+        temporaryChart.typePossible = [chartType.BAR, chartType.DOUGHNUT, chartType.PIE];
+        temporaryChart.typeStatistique = typeStatistique.FOURNISSEUR_ACHAT_TOTAL;
+
+        // On réactive les boutons de personnalisation et paramétrage des graphes
+        button.PERSONNALISATION_GRAPHE.prop('disabled', false);
+        button.CONFIGURATION_GRAPHE.prop('disabled', false);
+        button.SAVE_GRAPHE.prop('disabled', false);
+
+        // On remplie le menu et on met sur l'onglet de personnalisation
+        resetMenuGraphes();
+        remplirMenuPersonnalisation();
+        remplirDates();
+        afficherDate();
+        setSpecificiteFournisseurAchatTotal();
+        button.PERSONNALISATION_GRAPHE.click();
     });
 
     $('#benefice_temps').click(function () {
@@ -1255,6 +1278,161 @@ function setSpecificiteBurgerVenteTemps() {
             error: function (data) {
                 console.log("Statistiques.js - getAllBurgers - error");
                 alert("Une erreur est survenue lors de la récupération des recettes.");
+            },
+        });
+    });
+
+    if (temporaryChart.specificite.archives != null) {
+        selectArchives.val(temporaryChart.specificite.archives);
+    } else {
+        selectArchives.val(0);
+    }
+    selectArchives.trigger('change');
+}
+
+/**
+ * Méthode permettant de gérer les spécificités du type de statistique BURGER_VENTE_TOTAL
+ */
+function setSpecificiteFournisseurAchatTotal() {
+    if (temporaryChart.specificite == null) {
+        temporaryChart.specificite = {};
+    }
+
+    // ARCHIVES Fournisseur (Select)
+    let divArchives = $('<div>').addClass('wrapper axe_colonne main_axe_space_between');
+    let h3LabelArchives = $('<h3>').text('Archives Fournisseur');
+    let selectArchives = $('<select>').attr('id', 'graphe_archives');
+    selectArchives.addClass('select');
+    selectArchives.append($('<option>').attr('value', -1).text('Fournisseurs non archivés'));
+    selectArchives.append($('<option>').attr('value', 0).text('Tous'));
+    selectArchives.append($('<option>').attr('value', 1).text('Fournisseurs archivés'));
+    divArchives.append(h3LabelArchives);
+    divArchives.append(selectArchives);
+
+    // ARCHIVES Commande (Select)
+    let divArchivesCommande = $('<div>').addClass('wrapper axe_colonne main_axe_space_between');
+    let h3LabelArchivesCommande = $('<h3>').text('Archives Commande');
+    let selectArchivesCommande = $('<select>').attr('id', 'graphe_archives_commande');
+    selectArchivesCommande.addClass('select');
+    selectArchivesCommande.append($('<option>').attr('value', -1).text('Commandes non réceptionnées'));
+    selectArchivesCommande.append($('<option>').attr('value', 0).text('Tous'));
+    selectArchivesCommande.append($('<option>').attr('value', 1).text('Commandes réceptionnées'));
+    divArchivesCommande.append(h3LabelArchivesCommande);
+    divArchivesCommande.append(selectArchivesCommande);
+    selectArchivesCommande.on('change', function () {
+        temporaryChart.specificite.archivesCommande = $(this).val();
+        updateTemporaryChart();
+    });
+    if (temporaryChart.specificite.archivesCommande != null) {
+        selectArchivesCommande.val(temporaryChart.specificite.archivesCommande);
+    } else {
+        selectArchivesCommande.val(0);
+    }
+
+    // CHOIX Fournisseur (Checkbox)
+    let divChoixFournisseur = $('<div>').addClass('wrapper axe_colonne main_axe_space_between');
+    let span = $('<span>').addClass('wrapper axe_ligne main_axe_space_between second_axe_center grow');
+    let h3Label = $('<h3>').attr('for', 'choix_fournisseur_checkbox').text('Tous les fournisseurs');
+    let input = $('<input>').addClass('input').attr({
+        'id': 'choix_fournisseur_checkbox',
+        'name': 'choix_fournisseur_checkbox',
+        'type': 'checkbox',
+    });
+    span.append(h3Label);
+    span.append(input);
+    divChoixFournisseur.append(span);
+
+    if (temporaryChart.specificite.choixFournisseur != null) {
+        input.prop('checked', temporaryChart.specificite.choixFournisseur);
+    } else {
+        input.prop('checked', true);
+    }
+
+    // on construit le select 
+    let select = $('<select>');
+    select.attr('id', 'select_choix_fournisseur');
+    select.attr('multiple', 'multiple');
+    // on ajoute le select dans la div puis on l'initialise avec select2
+    divChoixFournisseur.append(select);
+    select.hide();
+
+    // on ajoute les div au DOM
+    let specificite = $('#specificite');
+    specificite.append(divArchives);
+    specificite.append(divArchivesCommande);
+    specificite.append(divChoixFournisseur);
+    $('#select_choix_fournisseur').select2();
+
+    // on ajoute un écouteur d'évènement sur le checkbox
+    input.on('change', function () {
+        if ($(this).is(':checked')) {
+            $('#select_choix_fournisseur').prop('disabled', true);
+            $('#select_choix_fournisseur').select2('destroy');
+            $('#select_choix_fournisseur').hide();
+        } else {
+            $('#select_choix_fournisseur').prop('disabled', false);
+            $('#select_choix_fournisseur').select2({
+                width: '100%',
+                placeholder: 'Sélectionnez un fournisseur',
+                maximumSelectionLength: 5
+            }).on('select2:select', function (e) {
+                updateTemporaryChart();
+            });
+        }
+        updateTemporaryChart();
+    });
+    // initialisation
+    if (input.is(':checked')) {
+        $('#select_choix_fournisseur').prop('disabled', true);
+        $('#select_choix_fournisseur').select2('destroy');
+        $('#select_choix_fournisseur').hide();
+    } else {
+        $('#select_choix_fournisseur').prop('disabled', false);
+        $('#select_choix_fournisseur').select2({
+            width: '100%',
+            placeholder: 'Sélectionnez un fournisseur',
+            maximumSelectionLength: 5
+        }).on('select2:select', function (e) {
+            updateTemporaryChart();
+        });
+    }
+
+    // on ajoute un écouteur d'évènement sur le select
+    selectArchives.on('change', function () {
+        // on récupère la valeur
+        let value = $(this).val();
+        // on transforme pour l'envoie en ajax
+        let dataToSend = {
+            'archives': value
+        };
+        dataToSend = JSON.stringify(dataToSend);
+        $.ajax({
+            url: "statistiques/getAllFournisseurs",
+            method: "POST",
+            dataType: "json",
+            data: {
+                dataReceived: dataToSend
+            },
+            success: function (data) {
+                console.log("Statistiques.js - getAllFournisseurs - success");
+                // SELECT2
+                // on ajoute comme attr id et multiple
+                let select = $('#select_choix_fournisseur');
+                select.empty();
+                data.forEach(element => {
+                    select.append('<option value="' + element.id + '">' + element.nom + '</option>');
+                });
+                // On re selectionne dans le choix multiples les recettes sélectionnées dans temporaryChart.specificite.recettes
+                if (temporaryChart.specificite.fournisseurs != null) {
+                    console.log(temporaryChart.specificite.fournisseurs);
+                    $('#select_choix_fournisseur').val(temporaryChart.specificite.fournisseurs);
+                    $('#select_choix_fournisseur').trigger('change');
+                }
+                updateTemporaryChart();
+            },
+            error: function (data) {
+                console.log("Statistiques.js - getAllFournisseurs - error");
+                alert("Une erreur est survenue lors de la récupération des fournisseurs.");
             },
         });
     });

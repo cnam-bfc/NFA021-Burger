@@ -45,6 +45,38 @@ class StatistiquesController extends Controller
         $view->renderView();
     }
 
+    public function getAllFournisseurs()
+    {
+        // On récupère les informations des burgers
+        $rawData = Form::getParam('dataReceived', Form::METHOD_POST, Form::TYPE_MIXED);
+        $data = json_decode($rawData, true);
+        $archives = $data["archives"];
+
+        // On récupère toutes les recettes
+        $fournisseurDAO = new FournisseurDAO();
+        $fournisseurs = $fournisseurDAO->selectAllForSelectStats($archives, 1);
+
+        // on récupère les données pour la vue
+        $result = array();
+
+        // On vérifie qu'on a bien reçu les recettes
+        if (!empty($fournisseurs)) {
+            foreach ($fournisseurs as $fournisseur) {
+                $result[] = array(
+                    "id" => $fournisseur->getId(),
+                    "nom" => $fournisseur->getNom()
+                );
+            }
+        }
+
+        // envoi des données à la vue
+        $view = new View(BaseTemplate::JSON);
+
+        $view->json = $result;
+
+        $view->renderView();
+    }
+
     public function getDataBurgerVenteTotal()
     {
         $rawData = Form::getParam('dataReceived', Form::METHOD_POST, Form::TYPE_MIXED);
