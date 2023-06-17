@@ -40,9 +40,9 @@ class Router
         'accueil/refreshTextAccueil' => ["controller" => "AccueilController", "method" => "refreshTextAccueil"],
 
         // Carte des recettes
-        'carte' => ["controller" => "CarteMenuController", "method" => "renderView"],
-        'carte/listeBurgers' => ["controller" => "CarteMenuController", "method" => "listeBurgers"],
-        'carte/ajoutPanier' => ["controller" => "CarteMenuController", "method" => "ajoutPanier"],
+        'carte' => ["controller" => "CarteBurgerController", "method" => "renderView"],
+        'carte/listeBurgers' => ["controller" => "CarteBurgerController", "method" => "listeBurgers"],
+        'carte/ajoutPanier' => ["controller" => "CarteBurgerController", "method" => "ajoutPanier"],
 
 
         // PARTIE EMPLOYÉ

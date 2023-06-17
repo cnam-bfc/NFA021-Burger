@@ -1,10 +1,10 @@
 <?php
 
-class CarteMenuController extends Controller
+class CarteBurgerController extends Controller
 {
     public function renderView()
     {
-        $view = new View(BaseTemplate::CLIENT, 'CarteMenuView');
+        $view = new View(BaseTemplate::CLIENT, 'CarteBurgerView');
 
         $view->renderView();
     }
@@ -68,11 +68,13 @@ class CarteMenuController extends Controller
         $unites = $uniteDAO->selectAll();
         $ingredients = $ingredientDAO->selectAll();
 
+        $json = array();
         $json['data'] = array();
-        $jsonIngredients[] = array();
 
         foreach ($ingredientRecetteBasiques as $ingredientRecetteBasique) {
             /** @var Ingredient $ingredient */
+
+
             $ingredient = null;
             // Récupération de l'ingrédient
             foreach ($ingredients as $ingredientTmp) {
@@ -104,7 +106,6 @@ class CarteMenuController extends Controller
             $jsonIngredient = array(
                 'nom' => $ingredient->getNom(),
                 'quantite' =>  $ingredientRecetteBasique->getQuantite() . ' ' . $unite->getDiminutif(),
-
             );
 
             $jsonIngredients[] = $jsonIngredient;
