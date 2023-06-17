@@ -202,6 +202,9 @@ function globalStates(currentState) {
                 case typeStatistique.BURGER_VENTE_TEMPS:
                     setSpecificiteBurgerVenteTemps();
                     break;
+                case typeStatistique.FOURNISSEUR_ACHAT_TOTAL:
+                    setSpecificiteFournisseurAchatTotal();
+                    break;
             }
             if (modifyChartSelectedType == 'delete') {
                 button.DELETE_GRAPHE.click();
@@ -792,7 +795,7 @@ function updateTemporaryChart() {
             }
             getDataBurgerVenteTemps();
             break;
-            case typeStatistique.FOURNISSEUR_ACHAT_TOTAL:
+        case typeStatistique.FOURNISSEUR_ACHAT_TOTAL:
             getDataFournisseurAchatTotal();
             break;
     }
