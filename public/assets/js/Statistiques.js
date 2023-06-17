@@ -57,6 +57,7 @@ const chartType = {
 
 const charts = [];
 let temporaryChart = {};
+let temporaryOrginalChart = {};
 let modifyChartSelectedType = null;
 let modifyChartSelected = null;
 
@@ -124,6 +125,7 @@ function globalStates(currentState) {
     $('#graphesTemp').empty();
     $('#information').empty();
     temporaryChart = {};
+    temporaryOrginalChart = {};
 
     // On retire les classes actives des seleciton de graphe
     $('.graphe_choix').removeClass('selected');
@@ -191,7 +193,8 @@ function globalStates(currentState) {
 
             // On remplie le menu et on met sur l'onglet de personnalisation
             resetMenuGraphes();
-            temporaryChart = modifyChartSelected;
+            temporaryOrginalChart = modifyChartSelected;
+            temporaryChart = JSON.parse(JSON.stringify(modifyChartSelected));
             remplirMenuPersonnalisation();
             remplirDates();
             afficherDate();
@@ -265,9 +268,13 @@ function initButtons() {
             console.log('button_stat_save_graphe yes clicked');
 
             // on vérifie si le graphe existe déjà dans le tableau
-            if (!charts.includes(temporaryChart)) {
+            if (!charts.includes(temporaryOrginalChart)) {
                 // On sauvegarde le graphe
                 charts[charts.length] = temporaryChart;
+            } else {
+                // On remplace le graphe
+                charts[charts.indexOf(temporaryOrginalChart)] = temporaryChart;
+                temporaryOrginalChart= {};
             }
             // On ferme le menu gauche
             refreshMenuGauche(false);
