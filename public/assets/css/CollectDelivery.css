@@ -32,3 +32,104 @@ button {
 
 
 }
+
+#choice {
+    text-align: center;
+}
+
+/* #bclick_collect {
+    margin-top: 60px;
+    margin-bottom: 20px;
+    width: 170px;
+    height: 60px;
+    background-color: #f0f0f0;
+} */
+
+#bdelivery,
+#bclick_collect {
+  position: relative;
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #f0f0f0;
+  border: none;
+  overflow: hidden;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  transition: box-shadow 0.3s ease;
+  z-index: 1;
+  height: 90px;
+  margin-top: 40px;
+  margin-bottom: 10px;
+  width: 200px; /* Ajuster cette valeur en fonction de la largeur souhaitée */
+  margin-right: 10px; /* Ajuster cette valeur pour l'écart souhaité entre les boutons */
+  margin-left: 10px;
+}
+
+#bdelivery::before,
+#bclick_collect::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 70%);
+  transform: translate(-25%, -25%);
+  filter: blur(10px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+#bdelivery:hover,
+#bclick_collect:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+#bdelivery:hover::before,
+#bclick_collect:hover::before {
+  opacity: 1;
+}
+
+#bdelivery:focus,
+#bclick_collect:focus {
+  outline: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+#bdelivery:focus::before,
+#bclick_collect:focus::before {
+  opacity: 1;
+}
+
+#bdelivery:active,
+#bclick_collect:active {
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+#bdelivery:active::before,
+#bclick_collect:active::before {
+  opacity: 0;
+  transition: none;
+}
+
+#bclick_collect:active {
+  transform: scale(1.1);
+}
+
+#bdelivery:last-child:active {
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+}
+
+/*Custom Cursor*/
+#custom-cursor {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  border-radius: 50%;
+  z-index: 9999; /* Ajuster la valeur du z-index selon les besoins */
+  /* Autres styles de curseur personnalisé */
+}
+
