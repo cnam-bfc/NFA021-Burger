@@ -122,14 +122,5 @@ button {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
 }
 
-/*Custom Cursor*/
-#custom-cursor {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background-color: red;
-  border-radius: 50%;
-  z-index: 9999; /* Ajuster la valeur du z-index selon les besoins */
-  /* Autres styles de curseur personnalisé */
-}
+
 

@@ -19,56 +19,23 @@ $(document).ready(function () {
 
 
     // bclick_collect.trigger("click");
-    // console.log('a');
+    console.log('a');
     //////////////////////////////////////////////////////
     const element = document.getElementById("bclick_collect");
     const customCursor = document.getElementById("custom-cursor");
 
     //////1 CLICK
 
-    // // Création d'un nouvel événement de clic de souris
-    // const event = new MouseEvent("click", {
-    //     bubbles: true,
-    //     cancelable: true,
-    //     view: window
-    // });
+    // Création d'un nouvel événement de clic de souris
+    const event = new MouseEvent("click", {
+        bubbles: true,
+        cancelable: true,
+        view: window
+    });
 
-    // // Déclenchement de l'événement de clic de souris sur l'élément
-    // element.dispatchEvent(event);
+    // Déclenchement de l'événement de clic de souris sur l'élément
+    element.dispatchEvent(event);
 
-    // Simulation de clic
-    function simulateClick(event) {
-        // Obtenir les coordonnées du clic
-        const rect = element.getBoundingClientRect();
-        const x = rect.left + rect.width / 2;
-        const y = rect.top + rect.height / 2;
-
-        // Positionner l'élément du curseur personnalisé aux coordonnées du clic
-        customCursor.style.left = x + "px";
-        customCursor.style.top = y + "px";
-
-        // Afficher l'élément du curseur personnalisé
-        customCursor.style.display = "block";
-
-        // Obtenir l'élément situé aux coordonnées du clic
-        const targetElement = document.elementFromPoint(x, y);
-
-        // Vérifier si l'élément est valide et déclencher un événement de clic sur celui-ci
-        if (targetElement) {
-            targetElement.click();
-        }
-
-        // Effectuer d'autres actions liées au clic simulé
-        // ...
-    }
-
-
-    // Appel de la fonction simulateClick pour simuler le clic
-    console.log("avant carton");
-
-    /////////2CLICK
-    simulateClick();
-    /////////////
 
 });
 
