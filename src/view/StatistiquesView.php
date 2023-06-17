@@ -52,7 +52,7 @@
                         <p>Produits</p>
                     </button>
                     <button id="fournisseur_achat_total" class="graphe_choix" type_stat="fournisseurs">
-                        <p>Fournisseurs <span class="font_size_petit">(total)</span></p>
+                        <p>Fournisseurs <span class="font_size_petit">(nb commande)</span></p>
                     </button>
                 </div>
 

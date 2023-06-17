@@ -240,6 +240,57 @@ class StatistiquesController extends Controller
         $view->renderView();
     }
 
+    public function getDataFournisseurAchatTotal()
+    {
+        $rawData = Form::getParam('dataReceived', Form::METHOD_POST, Form::TYPE_MIXED);
+        $data = json_decode($rawData, true);
+        $dateDebut = null;
+        $dateFin = null;
+        $fournisseurs = null;
+        $archive = 0;
+        $archiveCommande = 0;
+
+        if ($data["fournisseur_all"] == false) {
+            $fournisseurs = $data["fournisseurs"];
+        }
+
+        if ($data["date_all"] == false) {
+            $dateDebut = $data["date_debut"];
+            $dateFin = $data["date_fin"];
+        }
+
+        if ($data['archives'] != null) {
+            $archive = $data["archives"];
+        }
+        
+        if ($data['archivesCommande'] != null) {
+            $archiveCommande = $data["archivesCommande"];
+        }
+
+        // On récupère toutes les recettes
+        $statsAchatFournisseurDAO = new StatsAchatFournisseurDAO();
+        $statsAchatFournisseurs = $statsAchatFournisseurDAO->selectForStatisticsTotal($fournisseurs, $dateDebut, $dateFin, $archive, $archiveCommande);
+
+        // on récupère les données pour la vue
+        $result = array();
+
+        // On vérifie qu'on a bien reçu les recettes
+        if (!empty($statsAchatFournisseurs)) {
+            foreach ($statsAchatFournisseurs as $statsAchatFournisseur) {
+                $result[] = array(
+                    "id" => $statsAchatFournisseur->getId(),
+                    "nom" => $statsAchatFournisseur->getNom(),
+                    "quantite" => $statsAchatFournisseur->getQuantite(),
+                );
+            }
+        }
+
+        // envoi des données à la vue
+        $view = new View(BaseTemplate::JSON);
+        $view->json = $result;
+        $view->renderView();
+    }
+
     /**
      * Méthode permettant de retournée une date dans le futur ou le passé en fonction des constantes de classe et l'intervalle choisi
      *

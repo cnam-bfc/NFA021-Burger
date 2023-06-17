@@ -116,7 +116,7 @@ class StatsVenteBurgerDAO extends DAO
      * Méthode permettant de récupérer un tableau d'objets en fonction de la date de début et de la date de fin (si elle est fournie)
      * 
      * EXEMPLE DE REQUEST Avec tous les paramètres :
-     * SELECT br.nom,  COUNT(brf.quantite) AS qteTotal
+     * SELECT br.nom,  SUM(brf.quantite) AS qteTotal
      * FROM burger_recette AS br, burger_recette_finale AS brf, burger_commande_client AS bcc
      * WHERE br.id_recette = brf.id_recette_fk
      * AND brf.id_commande_client_fk = bcc.id_commande_client

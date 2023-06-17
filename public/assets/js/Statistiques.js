@@ -792,6 +792,9 @@ function updateTemporaryChart() {
             }
             getDataBurgerVenteTemps();
             break;
+            case typeStatistique.FOURNISSEUR_ACHAT_TOTAL:
+            getDataFournisseurAchatTotal();
+            break;
     }
     button.SAVE_GRAPHE.prop('disabled', false);
 }
@@ -1622,6 +1625,90 @@ function getDataBurgerVenteTemps() {
         error: function (data) {
             console.log("Statistiques.js - getDataBurgerVenteTemps - error");
             alert("Une erreur est survenue lors de la récupération des recettes.");
+        },
+    });
+    return dataResult;
+}
+
+/**
+ * Méthode permettant de récupérer les données du graphe de type FOURNISSEUR_ACHAT_TOTAL
+ * @returns {}
+ */
+function getDataFournisseurAchatTotal() {
+    console.log("Statistiques.js - getDataFournisseurAchatTotal");
+    let dataResult = null;
+    let dataToSend = {};
+
+    // dates
+    if ($('#graphe_date_personnalise').is(':checked')) {
+        dataToSend.date_all = false;
+        dataToSend.date_debut = $('#graphe_date_debut').val();
+        dataToSend.date_fin = $('#graphe_date_fin').val();
+    } else {
+        dataToSend.date_all = true;
+    }
+    // listes des burgers
+    if ($('#choix_fournisseur_checkbox').is(':checked')) {
+        dataToSend.fournisseur_all = true;
+    } else {
+        dataToSend.fournisseur_all = false;
+        dataToSend.fournisseurs = $('#select_choix_fournisseur').val();
+    }
+    // on récupère la valeur d'archives
+    dataToSend.archives = $('#graphe_archives').val();
+    dataToSend.archivesCommande = $('#graphe_archives_commande').val();
+    dataToSend = JSON.stringify(dataToSend);
+
+    // remplir specifite temporaryChart
+    temporaryChart.specificite.choixFournisseur = $('#choix_fournisseur_checkbox').is(':checked');
+    temporaryChart.specificite.fournisseurs = $('#select_choix_fournisseur').val();
+    temporaryChart.specificite.archives = $('#graphe_archives').val();
+    temporaryChart.specificite.archivesCommande = $('#graphe_archives_commande').val();
+
+    $.ajax({
+        url: "statistiques/getDataFournisseurAchatTotal",
+        method: "POST",
+        dataType: "json",
+        data: {
+            dataReceived: dataToSend
+        },
+        success: function (data) {
+            console.log("Statistiques.js - getDataFournisseurAchatTotal - success");
+
+            // on récupère les données
+            console.log(data);
+
+            // on boucle sur data avec un foreach
+            if (data.length == 0) {
+                $('#graphesTemp').empty().html('<h3 class="text-center">Aucune donnée à afficher</h3>');
+                temporaryChart.error = true;
+                return;
+            }
+            let labels = [];
+            let quantities = [];
+            let lePlusGrand = 0;
+            data.forEach(element => {
+                labels.push(element.nom);
+                // on convertit en nombre element.quantite
+                element.quantite = parseInt(element.quantite);
+                quantities.push(element.quantite);
+                if (element.quantite > lePlusGrand) {
+                    lePlusGrand = element.quantite;
+                }
+            });
+            dataResult = {}
+            dataResult.labels = labels;
+            dataResult.quantities = quantities;
+            dataResult.lePlusGrand = lePlusGrand;
+            temporaryChart.data = dataResult;
+            temporaryChart.error = false;
+            // solution provisoire
+            $('#graphesTemp').empty();
+            createChart(temporaryChart);
+        },
+        error: function (data) {
+            console.log("Statistiques.js - getDataFournisseurAchatTotal - error");
+            alert("Une erreur est survenue lors de la récupération des fournisseurs.");
         },
     });
     return dataResult;

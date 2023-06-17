@@ -75,6 +75,7 @@ class Router
         'gerant/statistiques/getDataBurgerVenteTotal' => ["controller" => "StatistiquesController", "method" => "getDataBurgerVenteTotal"],
         'gerant/statistiques/getDataBurgerVenteTemps' => ["controller" => "StatistiquesController", "method" => "getDataBurgerVenteTemps"],
         'gerant/statistiques/getAllFournisseurs' => ["controller" => "StatistiquesController", "method" => "getAllFournisseurs"],
+        'gerant/statistiques/getDataFournisseurAchatTotal' => ["controller" => "StatistiquesController", "method" => "getDataFournisseurAchatTotal"],
 
         // Inventaire
         'gerant/inventaire' => ["controller" => "InventaireController", "method" => "renderViewInventaire"],
