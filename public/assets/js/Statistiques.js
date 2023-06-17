@@ -1085,7 +1085,7 @@ function setSpecificiteBurgerVenteTotal() {
                 width: '100%',
                 placeholder: 'Sélectionnez une recette',
                 maximumSelectionLength: 10
-            }).on('select2:select', function (e) {
+            }).on('select2:select select2:unselect', function (e) {
                 updateTemporaryChart();
             });
         }
@@ -1102,7 +1102,7 @@ function setSpecificiteBurgerVenteTotal() {
             width: '100%',
             placeholder: 'Sélectionnez une recette',
             maximumSelectionLength: 10
-        }).on('select2:select', function (e) {
+        }).on('select2:select select2:unselect', function (e) {
             updateTemporaryChart();
         });
     }
@@ -1244,7 +1244,7 @@ function setSpecificiteBurgerVenteTemps() {
         width: '100%',
         placeholder: 'Sélectionnez une recette',
         maximumSelectionLength: 3
-    }).on('select2:select', function (e) {
+    }).on('select2:select select2:unselect', function (e) {
         updateTemporaryChart();
     });
 
@@ -1381,7 +1381,7 @@ function setSpecificiteFournisseurAchatTotal() {
                 width: '100%',
                 placeholder: 'Sélectionnez un fournisseur',
                 maximumSelectionLength: 5
-            }).on('select2:select', function (e) {
+            }).on('select2:select select2:unselect', function (e) {
                 updateTemporaryChart();
             });
         }
@@ -1398,7 +1398,7 @@ function setSpecificiteFournisseurAchatTotal() {
             width: '100%',
             placeholder: 'Sélectionnez un fournisseur',
             maximumSelectionLength: 5
-        }).on('select2:select', function (e) {
+        }).on('select2:select select2:unselect', function (e) {
             updateTemporaryChart();
         });
     }
