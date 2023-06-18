@@ -6,6 +6,7 @@ const boutonValide = document.getElementById('boutonValide');
 const divCommande = document.querySelectorAll('.commande');
 const boutonRecette = document.getElementById('boutonRecette');
 
+
 /*boutonValide.addEventListener('click', function () {
     // Récupère la commande actuellement en focus
 
@@ -20,7 +21,7 @@ $(function () {
     const divPrincipale = $("div#wrapper_cuisine");
 
     const boutonValide = $("button#boutonValide");
-
+    let popup;
 
     // Fonction permettant d'ajouter une div contenant une commande dans le tableau des recettes
     function addCommande(data) {
@@ -64,7 +65,7 @@ $(function () {
                 const left = (width - w) / 2 / systemZoom + dualScreenLeft
                 const top = (height - h) / 2 / systemZoom + dualScreenTop
 
-                window.open(url, titre,
+                popup = window.open(url, titre,
                     `
                           scrollbars=yes,
                           width=${w / systemZoom}, 
@@ -73,6 +74,8 @@ $(function () {
                           left=${left}
                           `
                 );
+
+
 
             });
 
@@ -99,6 +102,18 @@ $(function () {
         divHeureCom.append(pHeureCom);
         divCommande.append(divHeureCom);
         divPrincipale.append(divCommande);
+
+        document.addEventListener('click', function(event) {
+            var targetElement = event.target; // Élément sur lequel vous avez cliqué
+
+            // Vérifiez si l'élément cliqué est à l'intérieur de la pop-up
+            var isClickInsidePopup = popup.contains(targetElement);
+
+            // Fermez la pop-up si l'élément cliqué est à l'extérieur de celle-ci
+            if (!isClickInsidePopup) {
+                popup.close();
+            }
+        });
     }
 
     function addBoutons() {
@@ -196,7 +211,7 @@ $(function () {
 
         let div = $("<div>").addClass("wrapper box_sans_bordure margin_large");
 
-        let h2 = $("<h2>").addClass("bold").html("<i class='fa-solid fa-spinner fa-spin'></i> Chargement des recettes...");
+        let h2 = $("<h2>").addClass("bold").html("<i class='fa-solid fa-spinner fa-spin'></i> Chargement des commandes...");
 
         div.append(h2);
         divPrincipale.append(div);
@@ -243,7 +258,7 @@ $(function () {
                 // Ajout ligne d'erreur
                 let div = $("<div>").addClass("wrapper box_sans_bordure margin_large");
                 let h2 = $("<h2>").addClass("bold");
-                h2.html("<br><i class='fa-solid fa-exclamation-triangle'></i> Erreur lors du chargement des recettes<br><br>");
+                h2.html("<br><i class='fa-solid fa-exclamation-triangle'></i> Erreur lors du chargement des commandes<br><br>");
                 div.append(h2);
                 divPrincipale.append(div);
             }
