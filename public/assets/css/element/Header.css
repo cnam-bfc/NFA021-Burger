@@ -72,7 +72,7 @@ header li a {
 }
 
 .header_icone {
-    color: black;
+    color: var(--tertiaire);
 }
 
 #header_logo {
