@@ -17,7 +17,7 @@ class AccueilController extends Controller
         $view = new View(BaseTemplate::CLIENT, 'AccueilClientView');
 
         // Définition des variables utilisées dans la vue
-        $view->backgroundImage = IMG . "accueil_background.webp";
+        $view->backgroundImage = IMG . "accueil_background.jpg";
 
         // image de l'emplacement du restaurant
         $view->carte = IMG . "carte_with_ping_name.png";
