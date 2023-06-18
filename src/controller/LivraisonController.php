@@ -61,24 +61,28 @@ class LivraisonController extends Controller
         // Formatage des commandes en json
         foreach ($commandes as $commande) {
             // Formatage de la commande en json
+            $adresseDepart = array(
+                'osm_type' => 'W',
+                'osm_id' => 219487836,
+                'numero' => 11,
+                'rue' => 'Rue Georges Maugey',
+                'ville' => 'Chalon-sur-Saône',
+                'code_postal' => '71100'
+            );
+            $adresseArrivee = array(
+                'osm_type' => $commande->getAdresseOsmType(),
+                'osm_id' => $commande->getAdresseOsmId(),
+                'rue' => $commande->getAdresseRue(),
+                'ville' => $commande->getAdresseVille(),
+                'code_postal' => $commande->getAdresseCodePostal()
+            );
+            if (!empty($commande->getAdresseNumero())) {
+                $adresseArrivee['numero'] = $commande->getAdresseNumero();
+            }
             $jsonCommande = array(
                 'id' => $commande->getId(),
-                'adresse_depart' => array(
-                    'osm_type' => 'W',
-                    'osm_id' => 219487836,
-                    'numero' => 11,
-                    'rue' => 'Rue Georges Maugey',
-                    'ville' => 'Chalon-sur-Saône',
-                    'code_postal' => '71100'
-                ),
-                'adresse_arrivee' => array(
-                    'osm_type' => $commande->getAdresseOsmType(),
-                    'osm_id' => $commande->getAdresseOsmId(),
-                    'numero' => $commande->getAdresseNumero(),
-                    'rue' => $commande->getAdresseRue(),
-                    'ville' => $commande->getAdresseVille(),
-                    'code_postal' => $commande->getAdresseCodePostal()
-                ),
+                'adresse_depart' => $adresseDepart,
+                'adresse_arrivee' => $adresseArrivee,
                 'heure_livraison' => $commande->getHeureLivraison()
             );
 
