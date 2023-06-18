@@ -329,6 +329,9 @@ $(function () {
                 },
                 error: function (xhr, status, error) {
                     console.log("Erreur lors de la récupération de l'itinéraire : " + error);
+
+                    // Enlever le bouton de rafraichissement
+                    refreshButton.remove();
                 }
             });
         }
