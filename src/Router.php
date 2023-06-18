@@ -151,11 +151,68 @@ class Router
      */
     public static function route($route)
     {
+        $userSession = UserSession::getUserSession();
+
+        // Gestion des droits d'accès
+        // Route commencant par "employe"
+        if (substr($route, 0, 7) == "employe") {
+            // Si l'utilisateur n'est pas connecté, on le redirige vers la page de connexion
+            if (!$userSession->isLogged()) {
+                Router::redirect('connexion');
+                return;
+            }
+            // Si l'utilisateur n'est pas un employé, on le redirige vers la page d'accueil
+            elseif (!$userSession->isEmploye()) {
+                Router::redirect('');
+                return;
+            }
+        }
+
+        // Route commencant par "gerant"
+        if (substr($route, 0, 6) == "gerant") {
+            // Si l'utilisateur n'est pas connecté, on le redirige vers la page de connexion
+            if (!$userSession->isLogged()) {
+                Router::redirect('connexion');
+                return;
+            }
+            // Si l'utilisateur n'est pas un gérant, on le redirige vers la page d'accueil
+            elseif (!$userSession->isGerant()) {
+                Router::redirect('');
+                return;
+            }
+        }
+
+        // Route commencant par "cuisinier"
+        if (substr($route, 0, 9) == "cuisinier") {
+            // Si l'utilisateur n'est pas connecté, on le redirige vers la page de connexion
+            if (!$userSession->isLogged()) {
+                Router::redirect('connexion');
+                return;
+            }
+            // Si l'utilisateur n'est pas un cuisinier ni un gérant, on le redirige vers la page d'accueil
+            elseif (!$userSession->isCuisinier() && !$userSession->isGerant()) {
+                Router::redirect('');
+                return;
+            }
+        }
+
+        // Route commencant par "livreur"
+        if (substr($route, 0, 7) == "livreur") {
+            // Si l'utilisateur n'est pas connecté, on le redirige vers la page de connexion
+            if (!$userSession->isLogged()) {
+                Router::redirect('connexion');
+                return;
+            }
+            // Si l'utilisateur n'est pas un livreur ni un gérant, on le redirige vers la page d'accueil
+            elseif (!$userSession->isLivreur() && !$userSession->isGerant()) {
+                Router::redirect('');
+                return;
+            }
+        }
+
         // Si la route demandée est vide, on charge la page d'accueil appropriée
         if ($route == "" || $route == "employe" || $route == "livreur" || $route == "gerant") {
             // Si l'utilisateur est connecté, on le redirige vers la page d'accueil de son profil
-            $userSession = UserSession::getUserSession();
-
             if ($userSession->isLogged()) {
                 // Si l'utilisateur est un cuisinier, on le redirige vers la page de cuisine
                 if ($userSession->isCuisinier()) {
@@ -176,63 +233,6 @@ class Router
 
             Router::redirect('accueil');
             return;
-        }
-
-        // Gestion des droits d'accès
-        // Route commencant par "employe"
-        if (substr($route, 0, 7) == "employe") {
-            // Si l'utilisateur n'est pas connecté, on le redirige vers la page de connexion
-            if (!UserSession::getUserSession()->isLogged()) {
-                Router::redirect('connexion');
-                return;
-            }
-            // Si l'utilisateur n'est pas un employé, on le redirige vers la page d'accueil
-            elseif (!UserSession::getUserSession()->isEmploye()) {
-                Router::redirect('');
-                return;
-            }
-        }
-
-        // Route commencant par "gerant"
-        if (substr($route, 0, 6) == "gerant") {
-            // Si l'utilisateur n'est pas connecté, on le redirige vers la page de connexion
-            if (!UserSession::getUserSession()->isLogged()) {
-                Router::redirect('connexion');
-                return;
-            }
-            // Si l'utilisateur n'est pas un gérant, on le redirige vers la page d'accueil
-            elseif (!UserSession::getUserSession()->isGerant()) {
-                Router::redirect('');
-                return;
-            }
-        }
-
-        // Route commencant par "cuisinier"
-        if (substr($route, 0, 9) == "cuisinier") {
-            // Si l'utilisateur n'est pas connecté, on le redirige vers la page de connexion
-            if (!UserSession::getUserSession()->isLogged()) {
-                Router::redirect('connexion');
-                return;
-            }
-            // Si l'utilisateur n'est pas un cuisinier ni un gérant, on le redirige vers la page d'accueil
-            elseif (!UserSession::getUserSession()->isCuisinier() && !UserSession::getUserSession()->isGerant()) {
-                Router::redirect('');
-                return;
-            }
-        }
-
-        // Route commencant par "livreur"
-        if (substr($route, 0, 7) == "livreur") {
-            // Si l'utilisateur n'est pas connecté, on le redirige vers la page de connexion
-            if (!UserSession::getUserSession()->isLogged()) {
-                Router::redirect('connexion');
-                return;
-            }
-            // Si l'utilisateur n'est pas un livreur ni un gérant, on le redirige vers la page d'accueil
-            elseif (!UserSession::getUserSession()->isLivreur() && !UserSession::getUserSession()->isGerant()) {
-                Router::redirect('');
-                return;
-            }
         }
 
         // Si la route n'existe pas, on retourne une erreur 404 au navigateur
