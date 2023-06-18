@@ -238,7 +238,8 @@ class IngredientDAO extends DAO
     }
 
     /**
-     * On récupère tous les ingrédients exceptés ceux dans le $tableauIdIngredients
+     * On récupère tous les ingrédients exceptés ceux dans le $tableauIdIngredients lié à un fournisseur
+     * SI on a du temps il faudrait la fusionner avec celle juste au dessus, avec un peu de conditionnel
      *
      * @param [$id] $tableauIdIngredients
      * @return array (tableau d'objets)
