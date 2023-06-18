@@ -10,6 +10,7 @@ $(document).ready(function () {
     element.addClass('header_client_transparent');
     element.addClass('header_float');
     $('.header_icone').addClass('color_not_sticky');
+    $('header li').addClass('color_not_sticky');
     $('header li a').addClass('color_not_sticky');
 
     function changeClass() {
@@ -19,6 +20,7 @@ $(document).ready(function () {
             element.removeClass('header_sticky_accueil');
             element.removeClass('header_client');
             $('.header_icone').addClass('color_not_sticky');
+            $('header li').addClass('color_not_sticky');
             $('header li a').addClass('color_not_sticky');
         } else {
             element.addClass('header_sticky_accueil');
@@ -26,6 +28,7 @@ $(document).ready(function () {
             element.removeClass('header_float');
             element.removeClass('header_client_transparent');
             $('.header_icone').removeClass('color_not_sticky');
+            $('header li').removeClass('color_not_sticky');
             $('header li a').removeClass('color_not_sticky');
         }
     }
@@ -39,8 +42,9 @@ $(document).ready(function () {
     header.addEventListener('mouseover', () => {
         // Ajoutez ici les actions à effectuer lorsque le survol commence
         if (element.hasClass('header_client_transparent')) {
-            $('header li a').removeClass('color_not_sticky');
             $('.header_icone').removeClass('color_not_sticky');
+            $('header li').removeClass('color_not_sticky');
+            $('header li a').removeClass('color_not_sticky');
         }
     });
 
@@ -48,8 +52,9 @@ $(document).ready(function () {
     header.addEventListener('mouseout', () => {
         // Ajoutez ici les actions à effectuer lorsque le survol se termine
         if (element.hasClass('header_client_transparent')) {
-            $('header li a').addClass('color_not_sticky');
             $('.header_icone').addClass('color_not_sticky');
+            $('header li').addClass('color_not_sticky');
+            $('header li a').addClass('color_not_sticky');
         }
     });
 
