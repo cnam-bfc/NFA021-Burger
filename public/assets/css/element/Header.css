@@ -72,7 +72,7 @@ header li a {
 }
 
 .header_icone {
-    color: var(--tertiaire);
+    color: black;
 }
 
 #header_logo {
@@ -115,10 +115,6 @@ header li a {
     .nav-links {
         display: none;
     }
-
-    .header_nav_background_anim {
-        display: none;
-    }
 }
 
 @media screen and (max-width: 600px) {
@@ -135,5 +131,6 @@ header li a {
 
     header li a {
         padding: 5px;
+        flex-direction: column;
     }
 }
