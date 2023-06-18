@@ -81,6 +81,7 @@ class EcranCuisineController extends Controller
                 //Formatage des recettes finales en json
                 $jsonRecetteFinales[] = array(
                     'id' => $recetteFinale->getId(),
+                    'idrecette' => $recette->getId(),
                     'nom' => $recette->getNom(),
                     'quantite' => $recetteFinale->getQuantite(),
                     'ingredients' => $jsonRecetteFinaleIngredients,
@@ -94,6 +95,7 @@ class EcranCuisineController extends Controller
                 'prix' => $cmd->getPrix(),
                 'date_pret' => $cmd->getDatePret(),
                 'date_remise' => $cmd->getHeureRetrait(),
+                'livraison' => false,
                 'date_archive' => $cmd->getDateArchive(),
                 'recettes' => $jsonRecetteFinales,
             );
@@ -171,6 +173,7 @@ class EcranCuisineController extends Controller
                 'prix' => $cmd->getPrix(),
                 'date_pret' => $cmd->getDatePret(),
                 'date_remise' => $cmd->getHeureLivraison(),
+                'livraison' => true,
                 'date_archive' => $cmd->getDateArchive(),
                 'recettes' => $jsonRecetteFinales,
             );

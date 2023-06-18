@@ -13,11 +13,7 @@ const boutonRecette = document.getElementById('boutonRecette');
 
 
 // Ajoute un événement à la pression de la touche "Enter" pour le bouton valider
-document.addEventListener('keydown', function (event) {
-    if (event.key === 'Enter') {
-        boutonValide.click();
-    }
-});
+
 
 $(function () {
     // Récupération des élements du DOM
@@ -34,9 +30,13 @@ $(function () {
 
         //Numéro de la commande
         let divNumCom = $("<div>").addClass("num_com");
-        let pNumCom = $("<p>").text(data.id);
-
+        let pNumCom = $("<p>").addClass("id").text(data.id);
+        let pLivraison = $("<p>").addClass("livraison");
+        if (data.livraison){
+            pLivraison.text("L");
+        }
         divNumCom.append(pNumCom);
+        divNumCom.append(pLivraison);
         divCommande.append(divNumCom);
 
         //Recettes
@@ -95,7 +95,8 @@ $(function () {
         heure = heure.substring(0, heure.length - 3);
         //Heure Livraison de la commande
         let divHeureCom = $("<div>").addClass("temps_com");
-        divHeureCom.text(heure);
+        let pHeureCom = $("<p>").text(heure);
+        divHeureCom.append(pHeureCom);
         divCommande.append(divHeureCom);
         divPrincipale.append(divCommande);
     }
@@ -148,7 +149,7 @@ $(function () {
             const commandeSuivante = commandeFocus.nextElementSibling;
             // Si une commande est en focus, la désactive et passe le focus à la commande suivante
             if (commandeFocus) {
-                let idCommandeClient = $('.commande.focus div.num_com p').text();
+                let idCommandeClient = $('.commande.focus div.num_com p.id').text();
                 console.log(idCommandeClient);
 
                 $.ajax({

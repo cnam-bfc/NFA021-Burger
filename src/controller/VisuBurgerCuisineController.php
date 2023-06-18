@@ -1,6 +1,6 @@
 <?php
 
-class RecetteCuisineController extends Controller
+class VisuBurgerCuisineController extends Controller
 {
     public function afficheBurger()
     {
@@ -123,7 +123,7 @@ class RecetteCuisineController extends Controller
 
     public function renderView()
     {
-        $view = new View(BaseTemplate::EMPTY, 'RecetteCuisineView');
+        $view = new View(BaseTemplate::EMPTY, 'VisuBurgerCuisineView');
         $view->renderView();
     }
 }
