@@ -47,11 +47,6 @@
         <div class="box" id="clickCollect">
             <h2 class="box_titre">Retrait en Restaurant</h2>
             <div class="box_contenu">
-                <!--Adresse du restaurant-->
-                <p>14 Boulevard Magenta</p>
-
-                <!--image du restaurant-->
-                <img src="<?php echo IMG; ?>Logo/LogoElanChalonImage.png"></img>
                 <div class="form-input">
                     <label for="heureCollect">Choisir une heure :</label>
                     <select id="heureCollect" name="heureCollect" required>
