@@ -243,7 +243,54 @@ class IngredientDAO extends DAO
      * @param [$id] $tableauIdIngredients
      * @return array (tableau d'objets)
      */
-    public function selectAllWithoutIngredientsNonArchive($fournisseur, $tableauIdIngredients)
+    public function selectAllWithoutIngredientsNonArchive($tableauIdIngredients)
+    {
+        // Requête préparée
+        $sqlQuery = "SELECT * FROM burger_ingredient WHERE (date_archive IS NULL OR date_archive > NOW())";
+        // on vérifie pour chaque ingrédient si il est dans le tableau
+        if ($tableauIdIngredients[0] != null) {
+            $sqlQuery .= " AND id_ingredient NOT IN (";
+            foreach ($tableauIdIngredients as $idIngredient) {
+                $sqlQuery .= ':IdIngredient_' . $idIngredient . ',';
+            }
+            $sqlQuery = substr($sqlQuery, 0, -1);
+            $sqlQuery .= ")";
+            $statement = $this->pdo->prepare($sqlQuery);
+        }
+        // trier par nom croissant
+        $sqlQuery .= " ORDER BY nom ASC";
+        $statement = $this->pdo->prepare($sqlQuery);
+        if ($tableauIdIngredients[0] != null) {
+            foreach ($tableauIdIngredients as $idIngredient) {
+                $statement->bindValue(':IdIngredient_' . $idIngredient, $idIngredient, PDO::PARAM_INT);
+            }
+        }
+
+        $statement->execute();
+
+        // Traitement des résultats
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $ingredients = array();
+        foreach ($result as $row) {
+            // Création d'un nouvel objet
+            $ingredient = new Ingredient();
+
+            // Remplissage de l'objet
+            $this->fillObject($ingredient, $row);
+
+            // Ajout de l'objet dans le tableau
+            $ingredients[] = $ingredient;
+        }
+        return $ingredients;
+    }
+
+    /**
+     * On récupère tous les ingrédients exceptés ceux dans le $tableauIdIngredients
+     *
+     * @param [$id] $tableauIdIngredients
+     * @return array (tableau d'objets)
+     */
+    public function selectAllWithoutIngredientsNonArchiveForAFournisseur($fournisseur = null, $tableauIdIngredients)
     {
         // Requête préparée
         $sqlQuery = "SELECT * FROM burger_ingredient WHERE (date_archive IS NULL OR date_archive > NOW())
