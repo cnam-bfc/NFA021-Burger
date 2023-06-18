@@ -40,6 +40,7 @@ class CommandeClientLivraisonDAO extends DAO
         // Requête
         $sqlQuery = "INSERT INTO burger_commande_client_livraison (id_commande_client,
                                                 heure_livraison,
+                                                heure_recuperation,
                                                 adresse_osm_type,
                                                 adresse_osm_id,
                                                 adresse_code_postal,
@@ -50,6 +51,7 @@ class CommandeClientLivraisonDAO extends DAO
                                                 ) VALUES (
                                                 :id_commande_client,
                                                 :heure_livraison,
+                                                :heure_recuperation,
                                                 :adresse_osm_type,
                                                 :adresse_osm_id,
                                                 :adresse_code_postal,
@@ -61,6 +63,7 @@ class CommandeClientLivraisonDAO extends DAO
         $statement = $this->pdo->prepare($sqlQuery);
         $statement->bindValue(':id_commande_client', $commandeClientLivraison->getId(), PDO::PARAM_INT);
         $statement->bindValue(':heure_livraison', $commandeClientLivraison->getHeureLivraison(), PDO::PARAM_STR);
+        $statement->bindValue(':heure_recuperation', $commandeClientLivraison->getHeureRecuperation(), PDO::PARAM_STR);
         $statement->bindValue(':adresse_osm_type', $commandeClientLivraison->getAdresseOsmType(), PDO::PARAM_STR);
         $statement->bindValue(':adresse_osm_id', $commandeClientLivraison->getAdresseOsmId(), PDO::PARAM_INT);
         $statement->bindValue(':adresse_code_postal', $commandeClientLivraison->getAdresseCodePostal(), PDO::PARAM_STR);
@@ -109,6 +112,7 @@ class CommandeClientLivraisonDAO extends DAO
 
         // Requête
         $sqlQuery = "UPDATE burger_commande_client_livraison SET heure_livraison = :heure_livraison,
+                                            heure_recuperation = :heure_recuperation,
                                             adresse_osm_type = :adresse_osm_type,
                                             adresse_osm_id = :adresse_osm_id,
                                             adresse_code_postal = :adresse_code_postal,
@@ -119,6 +123,7 @@ class CommandeClientLivraisonDAO extends DAO
                                             WHERE id_commande_client = :id_commande_client";
         $statement = $this->pdo->prepare($sqlQuery);
         $statement->bindValue(':heure_livraison', $commandeClientLivraison->getHeureLivraison(), PDO::PARAM_STR);
+        $statement->bindValue(':heure_recuperation', $commandeClientLivraison->getHeureRecuperation(), PDO::PARAM_STR);
         $statement->bindValue(':adresse_osm_type', $commandeClientLivraison->getAdresseOsmType(), PDO::PARAM_STR);
         $statement->bindValue(':adresse_osm_id', $commandeClientLivraison->getAdresseOsmId(), PDO::PARAM_INT);
         $statement->bindValue(':adresse_code_postal', $commandeClientLivraison->getAdresseCodePostal(), PDO::PARAM_STR);
@@ -141,7 +146,7 @@ class CommandeClientLivraisonDAO extends DAO
     public function selectAll()
     {
         // Requête
-        $sqlQuery = "SELECT cc.*, cl.heure_livraison, cl.adresse_osm_type, cl.adresse_osm_id, cl.adresse_code_postal, cl.adresse_ville, cl.adresse_rue, cl.adresse_numero, cl.id_compte_fk AS 'id_livreur_fk' FROM burger_commande_client AS cc, burger_commande_client_livraison AS cl WHERE cc.id_commande_client = cl.id_commande_client";
+        $sqlQuery = "SELECT cc.*, cl.heure_livraison, cl.heure_recuperation, cl.adresse_osm_type, cl.adresse_osm_id, cl.adresse_code_postal, cl.adresse_ville, cl.adresse_rue, cl.adresse_numero, cl.id_compte_fk AS 'id_livreur_fk' FROM burger_commande_client AS cc, burger_commande_client_livraison AS cl WHERE cc.id_commande_client = cl.id_commande_client";
         $statement = $this->pdo->query($sqlQuery);
         $statement->execute();
 
@@ -170,7 +175,7 @@ class CommandeClientLivraisonDAO extends DAO
     public function selectAllNonArchive()
     {
         // Requête
-        $sqlQuery = "SELECT cc.*, cl.heure_livraison, cl.adresse_osm_type, cl.adresse_osm_id, cl.adresse_code_postal, cl.adresse_ville, cl.adresse_rue, cl.adresse_numero, cl.id_compte_fk AS 'id_livreur_fk' FROM burger_commande_client AS cc, burger_commande_client_livraison AS cl WHERE cc.id_commande_client = cl.id_commande_client AND (cc.date_archive IS NULL OR cc.date_archive > NOW())";
+        $sqlQuery = "SELECT cc.*, cl.heure_livraison, cl.heure_recuperation, cl.adresse_osm_type, cl.adresse_osm_id, cl.adresse_code_postal, cl.adresse_ville, cl.adresse_rue, cl.adresse_numero, cl.id_compte_fk AS 'id_livreur_fk' FROM burger_commande_client AS cc, burger_commande_client_livraison AS cl WHERE cc.id_commande_client = cl.id_commande_client AND (cc.date_archive IS NULL OR cc.date_archive > NOW())";
         $statement = $this->pdo->query($sqlQuery);
         $statement->execute();
 
@@ -199,7 +204,7 @@ class CommandeClientLivraisonDAO extends DAO
     public function selectAllNonArchiveNonPret()
     {
         // Requête
-        $sqlQuery = "SELECT cc.*, cl.heure_livraison, cl.adresse_osm_type, cl.adresse_osm_id, cl.adresse_code_postal, cl.adresse_ville, cl.adresse_rue, cl.adresse_numero, cl.id_compte_fk AS 'id_livreur_fk' FROM burger_commande_client AS cc, burger_commande_client_livraison AS cl WHERE cc.id_commande_client = cl.id_commande_client AND (cc.date_archive IS NULL OR cc.date_archive > NOW()) AND cc.date_pret IS NULL";
+        $sqlQuery = "SELECT cc.*, cl.heure_livraison, cl.heure_recuperation, cl.adresse_osm_type, cl.adresse_osm_id, cl.adresse_code_postal, cl.adresse_ville, cl.adresse_rue, cl.adresse_numero, cl.id_compte_fk AS 'id_livreur_fk' FROM burger_commande_client AS cc, burger_commande_client_livraison AS cl WHERE cc.id_commande_client = cl.id_commande_client AND (cc.date_archive IS NULL OR cc.date_archive > NOW()) AND cc.date_pret IS NULL";
         $statement = $this->pdo->query($sqlQuery);
         $statement->execute();
 
@@ -221,6 +226,37 @@ class CommandeClientLivraisonDAO extends DAO
     }
 
     /**
+     * Méthode permettant de récupérer tous les objets d'un livreur
+     * 
+     * @param int $idLivreur (id du livreur)
+     * @return CommandeClientLivraison[] (tableau d'objets)
+     */
+    public function selectAllByIdLivreur($idLivreur)
+    {
+        // Requête
+        $sqlQuery = "SELECT cc.*, cl.heure_livraison, cl.heure_recuperation, cl.adresse_osm_type, cl.adresse_osm_id, cl.adresse_code_postal, cl.adresse_ville, cl.adresse_rue, cl.adresse_numero, cl.id_compte_fk AS 'id_livreur_fk' FROM burger_commande_client AS cc, burger_commande_client_livraison AS cl WHERE cc.id_commande_client = cl.id_commande_client AND cl.id_compte_fk = :id_compte_fk";
+        $statement = $this->pdo->prepare($sqlQuery);
+        $statement->bindValue(':id_compte_fk', $idLivreur, PDO::PARAM_INT);
+        $statement->execute();
+
+        // Traitement des résultats
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $commandesClientsLivraisons = array();
+        foreach ($result as $row) {
+            // Création d'un nouvel objet
+            $commandeClientLivraison = new CommandeClientLivraison();
+
+            // Remplissage de l'objet
+            $this->fillObject($commandeClientLivraison, $row);
+
+            // Ajout de l'objet dans le tableau
+            $commandesClientsLivraisons[] = $commandeClientLivraison;
+        }
+
+        return $commandesClientsLivraisons;
+    }
+
+    /**
      * Méthode permettant de récupérer un objet par son id
      * 
      * @param int $id (id de l'objet à récupérer)
@@ -229,7 +265,7 @@ class CommandeClientLivraisonDAO extends DAO
     public function selectById($id)
     {
         // Requête
-        $sqlQuery = "SELECT cc.*, cl.heure_livraison, cl.adresse_osm_type, cl.adresse_osm_id, cl.adresse_code_postal, cl.adresse_ville, cl.adresse_rue, cl.adresse_numero, cl.id_compte_fk AS 'id_livreur_fk' FROM burger_commande_client AS cc, burger_commande_client_livraison AS cl WHERE cc.id_commande_client = cl.id_commande_client AND cc.id_commande_client = :id_commande_client";
+        $sqlQuery = "SELECT cc.*, cl.heure_livraison, cl.heure_recuperation, cl.adresse_osm_type, cl.adresse_osm_id, cl.adresse_code_postal, cl.adresse_ville, cl.adresse_rue, cl.adresse_numero, cl.id_compte_fk AS 'id_livreur_fk' FROM burger_commande_client AS cc, burger_commande_client_livraison AS cl WHERE cc.id_commande_client = cl.id_commande_client AND cc.id_commande_client = :id_commande_client";
         $statement = $this->pdo->prepare($sqlQuery);
         $statement->bindValue(':id_commande_client', $id, PDO::PARAM_INT);
         $statement->execute();
@@ -264,6 +300,7 @@ class CommandeClientLivraisonDAO extends DAO
 
         // Remplissage des attributs de la commande client livraison
         $commandeClientLivraison->setHeureLivraison($row['heure_livraison']);
+        $commandeClientLivraison->setHeureRecuperation($row['heure_recuperation']);
         $commandeClientLivraison->setAdresseOsmType($row['adresse_osm_type']);
         $commandeClientLivraison->setAdresseOsmId($row['adresse_osm_id']);
         $commandeClientLivraison->setAdresseCodePostal($row['adresse_code_postal']);

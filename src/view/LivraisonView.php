@@ -1,3 +1,12 @@
+<!-- Leaflet : Bibliothèque pour intégrer une carte -->
+<!-- Bibliothèque Leaflet -->
+<link rel="stylesheet" href="<?php echo ASSETS ?>leaflet/leaflet.css">
+<script src="<?php echo ASSETS ?>leaflet/leaflet.js"></script>
+
+<!-- Bibliothèque Leaflet Routing Machine -->
+<link rel="stylesheet" href="<?php echo ASSETS ?>leaflet-routing-machine/leaflet-routing-machine.css">
+<script src="<?php echo ASSETS ?>leaflet-routing-machine/leaflet-routing-machine.min.js"></script>
+
 <!-- On ajoute la feuille de style associé à la page -->
 <link rel="stylesheet" href="<?php echo CSS ?>Livraison.css">
 
@@ -17,7 +26,10 @@
                     <th>Adresse de départ</th>
                     <th>Adresse de destination</th>
                     <th>Distance</th>
+                    <th>Temps de trajet</th>
                     <th>Heure de livraison</th>
+                    <th>Status</th>
+                    <th>Client</th>
                     <th><!-- Bouton actions rapide --></th>
                 </tr>
                 <tr></tr>

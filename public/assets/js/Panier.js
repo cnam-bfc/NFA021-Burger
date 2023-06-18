@@ -34,6 +34,7 @@ function showData() {
 // Fonction de traitement du panier
 function processPanier(panier) {
     console.log(panier);
+    
     var prixTotal = 0;
 
     //je créer les élément html qui vont constituer mon panier
@@ -157,10 +158,13 @@ function processPanier(panier) {
         console.log(panier[i]);
 
     }
+    if(document.getElementById("Total")){
+        document.getElementById("Total").remove();
+    }
     const divTotal = document.createElement("div");
     divTotal.setAttribute("id", "Total");
     divTotal.textContent = "Prix Total : " + prixTotal + " €";
-    PanierDiv.appendChild(divTotal);
+    PanierDiv.insertAdjacentElement("afterend",divTotal);
     console.log("divTotal OK");
 }
 
@@ -203,7 +207,13 @@ function supprimer(idElem) {
 
 function commander() {
     //je vérifie si le panier est vide ou non
-    if (!document.getElementById('Panier').length) {
+    if (document.getElementById('Panier').innerHTML === "") {
+        console.log("div vide");
+        alert("Veuillez Ajouter 1 burger au panier");
+
+        
+    } else {
+        
         // écrire les recettes finals en bdd
         // créer une commande en Bdd
         // amener à la page choix Livraison/Click & Collect
@@ -211,8 +221,7 @@ function commander() {
 
         // Remplacez l'URL par l'adresse de la page recap
         window.location.href = 'collectLivraison';
-    } else {
-        console.log("div vide");
+
     }
 }
 

@@ -4,7 +4,7 @@ $(function () {
     const itineraire = $("#iteneraire");
 
     // Fonction permettant d'ajouter une ligne contenant une livraison dans le tableau des livraisons
-    function addLivraison(data) {
+    function addLivraison(data, livreur, osrm_profile) {
         let ligne = $("<tr>");
 
         // Id
@@ -52,12 +52,135 @@ $(function () {
 
         // Distance
         cellule = $("<td>");
-        cellule.html(data.distance + "&nbsp;km");
+        let celluleDistance = cellule;
+        cellule.text("Calcul en cours...");
         ligne.append(cellule);
+
+        // Temps de trajet
+        cellule = $("<td>");
+        let celluleTemps = cellule;
+        cellule.text("Calcul en cours...");
+        ligne.append(cellule);
+
+        // Récupération de la position de la destination via l'API de nominatim
+        $.ajax({
+            url: "https://nominatim.openstreetmap.org/lookup?osm_ids=" + data.adresse_depart.osm_type + data.adresse_depart.osm_id + "," + data.adresse_arrivee.osm_type + data.adresse_arrivee.osm_id + "&format=json&addressdetails=1",
+            method: "GET",
+            dataType: "json",
+            success: function (response) {
+                if (response.length !== 2) {
+                    celluleDistance.text("Erreur : Adresse(s) introuvable(s).");
+                    celluleDistance.css("color", "red");
+                    return;
+                }
+
+                // Récupération des coordonnées
+                let latDepart = response[0].lat;
+                let lonDepart = response[0].lon;
+                let latArrivee = response[1].lat;
+                let lonArrivee = response[1].lon;
+
+                // Création du routeur (OSRM, vélo, français)
+                let router;
+                if (!osrm_profile) {
+                    router = L.Routing.osrmv1({
+                        serviceUrl: 'https://router.project-osrm.org/route/v1',
+                        language: 'fr'
+                    });
+                } else {
+                    router = L.Routing.osrmv1({
+                        serviceUrl: 'https://router.project-osrm.org/route/v1',
+                        profile: osrm_profile,
+                        language: 'fr'
+                    });
+                }
+
+                // Création du contrôle d'itinéraire
+                let routing = L.Routing.control({
+                    waypoints: [
+                        L.latLng(latDepart, lonDepart),
+                        L.latLng(latArrivee, lonArrivee)
+                    ],
+                    router: router,
+                    routeWhileDragging: false,
+                    draggableWaypoints: false,
+                    addWaypoints: false,
+                    show: false,
+                    autoRoute: false,
+                    createMarker: function () {
+                        return null;
+                    }
+                });
+
+                routing.on('routesfound', function (e) {
+                    // Récupération de la distance
+                    let distance = e.routes[0].summary.totalDistance;
+                    // Affichage de la distance
+                    celluleDistance.html(distance / 1000 + "&nbsp;km");
+
+                    // Récupération du temps de trajet
+                    let temps = e.routes[0].summary.totalTime;
+                    // Affichage du temps de trajet (minutes)
+                    temps = temps / 60;
+                    // Arrondi à la minute supérieure
+                    temps = Math.ceil(temps);
+
+                    celluleTemps.html(temps + "&nbsp;min");
+                });
+
+                routing.route();
+            }
+        });
+
 
         // Heure de livraison
         cellule = $("<td>");
         cellule.text(data.heure_livraison);
+        ligne.append(cellule);
+
+        // Status
+        cellule = $("<td>");
+        let icone = $("<i>");
+        switch (data.status) {
+            case "archive":
+                cellule.text("Archivée");
+                cellule.css("color", "lightgrey");
+                icone.addClass("fa-solid fa-box-archive");
+                break;
+            case "livre":
+                cellule.text("Livrée");
+                cellule.css("color", "green");
+                icone.addClass("fa-solid fa-check");
+                break;
+            case "en_livraison":
+                cellule.text("En livraison");
+                cellule.css("color", "grey");
+                icone.addClass("fa-solid fa-truck");
+                break;
+            case "attente_livreur":
+                cellule.text("En attente d'un livreur");
+                cellule.css("color", "orange");
+                icone.addClass("fa-solid fa-bowl-food");
+                break;
+            case "en_cuisine":
+                cellule.text("En cuisine");
+                cellule.css("color", "grey");
+                icone.addClass("fa-solid fa-fire-burner");
+                break;
+            default:
+                cellule.text("Inconnu");
+                cellule.css("color", "black");
+                icone.addClass("fa-solid fa-question");
+                break;
+        }
+        cellule.css("font-weight", "bold");
+        cellule.prepend("&nbsp;");
+        cellule.prepend(icone);
+        ligne.append(cellule);
+
+        // Client
+        cellule = $("<td>");
+        cellule.text(data.client.prenom + " " + data.client.nom);
         ligne.append(cellule);
 
         // Boutons d'action rapide
@@ -109,6 +232,10 @@ $(function () {
                 }
             });
         });
+        // Si l'utilisateur connecté n'est pas un livreur, désactiver le bouton
+        if (!livreur) {
+            boutonPrendreLivraison.prop("disabled", true);
+        }
         // Si la livraison est déjà prise, désactiver le bouton
         if (data.livreur !== undefined) {
             boutonPrendreLivraison.prop("disabled", true);
@@ -144,7 +271,7 @@ $(function () {
         // Ajout ligne de chargement
         let ligne = $("<tr>");
         let cellule = $("<td>");
-        cellule.attr("colspan", 6);
+        cellule.attr("colspan", 9);
         cellule.html("<br><i class='fa-solid fa-spinner fa-spin'></i> Chargement des livraisons<br><br>");
         ligne.append(cellule);
         bodyTableauLivraisons.append(ligne);
@@ -159,18 +286,18 @@ $(function () {
                 bodyTableauLivraisons.empty();
 
                 // Si aucune livraison n'a été trouvée, afficher "Aucun résultats"
-                if (data['data'].length == 0) {
+                if (data['data']['commandes'].length == 0) {
                     let ligne = $("<tr>");
                     let cellule = $("<td>");
-                    cellule.attr("colspan", 6);
+                    cellule.attr("colspan", 9);
                     cellule.html("<br>Aucune livraison n'a été trouvée<br><br>");
                     ligne.append(cellule);
                     bodyTableauLivraisons.append(ligne);
                 }
                 // Sinon, ajouter chaque livraison dans une nouvelle ligne
                 else {
-                    data['data'].forEach(element => {
-                        addLivraison(element);
+                    data['data']['commandes'].forEach(element => {
+                        addLivraison(element, data['data']['livreur'], data['data']['osrm_profile']);
                     });
                 }
             },
@@ -181,7 +308,7 @@ $(function () {
                 // Ajout ligne d'erreur
                 let ligne = $("<tr>");
                 let cellule = $("<td>");
-                cellule.attr("colspan", 6);
+                cellule.attr("colspan", 9);
                 cellule.html("<br><i class='fa-solid fa-exclamation-triangle'></i> Erreur lors du chargement des livraisons<br><br>");
                 ligne.append(cellule);
                 bodyTableauLivraisons.append(ligne);

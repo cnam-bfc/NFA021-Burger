@@ -36,12 +36,15 @@ class LivreurDAO extends DAO
         }
 
         // Requête
-        $sqlQuery = "INSERT INTO burger_livreur (id_compte
+        $sqlQuery = "INSERT INTO burger_livreur (id_compte,
+                                                id_moyen_transport_fk
                                                 ) VALUES (
-                                                :id_compte
+                                                :id_compte,
+                                                :id_moyen_transport_fk
                                                 )";
         $statement = $this->pdo->prepare($sqlQuery);
         $statement->bindValue(':id_compte', $livreur->getId(), PDO::PARAM_INT);
+        $statement->bindValue(':id_moyen_transport_fk', $livreur->getIdMoyenTransport(), PDO::PARAM_INT);
         $statement->execute();
     }
 
@@ -82,14 +85,12 @@ class LivreurDAO extends DAO
         }
 
         // Requête
-        /*
-        Inutile de mettre à jour la table burger_livreur car elle ne contient aucun attribut
-        $sqlQuery = "UPDATE burger_livreur SET 
+        $sqlQuery = "UPDATE burger_livreur SET id_moyen_transport_fk = :id_moyen_transport_fk
                                             WHERE id_compte = :id_compte";
         $statement = $this->pdo->prepare($sqlQuery);
+        $statement->bindValue(':id_moyen_transport_fk', $livreur->getIdMoyenTransport(), PDO::PARAM_INT);
         $statement->bindValue(':id_compte', $livreur->getId(), PDO::PARAM_INT);
         $statement->execute();
-        */
 
         // Mise à jour de l'employé associé
         $this->employeDAO->update($livreur);
@@ -196,5 +197,6 @@ class LivreurDAO extends DAO
         $this->employeDAO->fillObject($livreur, $row);
 
         // Remplissage des attributs du livreur
+        $livreur->setIdMoyenTransport($row['id_moyen_transport_fk']);
     }
 }

@@ -1,10 +1,10 @@
 <?php
 
-class CarteMenuController extends Controller
+class CarteBurgerController extends Controller
 {
     public function renderView()
     {
-        $view = new View(BaseTemplate::CLIENT, 'CarteMenuView');
+        $view = new View(BaseTemplate::CLIENT, 'CarteBurgerView');
 
         $view->renderView();
     }
@@ -65,15 +65,16 @@ class CarteMenuController extends Controller
 
         $recette = $recetteDAO->selectById($idBurger);
         $ingredientRecetteBasiques = $ingredientBasiqueDAO->selectAllByIdRecette($idBurger);
-        $unites = $uniteDAO->selectAllNonArchive();
-        $ingredients = $ingredientDAO->selectAllNonArchive();
+        $unites = $uniteDAO->selectAll();
+        $ingredients = $ingredientDAO->selectAll();
 
         $json = array();
         $json['data'] = array();
-        $jsonIngredients[] = array();
 
         foreach ($ingredientRecetteBasiques as $ingredientRecetteBasique) {
             /** @var Ingredient $ingredient */
+
+
             $ingredient = null;
             // Récupération de l'ingrédient
             foreach ($ingredients as $ingredientTmp) {
@@ -101,13 +102,13 @@ class CarteMenuController extends Controller
             if ($unite === null) {
                 continue;
             }
-            $quantite = $ingredientRecetteBasique->getQuantite() . ' ' . $unite->getDiminutif();
             // Construction du json de l'ingrédient
-            $jsonIngredients[] = [
+            $jsonIngredient = array(
                 'nom' => $ingredient->getNom(),
-                'quantite' =>  $quantite,
+                'quantite' =>  $ingredientRecetteBasique->getQuantite() . ' ' . $unite->getDiminutif(),
+            );
 
-            ];
+            $jsonIngredients[] = $jsonIngredient;
         }
 
         $json = array(

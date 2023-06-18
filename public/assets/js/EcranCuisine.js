@@ -43,13 +43,37 @@ $(function () {
         let divContenu = $("<div>").addClass("composition_com");
 
         data.recettes.forEach(element => {
-            let boutonRecette = $("<button>");
+            let boutonRecette = $("<button>").addClass("boutonRecette");
             boutonRecette.attr("id", element.id);
             let recetteText = element.quantite + "x " + element.nom;
             boutonRecette.append(recetteText);
 
             boutonRecette.click(function () {
-                window.open("cuisinier/recette?id=" + element.idrecette +"&idcc=" + data.id + "&idrf=" + element.id,'Recette','menubar=no, scrollbars=no, top=auto, left=auto, width=1000, height=700, position=absolute' );
+                const url = "cuisinier/recette?id=" + element.idrecette + "&idcc=" + data.id + "&idrf=" + element.id
+                const titre = "Recette " + element.idrecette + " - " + element.nom;
+                const w = 1500;
+                const h = 900;
+
+                const dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : window.screenX;
+                const dualScreenTop = window.screenTop !== undefined ? window.screenTop : window.screenY;
+
+                const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+                const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+                const systemZoom = width / window.screen.availWidth;
+                const left = (width - w) / 2 / systemZoom + dualScreenLeft
+                const top = (height - h) / 2 / systemZoom + dualScreenTop
+
+                window.open(url, titre,
+                    `
+                          scrollbars=yes,
+                          width=${w / systemZoom}, 
+                          height=${h / systemZoom}, 
+                          top=${top}, 
+                          left=${left}
+                          `
+                );
+
             });
 
             divContenu.append(boutonRecette);
@@ -78,7 +102,7 @@ $(function () {
 
     function addBoutons() {
         const divBoutons = $("div.bouton");
-
+        divBoutons.empty();
         //Création du bouton Précedent
         let boutonPrev = $("<button>").addClass('boutonsPrincipaux').text('Précédent');
         boutonPrev.attr("id", "boutonPrev");
@@ -146,6 +170,8 @@ $(function () {
                     }
                 });
                 commandeFocus.remove();
+                divPrincipale.empty();
+                refreshCommande();
 
                 if (commandeSuivante) {
                     commandeSuivante.classList.add('focus');
@@ -193,13 +219,19 @@ $(function () {
                 }
                 // Sinon, ajouter chaque recette dans une nouvelle ligne
                 else {
-                    data['data'].forEach(element => {
-                        addCommande(element);
-                        const premiereCommande = document.querySelector('.commande');
-                        if (premiereCommande) {
-                            premiereCommande.classList.add('focus');
+                    if (data['data'].length > 8) {
+                        for (let i = 0 ; i < 8 ; i++) {
+                            addCommande(data['data'][i]);
                         }
-                    });
+                    } else {
+                        data['data'].forEach(element => {
+                            addCommande(element);
+                        });
+                    }
+                    const premiereCommande = document.querySelector('.commande');
+                    if (premiereCommande) {
+                        premiereCommande.classList.add('focus');
+                    }
                     addBoutons();
                 }
             },
@@ -218,8 +250,4 @@ $(function () {
     }
 
     refreshCommande();
-
-    boutonValide.click(function () {
-
-    });
 });

@@ -3,7 +3,7 @@
 <script src="<?php echo (JS) ?>Panier.js"></script>
 
 
-<div class="wrapper axe_colonne text-center">
+<div class="wrapper axe_colonne text-center" id="AllPanier">
     <h2>Panier</h2>
     <div id="Panier">
 

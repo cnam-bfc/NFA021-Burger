@@ -22,7 +22,8 @@ class AutoLoader
         'Controller' => 'controller' . DIRECTORY_SEPARATOR . 'Controller.php',
         'DAO' => 'model' . DIRECTORY_SEPARATOR . 'DAO.php',
         'View' => 'view' . DIRECTORY_SEPARATOR . 'View.php',
-        'BaseTemplate' => 'view' . DIRECTORY_SEPARATOR . 'template' . DIRECTORY_SEPARATOR . 'BaseTemplate.php'
+        'BaseTemplate' => 'view' . DIRECTORY_SEPARATOR . 'template' . DIRECTORY_SEPARATOR . 'BaseTemplate.php',
+        'RouteXLAPI' => 'utils' . DIRECTORY_SEPARATOR . 'RouteXLAPI.php',
     ];
 
     /**

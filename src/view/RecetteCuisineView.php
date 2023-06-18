@@ -1,10 +1,10 @@
 <link rel="stylesheet" href="<?php echo CSS ?>RecetteCuisine.css">
-<div class="container">
-    <div class="wrapper axe_colonne wrap grow burger">
-        <tbody>
+<div class="wrapper axe_colonne main_axe_center second_axe_center">
+    <h1 class="titre_souligne"></h1>
+</div>
+<div class="wrapper axe_ligne wrap main_axe_center second_axe_center main_axe_space_between grow width_50" id="wrapper_burger">
 
-        </tbody>
-    </div>
+
 </div>
 
 <script src="<?php echo JS ?>RecetteCuisine.js"></script>

@@ -19,7 +19,7 @@
 
 
             <div id="RecupCommande"></div>
-            
+            <br>
             <h2 class='titre_fenetre courbe'>Commande</h2><br>
 
             <div id="Commande"></div>
@@ -36,8 +36,5 @@
 
 
 <script type="text/javascript">
-    $(document).ready(function() {
-        console.log("html");
-        showData();
-    });
+    showData();
 </script>
