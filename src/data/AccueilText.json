@@ -1,20 +1,25 @@
 {
-    "counter": 3,
+    "counter": 4,
     "texts": {
         "1": {
             "id": 1,
             "title": "Notre histoire",
-            "text": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)."
+            "text": "Alors que les fast-foods se multiplient, un groupe d'amis fan de burger décide de créer son propre restaurant. Nous avons voulu un endroit convivial, où l'on peut manger un bon burger, avec des produits frais et de qualité. Originaire de Charolles, nous avons voulu mettre en avant notre région, et c'est pourquoi nous avons décidé de nommer notre restaurant Cha'bu et ainsi de mettre en avant la viande charolaise"
         },
         "2": {
             "id": 2,
-            "title": "Nos collaborateurs",
-            "text": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)."
+            "title": "Nos producteurs",
+            "text": "Nous travaillons avec des producteurs locaux, qui partagent nos valeurs. Nous nous efforçons de vous proposer des produits de qualité, en circuit court. Il est important pour nous pouvoir vous proposer des produits de bonne qualité, et de pouvoir vous les proposer à un prix juste. De plus cela nous permet de réduire notre empreinte carbone, et de soutenir l'économie locale."
         },
         "3": {
             "id": 3,
             "title": "Notre vision du travail",
-            "text": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)."
+            "text": "À Cha'bu la convivialité est de mise. Nous sommes une équipe de passionnés qui travaillent ensemble pour vous offrir le meilleur service possible. Nous sommes à votre écoute et nous nous efforçons de vous proposer des produits de qualité. Nous faisons passé le bien-être de nos employés avant tout, car nous sommes convaincus que c'est la clé du travail moderne, venir travailler doit être un plaisir."
+        },
+        "4" : {
+            "id": 4,
+            "title": "Pourquoi Cha'bu",
+            "text": "Son ethimologie n'a rien de bien complexe : Cha'bu est la contraction de Charolais-Burger. Nous avons voulu un nom simple, qui reflète notre vision du burger et qui soit facile ainsi qu'agréable à retenir. Et vous qu'en pensez-vous ?"
         }
     }
 }
