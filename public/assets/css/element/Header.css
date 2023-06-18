@@ -111,6 +111,10 @@ header li a {
     font-weight: 600;
 }
 
+.color_not_sticky {
+    color: var(--primaire);
+}
+
 @media screen and (max-width: 800px) {
     .nav-links {
         display: none;
