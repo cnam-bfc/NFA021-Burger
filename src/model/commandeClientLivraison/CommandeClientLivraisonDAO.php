@@ -231,10 +231,10 @@ class CommandeClientLivraisonDAO extends DAO
      * @param int $idLivreur (id du livreur)
      * @return CommandeClientLivraison[] (tableau d'objets)
      */
-    public function selectAllByIdLivreur($idLivreur)
+    public function selectAllByIdLivreurForItineraire($idLivreur)
     {
         // Requête
-        $sqlQuery = "SELECT cc.*, cl.heure_livraison, cl.heure_recuperation, cl.adresse_osm_type, cl.adresse_osm_id, cl.adresse_code_postal, cl.adresse_ville, cl.adresse_rue, cl.adresse_numero, cl.id_compte_fk AS 'id_livreur_fk' FROM burger_commande_client AS cc, burger_commande_client_livraison AS cl WHERE cc.id_commande_client = cl.id_commande_client AND cl.id_compte_fk = :id_compte_fk";
+        $sqlQuery = "SELECT cc.*, cl.heure_livraison, cl.heure_recuperation, cl.adresse_osm_type, cl.adresse_osm_id, cl.adresse_code_postal, cl.adresse_ville, cl.adresse_rue, cl.adresse_numero, cl.id_compte_fk AS 'id_livreur_fk' FROM burger_commande_client AS cc, burger_commande_client_livraison AS cl WHERE cc.id_commande_client = cl.id_commande_client AND cl.id_compte_fk = :id_compte_fk AND (cc.date_archive IS NULL OR cc.date_archive > NOW()) ORDER BY cl.heure_livraison ASC";
         $statement = $this->pdo->prepare($sqlQuery);
         $statement->bindValue(':id_compte_fk', $idLivreur, PDO::PARAM_INT);
         $statement->execute();
