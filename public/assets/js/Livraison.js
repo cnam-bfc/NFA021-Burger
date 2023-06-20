@@ -247,9 +247,109 @@ $(function () {
         // Sinon, ajouter l'icône pour prendre la livraison
         else {
             boutonPrendreLivraison.append($("<i>").addClass("fa-solid fa-truck"));
-            boutonPrendreLivraison.append(" Prendre la livraison");
+            boutonPrendreLivraison.append(" Réserver la livraison");
         }
         contenuCellule.append(boutonPrendreLivraison);
+
+        // Bouton 'Récupérer la commande'
+        let boutonRecupererCommande = $("<button>").addClass("bouton");
+        boutonRecupererCommande.click(function () {
+            let oldBoutonRecupererCommandeHTML = boutonRecupererCommande.html();
+            // Désactiver le bouton
+            boutonRecupererCommande.prop("disabled", true);
+            // Remplacer l'icône par un spinner
+            boutonRecupererCommande.empty();
+            boutonRecupererCommande.append($("<i>").addClass("fa-solid fa-spinner fa-spin"));
+
+            // Envoyer une requête pour récupérer la commande
+            $.ajax({
+                url: "livraisons/recuperer",
+                method: "POST",
+                data: {
+                    id: data.id
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data.success) {
+                        // Actualiser le tableau des livraisons
+                        refreshLivraisons();
+                    } else {
+                        // Réactiver le bouton
+                        boutonRecupererCommande.prop("disabled", false);
+                        // Remplacer le spinner par l'icône
+                        boutonRecupererCommande.empty();
+                        boutonRecupererCommande.html(oldBoutonRecupererCommandeHTML);
+                        // Avertir l'utilisateur
+                        alert("Erreur lors de la récupération de la commande :\n" + data.message);
+                    }
+                },
+                error: function (data) {
+                    // Réactiver le bouton
+                    boutonRecupererCommande.prop("disabled", false);
+                    // Remplacer le spinner par l'icône
+                    boutonRecupererCommande.empty();
+                    boutonRecupererCommande.html(oldBoutonRecupererCommandeHTML);
+                    // Avertir l'utilisateur
+                    alert("Erreur lors de la récupération de la commande :\nVous devez être connecté en tant que livreur pour récupérer une commande !");
+                }
+            });
+        });
+        // Si l'utilisateur connecté est le livreur de la livraison et que la livraison est en 'attente_livreur', ajouter le bouton 'Récupérer la commande'
+        if (livreur && data.livreur !== undefined && livreur.id == data.livreur.id && data.status == "attente_livreur") {
+            boutonRecupererCommande.append($("<i>").addClass("fa-solid fa-box"));
+            boutonRecupererCommande.append(" Récupérer la commande");
+            contenuCellule.append(boutonRecupererCommande);
+        }
+
+        // Bouton 'Livraison effectuée'
+        let boutonLivraisonEffectuee = $("<button>").addClass("bouton");
+        boutonLivraisonEffectuee.click(function () {
+            let oldBoutonLivraisonEffectueeHTML = boutonLivraisonEffectuee.html();
+            // Désactiver le bouton
+            boutonLivraisonEffectuee.prop("disabled", true);
+            // Remplacer l'icône par un spinner
+            boutonLivraisonEffectuee.empty();
+            boutonLivraisonEffectuee.append($("<i>").addClass("fa-solid fa-spinner fa-spin"));
+
+            // Envoyer une requête pour marquer la livraison comme effectuée
+            $.ajax({
+                url: "livraisons/terminer",
+                method: "POST",
+                data: {
+                    id: data.id
+                },
+                dataType: "json",
+                success: function (data) {
+                    if (data.success) {
+                        // Actualiser le tableau des livraisons
+                        refreshLivraisons();
+                    } else {
+                        // Réactiver le bouton
+                        boutonLivraisonEffectuee.prop("disabled", false);
+                        // Remplacer le spinner par l'icône
+                        boutonLivraisonEffectuee.empty();
+                        boutonLivraisonEffectuee.html(oldBoutonLivraisonEffectueeHTML);
+                        // Avertir l'utilisateur
+                        alert("Erreur lors de la livraison de la commande :\n" + data.message);
+                    }
+                },
+                error: function (data) {
+                    // Réactiver le bouton
+                    boutonLivraisonEffectuee.prop("disabled", false);
+                    // Remplacer le spinner par l'icône
+                    boutonLivraisonEffectuee.empty();
+                    boutonLivraisonEffectuee.html(oldBoutonLivraisonEffectueeHTML);
+                    // Avertir l'utilisateur
+                    alert("Erreur lors de la livraison de la commande :\nVous devez être connecté en tant que livreur pour livrer une commande !");
+                }
+            });
+        });
+        // Si l'utilisateur connecté est le livreur de la livraison et que la livraison est en 'en_livraison', ajouter le bouton 'Livraison effectuée'
+        if (livreur && data.livreur !== undefined && livreur.id == data.livreur.id && data.status == "en_livraison") {
+            boutonLivraisonEffectuee.append($("<i>").addClass("fa-solid fa-check"));
+            boutonLivraisonEffectuee.append(" Terminer la livraison");
+            contenuCellule.append(boutonLivraisonEffectuee);
+        }
 
         cellule.append(contenuCellule);
         ligne.append(cellule);
