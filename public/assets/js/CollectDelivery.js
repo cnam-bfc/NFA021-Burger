@@ -200,6 +200,16 @@ function valider() {
         const heureDelivery = document.getElementById("heureDelivery");
         if (adresse_selectionnee !== -1 && new RegExp(telephone.pattern).test(telephone.value) && new RegExp(heureDelivery.pattern).test(heureDelivery.value)) {
             // Crée un objet contenant les informations de récupération
+
+            var optionSelectionnee = heureDelivery.selectedOptions[0]; // Première option sélectionnée (peut en contenir plusieurs avec l'attribut 'multiple')
+
+            if (optionSelectionnee) {
+                var texteOptionSelectionnee = optionSelectionnee.textContent;
+                console.log("Option sélectionnée : " + texteOptionSelectionnee);
+            } else {
+                console.log("Aucune option sélectionnée");
+            }
+
             const tabInfosRecup = {
                 "Mode Récupération": 'Livraison',
                 "Code Postal": adresse_code_postal[adresse_selectionnee],
@@ -209,9 +219,10 @@ function valider() {
                 "OSM_ID": adresse_osm_id[adresse_selectionnee],
                 "OSM_TYPE": adresse_osm_type[adresse_selectionnee],
                 "Telephone": telephone.value,
-                "Heure": heureDelivery.value,
+                "Heure": texteOptionSelectionnee,
                 "Emballage": "isotherme"
             };
+
 
             // Enregistre les informations de récupération en session
             console.log(tabInfosRecup);
