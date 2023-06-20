@@ -21,7 +21,6 @@ $(function () {
     const divPrincipale = $("div#wrapper_cuisine");
 
     const boutonValide = $("button#boutonValide");
-    let popup;
 
     // Fonction permettant d'ajouter une div contenant une commande dans le tableau des recettes
     function addCommande(data) {
@@ -65,7 +64,7 @@ $(function () {
                 const left = (width - w) / 2 / systemZoom + dualScreenLeft
                 const top = (height - h) / 2 / systemZoom + dualScreenTop
 
-                popup = window.open(url, titre,
+                window.open(url, titre,
                     `
                           scrollbars=yes,
                           width=${w / systemZoom}, 
@@ -74,8 +73,6 @@ $(function () {
                           left=${left}
                           `
                 );
-
-
 
             });
 
@@ -103,17 +100,6 @@ $(function () {
         divCommande.append(divHeureCom);
         divPrincipale.append(divCommande);
 
-        document.addEventListener('click', function(event) {
-            var targetElement = event.target; // Élément sur lequel vous avez cliqué
-
-            // Vérifiez si l'élément cliqué est à l'intérieur de la pop-up
-            var isClickInsidePopup = popup.contains(targetElement);
-
-            // Fermez la pop-up si l'élément cliqué est à l'extérieur de celle-ci
-            if (!isClickInsidePopup) {
-                popup.close();
-            }
-        });
     }
 
     function addBoutons() {
