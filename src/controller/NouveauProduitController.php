@@ -94,6 +94,14 @@ class NouveauProduitController extends Controller
             if ($ingredientImageEclatee !== null)
                 $ingr->setAfficherVueEclatee(true);
 
+            if (isset($id) and $dao->selectById($id)->isAfficherVueEclatee())
+                $ingr->setAfficherVueEclatee(true);
+
+            if (isset($id) and $ingredientImageEclatee === null and !($dao->selectById($id)->isAfficherVueEclatee()))
+                $ingr->setAfficherVueEclatee(false);
+
+            if (!isset($id) and $ingredientImageEclatee === null)
+                $ingr->setAfficherVueEclatee(false);
 
             if (isset($id)) {
                 // Si $id existe, alors il s'agit d'une mise à jour d'ingrédient.
@@ -126,7 +134,7 @@ class NouveauProduitController extends Controller
             }
             unset($_POST);
         }
-        
+
         $view->renderView();
     }
 }
