@@ -44,10 +44,10 @@ function recupererProduits(booleen) {
         dataType: 'json',
         success: function (data) {
             if (booleen)
-            //Il s'agit d'un changement de fournisseur
+                //Il s'agit d'un changement de fournisseur
                 majProduits(data);
             else
-            //Il s'agit d'une nouvelle ligne produit
+                //Il s'agit d'une nouvelle ligne produit
                 ajouterLigne(data);
             retirerVisuelChargement();
         },
@@ -252,6 +252,16 @@ boutonSubmit.addEventListener("click", function () {
     if (doublonExiste(tableauId)) {
         event.preventDefault();
         alert("Un même ingrédient ne peut apparaître que sur une ligne de votre bon de commande.")
+    }
+
+    else if (ingredientInconnu()) {
+        event.preventDefault();
+        alert("Une ou plusieurs lignes de votre bon de commande contiennent des ingrédients inconnus. Merci de modifier votre sélection.");
+    }
+
+    else if (bdcVide()) {
+        event.preventDefault();
+        alert("Votre bon de commande ne contient aucune ligne. Sélectionnez au moins un produit pour pouvoir passer commande.");
     }
 
     else {
@@ -480,3 +490,34 @@ function doublonExiste(array) {
     var set = new Set(array);
     return set.size !== array.length;
 }
+
+
+//****************************************************************************************************************/
+//****************************************************************************************************************/
+
+
+//Methode qui vérifie la présence de ligne sans ingrédient
+function ingredientInconnu() {
+    var selectElement = document.querySelector('select:empty');
+    if(selectElement != null)
+        return true;
+    else 
+        return false;
+}
+
+
+//****************************************************************************************************************/
+//****************************************************************************************************************/
+
+
+//Methode qui vérifie la présence de ligne sans ingrédient
+function bdcVide() {
+    var theadElement = document.querySelector('thead');
+    if(theadElement.childElementCount == 1)
+        return true;
+    else 
+        return false;
+}
+
+
+
