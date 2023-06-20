@@ -371,6 +371,10 @@ function initButtons() {
                 }
                 pdf.save(nomFichier + '.pdf');
             });
+            refreshMenuGauche(false);
+            buttonSelectEffect(null, null);
+            $('.boutonRapideGraphe').removeClass('boutonRapideGrapheHide');
+            $('.boutonRapideGraphe').addClass('boutonRapideGrapheShow');
         });
 
         // Bouton pour annuler
