@@ -808,7 +808,7 @@ $(document).ready(function () {
                             if (response[0][size] != null) {
                                 if (response[0][size]["nom"] == elemEnfantsDeLigne[1].textContent) {
                                     idIng = response[0][size]["IdIngredient"];
-
+                                    
                                 }
                             }
 
@@ -818,7 +818,8 @@ $(document).ready(function () {
                             var element = {
                                 "ingredient": elemEnfantsDeLigne[1].textContent,
                                 "quantite": elemEnfantsDeLigne[2].children[0].children[0].value,
-                                "id": idIng
+                                "id": idIng,
+                                
                             }
 
                             tabIngrFinaux.push(element);
@@ -837,13 +838,14 @@ $(document).ready(function () {
                         console.log(elemEnfantsDeLigne);
                         console.log(elemEnfantsDeLigne[0]);
                         var idIng;
+                        var ordreI;
 
                         //si la ligne de l'ingrédient a un bouton Retirer
                         for (let size = 0; size < response[3].length; size++) {
                             if (response[0][size] != null) {
                                 if (response[3][size]["nom"] == elemEnfantsDeLigne[0].textContent) {
                                     idIng = response[3][size]["IdIngredient"];
-
+                                    ordreI = recette[3][size]["ordre"];
                                 }
                             }
 
@@ -852,8 +854,8 @@ $(document).ready(function () {
                         var element = {
                             "ingredient": elemEnfantsDeLigne[0].textContent,
                             "quantite": elemEnfantsDeLigne[1].textContent + elemEnfantsDeLigne[2].textContent,
-                            "id": idIng
-
+                            "id": idIng,
+                            "ordre": ordreI
                         }
                         tabIngrFinaux.push(element);
 
@@ -939,7 +941,7 @@ $(document).ready(function () {
         pNom.textContent = supp.nom;
         pQuant.textContent = " " + supp.quantite + " ";
         pUnite.textContent = supp.unite;
-        pPrice.textContent = "    + ➕ " + supp.prix +" €";
+        pPrice.textContent = "    + ➕ " + supp.prix + " €";
 
 
         liSupp.appendChild(pNom);

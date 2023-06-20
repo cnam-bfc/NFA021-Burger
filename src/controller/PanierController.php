@@ -35,4 +35,8 @@ class PanierController extends Controller
         $view->json = $infosJSON;
         $view->renderView();
     }
+
+    function setPanier(){
+        $_SESSION['panier'] = $_POST['panierFinal'];
+    }
 }

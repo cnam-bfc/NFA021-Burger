@@ -107,7 +107,11 @@ class RecapController extends Controller
                             $FinalIngrDAO  = new RecetteFinaleIngredientDAO();
                             $FinalIngr = new RecetteFinaleIngredient();
 
-                            $FinalIngr->setOrdre($i + 1);
+
+
+
+                            $FinalIngr->setOrdre($burger["ingredientsFinaux"][$i]["ordre"]);
+
                             $FinalIngr->setQuantite(intval($burger["ingredientsFinaux"][$i]["quantite"]));
                             $FinalIngr->setIdIngredient($burger["ingredientsFinaux"][$i]["id"]);
                             $FinalIngr->setIdRecetteFinale($idRecetteFinale);

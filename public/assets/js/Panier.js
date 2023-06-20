@@ -18,6 +18,41 @@ function showData() {
             console.log("responseGOOD");
             console.log(response);
             panier = response;
+            console.log(panier[0]);
+            for (var i = 0; i < panier.length; i++) {
+                console.log("zzzz");
+                
+                for (let u = 0; u < panier[i]['ingredientsFinaux'].length; u++) {
+
+                    if ('ordre' in panier[i]['ingredientsFinaux'][u]) {
+                        // Sauvegarde de l'ingrédient optionnel
+                        let saveOptionnel = panier[i]['ingredientsFinaux'][u];
+
+                        // Sauvegarde de l'ingrédient basique (je vais le mettre à ordre + 1)
+                        let saveBasique = panier[i]['ingredientsFinaux'][panier[i]['ingredientsFinaux'][u].ordre - 1];
+
+                        // Mettre les deux éléments à la bonne place
+                        panier[i]['ingredientsFinaux'].splice(panier[i]['ingredientsFinaux'][u].ordre - 1, 0, saveOptionnel);
+                        panier[i]['ingredientsFinaux'].splice(u + 1, 1);
+                    }
+
+                }
+                let ordreIngredient = 0;
+                for (var u = 0; u < panier[i]['ingredientsFinaux'].length; u++) {
+                    console.log(panier[i]['ingredientsFinaux'][u]);
+                    if ('ordre' in panier[i]['ingredientsFinaux'][u]) {
+                        ++ordreIngredient;
+                        console.log(ordreIngredient + " optionnel");
+                    };
+                    if (!('ordre' in panier[i]['ingredientsFinaux'][u])) {
+                        panier[i]['ingredientsFinaux'][u].ordre = ++ordreIngredient;
+                        console.log(ordreIngredient + " basique")
+                    }
+                }
+            }
+            setPanier(panier);
+
+            
             console.log(panier.length);
 
             // Appeler la fonction de traitement du panier
@@ -34,7 +69,7 @@ function showData() {
 // Fonction de traitement du panier
 function processPanier(panier) {
     console.log(panier);
-    
+
     var prixTotal = 0;
 
     //je créer les élément html qui vont constituer mon panier
@@ -158,13 +193,13 @@ function processPanier(panier) {
         console.log(panier[i]);
 
     }
-    if(document.getElementById("Total")){
+    if (document.getElementById("Total")) {
         document.getElementById("Total").remove();
     }
     const divTotal = document.createElement("div");
     divTotal.setAttribute("id", "Total");
     divTotal.textContent = "Prix Total : " + prixTotal + " €";
-    PanierDiv.insertAdjacentElement("afterend",divTotal);
+    PanierDiv.insertAdjacentElement("afterend", divTotal);
     console.log("divTotal OK");
 }
 
@@ -211,9 +246,9 @@ function commander() {
         console.log("div vide");
         alert("Veuillez Ajouter 1 burger au panier");
 
-        
+
     } else {
-        
+
         // écrire les recettes finals en bdd
         // créer une commande en Bdd
         // amener à la page choix Livraison/Click & Collect
@@ -223,6 +258,29 @@ function commander() {
         window.location.href = 'collectLivraison';
 
     }
+}
+
+function setPanier(){
+    $.ajax({
+        url: 'panier/setPanier',
+        method: 'POST',
+        data: {
+            panierFinal: panier
+        },
+        success: function (response) {
+            // La requête a réussi, la variable de session a été modifiée côté serveur
+            console.log('Variable de session modifiée avec succès');
+
+            
+
+        },
+        error: function (xhr, status, error) {
+            // Une erreur s'est produite lors de la requête
+            console.error('Erreur lors de la modification de la variable de session :', error);
+        }
+    });
+
+
 }
 
 
