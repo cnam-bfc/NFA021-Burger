@@ -16,7 +16,7 @@ $(function () {
             divImage.append(img);
             divPrincipale.append(divImage);
             let divIngredients = $("<div>").addClass("ingredients");
-            let pIngredients = $("<p>").text(element.nom);
+            let pIngredients = $("<p>").text(element.quantite +""+element.unite+" "+element.nom);
             divIngredients.append(pIngredients);
             divPrincipale.append(divIngredients);
         });
