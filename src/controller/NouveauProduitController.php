@@ -88,13 +88,12 @@ class NouveauProduitController extends Controller
             $ingr->setIdFournisseur($fournisseur);
             $ingr->setIdUnite($unite);
 
+            $dao = new IngredientDAO();
+
             //S'il y a une image éclatée, on l'ajoute à l'ingrédient
-            if ($ingredientImageEclatee === null)
-                $ingr->setAfficherVueEclatee(false);
-            else
+            if ($ingredientImageEclatee !== null)
                 $ingr->setAfficherVueEclatee(true);
 
-            $dao = new IngredientDAO();
 
             if (isset($id)) {
                 // Si $id existe, alors il s'agit d'une mise à jour d'ingrédient.

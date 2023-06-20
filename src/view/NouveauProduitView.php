@@ -99,7 +99,7 @@
                                 <input type="file" id="eclate" name="eclate"><br><br>
 
                                 <label for="nom"> Ingrédient :</label><br>
-                                <input type="text" id="nom" name="nom" class="courbe remplir" value=<?php echo $ingredient->getNom(); ?> required><br><br>
+                                <input type="text" id="nom" name="nom" class="courbe remplir" value="<?php echo $ingredient->getNom() ?>" required><br><br>
 
                                 <label for="fournisseur" class='bold'>Fournisseur :</label><br>
                                 <select class='courbe' name='fournisseur'><br><br>
