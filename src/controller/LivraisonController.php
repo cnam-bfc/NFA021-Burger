@@ -426,12 +426,7 @@ class LivraisonController extends Controller
         }
 
         // Récupération des commandes du livreur
-        $commandes = $commandeClientLivraisonDAO->selectAllByIdLivreur($livreur->getId());
-
-        // Trier les commandes par date de livraison
-        usort($commandes, function ($a, $b) {
-            return $a->getHeureLivraison() > $b->getHeureLivraison();
-        });
+        $commandes = $commandeClientLivraisonDAO->selectAllByIdLivreurForItineraire($livreur->getId());
 
         $json = array(
             'data' => array(
