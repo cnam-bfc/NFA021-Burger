@@ -35,12 +35,16 @@ class LivraisonController extends Controller
         // Récupération de l'utilisateur connecté
         $userSession = UserSession::getUserSession();
         if ($userSession->isLogged() && $userSession->isLivreur()) {
-            $json['data']['livreur'] = true;
-
             // Récupération du livreur
             $livreur = $livreurDAO->selectById($userSession->getCompte()->getId());
 
             if ($livreur !== null) {
+                $json['data']['livreur'] = array(
+                    'id' => $livreur->getId(),
+                    'nom' => $livreur->getNom(),
+                    'prenom' => $livreur->getPrenom()
+                );
+
                 // Récupération du moyen de transport du livreur
                 $moyenTransport = $moyensTransportDAO->selectById($livreur->getIdMoyenTransport());
 
@@ -196,6 +200,116 @@ class LivraisonController extends Controller
         } else {
             // Prise de la commande
             $commande->setIdLivreur($livreur->getId());
+
+            $commandeClientLivraisonDAO->update($commande);
+
+            $json['success'] = true;
+        }
+
+        $view = new View(BaseTemplate::JSON);
+        $view->json = $json;
+        $view->renderView();
+    }
+
+    public function recupererLivraison()
+    {
+        $json = array(
+            'success' => false,
+            'message' => ''
+        );
+
+        // Récupération de l'utilisateur connecté
+        $userSession = UserSession::getUserSession();
+        if (!$userSession->isLogged()) {
+            ErrorController::error(401, 'Vous devez être connecté pour accéder à cette page');
+        }
+
+        if (!$userSession->isLivreur()) {
+            ErrorController::error(403, 'Vous n\'êtes pas livreur !');
+        }
+
+        // Récupération des données
+        $idCommande = Form::getParam('id', Form::METHOD_POST, Form::TYPE_INT, true);
+
+        // Création des objets DAO
+        $commandeClientLivraisonDAO = new CommandeClientLivraisonDAO();
+        $livreurDAO = new LivreurDAO();
+
+        // Récupération de la commande
+        $commande = $commandeClientLivraisonDAO->selectById($idCommande);
+
+        if ($commande === null) {
+            ErrorController::error(404, 'La commande n\'existe pas');
+        }
+
+        // Récupération du livreur
+        $livreur = $livreurDAO->selectById($userSession->getCompte()->getId());
+
+        if ($livreur === null) {
+            ErrorController::error(404, 'Le livreur n\'existe pas');
+        }
+
+        // Vérification que la commande n'est pas déjà prise
+        if ($commande->getIdLivreur() !== $livreur->getId()) {
+            $json['message'] = 'La commande n\'a pas été prise par vous';
+        } else {
+            // Prise de la commande
+            $commande->setHeureRecuperation(date('Y-m-d H:i:s'));
+
+            $commandeClientLivraisonDAO->update($commande);
+
+            $json['success'] = true;
+        }
+
+        $view = new View(BaseTemplate::JSON);
+        $view->json = $json;
+        $view->renderView();
+    }
+
+    public function terminerLivraison()
+    {
+        $json = array(
+            'success' => false,
+            'message' => ''
+        );
+
+        // Récupération de l'utilisateur connecté
+        $userSession = UserSession::getUserSession();
+        if (!$userSession->isLogged()) {
+            ErrorController::error(401, 'Vous devez être connecté pour accéder à cette page');
+        }
+
+        if (!$userSession->isLivreur()) {
+            ErrorController::error(403, 'Vous n\'êtes pas livreur !');
+        }
+
+        // Récupération des données
+        $idCommande = Form::getParam('id', Form::METHOD_POST, Form::TYPE_INT, true);
+
+        // Création des objets DAO
+        $commandeClientLivraisonDAO = new CommandeClientLivraisonDAO();
+        $livreurDAO = new LivreurDAO();
+
+        // Récupération de la commande
+        $commande = $commandeClientLivraisonDAO->selectById($idCommande);
+
+        if ($commande === null) {
+            ErrorController::error(404, 'La commande n\'existe pas');
+        }
+
+        // Récupération du livreur
+        $livreur = $livreurDAO->selectById($userSession->getCompte()->getId());
+
+        if ($livreur === null) {
+            ErrorController::error(404, 'Le livreur n\'existe pas');
+        }
+
+        // Vérification que la commande n'est pas déjà prise
+        if ($commande->getIdLivreur() !== $livreur->getId()) {
+            $json['message'] = 'La commande n\'a pas été prise par vous';
+        } else {
+            // Prise de la commande
+            $commande->setDateArchive(date('Y-m-d H:i:s'));
 
             $commandeClientLivraisonDAO->update($commande);
 
