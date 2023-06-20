@@ -49,7 +49,7 @@ class StatsVenteBurgerDAO extends DAO
     public function selectAll()
     {
         // Requête
-        $sqlQuery = "   SELECT br.nom,  COUNT(brf.quantite) AS qteTotal
+        $sqlQuery = "   SELECT br.nom,  SUM(brf.quantite) AS qteTotal
                         FROM burger_recette AS br, burger_recette_finale AS brf, burger_commande_client AS bcc
                         WHERE br.id_recette = brf.id_recette_fk
                         AND brf.id_commande_client_fk = bcc.id_commande_client
@@ -84,7 +84,7 @@ class StatsVenteBurgerDAO extends DAO
     public function selectById($id)
     {
         // Requête
-        $sqlQuery = "   SELECT br.nom,  COUNT(brf.quantite) AS qteTotal
+        $sqlQuery = "   SELECT br.nom,  SUM(brf.quantite) AS qteTotal
                         FROM burger_recette AS br, burger_recette_finale AS brf, burger_commande_client AS bcc
                         WHERE br.id_recette = brf.id_recette_fk
                         AND brf.id_commande_client_fk = bcc.id_commande_client
@@ -114,16 +114,32 @@ class StatsVenteBurgerDAO extends DAO
 
     /**
      * Méthode permettant de récupérer un tableau d'objets en fonction de la date de début et de la date de fin (si elle est fournie)
+     * 
+     * EXEMPLE DE REQUEST Avec tous les paramètres :
+     * SELECT br.nom,  SUM(brf.quantite) AS qteTotal
+     * FROM burger_recette AS br, burger_recette_finale AS brf, burger_commande_client AS bcc
+     * WHERE br.id_recette = brf.id_recette_fk
+     * AND brf.id_commande_client_fk = bcc.id_commande_client
+     * AND br.id_recette IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+     * AND bcc.date_commande_client BETWEEN '2021-01-01' AND '2023-12-31'
+     * AND (date_archive IS NULL OR date_archive > NOW())
+     * GROUP BY br.id_recette
+     * ORDER BY qteTotal DESC, br.nom ASC
+     * LIMIT 10;
      *
      * @param string[]|null $ids (tableau d'id)
      * @param string|null $dateDebut (date de début au format YYYY-MM-DD)
      * @param string|null $dateFin (date de fin au format YYYY-MM-DD)
+     * @param int|null $archive (archive) 
+     *  => -1 : Sans les recettes archivées
+     *  => 0 : Toutes les recettes
+     *  => 1 : Uniquement les recettes archivées
      * @return StatsVenteBurger[]|null (tableau d'objet ou null si aucun objet trouvé)
      */
-    public function selectForStatisticsTotal($ids = null, $dateDebut = null, $dateFin = null)
+    public function selectForStatisticsTotal($ids = null, $dateDebut = null, $dateFin = null, $archive = 0)
     {
         // Requête
-        $sqlQuery = "   SELECT br.id_recette ,br.nom,  COUNT(brf.quantite) AS qteTotal
+        $sqlQuery = "   SELECT br.id_recette ,br.nom,  SUM(brf.quantite) AS qteTotal
                         FROM burger_recette AS br, burger_recette_finale AS brf, burger_commande_client AS bcc
                         WHERE br.id_recette = brf.id_recette_fk
                         AND brf.id_commande_client_fk = bcc.id_commande_client";
@@ -141,8 +157,14 @@ class StatsVenteBurgerDAO extends DAO
         if ($dateFin !== null) {
             $sqlQuery .= " AND bcc.date_commande <= :dateFin";
         }
+        if ($archive < 0) {
+            $sqlQuery .= " AND (br.date_archive IS NULL OR br.date_archive > NOW())";
+        } elseif ($archive > 0) {
+            $sqlQuery .= " AND br.date_archive IS NOT NULL AND br.date_archive <= NOW()";
+        }
         $sqlQuery .= "  GROUP BY br.id_recette
-                        ORDER BY qteTotal DESC;";
+                        ORDER BY qteTotal DESC, br.nom ASC
+                        LIMIT 10;";
         $statement = $this->pdo->prepare($sqlQuery);
         if ($ids !== null && count($ids) > 0) {
             foreach ($ids as $id) {
@@ -175,7 +197,6 @@ class StatsVenteBurgerDAO extends DAO
             // Ajout de l'objet dans le tableau
             $statsVenteBurgers[] = $statsVenteBurger;
         }
-
         return $statsVenteBurgers;
     }
 

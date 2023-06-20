@@ -1,5 +1,3 @@
-
-
 var panier;
 
 //cette fonction doit lire la variable de session Panier
@@ -33,10 +31,10 @@ function showData() {
 }
 
 
-
 // Fonction de traitement du panier
 function processPanier(panier) {
     console.log(panier);
+    
     var prixTotal = 0;
 
     //je créer les élément html qui vont constituer mon panier
@@ -70,7 +68,6 @@ function processPanier(panier) {
         theadBurger.appendChild(tr1);
 
 
-
         tr1.appendChild(buttonSupprimer);
 
         //2ème Partie du tableau
@@ -95,29 +92,57 @@ function processPanier(panier) {
         //arrondir à 2 décimales le prix total
         prixTotal = prixTotal.toFixed(2);
 
-
-
+        console.log("panier i")
+        console.log(panier[i]);
         //ici une boucle for est nécessaire pour parcourir les ingrédients de la variable de Session['panier']
-        for (let index = 0; index < panier[i]["ingredientsFinaux"].length; index += 2) {
-            const ingredient = panier[i]["ingredientsFinaux"][index];
-            const quantite = panier[i]["ingredientsFinaux"][index + 1];
+        if (panier[i]["carteburger"] === true) {
+            for (let index = 0; index < panier[i]["ingredientsFinaux"].length; index++) {
 
-            //je créer la ligne qui contient 1 ingrédient
-            const ligneIngr = document.createElement("tr");
-            const cellIngr = document.createElement("td");
-            const cellNumb = document.createElement("td");
-            cellIngr.setAttribute('id', 'Ingredient');
-            cellNumb.setAttribute('id', 'Quantite');
-            cellIngr.textContent = ingredient;
-            cellNumb.textContent = quantite;
+                const ingredient = panier[i]["ingredientsFinaux"][index]['nom'];
+                const quantite = panier[i]["ingredientsFinaux"][index]['quantite'];
+
+                //je créer la ligne qui contient 1 ingrédient
+                const ligneIngr = document.createElement("tr");
+                const cellIngr = document.createElement("td");
+                const cellNumb = document.createElement("td");
+                cellIngr.setAttribute('id', 'Ingredient');
+                cellNumb.setAttribute('id', 'Quantite');
+                cellIngr.textContent = ingredient;
+                cellNumb.textContent = quantite;
 
 
-            //je mets les 2 cellulles dans la ligne
-            ligneIngr.appendChild(cellIngr);
-            ligneIngr.appendChild(cellNumb);
+                //je mets les 2 cellulles dans la ligne
+                ligneIngr.appendChild(cellIngr);
+                ligneIngr.appendChild(cellNumb);
 
-            // je mets la ligne dans la 2nde partie du tableau
-            tbodyBurger.appendChild(ligneIngr);
+                // je mets la ligne dans la 2nde partie du tableau
+                tbodyBurger.appendChild(ligneIngr);
+
+            }
+        } else {
+            for (let index = 0; index < panier[i]["ingredientsFinaux"].length; index++) {
+
+                const ingredient = panier[i]["ingredientsFinaux"][index]['ingredient'];
+                const quantite = panier[i]["ingredientsFinaux"][index]['quantite'];
+
+                //je créer la ligne qui contient 1 ingrédient
+                const ligneIngr = document.createElement("tr");
+                const cellIngr = document.createElement("td");
+                const cellNumb = document.createElement("td");
+                cellIngr.setAttribute('id', 'Ingredient');
+                cellNumb.setAttribute('id', 'Quantite');
+                cellIngr.textContent = ingredient;
+                cellNumb.textContent = quantite;
+
+
+                //je mets les 2 cellulles dans la ligne
+                ligneIngr.appendChild(cellIngr);
+                ligneIngr.appendChild(cellNumb);
+
+                // je mets la ligne dans la 2nde partie du tableau
+                tbodyBurger.appendChild(ligneIngr);
+
+            }
         }
 
 
@@ -133,14 +158,15 @@ function processPanier(panier) {
         console.log(panier[i]);
 
     }
+    if(document.getElementById("Total")){
+        document.getElementById("Total").remove();
+    }
     const divTotal = document.createElement("div");
     divTotal.setAttribute("id", "Total");
     divTotal.textContent = "Prix Total : " + prixTotal + " €";
-    PanierDiv.appendChild(divTotal);
+    PanierDiv.insertAdjacentElement("afterend",divTotal);
     console.log("divTotal OK");
 }
-
-
 
 
 function supprimer(idElem) {
@@ -170,7 +196,6 @@ function supprimer(idElem) {
             panierIndicateur.textContent = parseInt(panierIndicateur.textContent) - 1;
 
 
-
         },
         error: function (xhr, status, error) {
             // Une erreur s'est produite lors de la requête
@@ -182,19 +207,21 @@ function supprimer(idElem) {
 
 function commander() {
     //je vérifie si le panier est vide ou non
-    if (!document.getElementById('Panier').length) {
+    if (document.getElementById('Panier').innerHTML === "") {
+        console.log("div vide");
+        alert("Veuillez Ajouter 1 burger au panier");
+
+        
+    } else {
+        
         // écrire les recettes finals en bdd
         // créer une commande en Bdd
         // amener à la page choix Livraison/Click & Collect
         console.log("div pas vide");
 
         // Remplacez l'URL par l'adresse de la page recap
-        window.location.href = 'recap';
+        window.location.href = 'collectLivraison';
 
-    }
-    else {
-
-        console.log("div vide");
     }
 }
 

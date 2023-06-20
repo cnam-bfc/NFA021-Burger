@@ -3,47 +3,29 @@
 
 
 <div class="wrapper axe_colonne ">
-    <div id="choice">
-        <input type="checkbox" name="click_collect" id="bclick_collect" checked>
-        <label for="click_collect">Click & Collect</label>
+    <div id="choice" class="width_90 margin_auto">
+        <input type="button" name="click_collect" id="bclick_collect" value="Retrait en Restaurant">
 
-        <input type="checkbox" name="delivery" id="bdelivery">
-        <label for="delivery">Delivery</label>
+
+        <input type="button" name="delivery" id="bdelivery" value="Livraison">
+
     </div>
 
 
+    <div id="custom-cursor"></div>
 
 
     <div class="wrapper axe_ligne width_90 margin_auto " id="boxs">
 
         <!-- Boite de rensignement d'informations pour une Livraison -->
         <div class="box" id="delivery" style="display: none;">
-            <h2 class="box_titre">Delivery</h2>
+            <h2 class="box_titre">Livraison</h2>
             <div class="box_contenu">
-                <!-- Champ pour le code Postal-->
-                <div class="form-input" >
-                    <label for="cp">Code Postal</label>
-                    <input type="text" id="cp" name="cp" placeholder="XX XXX" pattern="[0-9]{5}" required required>
-                </div>
-                <!-- Champ pour la ville -->
+                <!-- Champ pour l'adresse du client-->
                 <div class="form-input">
-                    <label for="ville">Ville</label>
-                    <input type="text" id="ville" name="ville" placeholder="city" required minlength=1 maxlength=250><?php if (isset($recetteDescription)) echo $recetteDescription; ?></textarea>
-                </div>
-                <!-- Champ pour la voie -->
-                <div class="form-input">
-                    <label for="voie">Voie</label>
-                    <input type="text" id="voie" name="voie" placeholder="De Traumi" required>
-                </div>
-                <!-- Champ pour le n° de voie -->
-                <div class="form-input">
-                    <label for="numeroVoie">N° de Voie</label>
-                    <input type="number" id="numeroVoie" name="numeroVoie" min="1" placeholder="21" required>
-                </div>
-
-                <!-- Boutton pour vérifier l'adresse -->
-                <div>
-                    <button>Verify adresse</button>
+                    <label for="adresse">Adresse</label>
+                    <input type="text" id="adresse" name="adresse" placeholder="Adresse complète" required>
+                    <div id="suggestions"></div>
                 </div>
 
                 <!-- Champ pour le numéro de téléphone du client-->
@@ -63,20 +45,49 @@
 
         <!-- Boite de rensignement d'informations pour une Collecte en restaurant -->
         <div class="box" id="clickCollect">
-            <h2 class="box_titre">Click & Collect</h2>
+            <h2 class="box_titre">Retrait en Restaurant</h2>
             <div class="box_contenu">
-                <!--Adresse du restaurant-->
-                <p>14 Boulevard Magenta</p>
-
-                <!--image du restaurant-->
-                <img src="<?php echo IMG; ?>Logo/LogoElanChalonImage.png"></img>
                 <div class="form-input">
-                    <label for="heureCollect">Choisir une heure:</label>
-                    <input type="time" id="heureCollect" name="heureCollect" min="<?php echo date('H:i', ceil(time() / 900) * 900); ?>" max="<?php echo date('H:i', floor(time() / 900) * 900 + 86400); ?>" step="900" required value="<?php echo date('H:i', ceil((time() + 1200) / 900) * 900); ?>">
+                    <label for="heureCollect">Choisir une heure :</label>
+                    <select id="heureCollect" name="heureCollect" required>
+                    </select>
+
+                    <script>
+                        // Date actuelle
+                        let heure = new Date();
+                        // On récupère l'heure actuelle au quart d'heure supérieur
+                        heure.setMinutes(Math.ceil(heure.getMinutes() / 15) * 15);
+
+                        // On affiche les 12 prochains quarts d'heure
+                        for (let i = 0; i < 12; i++) {
+                            let heureTimestamp = heure.getTime();
+                            let heureString = heure.getHours() + ":" + heure.getMinutes();
+                            if (heure.getMinutes() < 10) {
+                                heureString += "0";
+                            }
+                            // On ajoute une option au select
+                            document.getElementById("heureCollect").innerHTML += "<option value='" + heureTimestamp + "'>" + heureString + "</option>";
+                            // On ajoute 15 minutes à l'heure
+                            heure.setMinutes(heure.getMinutes() + 15);
+                        }
+                    </script>
+
+
+
                 </div>
                 <div class="form-input">
                     <label for="prenom">Votre Prénom :</label>
                     <input type="txt" id="prenom" name="prenom" pattern="[a-zA-Z\u00C0-\u024F\u1E00-\u1EFF\s-]+" required>
+                </div>
+                <div class="form-input">
+                    <label for="emballage">Choisissez un type d'emballage :</label>
+                    <select id="emballage" name="emballage">
+                        <option value="carton">Carton</option>
+                        <option value="isotherme">Isotherme</option>
+                    </select>
+
+
+
                 </div>
 
 

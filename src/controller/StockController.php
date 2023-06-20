@@ -232,7 +232,7 @@ class StockController extends Controller
 
         // on récupère tous les ingrédients
         $ingredientDAO = new IngredientDAO();
-        $ingredients = $ingredientDAO->selectAllWithoutIngredientsNonArchive($data);
+        $ingredients = $ingredientDAO->selectAllWithoutIngredientsNonArchiveForAFournisseur($data['fournisseur'],$data['recette']);
 
         // on récupère toutes les unités
         $uniteDAO = new UniteDAO();

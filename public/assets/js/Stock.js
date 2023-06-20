@@ -5,7 +5,7 @@ $(document).ready(function () {
     // message dans la console 
     console.log('Stock.js');
 
-    // évènements 
+    // évènements sur les boutons
     $("#ajouter_ingredient").on('click', onAjouterNewIngredient);
     $('#bouton_annuler_ajouter_ingredient').on('click', onAnnulerAjouterIngredient);
     $('#bouton_mise_a_jour').on('click', validationFormulaire);
@@ -238,6 +238,8 @@ refreshTableau = function (idCommande) {
     tbody.append(ligne);
 
     if (idCommande > 0) {
+        // on cache les td dans le tfoot
+        $('#tableau_inventaire>tfoot>tr>td').hide();
         // on récupère tous les ingrédients associés à la commande avec une requête ajax
         $.ajax({
             url: 'stock/refreshTableauIngredientsAJAX',
@@ -256,6 +258,8 @@ refreshTableau = function (idCommande) {
                 if (data.length == 0) {
                     // On remplie avec une ligne qui dit pas d'ingrédients
                     ligneDeTexteTBody("Aucun ingrédient n'a été trouvé dans la base de données");
+                    // on re affiche le td dans le tfoot
+                    $('#tableau_inventaire>tfoot>tr>td').show();
                     return;
                 }
 
@@ -270,6 +274,10 @@ refreshTableau = function (idCommande) {
                     };
                     ajouterLigneTBody(element.id, element.nom, element.photo, element.quantite_attendu, element.unite);
                 });
+                // on re affiche le td dans le tfoot
+                $('#tableau_inventaire>tfoot>tr>td').show();
+                // on met à jour le select des ingrédients
+                onAjouterNewIngredient();
             },
             error: function (data) {
                 // message dans la console
@@ -277,6 +285,9 @@ refreshTableau = function (idCommande) {
 
                 // on retire tout ce qu'il y a dans le tbody
                 tbody.empty();
+
+                // on re affiche le td dans le tfoot
+                $('#tableau_inventaire>tfoot>tr>td').show();
 
                 // On remplie avec une ligne qui dit pas d'ingrédients
                 ligneDeTexteTBody("La récupération des ingrédients a échoué");
@@ -355,7 +366,7 @@ ajouterLigneTBody = function (id, nom, photo, quantite_attendu, unite) {
     let div3 = $("<div></div>").addClass("wrapper main_axe_center second_axe_center");
     if (!(typeof bdcActuel[id] !== 'undefined')) {
         let button = $("<button></button>").addClass("bouton");
-        let icon = $("<i></i>").addClass("fa-solid fa-trash");
+        let icon = $("<i></i>").addClass("fa-solid fa-eye");
         button.append(icon);
         button.on("click", suppressionIngredient);
         div3.append(button);
@@ -417,12 +428,13 @@ function onAjouterNewIngredient() {
     boutonAjouterNewIngredient.prop("disabled", true);
 
     // on récupère le data_id de toutes les lignes du tbody
-    let data_id = new Array();
+    let data_id = {};
+    data_id['recette'] = new Array();
+    data_id['fournisseur'] = $('#select_fournisseur').find(':selected').attr('id_fournisseur');
     $('#tableau_inventaire tbody tr').each(function () {
-        data_id.push($(this).attr('data_id'));
+        data_id['recette'].push($(this).attr('data_id'));
     });
     console.log(data_id);
-    // on transforme en json
     data_id = JSON.stringify(data_id);
     console.log(data_id);
 
@@ -436,7 +448,7 @@ function onAjouterNewIngredient() {
         },
         success: function (data) {
             if (data.length == 0) {
-                alert("Tous les ingrédients de la base de données sont déjà dans l'inventaire");
+                alert("Tous les ingrédients de la base de données pour ce fournisseur sont déjà dans l'inventaire");
                 // Réafficher le bouton d'ajout d'ingrédient
                 boutonAjouterNewIngredient.html(old_html);
                 boutonAjouterNewIngredient.prop("disabled", false);
@@ -541,14 +553,14 @@ function onIngredientSelected(data) {
 }
 
 // fonction qui permet de mettre le bon fournisseur dans le select fournisseur
-mettreAJourFournisseur = function (id_fournisseur) {
+mettreAJourFournisseur = function (idFournisseur) {
     // message dans la console
     console.log('Stock.js - mise à jour fournisseur');
 
     // on récupère le select fournisseur
     let select_fournisseur = $('#select_fournisseur');
 
-    if (id_fournisseur == -1) {
+    if (idFournisseur == -1) {
         // on désactive le select fournisseur
         $('#select_fournisseur').prop('disabled', false);
         let option = select_fournisseur.find('[id_fournisseur="0"]');
@@ -557,7 +569,7 @@ mettreAJourFournisseur = function (id_fournisseur) {
     } else {
         // on active le select fournisseur
         $('#select_fournisseur').prop('disabled', true);
-        let option = select_fournisseur.find('[id_fournisseur="' + id_fournisseur + '"]');
+        let option = select_fournisseur.find('[id_fournisseur="' + idFournisseur + '"]');
         // on dit au select de prendre cette option
         select_fournisseur.val(option.val());
     }

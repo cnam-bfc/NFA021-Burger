@@ -1,0 +1,49 @@
+#wrapper_burger {
+    margin: 0 0 0 30%;
+    align-items: center;
+    align-content: center;
+}
+h1 {
+    width: 30%;
+}
+
+.titre_souligne {
+    font-size: 2em;
+}
+h2 {
+    text-align: center;
+    font-size: 3em;
+}
+
+.image {
+    margin: 0 auto 10px auto;
+
+    width: 50%;
+    height: 50%;
+}
+img {
+    width: 50%;
+    margin: 0 auto 0 auto;
+    text-align: center;
+}
+
+.ingredients {
+    width: 50%;
+    margin-bottom: 20px;
+    font-size: 1.25em;
+    text-align: left;
+}
+.ingredients p {
+    text-align: left;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    font-size: 18px;
+    margin-bottom: 10px;
+}

@@ -1,3 +1,8 @@
+#AllPanier {
+    margin: auto; /* Centre la div horizontalement */
+    border: 1rem solid #363636; /* Ajoute une bordure de 1rem (16 pixels) solide de couleur #FF6666 */
+    padding: 30px; /* Ajoute un espace intérieur de 10 pixels */
+}
 #Panier {
     /*background-color: red;*/
     height: auto;
@@ -6,7 +11,7 @@
     text-align: left;
 }
 #Panier h2{
-    width: 100%;
+    width: auto;
     text-align: center;
     
 }

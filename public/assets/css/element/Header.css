@@ -111,12 +111,12 @@ header li a {
     font-weight: 600;
 }
 
+.color_not_sticky {
+    color: var(--primaire);
+}
+
 @media screen and (max-width: 800px) {
     .nav-links {
-        display: none;
-    }
-
-    .header_nav_background_anim {
         display: none;
     }
 }
@@ -135,5 +135,6 @@ header li a {
 
     header li a {
         padding: 5px;
+        flex-direction: column;
     }
 }

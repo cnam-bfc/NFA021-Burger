@@ -12,7 +12,7 @@
     </script> -->
     <div class="wrapper main_axe_space_around">
 
-        <h3 class="titre titre_margin_top titre_margin_bottom">Vos Ingrédients</h1>
+        <h1 class="titre_souligne titre_margin_top titre_margin_bottom">Vos Ingrédients</h1>
 
 
     </div>
@@ -30,7 +30,7 @@
 
         <!-- ************************* DEBUT - EXEMPLE TABLEAU ************************* -->
         <div class="wrapper axe_colonne second_axe_center" id="modifier">
-            <h2 class="zoneTxtGris">Modifier la recette</h2>
+
 
             <!-- Tableau contenant les ingrédients de la recette -->
             <table class="tableau">
@@ -51,7 +51,25 @@
                     <tr></tr>
                     <tr>
                         <td colspan="6">
-                            <button class="bouton" id="ajouter_ingredient"><i class="fa-solid fa-plus"></i> Ajouter un ingrédient</button>
+
+                            <button class="bouton" id="bouton_ajouter_supplement"><i class="fa-solid fa-plus"></i> Ajouter un Supplément</button>
+                            <div id="ajouter_ingredient" hidden>
+                                <select id="select_ajouter_ingredient">
+
+                                </select>
+                                <button type="button" class="bouton" id="bouton_annuler_ajouter_ingredient"><i class="fa-solid fa-times"></i></button>
+                            </div>
+                        </td>
+
+                    </tr>
+                    <tr></tr>
+                    <tr>
+                        <td colspan="6">
+                            <ul id="ulSupp">            
+                                
+
+                            </ul>
+
                         </td>
                     </tr>
                 </tfoot>
@@ -63,10 +81,7 @@
 
 
 
-        <h2 class="zoneTxtGris">Ajouter des suppléments</h2>
-        <div id="supplements">
 
-        </div>
         <!--#supplements-->
     </div><!--#ModifsBurgers-->
 
