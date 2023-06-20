@@ -235,7 +235,8 @@ function valider() {
                 success: function (response) {
                     console.log("responseGOOD");
                     console.log(response);
-
+                    console.log("a");
+                    window.location.href = 'recap';
                 },
                 error: function (xhr, status, error) {
                     console.log("Erreur lors de la requête AJAX : " + error);
@@ -243,8 +244,6 @@ function valider() {
                     console.log('Objet JSON envoyé : ' + JSON.stringify(tabInfosRecup));
                 }
             });
-            console.log("a");
-            window.location.href = 'recap';
         }
 
     } else if (delivery.style.display == "none") {// Si le bouton "Cliquez & Collectez" est coché, enregistre le mode de récupération en session
@@ -283,7 +282,8 @@ function valider() {
                 success: function (response) {
                     console.log("responseGOOD");
                     console.log(response);
-
+                    console.log("a");
+                    window.location.href = 'recap';        
                 },
                 error: function (xhr, status, error) {
                     console.log("Erreur lors de la requête AJAX : " + error);
@@ -291,8 +291,6 @@ function valider() {
                     console.log('Objet JSON envoyé : ' + JSON.stringify(tabInfosRecup));
                 }
             });
-            console.log("a");
-            window.location.href = 'recap';
         }
     } else {
         // Si aucun bouton n'est coché, affiche un message d'erreur
