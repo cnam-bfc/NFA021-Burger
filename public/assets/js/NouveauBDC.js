@@ -53,6 +53,7 @@ function recupererProduits(booleen) {
         },
 
         error: function (data) {
+            retirerVisuelChargement();
             console.log('Bdc.js - BDC - error');
         }
     });
@@ -341,7 +342,8 @@ function ajusterPrixEtIdChaqueProduit() {
         var td1 = selectElement.parentNode;
         var td2 = td1.nextElementSibling.nextElementSibling;
         var unite = td2.querySelector("input");
-        unite.value = selectElement.selectedOptions[0].getAttribute('name');;
+        if (typeof selectElement.selectedOptions[0] !== 'undefined')
+            unite.value = selectElement.selectedOptions[0].getAttribute('name');
 
         var td1 = selectElement.parentNode;
         var td3 = td1.nextElementSibling.nextElementSibling.nextElementSibling;
@@ -350,7 +352,8 @@ function ajusterPrixEtIdChaqueProduit() {
 
         var td4 = td3.nextElementSibling;
         var id = td4.querySelector("input");
-        id.value = selectElement.selectedOptions[0].id;
+        if (typeof selectElement.selectedOptions[0] !== 'undefined')
+            id.value = selectElement.selectedOptions[0].id;
     });
 }
 
@@ -499,9 +502,9 @@ function doublonExiste(array) {
 //Methode qui vérifie la présence de ligne sans ingrédient
 function ingredientInconnu() {
     var selectElement = document.querySelector('select:empty');
-    if(selectElement != null)
+    if (selectElement != null)
         return true;
-    else 
+    else
         return false;
 }
 
@@ -513,9 +516,9 @@ function ingredientInconnu() {
 //Methode qui vérifie la présence de ligne sans ingrédient
 function bdcVide() {
     var theadElement = document.querySelector('thead');
-    if(theadElement.childElementCount == 1)
+    if (theadElement.childElementCount == 1)
         return true;
-    else 
+    else
         return false;
 }
 
