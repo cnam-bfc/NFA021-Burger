@@ -35,10 +35,34 @@
 
                 </div>
                 <!-- Boutton pour vérifier le numéro de téléphone -->
-                <button>Verify Number</button>
+                
                 <div class="form-input">
-                    <label for="heureDelivery">Choisir une heure:</label>
-                    <input type="time" id="heureDelivery" name="heureDelivery" min="<?php echo date('H:i', ceil(time() / 900) * 900); ?>" max="<?php echo date('H:i', floor(time() / 900) * 900 + 86400); ?>" step="900" required value="<?php echo date('H:i', ceil((time() + 1200) / 900) * 900); ?>">
+                    <label for="heureDelivery" >Choisir une heure:</label>
+                    <select id="heureDelivery" name="heureDelivery" required>
+
+
+
+                    </select>
+                    <script>
+                        // Date actuelle
+                        let heureDel = new Date();
+                        // On récupère l'heure actuelle au quart d'heure supérieur
+                        heureDel.setMinutes(Math.ceil(heureDel.getMinutes() / 15) * 15);
+
+                        // On affiche les 12 prochains quarts d'heure
+                        for (let i = 0; i < 12; i++) {
+                            let heureTimestamp = heureDel.getTime();
+                            let heureString = heureDel.getHours() + ":" + heureDel.getMinutes();
+                            if (heureDel.getMinutes() < 10) {
+                                heureString += "0";
+                            }
+                            // On ajoute une option au select
+                            document.getElementById("heureDelivery").innerHTML += "<option value='" + heureTimestamp + "'>" + heureString + "</option>";
+                            // On ajoute 15 minutes à l'heure
+                            heureDel.setMinutes(heureDel.getMinutes() + 15);
+                        }
+                    </script>
+
                 </div>
             </div>
         </div>
