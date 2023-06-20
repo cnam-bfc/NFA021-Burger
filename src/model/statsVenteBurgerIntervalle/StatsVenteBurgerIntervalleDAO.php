@@ -79,7 +79,7 @@ class StatsVenteBurgerIntervalleDAO extends DAO
      * ORDER BY br.id_recette, annee, mois, jour;
      *
      * @param string[] $ids (tableau d'id)
-     * @param int|null $intervalle (intervalle de temps)
+     * @param int $intervalle (intervalle de temps)
      *  => 0 : Jour
      *  => 1 : Mois
      *  => 2 : Annee
@@ -91,7 +91,7 @@ class StatsVenteBurgerIntervalleDAO extends DAO
      *  => 1 : Uniquement les recettes archivées
      * @return StatsVenteBurgerIntervalle[]|null (tableau d'objet ou null si aucun objet trouvé)
      */
-    public function selectForStatisticsTemps($ids, $intervalle = 1, $dateDebut, $dateFin, $archive = 0)
+    public function selectForStatisticsTemps($ids, $intervalle, $dateDebut, $dateFin, $archive = 0)
     {
         // Requête
         // On prépare des morceaux de requête en fonction de l'intervalle

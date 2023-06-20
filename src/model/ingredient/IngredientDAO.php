@@ -291,7 +291,7 @@ class IngredientDAO extends DAO
      * @param [$id] $tableauIdIngredients
      * @return array (tableau d'objets)
      */
-    public function selectAllWithoutIngredientsNonArchiveForAFournisseur($fournisseur = null, $tableauIdIngredients)
+    public function selectAllWithoutIngredientsNonArchiveForAFournisseur($fournisseur, $tableauIdIngredients)
     {
         // Requête préparée
         $sqlQuery = "SELECT * FROM burger_ingredient WHERE (date_archive IS NULL OR date_archive > NOW())
