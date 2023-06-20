@@ -59,7 +59,7 @@ class LivraisonController extends Controller
 
         // Trier les commandes par date de livraison
         usort($commandes, function ($a, $b) {
-            return $a->getHeureLivraison() > $b->getHeureLivraison();
+            return $a->getHeureLivraison() <=> $b->getHeureLivraison();
         });
 
         // Formatage des commandes en json
