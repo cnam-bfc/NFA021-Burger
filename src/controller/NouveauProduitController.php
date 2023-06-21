@@ -133,6 +133,9 @@ class NouveauProduitController extends Controller
                 move_uploaded_file($ingredientImageEclatee['tmp_name'], $ingredientEclatee);
             }
             unset($_POST);
+
+            header("Location: listeproduits");
+            exit;
         }
 
         $view->renderView();
