@@ -1,3 +1,7 @@
+h1 {
+  display: inline-block;
+  width: auto;
+}
 h2 {
   padding: 4px;
   text-decoration: underline;
@@ -95,6 +99,16 @@ button {
 
 #bouton_ajouter_supplement {
   width: 100%;
+}
+
+#title{
+  display: block;
+  text-align: center;
+  margin-bottom: 40px;
+}
+#descriptif{
+  width:60%;
+  margin: auto;
 }
 
 /*---------Class------------*/

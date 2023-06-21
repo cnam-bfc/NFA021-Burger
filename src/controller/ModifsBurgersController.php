@@ -41,6 +41,7 @@ class ModifsBurgersController extends Controller
         $Recette = $RecetteDAO->selectById((int)$idRecette);
         $prix = $Recette->getPrix();
         $nomRecette = $Recette->getNom();
+        $descriptif = $Recette->getDescription();
 
         if ($tabRecettesSelectionMultiple != null) {
 
@@ -159,7 +160,7 @@ class ModifsBurgersController extends Controller
         });
         /////////////////////FIN POUR LES SUPPLEMENTS////////////////////////////////////////////
 
-        $tabRecette = array($tabResult, $prix, $nomRecette,$SupplementsTab);
+        $tabRecette = array($tabResult, $prix, $nomRecette,$SupplementsTab,$descriptif);
         // echo ("resultat");
         // var_dump($tabRecette);
 

@@ -64,6 +64,7 @@ function showData(BurgerID) {
                 afficherTabModifBurger(response[0][i], response[0], indice);
 
             }
+            afficherDescriptif(response);
             //afficher le prix ici : 
 
             const montant = document.getElementById("Montant");
@@ -87,7 +88,10 @@ function showData(BurgerID) {
 }
 
 
+function afficherDescriptif(response){
+    document.getElementById('descriptif').textContent = response[4];
 
+}
 
 
 //ajout de i en paramètre pour le cas ou l'ingrédient est a selection multiple
@@ -941,7 +945,7 @@ $(document).ready(function () {
         pNom.textContent = supp.nom;
         pQuant.textContent = " " + supp.quantite + " ";
         pUnite.textContent = supp.unite;
-        pPrice.textContent = "    + ➕ " + supp.prix + " €";
+        pPrice.textContent = "    ➕ " + supp.prix + " €";
 
 
         liSupp.appendChild(pNom);
