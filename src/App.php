@@ -1,7 +1,7 @@
 <?php
 class App
 {
-    const VERSION = "1.0.1";
+    const VERSION = "1.0.2";
 
     /**
      * Méthode permettant de récupérer la version de git
