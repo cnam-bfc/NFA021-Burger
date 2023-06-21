@@ -22,6 +22,7 @@ $(function () {
 
         // Création du bouton contenant la balise d'ajout au panier
         let boutonAjoutPanier = $("<button>").html("<i class='fa-solid fa-plus fa-l'></i>").addClass("boutonAjout");
+        boutonAjoutPanier.attr("disabled", "disabled");
         boutonAjoutPanier.click(function () {
 
             $.ajax({
