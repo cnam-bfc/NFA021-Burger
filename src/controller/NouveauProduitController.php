@@ -88,13 +88,20 @@ class NouveauProduitController extends Controller
             $ingr->setIdFournisseur($fournisseur);
             $ingr->setIdUnite($unite);
 
+            $dao = new IngredientDAO();
+
             //S'il y a une image éclatée, on l'ajoute à l'ingrédient
-            if ($ingredientImageEclatee === null)
-                $ingr->setAfficherVueEclatee(false);
-            else
+            if ($ingredientImageEclatee !== null)
                 $ingr->setAfficherVueEclatee(true);
 
-            $dao = new IngredientDAO();
+            if (isset($id) and $dao->selectById($id)->isAfficherVueEclatee())
+                $ingr->setAfficherVueEclatee(true);
+
+            if (isset($id) and $ingredientImageEclatee === null and !($dao->selectById($id)->isAfficherVueEclatee()))
+                $ingr->setAfficherVueEclatee(false);
+
+            if (!isset($id) and $ingredientImageEclatee === null)
+                $ingr->setAfficherVueEclatee(false);
 
             if (isset($id)) {
                 // Si $id existe, alors il s'agit d'une mise à jour d'ingrédient.
@@ -126,8 +133,11 @@ class NouveauProduitController extends Controller
                 move_uploaded_file($ingredientImageEclatee['tmp_name'], $ingredientEclatee);
             }
             unset($_POST);
+
+            header("Location: listeproduits");
+            exit;
         }
-        
+
         $view->renderView();
     }
 }

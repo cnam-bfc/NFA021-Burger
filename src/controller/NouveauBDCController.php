@@ -6,7 +6,7 @@ class NouveauBDCController extends Controller
         $view = new View(BaseTemplate::EMPLOYE, 'NouveauBDCView');
         $fournisseurDao = new FournisseurDAO();
 
-        $view->fournisseurs = $fournisseurDao->selectAll();
+        $view->fournisseurs = $fournisseurDao->selectAllNonArchive();
 
         //Si le tableau $_POST existe alors il s'agit d'un bdc qui existait déjà en bdd, on récupère les données
         if (!empty($_GET)) {

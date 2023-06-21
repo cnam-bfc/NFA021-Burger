@@ -8,7 +8,7 @@ RUN docker-php-ext-install pdo_mysql
 RUN a2enmod rewrite
 
 # Use the default production configuration
-RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+#RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 # Set Apache document root
 ENV APACHE_DOCUMENT_ROOT=/app/public

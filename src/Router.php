@@ -134,6 +134,8 @@ class Router
         'livreur/livraisons' => ["controller" => "LivraisonController", "method" => "renderViewLivraison"],
         'livreur/livraisons/list' => ["controller" => "LivraisonController", "method" => "listeLivraisons"],
         'livreur/livraisons/prendre' => ["controller" => "LivraisonController", "method" => "prendreLivraison"],
+        'livreur/livraisons/recuperer' => ["controller" => "LivraisonController", "method" => "recupererLivraison"],
+        'livreur/livraisons/terminer' => ["controller" => "LivraisonController", "method" => "terminerLivraison"],
         'livreur/itineraire' => ["controller" => "LivraisonController", "method" => "renderViewItineraire"],
         'livreur/itineraire/moyenstransport' => ["controller" => "LivraisonController", "method" => "listeMoyensTransport"],
         'livreur/itineraire/moyentransport' => ["controller" => "LivraisonController", "method" => "saveMoyenTransport"],

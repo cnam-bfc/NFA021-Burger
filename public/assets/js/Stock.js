@@ -393,6 +393,8 @@ let suppressionIngredient = function () {
         // on ajoute une ligne dans le tableau avec un message d'erreur
         ligneDeTexteTBody("Vous n'avez plus d'ingrédient à mettre à jour");
     }
+
+    $("#ajouter_ingredient").html('<i class="fa-solid fa-plus"></i> Ajouter un ingrédient');
 };
 
 let ligneDeTexteTBody = function (texte) {
@@ -448,16 +450,15 @@ function onAjouterNewIngredient() {
         },
         success: function (data) {
             if (data.length == 0) {
-                alert("Tous les ingrédients de la base de données pour ce fournisseur sont déjà dans l'inventaire");
                 // Réafficher le bouton d'ajout d'ingrédient
-                boutonAjouterNewIngredient.html(old_html);
+                boutonAjouterNewIngredient.text('Tous les ingrédients disponibles pour ce fournisseur sont déjà dans le tableau');
                 boutonAjouterNewIngredient.prop("disabled", false);
                 return;
             }
 
             // Cacher le bouton d'ajout d'ingrédient
             boutonAjouterNewIngredient.hide();
-            boutonAjouterNewIngredient.html(old_html);
+            boutonAjouterNewIngredient.html('<i class="fa-solid fa-plus"></i> Ajouter un ingrédient');
             boutonAjouterNewIngredient.prop("disabled", false);
 
             // Afficher le formulaire d'ajout d'ingrédient

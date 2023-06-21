@@ -26,8 +26,8 @@
 }
 
 img {
-    width: 70%;
-    height: auto;
+    width: auto;
+    height: 150px;
 }
 .margin_titre {
     margin: 50px 50px 100px 50px;

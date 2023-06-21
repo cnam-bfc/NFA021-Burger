@@ -44,15 +44,16 @@ function recupererProduits(booleen) {
         dataType: 'json',
         success: function (data) {
             if (booleen)
-            //Il s'agit d'un changement de fournisseur
+                //Il s'agit d'un changement de fournisseur
                 majProduits(data);
             else
-            //Il s'agit d'une nouvelle ligne produit
+                //Il s'agit d'une nouvelle ligne produit
                 ajouterLigne(data);
             retirerVisuelChargement();
         },
 
         error: function (data) {
+            retirerVisuelChargement();
             console.log('Bdc.js - BDC - error');
         }
     });
@@ -254,6 +255,16 @@ boutonSubmit.addEventListener("click", function () {
         alert("Un même ingrédient ne peut apparaître que sur une ligne de votre bon de commande.")
     }
 
+    else if (ingredientInconnu()) {
+        event.preventDefault();
+        alert("Une ou plusieurs lignes de votre bon de commande contiennent des ingrédients inconnus. Merci de modifier votre sélection.");
+    }
+
+    else if (bdcVide()) {
+        event.preventDefault();
+        alert("Votre bon de commande ne contient aucune ligne. Sélectionnez au moins un produit pour pouvoir passer commande.");
+    }
+
     else {
         // Sélectionner tous les éléments <select> avec name="produit"
         selectTousLesProduits = document.querySelectorAll('select[name="produit"]');
@@ -331,7 +342,8 @@ function ajusterPrixEtIdChaqueProduit() {
         var td1 = selectElement.parentNode;
         var td2 = td1.nextElementSibling.nextElementSibling;
         var unite = td2.querySelector("input");
-        unite.value = selectElement.selectedOptions[0].getAttribute('name');;
+        if (typeof selectElement.selectedOptions[0] !== 'undefined')
+            unite.value = selectElement.selectedOptions[0].getAttribute('name');
 
         var td1 = selectElement.parentNode;
         var td3 = td1.nextElementSibling.nextElementSibling.nextElementSibling;
@@ -340,7 +352,8 @@ function ajusterPrixEtIdChaqueProduit() {
 
         var td4 = td3.nextElementSibling;
         var id = td4.querySelector("input");
-        id.value = selectElement.selectedOptions[0].id;
+        if (typeof selectElement.selectedOptions[0] !== 'undefined')
+            id.value = selectElement.selectedOptions[0].id;
     });
 }
 
@@ -480,3 +493,34 @@ function doublonExiste(array) {
     var set = new Set(array);
     return set.size !== array.length;
 }
+
+
+//****************************************************************************************************************/
+//****************************************************************************************************************/
+
+
+//Methode qui vérifie la présence de ligne avec ingrédient inconnu
+function ingredientInconnu() {
+    var selectElement = document.querySelector('select:empty');
+    if (selectElement != null)
+        return true;
+    else
+        return false;
+}
+
+
+//****************************************************************************************************************/
+//****************************************************************************************************************/
+
+
+//Methode qui vérifie si le bdc ne contient aucune ligne
+function bdcVide() {
+    var theadElement = document.querySelector('thead');
+    if (theadElement.childElementCount == 1)
+        return true;
+    else
+        return false;
+}
+
+
+
