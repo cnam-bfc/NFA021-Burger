@@ -499,7 +499,7 @@ function doublonExiste(array) {
 //****************************************************************************************************************/
 
 
-//Methode qui vérifie la présence de ligne sans ingrédient
+//Methode qui vérifie la présence de ligne avec ingrédient inconnu
 function ingredientInconnu() {
     var selectElement = document.querySelector('select:empty');
     if (selectElement != null)
@@ -513,7 +513,7 @@ function ingredientInconnu() {
 //****************************************************************************************************************/
 
 
-//Methode qui vérifie la présence de ligne sans ingrédient
+//Methode qui vérifie si le bdc ne contient aucune ligne
 function bdcVide() {
     var theadElement = document.querySelector('thead');
     if (theadElement.childElementCount == 1)

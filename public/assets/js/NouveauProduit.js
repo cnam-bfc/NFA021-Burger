@@ -26,6 +26,7 @@ function redirigerPageListeProduits() {
 //Méthode affiche un message de succès pour la création d'un ingrédient
 function messageCreationIngredient() {
     alert("L'ingrédient a été ajouté avec succès.");
+    redirigerPageListeProduits();
 }
 
 
@@ -35,4 +36,5 @@ function messageCreationIngredient() {
 //Méthode affiche un message de succès pour la modification d'un ingrédient
 function messageModificationIngredient() {
     alert("L'ingrédient a été modifié avec succès.");
+    redirigerPageListeProduits();
 }
