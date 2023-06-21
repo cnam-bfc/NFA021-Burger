@@ -65,8 +65,8 @@
                     <tr></tr>
                     <tr>
                         <td colspan="6">
-                            <ul id="ulSupp">            
-                                
+                            <ul id="ulSupp">
+
 
                             </ul>
 
@@ -78,22 +78,17 @@
         <!-- ************************* FIN - EXEMPLE TABLEAU ************************* -->
 
 
-
-
-
-
         <!--#supplements-->
     </div><!--#ModifsBurgers-->
 
 
-
     <div id="Paiement">
+
         <div id="Prix">
             <p id="Montant">
             </p>
-            <p>X $</p>
+            <p>€</p>
         </div>
-
 
         <button id="Ajouter" class="animation-grow"> Ajouter au panier</button>
     </div>

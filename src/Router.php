@@ -61,6 +61,7 @@ class Router
         'panier' => ["controller" => "PanierController", "method" => "renderViewPanier"],
         'panier/getSessionPanier' => ["controller" => "PanierController", "method" => "getSessionPanier"],
         'panier/SupprimerElemPanier' => ["controller" => "PanierController", "method" => "suppElemPanier"],
+        'panier/setPanier' => ["controller" => "PanierController", "method" => "setPanier"],
 
         //Recap Commande
         'recap' => ["controller" => "RecapController", "method" => "renderViewRecap"],
