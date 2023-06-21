@@ -43,6 +43,8 @@ function showData(BurgerID) {
             console.log(response);
             dataBurger = response;
 
+            
+
 
 
             /* Boucle qui parcourt le tableau résultat (tableau qui contient les ingrédients à afficher) */
@@ -89,6 +91,8 @@ function showData(BurgerID) {
 
 
 function afficherDescriptif(response){
+    document.getElementById("nameBurger").textContent = response[2];
+    
     document.getElementById('descriptif').textContent = response[4];
 
 }

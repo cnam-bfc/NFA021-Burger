@@ -12,7 +12,7 @@
     </script> -->
     <div id="title" class="wrapper main_axe_space_around">
 
-        <h1 class="titre_souligne titre_margin_top titre_margin_bottom">Vos Ingrédients</h1>
+        <h1 id="nameBurger" class="titre_souligne titre_margin_top titre_margin_bottom">Vos Ingrédients</h1>
         <p id="descriptif"></p>
 
 
